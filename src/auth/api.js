@@ -9,6 +9,14 @@ export const apis = {
         get: 'vehicle',
         update: 'vehicle/updateVehicle',
         delete: 'vehicle/deleteVehicle'
+    },
+    product: {
+        add: "product/addProduct",
+        getAll: 'product/getAllProduct',
+        get: 'product/getProduct',
+        delete: 'product/deleteProduct',
+        update: 'vehicle/updateVehicle',
+
     }
 
 

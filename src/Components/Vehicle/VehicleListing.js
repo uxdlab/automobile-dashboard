@@ -9,7 +9,7 @@ import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 export const VehicleListing = () => {
 
     const [allVehicles, setAllVehicles] = useState([])
-    const [loader, setLoader] = useState()
+    const [loader, setLoader] = useState(true)
     const [deleteVeh, setDeletedVeh] = useState({ id: '', index: '' })
     const [deleteModel, setDeleteModel] = useState(false)
 
@@ -26,6 +26,7 @@ export const VehicleListing = () => {
             .then((res) => {
                 setAllVehicles(res.data.data)
                 setLoader(false)
+                console.log(res.data.data)
 
             })
             .catch(err => console.log(err))
@@ -116,7 +117,7 @@ export const VehicleListing = () => {
                                                     setDeleteModel(true)
                                                 }} />
                                                 <Edit onClick={() => navigate(`/editVehicle/${res._id}`)} />
-                                                <RemoveRedEye />
+                                                <RemoveRedEye onClick={() => navigate(`/viewVehicle/${res._id}`)} />
                                             </TableCell>
                                         </TableRow>
                                     )
