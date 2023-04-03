@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { VehicleClass } from "../../services/Vehicle";
 export const VehicleListing = () => {
+
+
+    useEffect(() => {
+        getAllVehicles()
+    }, [])
+    async function getAllVehicles() {
+        let result = await VehicleClass.getAllVehicles()
+        console.log(result.data.data)
+    }
 
 
     return (
