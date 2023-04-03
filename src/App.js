@@ -1,12 +1,18 @@
 import './App.css';
-import { Routes } from './Routes';
+import { Router } from './Routes';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 // import '../node_modules'
+import { BrowserRouter } from 'react-router-dom';
+import { Sidebar } from './Components/Sidebar/Sidebar';
 
 function App() {
   return (
     <>
-      <Routes />
+      <BrowserRouter>
+        <Sidebar>
+          <Router />
+        </Sidebar>
+      </BrowserRouter>
     </>
   );
 }
