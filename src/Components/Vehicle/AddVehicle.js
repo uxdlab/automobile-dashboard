@@ -1,12 +1,13 @@
-import React, { useRef } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { Backdrop, Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { VehicleClass } from "../../services/Vehicle";
 import { Vehicle } from "./Vehicle";
+import { Triangle } from "react-loader-spinner";
 
 export const AddVehicle = () => {
     let navigate = useNavigate()
-
+    const [loader, setLoader] = useState(false)
     const allVehicles = useRef([
         {
             vehicle_name: '',
@@ -17,8 +18,10 @@ export const AddVehicle = () => {
 
     const submitForm = async (e) => {
         e.preventDefault()
+        setLoader(true)
         VehicleClass.addVehicle(allVehicles.current[0])
             .then(res => {
+                setLoader(false)
                 navigate('/')
                 console.log(res.data.data)
             })
@@ -29,6 +32,23 @@ export const AddVehicle = () => {
 
     return (
         <>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loader}
+            >
+                <Box>
+                    <Triangle
+                        height="80"
+                        width="80"
+                        color="black"
+                        ariaLabel="triangle-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={loader}
+                    />
+                </Box>
+            </Backdrop>
+
             <Typography align="center" variant="h4" mt={2}>Add Vehicle</Typography>
 
             <form onSubmit={submitForm}>

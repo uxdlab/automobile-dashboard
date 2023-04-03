@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import './Sidebar.css'
 import { Menu } from "@mui/icons-material";
-import { Box, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import { useNavigate } from "react-router-dom";
 
 export const Sidebar = ({ children }) => {

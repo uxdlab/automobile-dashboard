@@ -5,7 +5,10 @@ export const apis = {
 
     vehicle: {
         add: "vehicle/addVehicle",
-        getAll:'vehicle/get/getAllVehicle'
+        getAll: 'vehicle/get/getAllVehicle',
+        get: 'vehicle',
+        update: 'vehicle/updateVehicle',
+        delete: 'vehicle/deleteVehicle'
     }
 
 

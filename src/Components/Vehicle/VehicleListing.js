@@ -1,71 +1,131 @@
-import React, { useEffect } from "react";
-import { Box, Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Backdrop, Box, Button, Dialog, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import { VehicleClass } from "../../services/Vehicle";
+import { Triangle } from 'react-loader-spinner'
+import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
+
+
 export const VehicleListing = () => {
 
+    const [allVehicles, setAllVehicles] = useState([])
+    const [loader, setLoader] = useState()
+    const [deleteVeh, setDeletedVeh] = useState({ id: '', index: '' })
+    const [deleteModel, setDeleteModel] = useState(false)
+
+    let navigate = useNavigate()
 
     useEffect(() => {
         getAllVehicles()
     }, [])
     async function getAllVehicles() {
-        let result = await VehicleClass.getAllVehicles()
-        console.log(result.data.data)
+
+        setLoader(true)
+
+        VehicleClass.getAllVehicles()
+            .then((res) => {
+                setAllVehicles(res.data.data)
+                setLoader(false)
+
+            })
+            .catch(err => console.log(err))
+    }
+
+    async function deleteVehicle() {
+        console.log(deleteVeh)
+        setDeleteModel(false)
+        setLoader(true)
+        VehicleClass.deleteVehicle(deleteVeh.id)
+            .then(res => {
+                console.log(res)
+                let arr = [...allVehicles]
+                arr.splice(deleteVeh.index, 1)
+                setAllVehicles(arr)
+                setLoader(false)
+            })
+            .catch(err => console.log(err))
+
+
     }
 
 
     return (
         <>
-            <div className="mt-2 fs-2 text-center">Vehicle</div>
+            <Box>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={loader}
+                >
+                    <Box>
+                        <Triangle
+                            height="80"
+                            width="80"
+                            color="black"
+                            ariaLabel="triangle-loading"
+                            wrapperStyle={{}}
+                            wrapperClassName=""
+                            visible={loader}
+                        />
+                    </Box>
+                </Backdrop>
+                <Dialog
+                    open={deleteModel}
+                    maxWidth={'sm'}
+                    fullWidth={true}
+                >
+                    <Box p={3}>
+                        <Box>Are you sure you want to delete?</Box>
+                        <Box align='right'>
+                            <Button className='cancel_btn me-3' onClick={() => setDeleteModel(false)}>Cancel</Button>
+                            <Button variant="contained" onClick={deleteVehicle}>Delete</Button>
+                        </Box>
+                    </Box>
 
-            <Box align='right' className='px-3'>
-                <Link style={{ textDecoration: 'none' }} to='/addVehicle'>
-                    <Button className="btn_primary" variant="contained">Add Vehicle</Button>
-                </Link>
-            </Box>
+                </Dialog>
 
-            <div className="p-3">
 
-                <table className="table border">
-                    <thead>
-                        <tr>
-                            <th scope="col">Sno.</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>2-Vehicles</td>
-                            <th>
-                                <i className="fa fa-eye" aria-hidden="true"></i>
-                                <i className="mx-2 fa fa-pencil-square-o" aria-hidden="true"></i>
-                                <i className="fa fa-trash" aria-hidden="true"></i>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>3-Vehicles</td>
-                            <td>
-                                <i className="fa fa-eye" aria-hidden="true"></i>
-                                <i className="mx-2 fa fa-pencil-square-o" aria-hidden="true"></i>
-                                <i className="fa fa-trash" aria-hidden="true"></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>22-Vehicles</td>
-                            <th>
-                                <i className="fa fa-eye" aria-hidden="true"></i>
-                                <i className="mx-2 fa fa-pencil-square-o" aria-hidden="true"></i>
-                                <i className="fa fa-trash" aria-hidden="true"></i>
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <div className="mt-2 fs-2 text-center">Vehicle</div>
 
+                <Box align='right' className='px-3'>
+                    <Link style={{ textDecoration: 'none' }} to='/addVehicle'>
+                        <Button className="btn_primary" variant="contained">Add Vehicle</Button>
+                    </Link>
+                </Box>
+
+                <div className="p-3">
+                    <Table className="border">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell><b>Sno.</b></TableCell>
+                                <TableCell><b>Vehicle name</b></TableCell>
+                                <TableCell><b>Icon</b></TableCell>
+                                <TableCell><b>Action</b></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                allVehicles.map((res, index) => {
+                                    return (
+                                        <TableRow key={index}>
+                                            <TableCell>{index + 1}</TableCell>
+                                            <TableCell>{res.vehicle_name}</TableCell>
+                                            <TableCell>{res.vehicle_icon}</TableCell>
+                                            <TableCell>
+                                                <Delete onClick={() => {
+                                                    setDeletedVeh({ id: res._id, index })
+                                                    setDeleteModel(true)
+                                                }} />
+                                                <Edit onClick={() => navigate(`/editVehicle/${res._id}`)} />
+                                                <RemoveRedEye />
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                })
+                            }
+                        </TableBody>
+                    </Table>
+                </div>
+            </Box >
 
         </>
     )
