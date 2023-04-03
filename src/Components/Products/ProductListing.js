@@ -106,12 +106,12 @@ export const ProductListing = () => {
                                         <TableCell>{res.product_name}</TableCell>
                                         <TableCell>{res.product_icon}</TableCell>
                                         <TableCell>
-                                            <Delete onClick={() => {
+                                            <Delete sx={{ cursor: 'pointer' }} onClick={() => {
                                                 setDeletedVeh({ id: res._id, index })
                                                 setDeleteModel(true)
                                             }} />
-                                            <Edit onClick={() => navigate(`/editProduct/${res._id}`)} />
-                                            <RemoveRedEye onClick={() => navigate(`/viewProduct/${res._id}`)} />
+                                            <Edit sx={{ cursor: 'pointer' }} onClick={() => navigate(`/editProduct/${res._id}`)} />
+                                            <RemoveRedEye sx={{ cursor: 'pointer' }} onClick={() => navigate(`/viewProduct/${res._id}`)} />
                                         </TableCell>
                                     </TableRow>
                                 )

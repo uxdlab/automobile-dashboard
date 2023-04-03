@@ -112,12 +112,12 @@ export const VehicleListing = () => {
                                             <TableCell>{res.vehicle_name}</TableCell>
                                             <TableCell>{res.vehicle_icon}</TableCell>
                                             <TableCell>
-                                                <Delete onClick={() => {
+                                                <Delete sx={{ cursor: 'pointer' }} onClick={() => {
                                                     setDeletedVeh({ id: res._id, index })
                                                     setDeleteModel(true)
                                                 }} />
-                                                <Edit onClick={() => navigate(`/editVehicle/${res._id}`)} />
-                                                <RemoveRedEye onClick={() => navigate(`/viewVehicle/${res._id}`)} />
+                                                <Edit sx={{ cursor: 'pointer' }} onClick={() => navigate(`/editVehicle/${res._id}`)} />
+                                                <RemoveRedEye sx={{ cursor: 'pointer' }} onClick={() => navigate(`/viewVehicle/${res._id}`)} />
                                             </TableCell>
                                         </TableRow>
                                     )
