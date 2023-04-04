@@ -4,25 +4,46 @@ import { useNavigate, useParams } from "react-router";
 import { Triangle } from 'react-loader-spinner'
 import { Product } from "./Product";
 import { ProductClass } from "../../services/Product";
+import { CompanyClass } from "../../services/Company";
 
 export const EditProduct = () => {
     let navigate = useNavigate()
     let { id } = useParams()
     const [loader, setLoader] = useState(true)
+    const [allCompany, setAllCompany] = useState([])
+    const [selectedCompany, setSelectedCompany] = useState([])
 
+    let num = 0
     useEffect(() => {
         getProduct()
+        getAllCompany()
     }, [])
 
     let allProducts = useRef([])
-
+    function getAllCompany() {
+        CompanyClass.getAllCompany()
+            .then(res => {
+                console.log(res.data.data)
+                setAllCompany(res.data.data)
+                num++
+                if (num == 2) {
+                    setLoader(false)
+                }
+            })
+            .catch(err => console.log(err))
+    }
 
     async function getProduct() {
         ProductClass.getProduct(id)
             .then((res) => {
                 console.log(res.data.data)
                 allProducts.current[0] = res.data.data
-                setLoader(false)
+                setSelectedCompany(res.data.data.product_company)
+                num++
+                if (num == 2) {
+                    setLoader(false)
+                }
+
             })
             .catch(err => console.log(err))
     }
@@ -30,21 +51,16 @@ export const EditProduct = () => {
 
     const formSubmit = async (e) => {
         e.preventDefault()
-        // setLoader(true)
-
-        let { product_icon, product_name } = allProducts.current[0]
-        console.log(product_icon)
-        console.log(product_name)
-        // VehicleClass.editVehicle(id, { vehicle_description, vehicle_icon, vehicle_name })
-        //     .then((res) => {
-        //         console.log(res)
-        //         setLoader(false)
-        //         navigate('/')
-        //     })
-        //     .catch(err => console.log(err))
+        setLoader(true)
+        let { product_icon, product_name, product_company } = allProducts.current[0]
+        ProductClass.editProduct(id, { product_icon, product_name, product_company })
+            .then((res) => {
+                console.log(res)
+                setLoader(false)
+                navigate('/products')
+            })
+            .catch(err => console.log(err))
     }
-
-
 
     return (
         <>
@@ -75,7 +91,10 @@ export const EditProduct = () => {
                                     key={index}
                                     allProducts={allProducts}
                                     productData={pro}
-                                    index={index} />
+                                    index={index}
+                                    allCompany={allCompany}
+                                    previousCompany={{ state: selectedCompany, setState: setSelectedCompany }}
+                                />
                             )
                         })}
                         <Box align='right' px={3} mt={6}>

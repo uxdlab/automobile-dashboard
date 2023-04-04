@@ -1,7 +1,21 @@
-import { Box, Grid } from "@mui/material";
-import React from "react";
+import { Box, Checkbox, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import React, { useState } from "react";
 
-export const Product = ({ productData, index, allProducts }) => {
+export const Product = ({ productData, index, allProducts, allCompany, previousCompany }) => {
+
+    const [addedCompany, setAddedCompany] = useState(allCompany.filter(e => previousCompany.state.includes(e._id)))
+
+    function companyChange(event) {
+        const {
+            target: { value },
+        } = event;
+
+        setAddedCompany(value)
+        previousCompany.setState(value.map(e => e._id))
+        allProducts.current[index].product_company = value.map(e => e._id)
+    }
+
+
     return (
         <Box>
 
@@ -14,6 +28,28 @@ export const Product = ({ productData, index, allProducts }) => {
                 <Grid item sm={6} xs={12} className="px-3 mt-2">
                     <label>Product Icon :</label><br />
                     <input defaultValue={productData.product_icon} onChange={(e) => allProducts.current[index].product_icon = e.target.value} required className="form-control w-100" />
+                </Grid>
+                <Grid item sm={6} xs={12} className="px-3 mt-2">
+                    <label>Product Icon :</label><br />
+                    <FormControl className="form-control" sx={{ height: '30px' }}>
+                        <InputLabel id="demo-multiple-checkbox-label">Select Product</InputLabel>
+                        <Select
+                            labelId="demo-multiple-checkbox-label"
+                            id="demo-multiple-checkbox"
+                            multiple
+                            value={addedCompany}
+                            onChange={companyChange}
+                            input={<OutlinedInput label="Tag" />}
+                            renderValue={(selected) => selected.map(e => e.company_name).join(', ')}
+                        >
+                            {allCompany.map((name) => (
+                                <MenuItem key={name.company_name} value={name}>
+                                    <Checkbox checked={previousCompany.state.indexOf(name._id) !== -1} />
+                                    <ListItemText primary={name.company_name} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Grid>
 
 

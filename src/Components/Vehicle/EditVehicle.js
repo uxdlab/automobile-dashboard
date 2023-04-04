@@ -13,13 +13,11 @@ export const EditVehicle = () => {
     const [allProducts, setAllProducts] = useState([])
     const [selectedProduct, setSelectedProduct] = useState([])
 
-    useEffect(() => {
-        getVehicle()
-    }, [])
     let num = 0
     let allVehicles = useRef([])
 
     useEffect(() => {
+        getVehicle()
         getAllProducts()
     }, [])
 

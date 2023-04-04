@@ -10,6 +10,7 @@ export const AddCompany = () => {
     let navigate = useNavigate()
     const [loader, setLoader] = useState(false)
 
+
     let companyData = useRef({ company_name: '' })
 
     function formSubmit(e) {
