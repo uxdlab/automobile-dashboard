@@ -11,6 +11,8 @@ import { ViewVehicles } from "./Components/Vehicle/ViewVehicle";
 import { ViewProduct } from "./Components/Products/ViewProduct";
 import { ModelListing } from "./Components/Model/ModelListing";
 import { AddModel } from "./Components/Model/AddModel";
+import { CompanyListing } from "./Components/Company/CompanyListing";
+import { AddCompany } from "./Components/Company/AddCompany";
 
 export const Router = () => {
     return (
@@ -24,6 +26,12 @@ export const Router = () => {
                 <Route exact path='/addProduct' element={<AddProduct />} />
                 <Route exact path='/editProduct/:id' element={<EditProduct />} />
                 <Route exact path='/viewProduct/:id' element={<ViewProduct />} />
+                <Route exact path='/company' element={<CompanyListing />} />
+                <Route exact path='/addCompany' element={<AddCompany />} />
+
+
+
+
                 <Route exact path='/models' element={<ModelListing />} />
                 <Route exact path='/addModel' element={<AddModel />} />
                 <Route path='*' element={<WrongPath />} />

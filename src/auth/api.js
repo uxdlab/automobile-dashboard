@@ -16,8 +16,23 @@ export const apis = {
         get: 'product/getProduct',
         delete: 'product/deleteProduct',
         update: 'vehicle/updateVehicle',
+    },
+    company: {
+        add: "",
+        getAll: '',
+        get: '',
+        delete: '',
+        update: '',
+    },
 
-    }
+    model: {
+        add: "",
+        getAll: '',
+        get: '',
+        delete: '',
+        update: '',
+    },
+
 
 
 }

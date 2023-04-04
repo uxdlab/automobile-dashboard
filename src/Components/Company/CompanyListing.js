@@ -3,14 +3,14 @@ import { Box, Button, Table, TableBody, TableCell, TableHead, TableRow } from "@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const ModelListing = () => {
+export const CompanyListing = () => {
     return (
         <>
-            <div className="mt-2 fs-2 text-center">Models</div>
+            <div className="mt-2 fs-2 text-center">Companies</div>
 
             <Box align='right' className='p-3'>
-                <Link style={{ textDecoration: 'none' }} to='/addModel'>
-                    <Button className="btn_primary" variant="contained">Add Model</Button>
+                <Link style={{ textDecoration: 'none' }} to='/addCompany'>
+                    <Button className="btn_primary" variant="contained">Add Company</Button>
                 </Link>
             </Box>
             <div className="p-3">
@@ -18,7 +18,7 @@ export const ModelListing = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>Sno.</TableCell>
-                            <TableCell>Model Name</TableCell>
+                            <TableCell>Company Name</TableCell>
                             <TableCell>Desc</TableCell>
                         </TableRow>
                     </TableHead>
