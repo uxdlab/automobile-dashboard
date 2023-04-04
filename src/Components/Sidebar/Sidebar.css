@@ -1,14 +1,12 @@
 .sidebar_main_con {
     width: 230px;
-    height: 100vh;
-    overflow: hidden;
     transition: all 0.3s ease-out;
     background-color: #015249;
     color: white;
 }
 
 .top_bar {
-    height: 70px;
+    height: 8vh;
     background-color: #499988;
     color: white;
 }
@@ -16,4 +14,9 @@
 .sidebar_item_con {
     margin-top: 30px;
 
+}
+
+.child_con {
+    height: 92vh;
+    overflow-y: scroll;
 }

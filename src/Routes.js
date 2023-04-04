@@ -13,6 +13,7 @@ import { ModelListing } from "./Components/Model/ModelListing";
 import { AddModel } from "./Components/Model/AddModel";
 import { CompanyListing } from "./Components/Company/CompanyListing";
 import { AddCompany } from "./Components/Company/AddCompany";
+import { EditCompany } from "./Components/Company/EditCompany";
 
 export const Router = () => {
     return (
@@ -28,6 +29,7 @@ export const Router = () => {
                 <Route exact path='/viewProduct/:id' element={<ViewProduct />} />
                 <Route exact path='/company' element={<CompanyListing />} />
                 <Route exact path='/addCompany' element={<AddCompany />} />
+                <Route exact path='/editCompany/:id' element={<EditCompany />} />
 
 
 

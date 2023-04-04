@@ -20,7 +20,7 @@ export const Sidebar = ({ children }) => {
     return (
         <>
 
-            <div className="d-flex">
+            <div className="d-flex" style={{ height: '100%' }}>
 
                 <div className="sidebar_main_con" style={{ width: toggleSidebar ? '270px' : '0px' }}>
                     <div className="fs-1 align-center ps-3">LOGO</div>
@@ -42,7 +42,7 @@ export const Sidebar = ({ children }) => {
                             <Menu className="fs-1 ms-3" onClick={() => setToggleSidebar(!toggleSidebar)} /> <i  ></i>
                         </span>
                     </div>
-                    <div>{children}</div>
+                    <div className="child_con">{children}</div>
                 </div>
 
 

@@ -18,11 +18,11 @@ export const apis = {
         update: 'vehicle/updateVehicle',
     },
     company: {
-        add: "",
-        getAll: '',
-        get: '',
-        delete: '',
-        update: '',
+        add: "company/addProductCompany",
+        getAll: 'company/getAllProductCompany',
+        get: 'company',
+        delete: 'company/deleteProductCompay',
+        update: 'company/updateProductCompany',
     },
 
     model: {
