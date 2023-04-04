@@ -1,10 +1,11 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 
 export const WrongPath = () => {
     return (
         <>
-            <div>this is wrong path</div>
+            <Typography variant="h2">This page is under development</Typography>
             <Link to='/'>Home</Link>
         </>
     )

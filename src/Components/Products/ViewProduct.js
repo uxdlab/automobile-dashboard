@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { VehicleClass } from "../../services/Vehicle";
 import { Backdrop, Box, Button, Typography } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import { Link } from "react-router-dom";
@@ -27,7 +26,7 @@ export const ViewProduct = () => {
 
     return (
         <>
-            <Link to='/'>
+            <Link to='/products'>
 
                 <Button>Back</Button>
             </Link>

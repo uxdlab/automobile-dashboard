@@ -1,7 +1,7 @@
 
 
 export const apis = {
-    baseUrl: "https://autotest.onrender.com/",
+    baseUrl: "https://automobile-f7cf.onrender.com/",
 
     vehicle: {
         add: "vehicle/addVehicle",

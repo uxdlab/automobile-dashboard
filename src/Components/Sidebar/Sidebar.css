@@ -1,18 +1,19 @@
-.sidebar_main_con{
+.sidebar_main_con {
     width: 230px;
     height: 100vh;
     overflow: hidden;
-    transition: all 0.2s linear;
+    transition: all 0.3s ease-out;
     background-color: #015249;
     color: white;
 }
 
-.top_bar{
+.top_bar {
     height: 70px;
     background-color: #499988;
     color: white;
 }
-.sidebar_item_con{
+
+.sidebar_item_con {
     margin-top: 30px;
-    
+
 }

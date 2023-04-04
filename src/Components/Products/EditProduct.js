@@ -79,7 +79,7 @@ export const EditProduct = () => {
                             )
                         })}
                         <Box align='right' px={3} mt={6}>
-                            <Button className="cancel_btn me-3" onClick={() => navigate('/')}>Cancel</Button>
+                            <Button className="cancel_btn me-3" onClick={() => navigate('/products')}>Cancel</Button>
                             <Button type="submit" variant="contained">Save</Button>
                         </Box>
                     </form>

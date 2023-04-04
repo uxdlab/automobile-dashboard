@@ -1,13 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Backdrop, Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { VehicleClass } from "../../services/Vehicle";
 import { Vehicle } from "./Vehicle";
 import { Triangle } from "react-loader-spinner";
+import { ProductClass } from "../../services/Product";
 
 export const AddVehicle = () => {
     let navigate = useNavigate()
-    const [loader, setLoader] = useState(false)
+    const [loader, setLoader] = useState(true)
+    const [allProducts, setAllProducts] = useState([])
+    const [selectedProduct, setSelectedProduct] = useState([])
+
     const allVehicles = useRef([
         {
             vehicle_name: '',
@@ -16,9 +20,28 @@ export const AddVehicle = () => {
         }
     ])
 
+
+    useEffect(() => {
+        getAllProducts()
+    }, [])
+
+    function getAllProducts() {
+
+        ProductClass.getAllProducts()
+            .then((res) => {
+                console.log(res.data.data)
+                setAllProducts(res.data.data)
+                setLoader(false)
+            })
+            .catch(err => console.log(err))
+    }
+
+
+
     const submitForm = async (e) => {
         e.preventDefault()
         setLoader(true)
+        console.log(allVehicles)
         VehicleClass.addVehicle(allVehicles.current[0])
             .then(res => {
                 setLoader(false)
@@ -45,6 +68,7 @@ export const AddVehicle = () => {
                         wrapperStyle={{}}
                         wrapperClassName=""
                         visible={loader}
+
                     />
                 </Box>
             </Backdrop>
@@ -58,7 +82,10 @@ export const AddVehicle = () => {
                             key={index}
                             allVehicles={allVehicles}
                             vehicleData={veh}
-                            index={index} />
+                            index={index}
+                            allProducts={allProducts}
+                            previousProduct={{ state: selectedProduct, setState: setSelectedProduct }}
+                        />
                     )
                 })}
 

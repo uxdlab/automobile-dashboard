@@ -4,25 +4,49 @@ import { Vehicle } from "./Vehicle";
 import { useNavigate, useParams } from "react-router";
 import { VehicleClass } from "../../services/Vehicle";
 import { Triangle } from 'react-loader-spinner'
+import { ProductClass } from "../../services/Product";
 
 export const EditVehicle = () => {
     let navigate = useNavigate()
     let { id } = useParams()
     const [loader, setLoader] = useState(true)
+    const [allProducts, setAllProducts] = useState([])
+    const [selectedProduct, setSelectedProduct] = useState([])
 
     useEffect(() => {
         getVehicle()
     }, [])
-
+    let num = 0
     let allVehicles = useRef([])
 
+    useEffect(() => {
+        getAllProducts()
+    }, [])
+
+    function getAllProducts() {
+
+        ProductClass.getAllProducts()
+            .then((res) => {
+                console.log(res.data.data)
+                setAllProducts(res.data.data)
+                num++
+                if (num == 2) {
+                    setLoader(false)
+                }
+            })
+            .catch(err => console.log(err))
+    }
 
     async function getVehicle() {
         VehicleClass.getVehicle(id)
             .then((res) => {
                 console.log(res.data.data)
                 allVehicles.current[0] = res.data.data
-                setLoader(false)
+                setSelectedProduct(res.data.data.vehicle_product)
+                num++
+                if (num == 2) {
+                    setLoader(false)
+                }
             })
             .catch(err => console.log(err))
     }
@@ -31,10 +55,11 @@ export const EditVehicle = () => {
     const formSubmit = async (e) => {
         e.preventDefault()
         setLoader(true)
+        let { vehicle_description, vehicle_icon, vehicle_name, vehicle_product } = allVehicles.current[0]
 
-        let { vehicle_description, vehicle_icon, vehicle_name } = allVehicles.current[0]
 
-        VehicleClass.editVehicle(id, { vehicle_description, vehicle_icon, vehicle_name })
+
+        VehicleClass.editVehicle(id, { vehicle_description, vehicle_icon, vehicle_name, vehicle_product })
             .then((res) => {
                 console.log(res)
                 setLoader(false)
@@ -74,7 +99,10 @@ export const EditVehicle = () => {
                                     key={index}
                                     allVehicles={allVehicles}
                                     vehicleData={veh}
-                                    index={index} />
+                                    index={index}
+                                    allProducts={allProducts}
+                                    previousProduct={{ state: selectedProduct, setState: setSelectedProduct }}
+                                />
                             )
                         })}
 
