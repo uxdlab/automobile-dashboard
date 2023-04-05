@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Backdrop, Box, Button, Dialog, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, Switch, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { VehicleClass } from "../../services/Vehicle";
 import { Triangle } from 'react-loader-spinner'
@@ -45,10 +45,23 @@ export const VehicleListing = () => {
                 setLoader(false)
             })
             .catch(err => console.log(err))
+    }
+
+    function switchBtn(e, id, index) {
+        setLoader(true)
+
+        VehicleClass.editVehicle(id, { is_active: e.target.checked })
+            .then(res => {
+                console.log(res)
+                setLoader(false)
+
+                let arr2 = [...allVehicles]
+                arr2[index].is_active = !e.target.checked
+            })
+
 
 
     }
-
 
     return (
         <>
@@ -99,6 +112,7 @@ export const VehicleListing = () => {
                             <TableRow>
                                 <TableCell><b>Sno.</b></TableCell>
                                 <TableCell><b>Vehicle name</b></TableCell>
+                                <TableCell><b>Status</b></TableCell>
                                 <TableCell><b>Icon</b></TableCell>
                                 <TableCell><b>Action</b></TableCell>
                             </TableRow>
@@ -110,6 +124,7 @@ export const VehicleListing = () => {
                                         <TableRow key={index}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{res.vehicle_name}</TableCell>
+                                            <TableCell><Switch checked={res.is_active} onChange={(e) => switchBtn(e, res._id, index)} /></TableCell>
                                             <TableCell>{res.vehicle_icon}</TableCell>
                                             <TableCell>
                                                 <Delete sx={{ cursor: 'pointer' }} onClick={() => {
