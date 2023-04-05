@@ -115,7 +115,7 @@ export const ModelListing = () => {
                                     <TableRow key={index}>
                                         <TableCell>{res.model_name}</TableCell>
                                         <TableCell>
-                                            <RemoveRedEye />
+                                            <RemoveRedEye onClick={()=>navigate(`/model/${res._id}`)}/>
                                             <Edit onClick={() => navigate(`/editModel/${res._id}`)} />
                                             <Delete
                                                 onClick={() => {

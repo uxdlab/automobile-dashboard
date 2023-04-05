@@ -19,6 +19,7 @@ import { LoginPage } from "./Components/Login/LoginPage";
 import { CheckAuth } from "./auth/CheckAuth";
 import { LoginKeeper } from "./auth/LoginKeeper";
 import { Sidebar } from "./Components/Sidebar/Sidebar";
+import { Model } from "./Components/Model/Model";
 
 export const Router = () => {
     return (
@@ -41,6 +42,7 @@ export const Router = () => {
                     <Route exact path='/addCompany' element={<AddCompany />} />
                     <Route exact path='/editCompany/:id' element={<EditCompany />} />
                     <Route exact path='/editModel/:id' element={<EditModel />} />
+                    <Route exact path='/model/:id' element={<Model />} />
                     <Route exact path='/models' element={<ModelListing />} />
                     <Route exact path='/addModel' element={<AddModel />} />
                     <Route path='*' element={<WrongPath />} />
