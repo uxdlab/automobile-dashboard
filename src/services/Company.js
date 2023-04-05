@@ -2,8 +2,6 @@ import React from "react";
 import { apis } from "../auth/api";
 import axios from "axios";
 
-
-
 export class CompanyClass extends React.Component {
     constructor() {
     }
@@ -26,9 +24,5 @@ export class CompanyClass extends React.Component {
     // Delete single company by document id 
     static async deleteCompany(id) {
         return await axios.delete(`${apis.baseUrl}${apis.company.delete}/${id}`)
-
     }
-
-
-
 }

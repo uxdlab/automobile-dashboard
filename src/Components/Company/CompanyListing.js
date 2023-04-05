@@ -21,6 +21,7 @@ export const CompanyListing = () => {
             .then(res => {
                 setLoader(false)
                 setCompanies(res.data.data)
+                console.log(res.data.data)
             })
     }
     function deleteCompany() {

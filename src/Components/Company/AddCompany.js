@@ -1,18 +1,33 @@
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Backdrop, Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Company } from "./Company";
 import { CompanyClass } from "../../services/Company";
 import { Triangle } from "react-loader-spinner";
+import { ModelClass } from "../../services/Model";
 
 export const AddCompany = () => {
     let navigate = useNavigate()
-    const [loader, setLoader] = useState(false)
+    const [loader, setLoader] = useState(true)
 
+    const [allModels, setAllModels] = useState([])
+    const [selectedModel, setSelectedModel] = useState([])
 
     let companyData = useRef({ company_name: '' })
+    useEffect(() => {
+        getAllModels()
+    }, [])
 
+    function getAllModels() {
+        ModelClass.getAllModel()
+            .then(res => {
+                console.log(res.data.data)
+                setAllModels(res.data.data)
+                setLoader(false)
+            })
+            .catch(err => console.log(err))
+    }
     function formSubmit(e) {
         setLoader(true)
         e.preventDefault()
@@ -24,8 +39,6 @@ export const AddCompany = () => {
                 navigate('/company')
             })
             .catch(err => console.log(err))
-
-
     }
 
 
@@ -50,14 +63,19 @@ export const AddCompany = () => {
                 </Box>
             </Backdrop>
             <Typography align="center" variant="h4" mt={2}>Add Company</Typography>
-            <form onSubmit={formSubmit}>
+            {!loader ?
+                <form onSubmit={formSubmit}>
 
-                <Company companyData={companyData} />
-                <Box align='right' px={3} mt={6}>
-                    <Button className="cancel_btn me-3" onClick={() => navigate('/company')}>Cancel</Button>
-                    <Button type='submit' variant="contained">Save</Button>
-                </Box>
-            </form>
+                    <Company
+                        companyData={companyData}
+                        allModels={allModels}
+                        previousModel={{ state: selectedModel, setState: setSelectedModel }}
+                    />
+                    <Box align='right' px={3} mt={6}>
+                        <Button className="cancel_btn me-3" onClick={() => navigate('/company')}>Cancel</Button>
+                        <Button type='submit' variant="contained">Save</Button>
+                    </Box>
+                </form> : null}
         </>
     )
 }
