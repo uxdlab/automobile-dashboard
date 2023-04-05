@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Box, Checkbox, FormControl, Grid, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import React, { useState } from "react";
 
 export const Product = ({ productData, index, allProducts, allCompany, previousCompany }) => {
@@ -30,9 +30,8 @@ export const Product = ({ productData, index, allProducts, allCompany, previousC
                     <input defaultValue={productData.product_icon} onChange={(e) => allProducts.current[index].product_icon = e.target.value} required className="form-control w-100" />
                 </Grid>
                 <Grid item sm={6} xs={12} className="px-3 mt-2">
-                    <label>Product Icon :</label><br />
+                    <label>Select Company :</label><br />
                     <FormControl className="form-control" sx={{ height: '30px' }}>
-                        <InputLabel id="demo-multiple-checkbox-label">Select Product</InputLabel>
                         <Select
                             labelId="demo-multiple-checkbox-label"
                             id="demo-multiple-checkbox"

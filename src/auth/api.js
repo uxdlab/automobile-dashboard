@@ -26,11 +26,11 @@ export const apis = {
     },
 
     model: {
-        add: "",
-        getAll: '',
-        get: '',
-        delete: '',
-        update: '',
+        add: "model/addModel",
+        getAll: 'model/getAllModel',
+        get: 'model',
+        delete: 'model/deleteModel',
+        update: 'model/updateModel',
     },
 
 

@@ -14,6 +14,7 @@ import { AddModel } from "./Components/Model/AddModel";
 import { CompanyListing } from "./Components/Company/CompanyListing";
 import { AddCompany } from "./Components/Company/AddCompany";
 import { EditCompany } from "./Components/Company/EditCompany";
+import { EditModel } from "./Components/Model/EditModel";
 
 export const Router = () => {
     return (
@@ -30,6 +31,7 @@ export const Router = () => {
                 <Route exact path='/company' element={<CompanyListing />} />
                 <Route exact path='/addCompany' element={<AddCompany />} />
                 <Route exact path='/editCompany/:id' element={<EditCompany />} />
+                <Route exact path='/editModel/:id' element={<EditModel />} />
 
 
 
