@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import './Sidebar.css'
 import { Menu } from "@mui/icons-material";
 import { Box } from "@mui/material"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginPage } from "../Login/LoginPage";
 
 export const Sidebar = ({ children }) => {
     const [toggleSidebar, setToggleSidebar] = useState(true)
@@ -19,9 +20,7 @@ export const Sidebar = ({ children }) => {
     let navigate = useNavigate()
     return (
         <>
-
-            <div className="d-flex" style={{ height: '100%' }}>
-
+            {localStorage.getItem("isLoggedIn") ? <div className="d-flex" style={{ height: '100%' }}>
                 <div className="sidebar_main_con" style={{ width: toggleSidebar ? '270px' : '0px' }}>
                     <div className="fs-1 align-center ps-3">LOGO</div>
                     <div className="sidebar_item_con px-3">
@@ -37,18 +36,26 @@ export const Sidebar = ({ children }) => {
 
                 </div>
                 <div className="w-100">
-                    <div className="top_bar d-flex align-items-center">
+                    <div className="top_bar d-flex align-items-center justify-content-between">
                         <span style={{ cursor: 'pointer' }}>
                             <Menu className="fs-1 ms-3" onClick={() => setToggleSidebar(!toggleSidebar)} /> <i  ></i>
                         </span>
+                        <Link
+                            style={{ textDecoration: "none",marginRight:'1%' }}
+                            to={"/login"}
+                            onClick={() => {
+                                localStorage.removeItem("isLoggedIn");
+                            }}
+                        >
+                            <span style={{ color: 'white' }} onClick={() => {
+                                localStorage.setItem("isLoggedIn", "false");
+
+                            }}>logout</span>
+                        </Link>
                     </div>
                     <div className="child_con">{children}</div>
                 </div>
-
-
-            </div>
-
-
+            </div> : <LoginPage />}
         </>
     )
 }
