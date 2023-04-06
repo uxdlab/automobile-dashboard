@@ -20,7 +20,7 @@ export const Sidebar = ({ children }) => {
     let navigate = useNavigate()
     return (
         <>
-            {/* {localStorage.getItem("isLoggedIn") ?  */}
+            {localStorage.getItem("isLoggedIn") ? 
             <div className="d-flex" style={{ height: '100%',width:'100%' }}>
                 <div className="sidebar_main_con" style={{ width: toggleSidebar ? '270px' : '0px' }}>
                     <div className="fs-1 align-center ps-3">LOGO</div>
@@ -57,7 +57,7 @@ export const Sidebar = ({ children }) => {
                     <div className="child_con">{children}</div>
                 </div>
             </div> 
-            {/* : <LoginPage />} */}
+            : <LoginPage />}
         </>
     )
 }
