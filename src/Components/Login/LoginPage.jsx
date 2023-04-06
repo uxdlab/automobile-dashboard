@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import style from "./style.module.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -20,14 +20,15 @@ export const LoginPage = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [showPass, setShowPass] = useState(false);
-//   const [showAlert, setShowAlert] = useState(false);
+  //   const [showAlert, setShowAlert] = useState(false);
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault()
-    if(user === 'admin@gmail.com' && pass === 'admin@123'){
+    if (user === 'admin@gmail.com' && pass === 'admin@123') {
       localStorage.setItem("isLoggedIn", "true");
       console.log('user LogedInnnnn')
       navigate('/')
+
     }
   }
 
@@ -47,7 +48,7 @@ export const LoginPage = () => {
               placeholder="Enter Your Username"
               type="email"
               fullWidth
-            //   value={user}
+              //   value={user}
               onChange={(e) => setUser(e.target.value)}
             />
             <Typography
