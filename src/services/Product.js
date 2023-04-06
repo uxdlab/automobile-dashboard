@@ -10,6 +10,7 @@ export class ProductClass extends React.Component {
     // Add single product 
     static async addProduct(data) {
         return await axios.post(`${apis.baseUrl}${apis.product.add}`, data)
+        
     }
     // Get All Products 
     static async getAllProducts() {
