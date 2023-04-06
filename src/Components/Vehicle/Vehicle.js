@@ -34,7 +34,7 @@ export const Vehicle = ({ vehicleData, index, allVehicles, allProducts, previous
                 </Grid>
 
                 <Grid item xs={6} className="px-3 mt-2">
-                    <label>Vehicle Description :</label><br />
+                    <label>Select Product :</label><br />
                     <FormControl className="form-control" sx={{ height: '30px' }}>
                         <InputLabel id="demo-multiple-checkbox-label">Select Product</InputLabel>
                         <Select

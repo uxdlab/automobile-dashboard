@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Backdrop, Box, Button, Dialog, Switch, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { VehicleClass } from "../../services/Vehicle";
 import { Triangle } from 'react-loader-spinner'
@@ -65,7 +65,7 @@ export const VehicleListing = () => {
 
     return (
         <>
-            <Box>
+            <Box sx={{width:'100%'}} px={2}>
                 <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={loader}
@@ -100,13 +100,13 @@ export const VehicleListing = () => {
 
                 <div className="mt-2 fs-2 text-center">Vehicle</div>
 
-                <Box align='right' className='px-3'>
+                <Box align='right' className='pb-3 py-3'>
                     <Link style={{ textDecoration: 'none' }} to='/addVehicle'>
                         <Button className="btn_primary" variant="contained">Add Vehicle</Button>
                     </Link>
                 </Box>
 
-                <div className="p-3">
+                <TableContainer component={Paper} sx={{overflowX:'scroll'}}>
                     <Table className="border">
                         <TableHead>
                             <TableRow>
@@ -140,7 +140,7 @@ export const VehicleListing = () => {
                             }
                         </TableBody>
                     </Table>
-                </div>
+                    </TableContainer>
             </Box >
 
         </>

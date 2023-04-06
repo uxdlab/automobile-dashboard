@@ -20,7 +20,8 @@ export const Sidebar = ({ children }) => {
     let navigate = useNavigate()
     return (
         <>
-            {localStorage.getItem("isLoggedIn") ? <div className="d-flex" style={{ height: '100%' }}>
+            {/* {localStorage.getItem("isLoggedIn") ?  */}
+            <div className="d-flex" style={{ height: '100%',width:'100%' }}>
                 <div className="sidebar_main_con" style={{ width: toggleSidebar ? '270px' : '0px' }}>
                     <div className="fs-1 align-center ps-3">LOGO</div>
                     <div className="sidebar_item_con px-3">
@@ -41,13 +42,13 @@ export const Sidebar = ({ children }) => {
                             <Menu className="fs-1 ms-3" onClick={() => setToggleSidebar(!toggleSidebar)} /> <i  ></i>
                         </span>
                         <Link
-                            style={{ textDecoration: "none",marginRight:'1%' }}
+                            style={{ textDecoration: "none" }}
                             to={"/login"}
                             onClick={() => {
                                 localStorage.removeItem("isLoggedIn");
                             }}
                         >
-                            <span style={{ color: 'white' }} onClick={() => {
+                            <span style={{ color: 'white',padding:'0 20px' }} onClick={() => {
                                 localStorage.setItem("isLoggedIn", "false");
 
                             }}>logout</span>
@@ -55,7 +56,8 @@ export const Sidebar = ({ children }) => {
                     </div>
                     <div className="child_con">{children}</div>
                 </div>
-            </div> : <LoginPage />}
+            </div> 
+            {/* : <LoginPage />} */}
         </>
     )
 }
