@@ -72,11 +72,11 @@ export const CompanyListing = () => {
                 </Box>
             </Backdrop>
 
-            <div className="mt-2 fs-2 text-center">Companies</div>
+            <div className="mt-2 fs-2 text-center">Brands</div>
 
             <Box align='right' className='p-3'>
                 <Link style={{ textDecoration: 'none' }} to='/addCompany'>
-                    <Button className="btn_primary" variant="contained">Add Company</Button>
+                    <Button className="btn_primary" variant="contained">Add Brand</Button>
                 </Link>
             </Box>
             <div className="p-3">
@@ -84,7 +84,7 @@ export const CompanyListing = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>Sno.</TableCell>
-                            <TableCell>Company Name</TableCell>
+                            <TableCell>Brand Name</TableCell>
                             <TableCell>Action</TableCell>
                         </TableRow>
                     </TableHead>
@@ -100,11 +100,14 @@ export const CompanyListing = () => {
                                             setDeleteModel(true)
                                         }} />
                                         <Edit onClick={() => navigate(`/editCompany/${res._id}`)} />
-                                        <RemoveRedEye />
+                                        <RemoveRedEye sx={{cursor:'pointer'}}
+                                        onClick={()=>{
+                                            navigate('/')
+                                        }}
+                                        />
 
                                     </TableCell>
                                 </TableRow>
-
                             )
                         })}
                     </TableBody>

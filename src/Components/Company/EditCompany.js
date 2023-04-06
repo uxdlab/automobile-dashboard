@@ -81,7 +81,7 @@ export const EditCompany = () => {
                     />
                 </Box>
             </Backdrop>
-            <Typography align="center" variant="h4" mt={2}>Edit Company</Typography>
+            <Typography align="center" variant="h4" mt={2}>Edit Brand</Typography>
 
             {!loader ?
                 <Box>

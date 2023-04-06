@@ -62,7 +62,7 @@ export const AddCompany = () => {
                     />
                 </Box>
             </Backdrop>
-            <Typography align="center" variant="h4" mt={2}>Add Company</Typography>
+            <Typography align="center" variant="h4" mt={2}>Add Brand</Typography>
             {!loader ?
                 <form onSubmit={formSubmit}>
 
