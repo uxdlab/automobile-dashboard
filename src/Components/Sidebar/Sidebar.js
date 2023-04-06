@@ -18,6 +18,7 @@ export const Sidebar = ({ children }) => {
     ]
 
     let navigate = useNavigate()
+    console.log('ll')
     return (
         <>
             {localStorage.getItem("isLoggedIn") ?
