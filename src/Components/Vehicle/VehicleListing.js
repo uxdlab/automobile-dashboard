@@ -98,11 +98,11 @@ export const VehicleListing = () => {
                 </Dialog>
 
 
-                <div className="mt-2 fs-2 text-center">Vehicle</div>
+                <div className="mt-2 fs-2 text-center">Segment</div>
 
                 <Box align='right' className='pb-3 py-3'>
                     <Link style={{ textDecoration: 'none' }} to='/addVehicle'>
-                        <Button className="btn_primary" variant="contained">Add Vehicle</Button>
+                        <Button className="btn_primary" variant="contained">Add Segment</Button>
                     </Link>
                 </Box>
 
@@ -111,7 +111,7 @@ export const VehicleListing = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell><b>Sno.</b></TableCell>
-                                <TableCell><b>Vehicle name</b></TableCell>
+                                <TableCell><b>Segment name</b></TableCell>
                                 <TableCell><b>Status</b></TableCell>
                                 <TableCell><b>Icon</b></TableCell>
                                 <TableCell><b>Action</b></TableCell>

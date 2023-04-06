@@ -70,7 +70,7 @@ export const EditVehicle = () => {
 
     return (
         <>
-            <Typography align="center" variant="h4" mt={2}>Edit Vehicle</Typography>
+            <Typography align="center" variant="h4" mt={2}>Edit Segment</Typography>
 
             {loader ? <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

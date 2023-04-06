@@ -10,7 +10,7 @@ export const Sidebar = ({ children }) => {
     const [toggleSidebar, setToggleSidebar] = useState(true)
 
     const sidebarData = [
-        { text: 'Vehicle', path: '/' },
+        { text: 'Segment', path: '/' },
         { text: 'Product', path: '/products' },
         { text: 'Company', path: '/company' },
         { text: 'Model', path: '/models' },

@@ -73,7 +73,7 @@ export const AddVehicle = () => {
                 </Box>
             </Backdrop>
 
-            <Typography align="center" variant="h4" mt={2}>Add Vehicle</Typography>
+            <Typography align="center" variant="h4" mt={2}>Add Segment</Typography>
 
             <form onSubmit={submitForm}>
                 {allVehicles.current.map((veh, index) => {

@@ -49,9 +49,9 @@ export const ViewVehicles = () => {
             {loader ? null :
                 <Box p={15}>
 
-                    <Typography><b>Vehicle Name :</b> {vehicleData.vehicle_name}</Typography>
-                    <Typography><b>Vehicle Icon :</b> {vehicleData.vehicle_icon}</Typography>
-                    <Typography><b>Vehicle Description :</b> {vehicleData.vehicle_description} </Typography>
+                    <Typography><b>Segment Name :</b> {vehicleData.vehicle_name}</Typography>
+                    <Typography><b>Segment Icon :</b> {vehicleData.vehicle_icon}</Typography>
+                    <Typography><b>Segment Description :</b> {vehicleData.vehicle_description} </Typography>
 
                 </Box>
             }
