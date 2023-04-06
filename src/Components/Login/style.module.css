@@ -1,15 +1,17 @@
 .main_sec {
   height: 100vh;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  /* grid-template-columns: repeat(2, 1fr); */
 }
 
 .left {
+  width:50%;
   background-color: #ebeafe;
   /* height: 100%; */
 }
 
 .right {
+  width:50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,6 +34,13 @@
   .left {
     /* height: 40vh; */
     display: none;
+  }
+  .right{
+    width: 100%;
+  }
+
+  .inner{
+    width: 80%;
   }
 
 }

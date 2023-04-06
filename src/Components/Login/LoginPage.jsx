@@ -12,6 +12,8 @@ import {
   InputAdornment,
   Typography,
 } from "@mui/material";
+import axios from "axios";
+import { apis } from "../../auth/api";
 
 
 export const LoginPage = () => {
@@ -19,30 +21,46 @@ export const LoginPage = () => {
 
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
+  const [match, setMatch] = useState(false)
   const [showPass, setShowPass] = useState(false);
   //   const [showAlert, setShowAlert] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault()
-    if (user === 'admin@gmail.com' && pass === 'admin@123') {
-      localStorage.setItem("isLoggedIn", "true");
-      console.log('user LogedInnnnn')
-      navigate('/')
+    let info = {
+      email:user,
+      password: pass
+}
 
-    }
+  axios.post(`${apis.baseUrl}admin/login`,info)
+  .then((res)=>{
+    console.log(res)
+    localStorage.setItem("isLoggedIn", "true");
+    navigate('/')
+    setMatch(false)
+  }).catch((err)=>{
+    console.log(err)
+    setMatch(true)
+  })
+    // if (user === 'admin@gmail.com' && pass === 'admin@123') {
+    //   localStorage.setItem("isLoggedIn", "true");
+    //   console.log('user LogedInnnnn')
+    //   navigate('/')
+
+    // }
   }
 
   return (
     <section className={style.main_sec}>
       <div className={style.left}>
-        <img src="/images/logo.png" alt="eee" className="h-100" />
+        <img src="/images/logo.png" alt="eee" className="h-100 w-100" />
       </div>
       <div className={style.right}>
         <div className={style.inner}>
           {/* <img className="img-style w-50" src="/images/logo.png" alt="Logo" /> */}
           <h1>Welcome</h1>
           <h4>Sign in to your Account</h4>
-          <br />
+          {!match?<br />:<h5 style={{color:'red'}}>Please Enter valid Id or Password</h5>}
           <form onSubmit={handleSubmit}>
             <TextField
               placeholder="Enter Your Username"
@@ -53,7 +71,7 @@ export const LoginPage = () => {
             />
             <Typography
               sx={{ fontSize: "14px", mb: 2, color: "gray" }}
-            >admin@gmail.com</Typography>
+            >test@gmail.com</Typography>
             <FormControl sx={{ mb: 2 }} fullWidth>
               <OutlinedInput
                 placeholder="Enter Your Password"
@@ -68,7 +86,7 @@ export const LoginPage = () => {
                   </InputAdornment>
                 }
               />
-              <small style={{ color: "gray" }}>admin@123</small>
+              <small style={{ color: "gray" }}>test@1234</small>
             </FormControl>
             {/* <Typography align="right" sx={{ color: "blue" }} my={2}>
               <span
