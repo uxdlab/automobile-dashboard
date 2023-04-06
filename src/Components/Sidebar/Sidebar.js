@@ -11,6 +11,7 @@ export const Sidebar = ({ children }) => {
 
     const sidebarData = [
         { text: 'Segment', path: '/' },
+        
         { text: 'Brand', path: '/brand' },
         { text: 'Model', path: '/models' },
         { text: 'Product', path: '/products' },
