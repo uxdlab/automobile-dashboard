@@ -106,7 +106,7 @@ export const VehicleListing = () => {
                     </Link>
                 </Box>
 
-                <TableContainer component={Paper} sx={{overflowX:'scroll'}}>
+                <TableContainer component={Paper}>
                     <Table className="border">
                         <TableHead>
                             <TableRow>

@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Checkbox,  Grid,  ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import React, { useState } from "react";
 
 export const Company = ({ companyData, allModels, previousModel }) => {
@@ -26,14 +26,16 @@ export const Company = ({ companyData, allModels, previousModel }) => {
                         className="form-control w-100"
                     />
                 </Grid>
-                <Grid item xs={6} className="px-3 mt-2">
+                <Grid item md={6} xs={12} className="px-3 mt-2">
                     <label>Select Model :</label><br />
-                    <FormControl className="form-control" sx={{ height: '30px' }}>
-                        <InputLabel id="demo-multiple-checkbox-label">Select Model</InputLabel>
+                    {/* <FormControl className="form-control" sx={{ height: '30px' }}> */}
+                        {/* <InputLabel id="demo-multiple-checkbox-label">Select Model</InputLabel> */}
                         <Select
+                            fullWidth
                             labelId="demo-multiple-checkbox-label"
                             id="demo-multiple-checkbox"
                             multiple
+                            sx={{height:'38px'}}
                             value={addedModels}
                             onChange={modelChange}
                             input={<OutlinedInput label="Tag" />}
@@ -49,7 +51,7 @@ export const Company = ({ companyData, allModels, previousModel }) => {
                                 </MenuItem>
                             ))}
                         </Select>
-                    </FormControl>
+                    {/* </FormControl> */}
                 </Grid>
 
             </Grid>
