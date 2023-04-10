@@ -42,7 +42,7 @@ export const AddModel = () => {
                     />
                 </Box>
             </Backdrop>
-            <Typography align="center" variant="h4" mt={2}>Add Model</Typography>
+            <Typography  variant="h4" mx={2} mt={2}>Add Model</Typography>
 
             <form onSubmit={formSubmit}>
                 <Model modelData={modelData} />

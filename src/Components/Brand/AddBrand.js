@@ -2,12 +2,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Backdrop, Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
-import { Company } from "./Company";
+import { Brand } from "./Brand";
 import { CompanyClass } from "../../services/Company";
 import { Triangle } from "react-loader-spinner";
 import { ModelClass } from "../../services/Model";
 
-export const AddCompany = () => {
+export const AddBrand = () => {
     let navigate = useNavigate()
     const [loader, setLoader] = useState(true)
 
@@ -62,11 +62,11 @@ export const AddCompany = () => {
                     />
                 </Box>
             </Backdrop>
-            <Typography align="center" variant="h4" mt={2}>Add Brand</Typography>
+            <Typography variant="h4" mx={2} mt={2}>Add Brand</Typography>
             {!loader ?
                 <form onSubmit={formSubmit}>
 
-                    <Company
+                    <Brand
                         companyData={companyData}
                         allModels={allModels}
                         previousModel={{ state: selectedModel, setState: setSelectedModel }}

@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { CompanyClass } from "../../services/Company";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 
-export const CompanyListing = () => {
+export const BrandListing = () => {
 
     const [loader, setLoader] = useState(true)
     let navigate = useNavigate()
@@ -72,10 +72,10 @@ export const CompanyListing = () => {
                 </Box>
             </Backdrop>
 
-            <div className="mt-2 fs-2 text-center">Brands</div>
+            <div className="mt-2 fs-2 mx-3">Brands</div>
 
             <Box align='right' className='p-3'>
-                <Link style={{ textDecoration: 'none' }} to='/addCompany'>
+                <Link style={{ textDecoration: 'none' }} to='/addBrand'>
                     <Button className="btn_primary" variant="contained">Add Brand</Button>
                 </Link>
             </Box>

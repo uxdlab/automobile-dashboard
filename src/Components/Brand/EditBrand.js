@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Company } from "./Company";
+import { Brand } from "./Brand";
 import { useNavigate, useParams } from "react-router";
 import { CompanyClass } from "../../services/Company";
 import { Backdrop, Box, Button, Typography } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import { ModelClass } from "../../services/Model";
 
-export const EditCompany = () => {
+export const EditBrand = () => {
     let num = 0
     const { id } = useParams()
     let companyData = useRef({ company_name: '' })
@@ -81,12 +81,12 @@ export const EditCompany = () => {
                     />
                 </Box>
             </Backdrop>
-            <Typography align="center" variant="h4" mt={2}>Edit Brand</Typography>
+            <Typography variant="h4" mx={2} mt={2}>Edit Brand</Typography>
 
             {!loader ?
                 <Box>
                     <form onSubmit={formSubmit}>
-                        <Company
+                        <Brand
                             companyData={companyData}
                             allModels={allModels}
                             previousModel={{ state: selectedModel, setState: setSelectedModel }}

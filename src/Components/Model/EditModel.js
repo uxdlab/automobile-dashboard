@@ -63,7 +63,7 @@ export const EditModel = () => {
                 </Box>
             </Backdrop>
 
-            <Typography align="center" variant="h4" mt={2}>Edit Model</Typography>
+            <Typography  variant="h4" mx={2} mt={2}>Edit Model</Typography>
 
             {!loader ?
                 <form onSubmit={formSubmit}>

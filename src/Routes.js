@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router";
-import { AddSegment, AddVehicle } from "./Components/Segment/AddSegment";
+import { AddSegment } from "./Components/Segment/AddSegment";
 import { SegmentListing } from "./Components/Segment/SegmentListing";
 import { WrongPath } from "./WrongPath";
-import { EditSegment, EditVehicle } from "./Components/Segment/EditSegment";
+import { EditSegment } from "./Components/Segment/EditSegment";
 import { Category} from "./Components/Category/Category";
 import { AddProduct } from "./Components/Category/AddCategory";
 import { EditProduct } from "./Components/Category/EditCategory";
@@ -11,9 +11,9 @@ import { ViewVehicles } from "./Components/Segment/ViewVehicle";
 import { ViewProduct } from "./Components/Category/ViewCategory";
 import { ModelListing } from "./Components/Model/ModelListing";
 import { AddModel } from "./Components/Model/AddModel";
-import { CompanyListing } from "./Components/Company/CompanyListing";
-import { AddCompany } from "./Components/Company/AddCompany";
-import { EditCompany } from "./Components/Company/EditCompany";
+import { BrandListing } from "./Components/Brand/BrandListing";
+import { AddBrand } from "./Components/Brand/AddBrand";
+import { EditBrand } from "./Components/Brand/EditBrand";
 import { EditModel } from "./Components/Model/EditModel";
 import { LoginPage } from "./Components/Login/LoginPage";
 import { CheckAuth } from "./auth/CheckAuth";
@@ -39,9 +39,9 @@ export const Router = () => {
                     <Route exact path='/addProduct' element={<AddProduct />} />
                     <Route exact path='/editProduct/:id' element={<EditProduct />} />
                     <Route exact path='/viewProduct/:id' element={<ViewProduct />} />
-                    <Route exact path='/brand' element={<CompanyListing />} />
-                    <Route exact path='/addCompany' element={<AddCompany />} />
-                    <Route exact path='/editCompany/:id' element={<EditCompany />} />
+                    <Route exact path='/brand' element={<BrandListing />} />
+                    <Route exact path='/addBrand' element={<AddBrand />} />
+                    <Route exact path='/editBrand/:id' element={<EditBrand />} />
                     <Route exact path='/editModel/:id' element={<EditModel />} />
                     <Route exact path='/model/:id' element={<Model />} />
                     <Route exact path='/models' element={<ModelListing />} />

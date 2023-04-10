@@ -1,7 +1,7 @@
 import { Checkbox,  Grid,  ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import React, { useState } from "react";
 
-export const Company = ({ companyData, allModels, previousModel }) => {
+export const Brand = ({ companyData, allModels, previousModel }) => {
 
     console.log(allModels)
     console.log(previousModel)
