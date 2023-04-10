@@ -18,8 +18,9 @@ import { EditModel } from "./Components/Model/EditModel";
 import { LoginPage } from "./Components/Login/LoginPage";
 import { CheckAuth } from "./auth/CheckAuth";
 import { LoginKeeper } from "./auth/LoginKeeper";
-import { Sidebar } from "./Components/Sidebar/Sidebar";
 import { Model } from "./Components/Model/Model";
+import UsersListing from "./Components/Users/UsersListing";
+import PaymentListing from "./Components/Payment/PaymentListing";
 
 export const Router = () => {
     return (
@@ -45,6 +46,8 @@ export const Router = () => {
                     <Route exact path='/model/:id' element={<Model />} />
                     <Route exact path='/models' element={<ModelListing />} />
                     <Route exact path='/addModel' element={<AddModel />} />
+                    <Route exact path='/users' element={<UsersListing />} />
+                    <Route exact path='/payment' element={<PaymentListing />} />
                     <Route path='*' element={<WrongPath />} />
                 </Route>
             </Routes>

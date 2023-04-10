@@ -15,6 +15,8 @@ export const Sidebar = ({ children }) => {
         { text: 'Model', path: '/models' },
         { text: 'Product', path: '/products' },
         { text: 'Items', path: '/items' },
+        { text: 'Users', path: '/users' },
+        { text: 'Payment', path: '/payment' },
     ]
 
     let navigate = useNavigate()
