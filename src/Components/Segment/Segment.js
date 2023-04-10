@@ -1,4 +1,4 @@
-import { Backdrop, Box, Checkbox, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Backdrop, Box, Checkbox, Container, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import React, { useState } from "react";
 
 export const Segment = ({ vehicleData, index, allVehicles, allProducts, previousProduct }) => {
@@ -15,15 +15,16 @@ export const Segment = ({ vehicleData, index, allVehicles, allProducts, previous
     }
 
     return (
-        <Box>
-
+        <Grid container >
+           <Grid item xl={7} md={9} sm={12} sx={12}>
+           <Box>
             <Grid container mt={2}>
-                <Grid item sm={6} xs={12} className="px-3 mt-2">
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                     <label>Segment Name :</label><br />
                     <input onChange={(e) => allVehicles.current[index].vehicle_name = e.target.value} defaultValue={vehicleData.vehicle_name} required className="form-control w-100" />
                 </Grid>
 
-                <Grid item md={6} xs={12} className="px-3 mt-2">
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                     <label>Select Product :</label><br />
                         <Select
                         fullWidth
@@ -47,7 +48,7 @@ export const Segment = ({ vehicleData, index, allVehicles, allProducts, previous
                         </Select>
                 </Grid>
 
-                <Grid item xs={12} md={6} className="px-3 mt-2">
+                <Grid item xs={12} sm={6} md={6} className="px-3 mt-2">
                     <label>Segment Description :</label><br />
                     <textarea defaultValue={vehicleData.vehicle_description} onChange={(e) => allVehicles.current[index].vehicle_description = e.target.value} required className="form-control w-100" rows='5' />
                 </Grid>
@@ -60,5 +61,7 @@ export const Segment = ({ vehicleData, index, allVehicles, allProducts, previous
             </Grid>
 
         </Box >
+           </Grid>
+        </Grid>
     )
 }

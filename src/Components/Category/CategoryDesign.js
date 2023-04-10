@@ -17,8 +17,9 @@ export const Product = ({ productData, index, allProducts, allCompany, previousC
 
 
     return (
-        <Box>
-
+        <Grid container>
+            <Grid item xl={7} md={9} sm={12} sx={12}>
+            <Box>
             <Grid container mt={2}>
                 <Grid item sm={6} xs={12} className="px-3 mt-2">
                     <label>Category Name :</label><br />
@@ -56,5 +57,8 @@ export const Product = ({ productData, index, allProducts, allCompany, previousC
             </Grid>
 
         </Box >
+            </Grid>
+        </Grid>
+        
     )
 }

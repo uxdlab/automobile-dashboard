@@ -17,7 +17,9 @@ export const Brand = ({ companyData, allModels, previousModel }) => {
 
     return (
         <>
-            <Grid container mt={2}>
+           <Grid container>
+           <Grid item xl={7} md={9} sm={12} sx={12}>
+           <Grid container mt={2}>
                 <Grid item sm={6} xs={12} className="px-3 mt-2">
                     <label>Brand Name :</label><br />
                     <input
@@ -55,6 +57,9 @@ export const Brand = ({ companyData, allModels, previousModel }) => {
                 </Grid>
 
             </Grid>
+           </Grid>
+           </Grid>
+            
         </>
     )
 }
