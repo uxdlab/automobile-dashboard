@@ -1,7 +1,7 @@
 import { Backdrop, Box, Checkbox, FormControl, Grid, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import React, { useState } from "react";
 
-export const Vehicle = ({ vehicleData, index, allVehicles, allProducts, previousProduct }) => {
+export const Segment = ({ vehicleData, index, allVehicles, allProducts, previousProduct }) => {
 
 
     const [addedProducts, setAddedProducts] = useState(allProducts.filter(e => previousProduct.state.includes(e._id)))
@@ -47,15 +47,15 @@ export const Vehicle = ({ vehicleData, index, allVehicles, allProducts, previous
                         </Select>
                 </Grid>
 
-                <Grid item xs={12} className="px-3 mt-2">
+                <Grid item xs={12} md={6} className="px-3 mt-2">
                     <label>Segment Description :</label><br />
                     <textarea defaultValue={vehicleData.vehicle_description} onChange={(e) => allVehicles.current[index].vehicle_description = e.target.value} required className="form-control w-100" rows='5' />
                 </Grid>
                 
-                <Grid item sm={6} xs={12} className="px-3 mt-2">
+                {/* <Grid item sm={6} xs={12} className="px-3 mt-2">
                     <label>Choose Segment Icon :</label><br />
                     <input defaultValue={vehicleData.vehicle_icon} onChange={(e) => allVehicles.current[index].vehicle_icon = e.target.value} required className="form-control w-100" />
-                </Grid>
+                </Grid> */}
                 
             </Grid>
 

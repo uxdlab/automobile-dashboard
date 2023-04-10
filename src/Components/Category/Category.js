@@ -6,7 +6,7 @@ import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { ProductClass } from "../../services/Product";
 
-export const ProductListing = () => {
+export const Category = () => {
 
     const [loader, setLoader] = useState(false)
     const [deleteModel, setDeleteModel] = useState(false)
@@ -79,11 +79,11 @@ export const ProductListing = () => {
             </Dialog>
 
 
-            <div className="mt-2 fs-2 text-center">Products</div>
+            <div className="mt-2 fs-2 mx-3">Category</div>
 
             <Box align='right' className='px-3'>
                 <Link style={{ textDecoration: 'none' }} to='/addProduct'>
-                    <Button className="btn_primary" variant="contained">Add Product</Button>
+                    <Button className="btn_primary" variant="contained">Add Category</Button>
                 </Link>
             </Box>
 
@@ -91,9 +91,9 @@ export const ProductListing = () => {
                 <Table className="border">
                     <TableHead>
                         <TableRow>
-                            <TableCell><b>Sno.</b></TableCell>
-                            <TableCell><b>Product name</b></TableCell>
-                            <TableCell><b>Icon</b></TableCell>
+                            <TableCell><b>S.No.</b></TableCell>
+                            <TableCell><b>Category name</b></TableCell>
+                            {/* <TableCell><b>Icon</b></TableCell> */}
                             <TableCell><b>Action</b></TableCell>
                         </TableRow>
                     </TableHead>
@@ -104,7 +104,7 @@ export const ProductListing = () => {
                                     <TableRow key={index}>
                                         <TableCell>{index + 1}</TableCell>
                                         <TableCell>{res.product_name}</TableCell>
-                                        <TableCell>{res.product_icon}</TableCell>
+                                        {/* <TableCell>{res.product_icon}</TableCell> */}
                                         <TableCell>
                                             <Delete sx={{ cursor: 'pointer' }} onClick={() => {
                                                 setDeletedVeh({ id: res._id, index })

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Backdrop, Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Triangle } from "react-loader-spinner";
-import { Product } from "./Product";
+import { Product } from "./CategoryDesign";
 import { ProductClass } from "../../services/Product";
 import { CompanyClass } from "../../services/Company";
 
@@ -72,7 +72,7 @@ export const AddProduct = () => {
                 </Box>
             </Backdrop>
 
-            <Typography align="center" variant="h4" mt={2}>Add Product</Typography>
+            <Typography variant="h4" mx={2} mt={2}>Add Category</Typography>
             {!loader ?
 
                 <form onSubmit={submitForm}>

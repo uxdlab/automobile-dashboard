@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Backdrop, Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { VehicleClass } from "../../services/Vehicle";
-import { Vehicle } from "./Vehicle";
+import { Segment } from "./Segment";
 import { Triangle } from "react-loader-spinner";
 import { ProductClass } from "../../services/Product";
 
-export const AddVehicle = () => {
+export const AddSegment = () => {
     let navigate = useNavigate()
     const [loader, setLoader] = useState(true)
     const [allProducts, setAllProducts] = useState([])
@@ -73,12 +73,12 @@ export const AddVehicle = () => {
                 </Box>
             </Backdrop>
 
-            <Typography align="center" variant="h4" mt={2}>Add Segment</Typography>
+            <Typography variant="h4" mx={2} mt={2}>Add Segment</Typography>
 
             <form onSubmit={submitForm}>
                 {allVehicles.current.map((veh, index) => {
                     return (
-                        <Vehicle
+                        <Segment
                             key={index}
                             allVehicles={allVehicles}
                             vehicleData={veh}

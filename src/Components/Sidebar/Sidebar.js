@@ -13,8 +13,8 @@ export const Sidebar = ({ children }) => {
         { text: 'Segment', path: '/' },
         { text: 'Brand', path: '/brand' },
         { text: 'Model', path: '/models' },
-        { text: 'Product', path: '/products' },
-        { text: 'Items', path: '/items' },
+        { text: 'Category', path: '/category' },
+        { text: 'Product', path: '/product' },
         { text: 'Users', path: '/users' },
         { text: 'Payment', path: '/payment' },
     ]

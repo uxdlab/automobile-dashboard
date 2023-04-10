@@ -1,30 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Segment } from "./Segment";
 import { useNavigate, useParams } from "react-router";
+import { VehicleClass } from "../../services/Vehicle";
 import { Triangle } from 'react-loader-spinner'
-import { Product } from "./Product";
 import { ProductClass } from "../../services/Product";
-import { CompanyClass } from "../../services/Company";
 
-export const EditProduct = () => {
+export const EditSegment = () => {
     let navigate = useNavigate()
     let { id } = useParams()
     const [loader, setLoader] = useState(true)
-    const [allCompany, setAllCompany] = useState([])
-    const [selectedCompany, setSelectedCompany] = useState([])
+    const [allProducts, setAllProducts] = useState([])
+    const [selectedProduct, setSelectedProduct] = useState([])
 
     let num = 0
+    let allVehicles = useRef([])
+
     useEffect(() => {
-        getProduct()
-        getAllCompany()
+        getVehicle()
+        getAllProducts()
     }, [])
 
-    let allProducts = useRef([])
-    function getAllCompany() {
-        CompanyClass.getAllCompany()
-            .then(res => {
+    function getAllProducts() {
+
+        ProductClass.getAllProducts()
+            .then((res) => {
                 console.log(res.data.data)
-                setAllCompany(res.data.data)
+                setAllProducts(res.data.data)
                 num++
                 if (num == 2) {
                     setLoader(false)
@@ -33,17 +35,16 @@ export const EditProduct = () => {
             .catch(err => console.log(err))
     }
 
-    async function getProduct() {
-        ProductClass.getProduct(id)
+    async function getVehicle() {
+        VehicleClass.getVehicle(id)
             .then((res) => {
                 console.log(res.data.data)
-                allProducts.current[0] = res.data.data
-                setSelectedCompany(res.data.data.product_company)
+                allVehicles.current[0] = res.data.data
+                setSelectedProduct(res.data.data.vehicle_product)
                 num++
                 if (num == 2) {
                     setLoader(false)
                 }
-
             })
             .catch(err => console.log(err))
     }
@@ -52,19 +53,24 @@ export const EditProduct = () => {
     const formSubmit = async (e) => {
         e.preventDefault()
         setLoader(true)
-        let { product_icon, product_name, product_company } = allProducts.current[0]
-        ProductClass.editProduct(id, { product_icon, product_name, product_company })
+        let { vehicle_description, vehicle_icon, vehicle_name, vehicle_product } = allVehicles.current[0]
+
+
+
+        VehicleClass.editVehicle(id, { vehicle_description, vehicle_icon, vehicle_name, vehicle_product })
             .then((res) => {
                 console.log(res)
                 setLoader(false)
-                navigate('/products')
+                navigate('/')
             })
             .catch(err => console.log(err))
     }
 
+
+
     return (
         <>
-            <Typography align="center" variant="h4" mt={2}>Edit Product</Typography>
+            <Typography  variant="h4" mx={2} mt={2}>Edit Segment</Typography>
 
             {loader ? <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -85,20 +91,21 @@ export const EditProduct = () => {
                 <Box>
 
                     <form onSubmit={formSubmit}>
-                        {allProducts.current.map((pro, index) => {
+                        {allVehicles.current.map((veh, index) => {
                             return (
-                                <Product
+                                <Segment
                                     key={index}
-                                    allProducts={allProducts}
-                                    productData={pro}
+                                    allVehicles={allVehicles}
+                                    vehicleData={veh}
                                     index={index}
-                                    allCompany={allCompany}
-                                    previousCompany={{ state: selectedCompany, setState: setSelectedCompany }}
+                                    allProducts={allProducts}
+                                    previousProduct={{ state: selectedProduct, setState: setSelectedProduct }}
                                 />
                             )
                         })}
+
                         <Box align='right' px={3} mt={6}>
-                            <Button className="cancel_btn me-3" onClick={() => navigate('/products')}>Cancel</Button>
+                            <Button className="cancel_btn me-3" onClick={() => navigate('/')}>Cancel</Button>
                             <Button type="submit" variant="contained">Save</Button>
                         </Box>
                     </form>

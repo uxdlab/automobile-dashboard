@@ -21,18 +21,19 @@ export const Product = ({ productData, index, allProducts, allCompany, previousC
 
             <Grid container mt={2}>
                 <Grid item sm={6} xs={12} className="px-3 mt-2">
-                    <label>Product Name :</label><br />
+                    <label>Category Name :</label><br />
                     <input onChange={(e) => allProducts.current[index].product_name = e.target.value} defaultValue={productData.product_name} required className="form-control w-100" />
                 </Grid>
 
-                <Grid item sm={6} xs={12} className="px-3 mt-2">
-                    <label>Product Icon :</label><br />
+                {/* <Grid item sm={6} xs={12} className="px-3 mt-2">
+                    <label>Category Icon :</label><br />
                     <input defaultValue={productData.product_icon} onChange={(e) => allProducts.current[index].product_icon = e.target.value} required className="form-control w-100" />
-                </Grid>
+                </Grid> */}
                 <Grid item sm={6} xs={12} className="px-3 mt-2">
                     <label>Select Company :</label><br />
-                    <FormControl className="form-control" sx={{ height: '30px' }}>
+                    <FormControl className="form-control" >
                         <Select
+                        sx={{ height: '38px' }}
                             labelId="demo-multiple-checkbox-label"
                             id="demo-multiple-checkbox"
                             multiple

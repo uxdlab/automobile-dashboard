@@ -6,7 +6,7 @@ import { Triangle } from 'react-loader-spinner'
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 
 
-export const VehicleListing = () => {
+export const SegmentListing = () => {
 
     const [allVehicles, setAllVehicles] = useState([])
     const [loader, setLoader] = useState(true)
@@ -98,10 +98,10 @@ export const VehicleListing = () => {
                 </Dialog>
 
 
-                <div className="mt-2 fs-2 text-center">Segment</div>
+                <div className="mt-2 fs-2 ">Segment</div>
 
                 <Box align='right' className='pb-3 py-3'>
-                    <Link style={{ textDecoration: 'none' }} to='/addVehicle'>
+                    <Link style={{ textDecoration: 'none' }} to='/addSegment'>
                         <Button className="btn_primary" variant="contained">Add Segment</Button>
                     </Link>
                 </Box>
@@ -113,7 +113,7 @@ export const VehicleListing = () => {
                                 <TableCell><b>Sno.</b></TableCell>
                                 <TableCell><b>Segment name</b></TableCell>
                                 <TableCell><b>Status</b></TableCell>
-                                <TableCell><b>Icon</b></TableCell>
+                                {/* <TableCell><b>Icon</b></TableCell> */}
                                 <TableCell><b>Action</b></TableCell>
                             </TableRow>
                         </TableHead>
@@ -125,14 +125,14 @@ export const VehicleListing = () => {
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell>{res.vehicle_name}</TableCell>
                                             <TableCell><Switch checked={res.is_active} onChange={(e) => switchBtn(e, res._id, index)} /></TableCell>
-                                            <TableCell>{res.vehicle_icon}</TableCell>
+                                            {/* <TableCell>{res.vehicle_icon}</TableCell> */}
                                             <TableCell>
                                                 <Delete sx={{ cursor: 'pointer' }} onClick={() => {
                                                     setDeletedVeh({ id: res._id, index })
                                                     setDeleteModel(true)
                                                 }} />
-                                                <Edit sx={{ cursor: 'pointer' }} onClick={() => navigate(`/editVehicle/${res._id}`)} />
-                                                <RemoveRedEye sx={{ cursor: 'pointer' }} onClick={() => navigate(`/viewVehicle/${res._id}`)} />
+                                                <Edit sx={{ cursor: 'pointer' }} onClick={() => navigate(`/editSegment/${res._id}`)} />
+                                                {/* <RemoveRedEye sx={{ cursor: 'pointer' }} onClick={() => navigate(`/viewVehicle/${res._id}`)} /> */}
                                             </TableCell>
                                         </TableRow>
                                     )
