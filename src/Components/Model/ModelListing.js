@@ -115,7 +115,7 @@ export const ModelListing = () => {
                                     <TableRow key={index}>
                                         <TableCell>{res.model_name}</TableCell>
                                         <TableCell>
-                                            <RemoveRedEye onClick={()=>navigate(`/model/${res._id}`)}/>
+                                            <RemoveRedEye onClick={() => navigate(`/model/${res._id}`)} />
                                             <Edit onClick={() => navigate(`/editModel/${res._id}`)} />
                                             <Delete
                                                 onClick={() => {
@@ -129,7 +129,7 @@ export const ModelListing = () => {
                             })}
                         </TableBody>
                     </Table>
-                    <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                    {/* <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
                         <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
                             <option>5</option>
                             <option>10</option>
@@ -142,7 +142,7 @@ export const ModelListing = () => {
                             total={allData.length}
                             style={{ color: 'green' }}
                         />
-                    </Box>
+                    </Box> */}
                 </Box>
                 : null}
 

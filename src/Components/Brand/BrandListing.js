@@ -99,10 +99,10 @@ export const BrandListing = () => {
                                             setDeletedComp({ id: res._id, index })
                                             setDeleteModel(true)
                                         }} />
-                                        <Edit onClick={() => navigate(`/editCompany/${res._id}`)} />
+                                        <Edit onClick={() => navigate(`/editbrand/${res._id}`)} />
                                         <RemoveRedEye sx={{cursor:'pointer'}}
                                         onClick={()=>{
-                                            navigate('/')
+                                            navigate('/viewBrand')
                                         }}
                                         />
 

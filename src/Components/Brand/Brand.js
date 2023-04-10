@@ -29,10 +29,10 @@ export const Brand = ({ companyData, allModels, previousModel }) => {
                     />
                 </Grid>
                 <Grid item md={6} xs={12} className="px-3 mt-2">
-                    <label>Select Model :</label><br />
+                    {/* <label>Select Model :</label><br /> */}
                     {/* <FormControl className="form-control" sx={{ height: '30px' }}> */}
                         {/* <InputLabel id="demo-multiple-checkbox-label">Select Model</InputLabel> */}
-                        <Select
+                        {/* <Select
                             fullWidth
                             labelId="demo-multiple-checkbox-label"
                             id="demo-multiple-checkbox"
@@ -52,7 +52,7 @@ export const Brand = ({ companyData, allModels, previousModel }) => {
                                     } />
                                 </MenuItem>
                             ))}
-                        </Select>
+                        </Select> */}
                     {/* </FormControl> */}
                 </Grid>
 

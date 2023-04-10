@@ -19,13 +19,13 @@ export const Model = ({ modelData }) => {
     return (
         <>
             <Grid container mt={2}>
-                <Grid item sm={6} xs={12} className="px-3 mt-2">
+                <Grid item xl={6} md={6} sm={6} xs={12} className="px-3 mt-2">
                     <label>Model Name : {data!==undefined?data.model_name:''}</label><br />
-                    {/* <input
+                    <input
                         onChange={(e) => modelData.current.model_name = e.target.value}
                         defaultValue={modelData.current.model_name} required
                         className="form-control w-100"
-                    /> */}
+                    />
                 </Grid>
             </Grid>
         </>
