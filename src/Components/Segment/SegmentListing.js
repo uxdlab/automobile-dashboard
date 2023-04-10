@@ -102,7 +102,7 @@ export const SegmentListing = () => {
 
                 <Box align='right' className='pb-3 py-3'>
                     <Link style={{ textDecoration: 'none' }} to='/addSegment'>
-                        <Button className="btn_primary" variant="contained">Add Segment</Button>
+                        <Button className="btn_primary" style={{background:'#4539ca'}} variant="contained">Add Segment</Button>
                     </Link>
                 </Box>
 

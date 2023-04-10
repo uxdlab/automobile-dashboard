@@ -100,11 +100,11 @@ export const BrandListing = () => {
                                             setDeleteModel(true)
                                         }} />
                                         <Edit onClick={() => navigate(`/editbrand/${res._id}`)} />
-                                        <RemoveRedEye sx={{cursor:'pointer'}}
+                                        {/* <RemoveRedEye sx={{cursor:'pointer'}}
                                         onClick={()=>{
                                             navigate('/viewBrand')
                                         }}
-                                        />
+                                        /> */}
 
                                     </TableCell>
                                 </TableRow>

@@ -1,13 +1,14 @@
 .sidebar_main_con {
     width: 230px;
     transition: all 0.3s ease-out;
-    background-color: #015249;
+    background-color: #4538CA;
     color: white;
 }
 
 .top_bar {
     height: 8vh;
-    background-color: #499988;
+    background-color:#EEBB2E;
+    ;
     color: white;
     width:100%;
 }
