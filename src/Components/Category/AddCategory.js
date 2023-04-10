@@ -43,7 +43,7 @@ export const AddProduct = () => {
         ProductClass.addProduct(allProducts.current[0])
             .then(res => {
                 setLoader(false)
-                navigate('/products')
+                navigate('/category')
                 console.log(res.data.data)
 
                 setLoader(false)
@@ -89,7 +89,7 @@ export const AddProduct = () => {
                         )
                     })}
                     <Box align='right' px={3} mt={6}>
-                        <Button className="cancel_btn me-3" onClick={() => navigate('/')}>Cancel</Button>
+                        <Button className="cancel_btn me-3" onClick={() => navigate('/category')}>Cancel</Button>
                         <Button type='submit' variant="contained">Save</Button>
                     </Box>
                 </form>

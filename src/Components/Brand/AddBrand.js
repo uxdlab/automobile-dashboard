@@ -36,7 +36,7 @@ export const AddBrand = () => {
             .then(res => {
                 console.log(res)
                 setLoader(false)
-                navigate('/company')
+                navigate('/brand')
             })
             .catch(err => console.log(err))
     }
@@ -72,7 +72,7 @@ export const AddBrand = () => {
                         previousModel={{ state: selectedModel, setState: setSelectedModel }}
                     />
                     <Box align='right' px={3} mt={6}>
-                        <Button className="cancel_btn me-3" onClick={() => navigate('/company')}>Cancel</Button>
+                        <Button className="cancel_btn me-3" onClick={() => navigate('/brand')}>Cancel</Button>
                         <Button type='submit' variant="contained">Save</Button>
                     </Box>
                 </form> : null}
