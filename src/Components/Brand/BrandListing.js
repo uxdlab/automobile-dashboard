@@ -83,9 +83,9 @@ export const BrandListing = () => {
                 <Table className="border">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Sno.</TableCell>
-                            <TableCell>Brand Name</TableCell>
-                            <TableCell>Action</TableCell>
+                            <TableCell><b>Sno.</b></TableCell>
+                            <TableCell><b>Brand Name</b></TableCell>
+                            <TableCell><b>Action</b></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
