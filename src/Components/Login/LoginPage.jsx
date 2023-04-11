@@ -11,9 +11,12 @@ import {
   OutlinedInput,
   InputAdornment,
   Typography,
+  Backdrop,
+  Box,
 } from "@mui/material";
 import axios from "axios";
 import { apis } from "../../auth/api";
+import { Triangle } from "react-loader-spinner";
 
 
 export const LoginPage = () => {
@@ -23,9 +26,11 @@ export const LoginPage = () => {
   const [pass, setPass] = useState("");
   const [match, setMatch] = useState(false)
   const [showPass, setShowPass] = useState(false);
+  const [loader,setLoader]  = useState(false)
   //   const [showAlert, setShowAlert] = useState(false);
 
   function handleSubmit(e) {
+    setLoader(true)
     e.preventDefault()
     let info = {
       email:user,
@@ -36,6 +41,7 @@ export const LoginPage = () => {
   .then((res)=>{
     console.log(res)
     localStorage.setItem("isLoggedIn", "true");
+    setLoader(false)
     navigate('/')
     setMatch(false)
   }).catch((err)=>{
@@ -51,6 +57,24 @@ export const LoginPage = () => {
   }
 
   return (
+
+    <>
+     <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loader}
+            >
+                <Box>
+                    <Triangle
+                        height="80"
+                        width="80"
+                        color="black"
+                        ariaLabel="triangle-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={loader}
+                    />
+                </Box>
+            </Backdrop>
     <section className={style.main_sec}>
       <div className={style.left}>
         <img src="/images/logo.png" alt="eee" className="h-100 w-100" />
@@ -108,6 +132,6 @@ export const LoginPage = () => {
           </form>
         </div>
       </div>
-    </section>
+    </section></>
   );
 };
