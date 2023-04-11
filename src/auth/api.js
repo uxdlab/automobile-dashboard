@@ -34,7 +34,8 @@ export const apis = {
         add: 'item/addItem',
         getAll: 'item/get/All',
         get: 'item/',
-        delete:'item/delete/'
+        delete:'item/delete/',
+        edit:'item/updateItem/'
     }
 
 

@@ -17,3 +17,9 @@ export const getItem = async (id) =>{
 export const deleteItem = async (id) =>{
     return await axios.delete(`${apis.baseUrl}${apis.items.delete}${id}`)
 }
+
+export const editItem = async (id,data) =>{
+    console.log(id)
+    console.log(data)
+    return await axios.put(`${apis.baseUrl}${apis.items.edit}${id}`,data)
+}

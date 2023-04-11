@@ -16,10 +16,7 @@ export default function AddProduct() {
             sparePart_description: '',
             MRP: '',
             ke_partNumber: '',
-            image: {
-                fileName: 'test',
-                fileUrl: 'test'
-            }
+            image: 'test'
         }
     ])
 
