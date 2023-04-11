@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from "react";
 import { Model } from "./Model";
-import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { ModelClass } from "../../services/Model";
 import { Triangle } from "react-loader-spinner";
@@ -42,14 +42,18 @@ export const AddModel = () => {
                     />
                 </Box>
             </Backdrop>
-            <Typography  variant="h4" mx={2} mt={2}>Add Model</Typography>
+            <Typography variant="h4" mx={2} mt={2}>Add Model</Typography>
 
             <form onSubmit={formSubmit}>
                 <Model modelData={modelData} />
-                <Box align='right' px={3} mt={6}>
-                    <Button className="cancel_btn me-3" onClick={() => navigate('/models')}>Cancel</Button>
-                    <Button type='submit' variant="contained">Save</Button>
-                </Box>
+                <Grid container>
+                    <Grid item xl={7} md={9} sm={12} sx={12}>
+                        <Box align='right' px={3} mt={6}>
+                            <Button className="cancel_btn me-3" onClick={() => navigate('/models')}>Cancel</Button>
+                            <Button type='submit' variant="contained">Save</Button>
+                        </Box>
+                    </Grid>
+                </Grid>
             </form>
         </>
     )

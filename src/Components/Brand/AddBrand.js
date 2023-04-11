@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Brand } from "./Brand";
 import { CompanyClass } from "../../services/Company";
@@ -71,10 +71,14 @@ export const AddBrand = () => {
                         allModels={allModels}
                         previousModel={{ state: selectedModel, setState: setSelectedModel }}
                     />
-                    <Box align='right' px={3} mt={6}>
-                        <Button className="cancel_btn me-3" onClick={() => navigate('/brand')}>Cancel</Button>
-                        <Button type='submit' variant="contained">Save</Button>
-                    </Box>
+                    <Grid container>
+                        <Grid item xl={7} md={9} sm={12} sx={12}>
+                            <Box align='right' px={3} mt={6}>
+                                <Button className="cancel_btn me-3" onClick={() => navigate('/brand')}>Cancel</Button>
+                                <Button type='submit' variant="contained">Save</Button>
+                            </Box>
+                        </Grid>
+                    </Grid>
                 </form> : null}
         </>
     )

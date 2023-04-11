@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Triangle } from "react-loader-spinner";
 import Product from './Product';
@@ -10,33 +10,33 @@ export default function AddProduct() {
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false)
     const AllProducts = useRef([
-        { 
-                spare_partname:'',
-                oe_reference_number:'',
-                sparePart_description:'',
-                MRP:'',
-                ke_partNumber:'',
-                image:{
-                  fileName:'test',
-                  fileUrl:'test'
-                }
-      }
+        {
+            spare_partname: '',
+            oe_reference_number: '',
+            sparePart_description: '',
+            MRP: '',
+            ke_partNumber: '',
+            image: {
+                fileName: 'test',
+                fileUrl: 'test'
+            }
+        }
     ])
 
-    const submitForm = (e)=>{
+    const submitForm = (e) => {
         e.preventDefault()
         setLoader(true)
         addItem(AllProducts.current[0])
-       .then((res)=>{
-        console.log(res)
-        setLoader(false)
-        navigate('/product')
-       }).catch((err)=>{
-        console.log(err)
-       })
+            .then((res) => {
+                console.log(res)
+                setLoader(false)
+                navigate('/product')
+            }).catch((err) => {
+                console.log(err)
+            })
     }
-  return (
-    <>
+    return (
+        <>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loader}
@@ -61,21 +61,26 @@ export default function AddProduct() {
                     {AllProducts.current.map((pro, index) => {
                         return (
                             <Product
-                            key={index}
-                            AllProducts = {AllProducts}
-                            index={index}
+                                key={index}
+                                AllProducts={AllProducts}
+                                index={index}
                             />
 
                         )
                     })}
-                    <Box align='right' px={3} mt={6}>
-                        <Button className="cancel_btn me-3" onClick={() => navigate('/category')}>Cancel</Button>
-                        <Button type='submit' variant="contained">Save</Button>
-                    </Box>
+
+                    <Grid container>
+                        <Grid item xl={7} md={9} sm={12} sx={12}>
+                            <Box align='right' px={3} mt={6}>
+                                <Button className="cancel_btn me-3" onClick={() => navigate('/category')}>Cancel</Button>
+                                <Button type='submit' variant="contained">Save</Button>
+                            </Box>
+                        </Grid>
+                    </Grid>
                 </form>
 
-                 : null} 
+                : null}
 
         </>
-  )
+    )
 }

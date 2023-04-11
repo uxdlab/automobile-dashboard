@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
 import { Triangle } from 'react-loader-spinner'
 import { Product } from "./CategoryDesign";
@@ -64,7 +64,7 @@ export const EditProduct = () => {
 
     return (
         <>
-            <Typography  variant="h4" mx={2} mt={2}>Edit Category</Typography>
+            <Typography variant="h4" mx={2} mt={2}>Edit Category</Typography>
 
             {loader ? <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -97,10 +97,14 @@ export const EditProduct = () => {
                                 />
                             )
                         })}
-                        <Box align='right' px={3} mt={6}>
-                            <Button className="cancel_btn me-3" onClick={() => navigate('/products')}>Cancel</Button>
-                            <Button type="submit" variant="contained">Save</Button>
-                        </Box>
+                        <Grid container>
+                            <Grid item xl={7} md={9} sm={12} sx={12}>
+                                <Box align='right' px={3} mt={6}>
+                                    <Button className="cancel_btn me-3" onClick={() => navigate('/products')}>Cancel</Button>
+                                    <Button type="submit" variant="contained">Save</Button>
+                                </Box>
+                            </Grid>
+                        </Grid>
                     </form>
                 </Box>}
 

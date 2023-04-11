@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Brand } from "./Brand";
 import { useNavigate, useParams } from "react-router";
 import { CompanyClass } from "../../services/Company";
-import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import { ModelClass } from "../../services/Model";
 
@@ -91,10 +91,14 @@ export const EditBrand = () => {
                             allModels={allModels}
                             previousModel={{ state: selectedModel, setState: setSelectedModel }}
                         />
-                        <Box align='right' px={3} mt={6}>
-                            <Button className="cancel_btn me-3" onClick={() => navigate('/brand')}>Cancel</Button>
-                            <Button type='submit' variant="contained">Save</Button>
-                        </Box>
+                        <Grid container>
+                            <Grid item xl={7} md={9} sm={12} sx={12}>
+                                <Box align='right' px={3} mt={6}>
+                                    <Button className="cancel_btn me-3" onClick={() => navigate('/brand')}>Cancel</Button>
+                                    <Button type='submit' variant="contained">Save</Button>
+                                </Box>
+                            </Grid>
+                        </Grid>
                     </form>
                 </Box>
                 : null}

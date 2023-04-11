@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Model } from "./Model";
 import { useNavigate, useParams } from "react-router";
-import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import { ModelClass } from "../../services/Model";
 
@@ -63,16 +63,20 @@ export const EditModel = () => {
                 </Box>
             </Backdrop>
 
-            <Typography  variant="h4" mx={2} mt={2}>Edit Model</Typography>
+            <Typography variant="h4" mx={2} mt={2}>Edit Model</Typography>
 
             {!loader ?
                 <form onSubmit={formSubmit}>
 
                     <Model modelData={modelData} />
-                    <Box align='right' px={3} mt={6}>
-                        <Button className="cancel_btn me-3" onClick={() => navigate('/models')}>Cancel</Button>
-                        <Button type='submit' variant="contained">Save</Button>
-                    </Box>
+                    <Grid container>
+                        <Grid item xl={7} md={9} sm={12} sx={12}>
+                            <Box align='right' px={3} mt={6}>
+                                <Button className="cancel_btn me-3" onClick={() => navigate('/models')}>Cancel</Button>
+                                <Button type='submit' variant="contained">Save</Button>
+                            </Box>
+                        </Grid>
+                    </Grid>
                 </form> : null}
         </>
     )

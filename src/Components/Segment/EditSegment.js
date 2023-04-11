@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { Segment } from "./Segment";
 import { useNavigate, useParams } from "react-router";
 import { VehicleClass } from "../../services/Vehicle";
@@ -70,7 +70,7 @@ export const EditSegment = () => {
 
     return (
         <>
-            <Typography  variant="h4" mx={2} mt={2}>Edit Segment</Typography>
+            <Typography variant="h4" mx={2} mt={2}>Edit Segment</Typography>
 
             {loader ? <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -103,11 +103,14 @@ export const EditSegment = () => {
                                 />
                             )
                         })}
-
-                        <Box align='right' px={3} mt={6}>
-                            <Button className="cancel_btn me-3" onClick={() => navigate('/')}>Cancel</Button>
-                            <Button type="submit" variant="contained">Save</Button>
-                        </Box>
+                        <Grid container>
+                            <Grid item xl={7} md={9} sm={12} sx={12}>
+                                <Box align='right' px={3} mt={6}>
+                                    <Button className="cancel_btn me-3" onClick={() => navigate('/')}>Cancel</Button>
+                                    <Button type="submit" variant="contained">Save</Button>
+                                </Box>
+                            </Grid>
+                        </Grid>
                     </form>
                 </Box>}
 

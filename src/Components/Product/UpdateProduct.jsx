@@ -1,35 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { getItem } from '../../services/Item'
-import { Backdrop, Box, Button, Typography } from '@mui/material'
+import { Backdrop, Box, Button, Grid, Typography } from '@mui/material'
 import { Triangle } from 'react-loader-spinner'
 import Product from './Product'
 
 export default function UpdateProduct() {
-    const {id} = useParams()
-    const [loader,setLoader] = useState(true)
+    const { id } = useParams()
+    const [loader, setLoader] = useState(true)
     const navigate = useNavigate()
-    const [productData,setProductData] = useState({})
-    
+    const [productData, setProductData] = useState({})
 
-    const getProductById = ()=>{
+
+    const getProductById = () => {
         getItem(id)
-        .then((res)=>{
-            console.log(res)
-            setProductData(res.data.data)
-            setLoader(false)
-        }).catch((err)=>{
-            console.log(err)
-        })
+            .then((res) => {
+                console.log(res)
+                setProductData(res.data.data)
+                setLoader(false)
+            }).catch((err) => {
+                console.log(err)
+            })
     }
 
-    const formSubmit = 
-    useEffect(()=>{
-     getProductById()
-    },[])
-  return (
-    <>
-        <Backdrop
+    const formSubmit =
+        useEffect(() => {
+            getProductById()
+        }, [])
+    return (
+        <>
+            <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loader}
             >
@@ -50,17 +50,20 @@ export default function UpdateProduct() {
                 <Box>
                     <form onSubmit={formSubmit}>
                         <Product
-                        productData = {productData}
+                            productData={productData}
                         />
-                        
-                        <Box align='right' px={3} mt={6}>
-                            <Button className="cancel_btn me-3" onClick={() => navigate('/product')}>Cancel</Button>
-                            <Button type='submit' variant="contained">Update</Button>
-                        </Box>
+                        <Grid container>
+                            <Grid item xl={7} md={9} sm={12} sx={12}>
+                                <Box align='right' px={3} mt={6}>
+                                    <Button className="cancel_btn me-3" onClick={() => navigate('/product')}>Cancel</Button>
+                                    <Button type='submit' variant="contained">Update</Button>
+                                </Box>
+                            </Grid>
+                        </Grid>
                     </form>
                 </Box>
                 : null}
-    
-    </>
-  )
+
+        </>
+    )
 }

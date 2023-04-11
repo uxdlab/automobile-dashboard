@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Backdrop, Box, Button, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { VehicleClass } from "../../services/Vehicle";
 import { Segment } from "./Segment";
@@ -88,11 +88,14 @@ export const AddSegment = () => {
                         />
                     )
                 })}
-
-                <Box align='right' px={3} mt={6}>
-                    <Button className="cancel_btn me-3" onClick={() => navigate('/')}>Cancel</Button>
-                    <Button type='submit' variant="contained">Save</Button>
-                </Box>
+                <Grid container>
+                    <Grid item xl={7} md={9} sm={12} sx={12}>
+                        <Box align='right' px={3} mt={6}>
+                            <Button className="cancel_btn me-3" onClick={() => navigate('/')}>Cancel</Button>
+                            <Button type='submit' variant="contained">Save</Button>
+                        </Box>
+                    </Grid>
+                </Grid>
             </form>
 
         </>
