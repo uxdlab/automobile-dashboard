@@ -4,13 +4,14 @@ import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { getAllItem } from '../../services/Item';
+import { deleteItem } from '../../services/Item';
 
 export default function ProductListing() {
     const [loader, setLoader] = useState(true)
     let navigate = useNavigate()
     const [allProduct, setAllProduct] = useState([])
     const [deleteModel, setDeleteModel] = useState(false)
-    const [deletedComp, setDeletedComp] = useState({ id: '', index: '' })
+    const [deletedComp, setDeletedComp] = useState('')
     useEffect(() => {
         getAllProduct()
     }, [])
@@ -22,19 +23,18 @@ export default function ProductListing() {
             console.log(err)
         })
     }
-    // function deleteCompany() {
-    //     setDeleteModel(false)
-    //     setLoader(true)
-    //     console.log(deletedComp)
-    //     CompanyClass.deleteCompany(deletedComp.id)
-    //         .then(res => {
-    //             let arr = [...allCompanies]
-    //             arr.splice(deletedComp.index, 1)
-    //             setCompanies(arr)
-    //             setLoader(false)
-    //         })
-    //         .catch(err => console.log(err))
-    // }
+    function deleteProduct() {
+        setDeleteModel(false)
+        setLoader(true)
+        console.log(deletedComp)
+        deleteItem(deletedComp)
+            .then(res => {
+                console.log(res)
+                // setLoader(false)
+                getAllProduct()
+            })
+            .catch(err => console.log(err))
+    }
 
   return (
     <>
@@ -47,7 +47,7 @@ export default function ProductListing() {
                     <Box>Are you sure you want to delete?</Box>
                     <Box align='right'>
                         <Button className='cancel_btn me-3' onClick={() => setDeleteModel(false)}>Cancel</Button>
-                        {/* <Button variant="contained" onClick={deleteCompany}>Delete</Button> */}
+                        <Button variant="contained" onClick={deleteProduct}>Delete</Button>
                     </Box>
                 </Box>
 
@@ -102,7 +102,7 @@ export default function ProductListing() {
                                     {/* <TableCell>{res.sparePart_description}</TableCell> */}
                                     <TableCell>
                                         <Delete onClick={() => {
-                                            // setDeletedComp({ id: res._id, index })
+                                            setDeletedComp(res._id)
                                             setDeleteModel(true)
                                         }} />
                                         <Edit onClick={() => navigate(`/updateProduct/${res._id}`)} />
