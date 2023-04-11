@@ -23,6 +23,7 @@ import UsersListing from "./Components/Users/UsersListing";
 import PaymentListing from "./Components/Payment/PaymentListing";
 import ProductListing from "./Components/Product/ProductListing";
 import AddProduct from "./Components/Product/AddProduct";
+import UpdateProduct from "./Components/Product/UpdateProduct";
 
 export const Router = () => {
     return (
@@ -33,25 +34,40 @@ export const Router = () => {
                 </Route>
 
                 <Route element={<CheckAuth />} >
+
+                    {/* Segment Routes */}
                     <Route exact path='/' element={<SegmentListing />} />
                     <Route path='addSegment' element={<AddSegment />} />
                     <Route exact path='/editSegment/:id' element={<EditSegment />} />
                     <Route exact path='/viewVehicle/:id' element={<ViewVehicles />} />
+
+                    {/* Category Routes  */}
                     <Route exact path='/category' element={<Category />} />
                     <Route exact path='/addCategory' element={<AddCategory />} />
                     <Route exact path='/editProduct/:id' element={<EditProduct />} />
                     <Route exact path='/viewProduct/:id' element={<ViewProduct />} />
+
+                    {/* Brand Routes */}
                     <Route exact path='/brand' element={<BrandListing />} />
                     <Route exact path='/addBrand' element={<AddBrand />} />
                     <Route exact path='/editBrand/:id' element={<EditBrand />} />
+
+                    {/* Model Routes */}
                     <Route exact path='/editModel/:id' element={<EditModel />} />
                     <Route exact path='/model/:id' element={<Model />} />
                     <Route exact path='/models' element={<ModelListing />} />
                     <Route exact path='/addModel' element={<AddModel />} />
+
+                    {/* Users Routes */}
                     <Route exact path='/users' element={<UsersListing />} />
+
+                    {/* Orders Routes  */}
                     <Route exact path='/orders' element={<PaymentListing />} />
+
+                    {/* product Routes */}
                     <Route exact path='/product' element={<ProductListing />} />
                     <Route exact path='/addProduct' element={<AddProduct />} />
+                    <Route exact path='/updateProduct/:id' element={<UpdateProduct />} />
                     
                     <Route path='*' element={<WrongPath />} />
                 </Route>

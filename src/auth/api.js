@@ -32,7 +32,8 @@ export const apis = {
     },
     items: {
         add: 'item/addItem',
-        get: 'item/get/All'
+        getAll: 'item/get/All',
+        get: 'item/'
     }
 
 

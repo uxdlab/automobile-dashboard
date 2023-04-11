@@ -12,10 +12,10 @@ export default function AddProduct() {
     const AllProducts = useRef([
         { 
                 spare_partname:'',
-                oe_reference_number:'5454545',
+                oe_reference_number:'',
                 sparePart_description:'',
                 MRP:'',
-                ke_partNumber:'gfgy',
+                ke_partNumber:'',
                 image:{
                   fileName:'test',
                   fileUrl:'test'
@@ -63,7 +63,6 @@ export default function AddProduct() {
                             <Product
                             key={index}
                             AllProducts = {AllProducts}
-                            ProductData = {pro}
                             index={index}
                             />
 

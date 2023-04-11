@@ -3,7 +3,7 @@ import { Backdrop, Box, Button, Dialog, Table, TableBody, TableCell, TableHead, 
 import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
-import { getItem } from '../../services/Item';
+import { getAllItem } from '../../services/Item';
 
 export default function ProductListing() {
     const [loader, setLoader] = useState(true)
@@ -15,7 +15,7 @@ export default function ProductListing() {
         getAllProduct()
     }, [])
     function getAllProduct() {
-        getItem().then((res)=>{
+        getAllItem().then((res)=>{
             setLoader(false)
             setAllProduct(res.data.data)
         }).catch((err)=>{
@@ -83,6 +83,8 @@ export default function ProductListing() {
                         <TableRow>
                             <TableCell><b>Sno.</b></TableCell>
                             <TableCell><b>Product Name</b></TableCell>
+                            <TableCell><b>Product OE Reference Number</b></TableCell>
+                            <TableCell><b>Product KE Part Number</b></TableCell>
                             <TableCell><b>Product MRP</b></TableCell>
                             {/* <TableCell><b>Product Description</b></TableCell> */}
                             <TableCell><b>Action</b></TableCell>
@@ -94,6 +96,8 @@ export default function ProductListing() {
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
                                     <TableCell>{res.spare_partname}</TableCell>
+                                    <TableCell>{res.oe_reference_number}</TableCell>
+                                    <TableCell>{res.ke_partNumber}</TableCell>
                                     <TableCell>{res.MRP}</TableCell>
                                     {/* <TableCell>{res.sparePart_description}</TableCell> */}
                                     <TableCell>
@@ -101,7 +105,7 @@ export default function ProductListing() {
                                             // setDeletedComp({ id: res._id, index })
                                             setDeleteModel(true)
                                         }} />
-                                        <Edit onClick={() => navigate(`/editbrand/${res._id}`)} />
+                                        <Edit onClick={() => navigate(`/updateProduct/${res._id}`)} />
                                         {/* <RemoveRedEye sx={{cursor:'pointer'}}
                                         onClick={()=>{
                                             navigate('/viewBrand')
