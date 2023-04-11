@@ -26,9 +26,9 @@ export const Sidebar = ({ children }) => {
             {localStorage.getItem("isLoggedIn") ?
                 <div className="d-flex" style={{ height: '100%', width: '100%' }}>
                     <div className="sidebar_main_con" style={{ width: toggleSidebar ? '270px' : '0px' }}>
-                        <div className="fs-4 align-center ps-3">
-                            {/* <img src="images/favicon.png" alt=''/> */}
-                            Kapoor Enterprises
+                        <div className="align-center px-2">
+                            <img src="images/navbar_logo.png" className="w-100" alt=''/>
+                            {/* Kapoor Enterprises */}
                         </div>
                         <div className="sidebar_item_con px-3">
                             {sidebarData.map((res, index) => {

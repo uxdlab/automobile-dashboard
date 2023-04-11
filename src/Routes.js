@@ -5,7 +5,7 @@ import { SegmentListing } from "./Components/Segment/SegmentListing";
 import { WrongPath } from "./WrongPath";
 import { EditSegment } from "./Components/Segment/EditSegment";
 import { Category} from "./Components/Category/Category";
-import { AddProduct } from "./Components/Category/AddCategory";
+import { AddCategory } from "./Components/Category/AddCategory";
 import { EditProduct } from "./Components/Category/EditCategory";
 import { ViewVehicles } from "./Components/Segment/ViewVehicle";
 import { ViewProduct } from "./Components/Category/ViewCategory";
@@ -21,6 +21,8 @@ import { LoginKeeper } from "./auth/LoginKeeper";
 import { Model } from "./Components/Model/Model";
 import UsersListing from "./Components/Users/UsersListing";
 import PaymentListing from "./Components/Payment/PaymentListing";
+import ProductListing from "./Components/Product/ProductListing";
+import AddProduct from "./Components/Product/AddProduct";
 
 export const Router = () => {
     return (
@@ -36,7 +38,7 @@ export const Router = () => {
                     <Route exact path='/editSegment/:id' element={<EditSegment />} />
                     <Route exact path='/viewVehicle/:id' element={<ViewVehicles />} />
                     <Route exact path='/category' element={<Category />} />
-                    <Route exact path='/addProduct' element={<AddProduct />} />
+                    <Route exact path='/addCategory' element={<AddCategory />} />
                     <Route exact path='/editProduct/:id' element={<EditProduct />} />
                     <Route exact path='/viewProduct/:id' element={<ViewProduct />} />
                     <Route exact path='/brand' element={<BrandListing />} />
@@ -48,6 +50,9 @@ export const Router = () => {
                     <Route exact path='/addModel' element={<AddModel />} />
                     <Route exact path='/users' element={<UsersListing />} />
                     <Route exact path='/orders' element={<PaymentListing />} />
+                    <Route exact path='/product' element={<ProductListing />} />
+                    <Route exact path='/addProduct' element={<AddProduct />} />
+                    
                     <Route path='*' element={<WrongPath />} />
                 </Route>
             </Routes>

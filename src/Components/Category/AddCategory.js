@@ -6,7 +6,7 @@ import { Product } from "./CategoryDesign";
 import { ProductClass } from "../../services/Product";
 import { CompanyClass } from "../../services/Company";
 
-export const AddProduct = () => {
+export const AddCategory = () => {
 
     let navigate = useNavigate()
     const [loader, setLoader] = useState(true)

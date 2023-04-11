@@ -1,5 +1,3 @@
-
-
 export const apis = {
     baseUrl: "https://automobile-f7cf.onrender.com/",
 
@@ -32,6 +30,10 @@ export const apis = {
         delete: 'model/deleteModel',
         update: 'model/updateModel',
     },
+    items: {
+        add: 'item/addItem',
+        get: 'item/get/All'
+    }
 
 
 

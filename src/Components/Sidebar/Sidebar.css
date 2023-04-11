@@ -1,20 +1,19 @@
 .sidebar_main_con {
     width: 230px;
     transition: all 0.3s ease-out;
-    background-color: #4538CA;
-    color: white;
+    background-color: #534ba8;
+color: #fdfdfd;
 }
 
 .top_bar {
     height: 8vh;
-    background-color:#EEBB2E;
-    ;
-    color: white;
+    background-color:#534ba8;
+    color: #fdfdfd;
     width:100%;
 }
 
 .sidebar_item_con {
-    margin-top: 30px;
+    margin-top: 15px;
 
 }
 

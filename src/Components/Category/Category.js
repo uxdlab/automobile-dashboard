@@ -82,7 +82,7 @@ export const Category = () => {
             <div className="mt-2 fs-2 mx-3">Category</div>
 
             <Box align='right' className='px-3'>
-                <Link style={{ textDecoration: 'none' }} to='/addProduct'>
+                <Link style={{ textDecoration: 'none' }} to='/addCategory'>
                     <Button className="btn_primary" variant="contained">Add Category</Button>
                 </Link>
             </Box>

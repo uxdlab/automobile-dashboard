@@ -5,15 +5,15 @@ export const Product = ({ productData, index, allProducts, allCompany, previousC
 
     const [addedCompany, setAddedCompany] = useState(allCompany.filter(e => previousCompany.state.includes(e._id)))
 
-    function companyChange(event) {
-        const {
-            target: { value },
-        } = event;
+    // function companyChange(event) {
+    //     const {
+    //         target: { value },
+    //     } = event;
 
-        setAddedCompany(value)
-        previousCompany.setState(value.map(e => e._id))
-        allProducts.current[index].product_company = value.map(e => e._id)
-    }
+    //     setAddedCompany(value)
+    //     previousCompany.setState(value.map(e => e._id))
+    //     allProducts.current[index].product_company = value.map(e => e._id)
+    // }
 
 
     return (
