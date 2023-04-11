@@ -11,7 +11,7 @@ export default function PaymentListing() {
         </div>
             <div class="col mt-2 d-flex justify-content-between">
                 <h1 class="d-inline-block">Orders</h1>
-                <input type="search" placeholder='Search here' class="search_box mt-1 border"></input>
+                {/* <input type="search" placeholder='Search here' class="search_box mt-1 border"></input> */}
             </div>
     </div>
     <div class="container-fluid">
