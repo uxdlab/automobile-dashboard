@@ -79,7 +79,7 @@ export const Category = () => {
             </Dialog>
 
 
-            <div className="mt-2 fs-2 mx-3">Category</div>
+            <h1 className="mt-2 fs-2 mx-3">Category</h1>
 
             <Box align='right' className='px-3'>
                 <Link style={{ textDecoration: 'none' }} to='/addCategory'>

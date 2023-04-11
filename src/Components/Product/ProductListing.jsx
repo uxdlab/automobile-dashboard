@@ -70,14 +70,14 @@ export default function ProductListing() {
                 </Box>
             </Backdrop>
 
-            <div className="mt-2 fs-2 mx-3">Products</div>
+            <h1 className="mt-2 fs-2 mx-3">Products</h1>
 
-            <Box align='right' className='p-3'>
+            <Box align='right' className='px-3 pb-3'>
                 <Link style={{ textDecoration: 'none' }} to='/addProduct'>
                     <Button className="btn_primary" variant="contained">Add Product</Button>
                 </Link>
             </Box>
-            <div className="p-3">
+            <div className="px-3">
                 <Table className="border">
                     <TableHead>
                         <TableRow>

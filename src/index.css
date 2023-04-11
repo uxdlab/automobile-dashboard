@@ -30,6 +30,7 @@ Button {
 
 .btn_primary {
   text-decoration: none !important;
+  background:#4539ca!important;
 }
 
 .btn_primary:hover {

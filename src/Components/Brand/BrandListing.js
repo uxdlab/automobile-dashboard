@@ -72,14 +72,14 @@ export const BrandListing = () => {
                 </Box>
             </Backdrop>
 
-            <div className="mt-2 fs-2 mx-3">Brands</div>
+            <h1 className="mt-2 fs-2 mx-3">Brands</h1>
 
-            <Box align='right' className='p-3'>
+            <Box align='right' className='px-3 pb-3'>
                 <Link style={{ textDecoration: 'none' }} to='/addBrand'>
-                    <Button className="btn_primary" variant="contained">Add Brand</Button>
+                    <Button className="btn_primary"  variant="contained">Add Brand</Button>
                 </Link>
             </Box>
-            <div className="p-3">
+            <div className="px-3">
                 <Table className="border">
                     <TableHead>
                         <TableRow>

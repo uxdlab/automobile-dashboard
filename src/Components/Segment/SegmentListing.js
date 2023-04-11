@@ -98,11 +98,11 @@ export const SegmentListing = () => {
                 </Dialog>
 
 
-                <div className="mt-2 fs-2 ">Segment</div>
+                <h1 className="mt-2 fs-2 ">Segment</h1>
 
-                <Box align='right' className='pb-3 py-3'>
+                <Box align='right' className='pb-3'>
                     <Link style={{ textDecoration: 'none' }} to='/addSegment'>
-                        <Button className="btn_primary" style={{background:'#4539ca'}} variant="contained">Add Segment</Button>
+                        <Button className="btn_primary"  variant="contained">Add Segment</Button>
                     </Link>
                 </Box>
 
