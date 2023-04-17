@@ -47,6 +47,7 @@ export const LoginPage = () => {
   }).catch((err)=>{
     console.log(err)
     setMatch(true)
+    setLoader(false)
   })
     // if (user === 'admin@gmail.com' && pass === 'admin@123') {
     //   localStorage.setItem("isLoggedIn", "true");

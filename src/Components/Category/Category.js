@@ -17,7 +17,7 @@ export const Category = () => {
     const [id, setId] = useState('')
     const allCategory = useRef([
         {
-            product_name: ''
+            category_name: ''
         }
     ])
     let navigate = useNavigate()
@@ -146,7 +146,7 @@ export const Category = () => {
                         <div className="container-fluid p-0 m-0">
                                 <div className="col-md-5"><small><b>Category Name:</b></small></div>
                                 <div className="col-md-7">
-                                <input type='text' onChange={(e) => allCategory.current[0].product_name = e.target.value} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
+                                <input type='text' onChange={(e) => allCategory.current[0].category_name = e.target.value} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
                             </div>
                        
                                 {/* <div className="col-md-5 "><small><b>Segment Description:</b></small></div>
@@ -179,7 +179,7 @@ export const Category = () => {
                         <div className="container-fluid p-0 m-0">
                                 <div className="col-md-5"><small><b>Category Name:</b></small></div>
                                 <div className="col-md-7">
-                                <input type='text' onChange={(e) => allCategory.current[0].product_name = e.target.value} defaultValue={allCategory.current[0].product_name} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
+                                <input type='text' onChange={(e) => allCategory.current[0].category_name = e.target.value} defaultValue={allCategory.current[0].category_name} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
                             </div>
                        
                                 {/* <div className="col-md-5 "><small><b>Segment Description:</b></small></div>
@@ -223,7 +223,7 @@ export const Category = () => {
                                 return (
                                     <TableRow key={index}>
                                         <TableCell>{index + 1}</TableCell>
-                                        <TableCell>{res.product_name}</TableCell>
+                                        <TableCell>{res.category_name}</TableCell>
                                         {/* <TableCell>{res.product_icon}</TableCell> */}
                                         <TableCell>
                                             <Delete sx={{ cursor: 'pointer' }} onClick={() => {

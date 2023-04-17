@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Backdrop, Box, Button, Dialog, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
 import { VehicleClass } from "../../services/Vehicle";
-import { Grid, Triangle } from 'react-loader-spinner'
+import { Triangle } from 'react-loader-spinner'
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 
 
@@ -15,15 +14,15 @@ export const SegmentListing = () => {
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
     const [id, setId] = useState('')
+    console.log(id)
     const segmentData = useRef(
         {
             vehicle_name: '',
             vehicle_description: '',
-            vehicle_icon: '',
+            vehicle_icon: ''
         }
     )
     console.log(segmentData.current)
-    let navigate = useNavigate()
 
     useEffect(() => {
         getAllVehicles()
@@ -94,7 +93,7 @@ export const SegmentListing = () => {
         VehicleClass.getVehicle(idd)
             .then((res) => {
                 console.log(res)
-                segmentData.current = res.data.data
+                segmentData.current = res.data.data[0]
                 setLoader(false)
                 setOpen1(true)
             }).catch((err) => {

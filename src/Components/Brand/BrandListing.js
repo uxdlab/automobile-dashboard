@@ -16,7 +16,7 @@ export const BrandListing = () => {
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
     const [id, setId] = useState('')
-    let brandData = useRef({ company_name: '' })
+    let brandData = useRef({ brand_name: '' })
     useEffect(() => {
         getAllCompany()
     }, [])
@@ -139,7 +139,7 @@ export const BrandListing = () => {
                         <div className="container-fluid p-0 m-0">
                                 <div className="col-md-5"><small><b>Brand Name:</b></small></div>
                                 <div className="col-md-7">
-                                <input type='text' onChange={(e) => brandData.current.company_name = e.target.value} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
+                                <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                             </div>
                        
                                 {/* <div className="col-md-5 "><small><b>Segment Description:</b></small></div>
@@ -172,7 +172,7 @@ export const BrandListing = () => {
                         <div className="container-fluid p-0 m-0">
                                 <div className="col-md-5"><small><b>Brand Name:</b></small></div>
                                 <div className="col-md-7">
-                                <input type='text' onChange={(e) => brandData.current.company_name = e.target.value} defaultValue={brandData.current.company_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
+                                <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} defaultValue={brandData.current.brand_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                             </div>
                        
                                 {/* <div className="col-md-5 "><small><b>Segment Description:</b></small></div>
@@ -215,7 +215,7 @@ export const BrandListing = () => {
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{res.company_name}</TableCell>
+                                    <TableCell>{res.brand_name}</TableCell>
                                     <TableCell>
                                         <Delete onClick={() => {
                                             setDeletedComp({ id: res._id, index })

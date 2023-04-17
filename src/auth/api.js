@@ -9,18 +9,18 @@ export const apis = {
         delete: 'vehicle/deleteVehicle'
     },
     product: {
-        add: "product/addProduct",
-        getAll: 'product/getAllProduct',
-        get: 'product/getProduct',
-        delete: 'product/deleteProduct',
-        update: 'product/editProduct',
+        add: "category/addCategory",
+        getAll: 'category/getAllCategory',
+        get: 'category',
+        delete: 'category/deleteCategory',
+        update: 'category/updateCategory',
     },
     company: {
-        add: "company/addProductCompany",
-        getAll: 'company/getAllProductCompany',
-        get: 'company',
-        delete: 'company/deleteProductCompay',
-        update: 'company/updateProductCompany',
+        add: "brand/addBrand",
+        getAll: 'brand/getAllBrand',
+        get: 'brand',
+        delete: 'brand/deleteBrand',
+        update: 'brand/updateBrand',
     },
 
     model: {
