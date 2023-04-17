@@ -123,8 +123,7 @@ export const LoginPage = () => {
             </Typography> */}
             <Button
               variant="contained"
-              color="primary"
-              sx={{ background: "black", color: "white" }}
+              sx={{ background: "#534ba8", color: "white" }}
               type="submit"
               fullWidth
             >
