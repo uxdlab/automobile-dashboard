@@ -24,6 +24,7 @@ import PaymentListing from "./Components/Payment/PaymentListing";
 import ProductListing from "./Components/Product/ProductListing";
 import AddProduct from "./Components/Product/AddProduct";
 import UpdateProduct from "./Components/Product/UpdateProduct";
+import { ManufactureListing } from "./Components/Manufacture/ManufactureListing";
 
 export const Router = () => {
     return (
@@ -63,6 +64,9 @@ export const Router = () => {
 
                     {/* Orders Routes  */}
                     <Route exact path='/orders' element={<PaymentListing />} />
+
+                    {/* Manufecture Routes  */}
+                    <Route exact path='/manufacture' element={<ManufactureListing />} />
 
                     {/* product Routes */}
                     <Route exact path='/product' element={<ProductListing />} />

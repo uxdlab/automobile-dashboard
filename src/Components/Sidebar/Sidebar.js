@@ -17,6 +17,7 @@ export const Sidebar = ({ children }) => {
         { text: 'Brand', path: '/brand' },
         { text: 'Model', path: '/models' },
         { text: 'Category', path: '/category' },
+        { text: 'Manufacture', path: '/manufacture' },
     ]
 
     let navigate = useNavigate()
@@ -33,7 +34,7 @@ export const Sidebar = ({ children }) => {
                         <div className="sidebar_item_con px-3">
                         <Box onClick={() => navigate('/users')} className="fs-5" sx={{ cursor: 'pointer' }}>Users  <hr className="mb-3 mt-1" /></Box>
                         <Box onClick={() => setToggle(!toggle) } className="fs-5" sx={{ cursor: 'pointer' }}><span className="d-flex justify-content-between"><span>Product</span> <KeyboardArrowDownIcon sx={{transition:'0.3s',transform:toggle?'rotate(180deg)':'rotate(360deg)'}}/></span> <hr className="mb-3 mt-1" /></Box>
-                           <Box sx={{padding:'0 0 0 20px',transition:'0.3s',overflow:'hidden',height: toggle ? '260px': '0px'}}>
+                           <Box sx={{padding:'0 0 0 20px',transition:'0.3s',overflow:'hidden',height: toggle ? '310px': '0px'}}>
                            {sidebarData.map((res, index) => {
                                 return (
 
