@@ -161,8 +161,10 @@ export const ModelListing = () => {
                     <Box p={3}>
                         <Typography variant="h5" className="text-center mb-2">Add Model</Typography>
                         <div className="container-fluid p-0 m-0">
-                                <div className="col-md-5"><small><b>Model Name:</b></small></div>
-                                <div className="col-md-7">
+                               <div className="row">
+                                <div className="col-md-6">
+                                <div className="col-md-12"><small><b>Model Name:</b></small></div>
+                                <div className="col-md-12">
                                 <input type='text' onChange={(e) => modelData.current.model_name = e.target.value} placeholder="Enter Model Name" className="form-control w-100 mb-2" />
                             </div>
                        
@@ -175,6 +177,42 @@ export const ModelListing = () => {
                                     placeholder='Enter Description'
 
                                 /></div> */}
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
+                                    <div className="col-md-12 d-flex justify-content-center py-2">
+                                        <div className="border w-50 px-2">
+                                            <img className="w-100 h" src='https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png' alt='' />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12 text-center">
+                                        <button
+                                            className="pt-1"
+                                            variant="other"
+                                            style={{
+                                                background: "#534ba8",
+                                                color: "#ffffff",
+                                                border: "1px solid #534ba8",
+                                                borderRadius: '5px'
+                                            }}
+                                        >
+                                            <input
+                                                //   onChange={(e) => inpChange(e, index)}
+                                                type="file"
+                                                id={`actual-btn`}
+                                                hidden
+                                            />
+                                            <label
+                                                htmlFor={`actual-btn`}
+                                                className="w-100 text-center "
+                                                role="button"
+                                            >
+                                                Upload Icon
+                                            </label>
+                                        </button>
+                                    </div>
+                                </div>
+                               </div>
                         </div>
 
                         <Box align='right' className='mt-3'>

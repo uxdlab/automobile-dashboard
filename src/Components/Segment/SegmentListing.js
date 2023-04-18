@@ -3,16 +3,21 @@ import { Backdrop, Box, Button, Dialog, Paper, Switch, Table, TableBody, TableCe
 import { VehicleClass } from "../../services/Vehicle";
 import { Triangle } from 'react-loader-spinner'
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
+import { storage } from "../../auth/Firebase";
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
 
 export const SegmentListing = () => {
 
     const [allVehicles, setAllVehicles] = useState([])
     const [loader, setLoader] = useState(true)
-    const [deleteVeh, setDeletedVeh] = useState({ id: '', index: '' })
+    const [deleteVeh, setDeletedVeh] = useState({ id: '', index: '', icon: '' })
     const [deleteModel, setDeleteModel] = useState(false)
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
+
+    const [img, setImg] = useState({})
+    const [imgURL, setImgURL] = useState('')
     const [id, setId] = useState('')
     console.log(id)
     const segmentData = useRef(
@@ -41,34 +46,72 @@ export const SegmentListing = () => {
     }
 
     async function deleteVehicle() {
-        console.log(deleteVeh)
+        console.log(deleteVeh.icon)
         setDeleteModel(false)
         setLoader(true)
-        VehicleClass.deleteVehicle(deleteVeh.id)
-            .then(res => {
-                console.log(res)
-                let arr = [...allVehicles]
-                arr.splice(deleteVeh.index, 1)
-                setAllVehicles(arr)
-                setLoader(false)
-            })
-            .catch(err => console.log(err))
+        if (deleteVeh.icon !== '') {
+
+            const storage = getStorage();
+            const desertRef = ref(storage, deleteVeh.icon);
+            deleteObject(desertRef)
+                .then(() => {
+                    console.log("image deleted");
+                    VehicleClass.deleteVehicle(deleteVeh.id)
+                        .then(res => {
+                            console.log(res)
+                            let arr = [...allVehicles]
+                            arr.splice(deleteVeh.index, 1)
+                            setAllVehicles(arr)
+                            setLoader(false)
+                        })
+                        .catch(err => console.log(err))
+                })
+                .catch((error) => { });
+
+        }else{
+            VehicleClass.deleteVehicle(deleteVeh.id)
+                        .then(res => {
+                            console.log(res)
+                            let arr = [...allVehicles]
+                            arr.splice(deleteVeh.index, 1)
+                            setAllVehicles(arr)
+                            setLoader(false)
+                        })
+                        .catch(err => console.log(err))
+        }
+
     }
 
     async function addSegment(e) {
         e.preventDefault()
-        console.log(segmentData.current)
         setLoader(true)
         setOpen(false)
-        VehicleClass.addVehicle(segmentData.current)
-            .then((res) => {
-                console.log(res)
-                setLoader(false)
-                getAllVehicles()
-            }).catch((err) => {
-                console.log(err)
-                getAllVehicles()
+        const storageRef = ref(storage, img.name);
+        const uploadTask = uploadBytesResumable(storageRef, img);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => { },
+            (err) => console.log(err),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    console.log(url)
+                    segmentData.current.vehicle_icon = url
+                    console.log(segmentData.current)
+
+                    VehicleClass.addVehicle(segmentData.current)
+                        .then((res) => {
+                            console.log(res)
+                            setLoader(false)
+                            getAllVehicles()
+                        }).catch((err) => {
+                            console.log(err)
+                            getAllVehicles()
+                        })
+                    setImg({})
+                });
             })
+
+
 
     }
 
@@ -76,18 +119,58 @@ export const SegmentListing = () => {
         e.preventDefault()
         setLoader(true)
         setOpen1(false)
-        console.log(id)
-        VehicleClass.editVehicle(id, segmentData.current)
-            .then((res) => {
-                console.log(res)
-                setLoader(false)
-                getAllVehicles()
-            }).catch((err) => {
-                console.log(err)
-            })
+        console.log(img)
+        if (img.name !== undefined) {
+            // if (segmentData.current.vehicle_icon !== undefined) {
+
+                const storage = getStorage();
+                const desertRef = ref(storage, imgURL);
+                deleteObject(desertRef)
+                    .then(() => {
+                        console.log("image deleted");
+                        const storageRef = ref(storage, img.name);
+                        const uploadTask = uploadBytesResumable(storageRef, img);
+                        uploadTask.on(
+                            "state_changed",
+                            (snapshot) => { },
+                            (err) => console.log(err),
+                            () => {
+                                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                                    console.log(url)
+                                    segmentData.current.vehicle_icon = url
+                                    VehicleClass.editVehicle(id, segmentData.current)
+                                        .then((res) => {
+                                            console.log(res)
+                                            setLoader(false)
+                                            getAllVehicles()
+                                            setImg({})
+                                        }).catch((err) => {
+                                            console.log(err)
+                                        })
+                                });
+                            })
+
+                    })
+                    .catch((error) => { });
+
+            // }
+
+        } else {
+
+            VehicleClass.editVehicle(id, segmentData.current)
+                .then((res) => {
+                    console.log(res)
+                    setLoader(false)
+                    getAllVehicles()
+                }).catch((err) => {
+                    console.log(err)
+                })
+        }
+
     }
 
-    async function getSegmentById(idd) {
+    async function getSegmentById(idd, icon) {
+        setImgURL(icon)
         setLoader(true)
         setId(idd)
         VehicleClass.getVehicle(idd)
@@ -98,6 +181,36 @@ export const SegmentListing = () => {
                 setOpen1(true)
             }).catch((err) => {
                 console.log(err)
+            })
+    }
+
+    const UploadImage = (e) => {
+        console.log(e.target.files[0])
+        let image = e.target.files[0]
+
+        if (segmentData.current.vehicle_icon !== undefined) {
+
+            const storage = getStorage();
+            const desertRef = ref(storage, segmentData.current.vehicle_icon);
+            deleteObject(desertRef)
+                .then(() => {
+                    console.log("image deleted");
+                })
+                .catch((error) => { });
+
+        }
+
+        const storageRef = ref(storage, image.name);
+        const uploadTask = uploadBytesResumable(storageRef, image);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => { },
+            (err) => console.log(err),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    console.log(url)
+                    segmentData.current.vehicle_icon = url
+                });
             })
     }
 
@@ -157,28 +270,66 @@ export const SegmentListing = () => {
 
                     fullWidth={true}
                 >
-                    <Box p={3}>
+                    <Box p={3} sx={{ overflowX: 'hidden' }}>
                         <Typography variant="h5" className="text-center mb-2">Add Segment</Typography>
                         <div className="container-fluid p-0 m-0">
-                                <div className="col-md-5"><small><b>Segment Name:</b></small></div>
-                                <div className="col-md-7">
-                                <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
-                            </div>
-                       
-                                <div className="col-md-5 "><small><b>Segment Description:</b></small></div>
-                                <div className="col-md-7"><textarea
-                                  
-                                    className="w-100 form-control"
-                                    onChange={(e) => segmentData.current.vehicle_description = e.target.value}
-                                    rows='3'
-                                    placeholder='Enter Description'
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="col-md-12"><small><b>Segment Name:</b></small></div>
+                                    <div className="col-md-12">
+                                        <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
+                                    </div>
 
-                                /></div>
+                                    <div className="col-md-12"><small><b>Segment Description:</b></small></div>
+                                    <div className="col-md-12"><textarea
+
+                                        className="w-100 form-control"
+                                        onChange={(e) => segmentData.current.vehicle_description = e.target.value}
+                                        rows='3'
+                                        placeholder='Enter Description'
+
+                                    /></div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
+                                    <div className="col-md-12 d-flex justify-content-center py-2">
+                                        <div className="border w-50 px-2">
+                                            <img className="w-100 h" src='https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png' alt='' />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12 text-center">
+                                        <button
+                                            className="pt-1"
+                                            variant="other"
+                                            style={{
+                                                background: "#534ba8",
+                                                color: "#ffffff",
+                                                border: "1px solid #534ba8",
+                                                borderRadius: '5px'
+                                            }}
+                                        >
+                                            <input
+                                                onChange={(e) => setImg(e.target.files[0])}
+                                                type="file"
+                                                id={`actual-btn`}
+                                                hidden
+                                            />
+                                            <label
+                                                htmlFor={`actual-btn`}
+                                                className="w-100 text-center "
+                                                role="button"
+                                            >
+                                                Upload Icon
+                                            </label>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <Box align='right' className='mt-3'>
                             <Button className='cancel_btn me-3' onClick={() => setOpen(false)}>Cancel</Button>
-                            <Button variant="contained" onClick={addSegment}>Add</Button>
+                            <Button variant="contained" sx={{ background: '#534ba8' }} onClick={addSegment}>Add</Button>
                         </Box>
                     </Box>
 
@@ -187,32 +338,70 @@ export const SegmentListing = () => {
                 {/* Edit Segment Dialog Box */}
                 <Dialog
                     open={open1}
-                    maxWidth={'xs'}
+                    maxWidth={'sm'}
 
                     fullWidth={true}
                 >
                     <Box p={3}>
                         <Typography variant="h5" className="text-center mb-2">Edit Segment</Typography>
                         <div className="container-fluid p-0 m-0">
-                                <div className="col-md-5"><small><b>Segment Name:</b></small></div>
-                                <div className="col-md-7">
-                                <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
-                            </div>
-                       
-                                <div className="col-md-5 "><small><b>Segment Description:</b></small></div>
-                                <div className="col-md-7"><textarea
-                                    defaultValue={segmentData.current.vehicle_description}
-                                    className="w-100 form-control"
-                                    onChange={(e) => segmentData.current.vehicle_description = e.target.value}
-                                    rows='3'
-                                    placeholder='Enter Description'
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="col-md-12"><small><b>Segment Name:</b></small></div>
+                                    <div className="col-md-12">
+                                        <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
+                                    </div>
 
-                                /></div>
+                                    <div className="col-md-12"><small><b>Segment Description:</b></small></div>
+                                    <div className="col-md-12"><textarea
+                                        defaultValue={segmentData.current.vehicle_description}
+                                        className="w-100 form-control"
+                                        onChange={(e) => segmentData.current.vehicle_description = e.target.value}
+                                        rows='3'
+                                        placeholder='Enter Description'
+
+                                    /></div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
+                                    <div className="col-md-12 d-flex justify-content-center py-2">
+                                        <div className="border w-50 px-2">
+                                            <img className="w-100" src={segmentData.current.vehicle_icon ? segmentData.current.vehicle_icon : 'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12 text-center">
+                                        <button
+                                            className="pt-1"
+                                            variant="other"
+                                            style={{
+                                                background: "#534ba8",
+                                                color: "#ffffff",
+                                                border: "1px solid #534ba8",
+                                                borderRadius: '5px'
+                                            }}
+                                        >
+                                            <input
+                                                onChange={(e) => setImg(e.target.files[0])}
+                                                type="file"
+                                                id={`actual-btn`}
+                                                hidden
+                                            />
+                                            <label
+                                                htmlFor={`actual-btn`}
+                                                className="w-100 text-center "
+                                                role="button"
+                                            >
+                                                Upload Icon
+                                            </label>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <Box align='right' className='mt-3'>
                             <Button className='cancel_btn me-3' onClick={() => setOpen1(false)}>Cancel</Button>
-                            <Button variant="contained" onClick={updateSegment}>Update</Button>
-                        </Box> 
+                            <Button variant="contained" sx={{ background: '#534ba8' }} onClick={updateSegment}>Update</Button>
+                        </Box>
                     </Box>
                 </Dialog>
 
@@ -246,10 +435,10 @@ export const SegmentListing = () => {
                                             {/* <TableCell>{res.vehicle_icon}</TableCell> */}
                                             <TableCell>
                                                 <Delete sx={{ cursor: 'pointer' }} onClick={() => {
-                                                    setDeletedVeh({ id: res._id, index })
+                                                    setDeletedVeh({ id: res._id, index, icon: res.vehicle_icon })
                                                     setDeleteModel(true)
                                                 }} />
-                                                <Edit sx={{ cursor: 'pointer' }} onClick={() => {getSegmentById(res._id)}} />
+                                                <Edit sx={{ cursor: 'pointer' }} onClick={() => { getSegmentById(res._id, res.vehicle_icon) }} />
                                                 {/* <RemoveRedEye sx={{ cursor: 'pointer' }} onClick={() => navigate(`/viewVehicle/${res._id}`)} /> */}
                                             </TableCell>
                                         </TableRow>

@@ -137,25 +137,54 @@ export const BrandListing = () => {
                     <Box p={3}>
                         <Typography variant="h5" className="text-center mb-2">Add Brand</Typography>
                         <div className="container-fluid p-0 m-0">
-                                <div className="col-md-5"><small><b>Brand Name:</b></small></div>
-                                <div className="col-md-7">
+                               <div className="row">
+                                <div className="col-md-6">
+                                <div className="col-md-12"><small><b>Brand Name:</b></small></div>
+                                <div className="col-md-12">
                                 <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                             </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
+                                    <div className="col-md-12 d-flex justify-content-center py-2">
+                                        <div className="border w-50 px-2">
+                                            <img className="w-100 h" src='https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png' alt='' />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12 text-center">
+                                        <button
+                                            className="pt-1"
+                                            variant="other"
+                                            style={{
+                                                background: "#534ba8",
+                                                color: "#ffffff",
+                                                border: "1px solid #534ba8",
+                                                borderRadius: '5px'
+                                            }}
+                                        >
+                                            <input
+                                                //   onChange={(e) => inpChange(e, index)}
+                                                type="file"
+                                                id={`actual-btn`}
+                                                hidden
+                                            />
+                                            <label
+                                                htmlFor={`actual-btn`}
+                                                className="w-100 text-center "
+                                                role="button"
+                                            >
+                                                Upload Icon
+                                            </label>
+                                        </button>
+                                    </div>
+                                </div>
+                               </div>
                        
-                                {/* <div className="col-md-5 "><small><b>Segment Description:</b></small></div>
-                                <div className="col-md-7"><textarea
-                                  
-                                    className="w-100 form-control"
-                                    onChange={(e) => segmentData.current.vehicle_description = e.target.value}
-                                    rows='3'
-                                    placeholder='Enter Description'
-
-                                /></div> */}
                         </div>
 
                         <Box align='right' className='mt-3'>
                             <Button className='cancel_btn me-3' onClick={() => setOpen(false)}>Cancel</Button>
-                            <Button variant="contained" onClick={addBrand}>Add</Button>
+                            <Button variant="contained" sx={{background:'#534ba8'}} onClick={addBrand}>Add</Button>
                         </Box>
                     </Box>
 
@@ -170,8 +199,10 @@ export const BrandListing = () => {
                     <Box p={3}>
                         <Typography variant="h5" className="text-center mb-2">Edit Brand</Typography>
                         <div className="container-fluid p-0 m-0">
-                                <div className="col-md-5"><small><b>Brand Name:</b></small></div>
-                                <div className="col-md-7">
+                                <div className="row">
+                                    <div className="col-md-6">
+                                    <div className="col-md-12"><small><b>Brand Name:</b></small></div>
+                                <div className="col-md-12">
                                 <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} defaultValue={brandData.current.brand_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                             </div>
                        
@@ -184,11 +215,47 @@ export const BrandListing = () => {
                                     placeholder='Enter Description'
 
                                 /></div> */}
+                                    </div>
+                                    <div className="col-md-6">
+                                    <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
+                                    <div className="col-md-12 d-flex justify-content-center py-2">
+                                        <div className="border w-50 px-2">
+                                            <img className="w-100 h" src='https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png' alt='' />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-12 text-center">
+                                        <button
+                                            className="pt-1"
+                                            variant="other"
+                                            style={{
+                                                background: "#534ba8",
+                                                color: "#ffffff",
+                                                border: "1px solid #534ba8",
+                                                borderRadius: '5px'
+                                            }}
+                                        >
+                                            <input
+                                                //   onChange={(e) => inpChange(e, index)}
+                                                type="file"
+                                                id={`actual-btn`}
+                                                hidden
+                                            />
+                                            <label
+                                                htmlFor={`actual-btn`}
+                                                className="w-100 text-center "
+                                                role="button"
+                                            >
+                                                Upload Icon
+                                            </label>
+                                        </button>
+                                    </div>
+                                </div>
+                                </div>
                         </div>
 
                         <Box align='right' className='mt-3'>
                             <Button className='cancel_btn me-3' onClick={() => setOpen1(false)}>Cancel</Button>
-                            <Button variant="contained" onClick={updateBrand}>Update</Button>
+                            <Button variant="contained" sx={{background:'#534ba8'}} onClick={updateBrand}>Update</Button>
                         </Box>
                     </Box>
 
