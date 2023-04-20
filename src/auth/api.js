@@ -1,5 +1,6 @@
 export const apis = {
-    baseUrl: "https://automobile-f7cf.onrender.com/",
+    baseUrl: "https://ob0xnxnfil.execute-api.ap-southeast-1.amazonaws.com/dev/",
+    // baseUrl: "https://automobile-f7cf.onrender.com/",
 
     vehicle: {
         add: "vehicle/addVehicle",

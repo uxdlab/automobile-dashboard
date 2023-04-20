@@ -15,8 +15,10 @@ export const SegmentListing = () => {
     const [deleteModel, setDeleteModel] = useState(false)
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
-
+    const [localImg,setLocalImg] = useState()
+    console.log(localImg)
     const [img, setImg] = useState({})
+    console.log(img)
     const [imgURL, setImgURL] = useState('')
     const [id, setId] = useState('')
     console.log(id)
@@ -86,6 +88,7 @@ export const SegmentListing = () => {
         e.preventDefault()
         setLoader(true)
         setOpen(false)
+        if (img.name !== undefined) {
         const storageRef = ref(storage, img.name);
         const uploadTask = uploadBytesResumable(storageRef, img);
         uploadTask.on(
@@ -107,12 +110,24 @@ export const SegmentListing = () => {
                             console.log(err)
                             getAllVehicles()
                         })
-                    setImg({})
+                   
                 });
             })
-
-
-
+        }else{
+            segmentData.current.vehicle_icon= ''
+            VehicleClass.addVehicle(segmentData.current)
+                        .then((res) => {
+                            console.log(res)
+                            setLoader(false)
+                            getAllVehicles()
+                        }).catch((err) => {
+                            console.log(err)
+                            getAllVehicles()
+                        })
+        }
+            setLocalImg('')
+            setImg({})
+            segmentData.current.vehicle_icon = ''
     }
 
     async function updateSegment(e) {
@@ -121,8 +136,7 @@ export const SegmentListing = () => {
         setOpen1(false)
         console.log(img)
         if (img.name !== undefined) {
-            // if (segmentData.current.vehicle_icon !== undefined) {
-
+            if (segmentData.current.vehicle_icon !== undefined) {
                 const storage = getStorage();
                 const desertRef = ref(storage, imgURL);
                 deleteObject(desertRef)
@@ -143,7 +157,7 @@ export const SegmentListing = () => {
                                             console.log(res)
                                             setLoader(false)
                                             getAllVehicles()
-                                            setImg({})
+                                            
                                         }).catch((err) => {
                                             console.log(err)
                                         })
@@ -153,7 +167,30 @@ export const SegmentListing = () => {
                     })
                     .catch((error) => { });
 
-            // }
+              
+            }else{
+                const storageRef = ref(storage, img.name);
+                const uploadTask = uploadBytesResumable(storageRef, img);
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => { },
+                    (err) => console.log(err),
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                            console.log(url)
+                            segmentData.current.vehicle_icon = url
+                            VehicleClass.editVehicle(id, segmentData.current)
+                                .then((res) => {
+                                    console.log(res)
+                                    setLoader(false)
+                                    getAllVehicles()
+                                    
+                                }).catch((err) => {
+                                    console.log(err)
+                                })
+                        });
+                    })
+            }
 
         } else {
 
@@ -166,7 +203,8 @@ export const SegmentListing = () => {
                     console.log(err)
                 })
         }
-
+  setLocalImg('')
+  setImg({})
     }
 
     async function getSegmentById(idd, icon) {
@@ -177,6 +215,12 @@ export const SegmentListing = () => {
             .then((res) => {
                 console.log(res)
                 segmentData.current = res.data.data[0]
+                let dd = res.data.data[0]
+                console.log(dd)
+                if(segmentData.current.vehicle_icon){
+                    console.log(segmentData.current.vehicle_icon)
+                 setLocalImg(segmentData.current.vehicle_icon)
+                }
                 setLoader(false)
                 setOpen1(true)
             }).catch((err) => {
@@ -184,35 +228,35 @@ export const SegmentListing = () => {
             })
     }
 
-    const UploadImage = (e) => {
-        console.log(e.target.files[0])
-        let image = e.target.files[0]
+    // const UploadImage = (e) => {
+    //     console.log(e.target.files[0])
+    //     let image = e.target.files[0]
 
-        if (segmentData.current.vehicle_icon !== undefined) {
+    //     if (segmentData.current.vehicle_icon !== undefined) {
 
-            const storage = getStorage();
-            const desertRef = ref(storage, segmentData.current.vehicle_icon);
-            deleteObject(desertRef)
-                .then(() => {
-                    console.log("image deleted");
-                })
-                .catch((error) => { });
+    //         const storage = getStorage();
+    //         const desertRef = ref(storage, segmentData.current.vehicle_icon);
+    //         deleteObject(desertRef)
+    //             .then(() => {
+    //                 console.log("image deleted");
+    //             })
+    //             .catch((error) => { });
 
-        }
+    //     }
 
-        const storageRef = ref(storage, image.name);
-        const uploadTask = uploadBytesResumable(storageRef, image);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => { },
-            (err) => console.log(err),
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    console.log(url)
-                    segmentData.current.vehicle_icon = url
-                });
-            })
-    }
+    //     const storageRef = ref(storage, image.name);
+    //     const uploadTask = uploadBytesResumable(storageRef, image);
+    //     uploadTask.on(
+    //         "state_changed",
+    //         (snapshot) => { },
+    //         (err) => console.log(err),
+    //         () => {
+    //             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+    //                 console.log(url)
+    //                 segmentData.current.vehicle_icon = url
+    //             });
+    //         })
+    // }
 
     function switchBtn(e, id, index) {
         setLoader(true)
@@ -225,6 +269,18 @@ export const SegmentListing = () => {
                 let arr2 = [...allVehicles]
                 arr2[index].is_active = !e.target.checked
             })
+    }
+
+    const imgPrev = (imgs)=>{
+        console.log('okkkkkkkkkkkkkkkkkkkkkkk')
+        console.log(imgs)
+     if(imgs.name!==undefined){
+        let url = URL.createObjectURL(imgs)
+        setLocalImg(url)
+        console.log(url)
+     }else{
+      setLocalImg(undefined)
+     }
     }
 
     return (
@@ -294,7 +350,7 @@ export const SegmentListing = () => {
                                     <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
                                     <div className="col-md-12 d-flex justify-content-center py-2">
                                         <div className="border w-50 px-2">
-                                            <img className="w-100 h" src='https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png' alt='' />
+                                            <img className="w-100 h" src={localImg!==undefined && localImg?localImg:'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
                                         </div>
                                     </div>
                                     <div className="col-md-12 text-center">
@@ -309,7 +365,8 @@ export const SegmentListing = () => {
                                             }}
                                         >
                                             <input
-                                                onChange={(e) => setImg(e.target.files[0])}
+                                                onChange={(e) => {setImg(e.target.files[0])
+                                                    imgPrev(e.target.files[0])}}
                                                 type="file"
                                                 id={`actual-btn`}
                                                 hidden
@@ -339,7 +396,6 @@ export const SegmentListing = () => {
                 <Dialog
                     open={open1}
                     maxWidth={'sm'}
-
                     fullWidth={true}
                 >
                     <Box p={3}>
@@ -366,7 +422,7 @@ export const SegmentListing = () => {
                                     <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
                                     <div className="col-md-12 d-flex justify-content-center py-2">
                                         <div className="border w-50 px-2">
-                                            <img className="w-100" src={segmentData.current.vehicle_icon ? segmentData.current.vehicle_icon : 'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
+                                            <img className="w-100" src={localImg!==undefined && localImg?localImg:'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
                                         </div>
                                     </div>
                                     <div className="col-md-12 text-center">
@@ -381,7 +437,8 @@ export const SegmentListing = () => {
                                             }}
                                         >
                                             <input
-                                                onChange={(e) => setImg(e.target.files[0])}
+                                                onChange={(e) => {setImg(e.target.files[0])
+                                                    imgPrev(e.target.files[0])}}
                                                 type="file"
                                                 id={`actual-btn`}
                                                 hidden
