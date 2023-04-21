@@ -136,7 +136,7 @@ export const SegmentListing = () => {
         setOpen1(false)
         console.log(img)
         if (img.name !== undefined) {
-            if (segmentData.current.vehicle_icon !== undefined) {
+            if (segmentData.current.vehicle_icon !== '' ) {
                 const storage = getStorage();
                 const desertRef = ref(storage, imgURL);
                 deleteObject(desertRef)
@@ -215,8 +215,6 @@ export const SegmentListing = () => {
             .then((res) => {
                 console.log(res)
                 segmentData.current = res.data.data[0]
-                let dd = res.data.data[0]
-                console.log(dd)
                 if(segmentData.current.vehicle_icon){
                     console.log(segmentData.current.vehicle_icon)
                  setLocalImg(segmentData.current.vehicle_icon)
@@ -385,7 +383,10 @@ export const SegmentListing = () => {
                         </div>
 
                         <Box align='right' className='mt-3'>
-                            <Button className='cancel_btn me-3' onClick={() => setOpen(false)}>Cancel</Button>
+                            <Button className='cancel_btn me-3' onClick={() =>{
+                                setOpen(false)
+                                setLocalImg('')
+                                }}>Cancel</Button>
                             <Button variant="contained" sx={{ background: '#534ba8' }} onClick={addSegment}>Add</Button>
                         </Box>
                     </Box>
@@ -456,7 +457,10 @@ export const SegmentListing = () => {
                             </div>
                         </div>
                         <Box align='right' className='mt-3'>
-                            <Button className='cancel_btn me-3' onClick={() => setOpen1(false)}>Cancel</Button>
+                            <Button className='cancel_btn me-3' onClick={() =>{ 
+                                setOpen1(false)
+                                setLocalImg('')
+                                }}>Cancel</Button>
                             <Button variant="contained" sx={{ background: '#534ba8' }} onClick={updateSegment}>Update</Button>
                         </Box>
                     </Box>

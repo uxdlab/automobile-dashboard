@@ -17,11 +17,12 @@ export default function ProductListing() {
     }, [])
     function getAllProduct() {
         getAllItem().then((res)=>{
-            setLoader(false)
+            
             setAllProduct(res.data.data)
         }).catch((err)=>{
             console.log(err)
         })
+        setLoader(false)
     }
     function deleteProduct() {
         setDeleteModel(false)
