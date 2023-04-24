@@ -37,6 +37,13 @@ export const apis = {
         get: 'item/',
         delete:'item/delete/',
         edit:'item/updateItem/'
+    },
+    manufacture: {
+        add: 'manufacturer/addManufacturer/',
+        getAll: 'manufacturer/getAllManufacturer',
+        get: 'manufacturer/',
+        delete:'item/delete/',
+        edit:'manufacturer/updateManufacturer/'
     }
 
 
