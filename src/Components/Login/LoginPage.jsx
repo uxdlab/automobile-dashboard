@@ -1,9 +1,8 @@
 import { useState } from "react";
 import style from "./style.module.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-  Alert,
   Button,
   TextField,
   IconButton,
@@ -13,6 +12,7 @@ import {
   Typography,
   Backdrop,
   Box,
+  useMediaQuery,
 } from "@mui/material";
 import axios from "axios";
 import { apis } from "../../auth/api";
@@ -21,7 +21,7 @@ import { Triangle } from "react-loader-spinner";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-
+  const matches = useMediaQuery("(min-width:700px)");
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [match, setMatch] = useState(false)
@@ -82,7 +82,7 @@ export const LoginPage = () => {
       </div>
       <div className={style.right}>
         <div className={style.inner}>
-          {/* <img className="img-style w-50" src="/images/logo.png" alt="Logo" /> */}
+          {!matches?<img className="w-100 py-2" src="/images/navbar_logo.png" alt="Logo" />:''}
           <h1>Welcome</h1>
           <h4>Sign in to your Account</h4>
           {!match?<br />:<h5 style={{color:'red'}}>Please Enter valid Id or Password</h5>}

@@ -26,7 +26,8 @@
    size: cover;
 }
 
-@media only screen and (max-width: 500px) {
+
+@media only screen and (max-width: 700px) {
   .main_sec {
     display: block;
   }
