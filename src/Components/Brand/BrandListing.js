@@ -1,5 +1,5 @@
 
-import { Backdrop, Box, Button, Dialog, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Checkbox, Dialog, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Triangle } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
@@ -11,13 +11,16 @@ import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } f
 import { storage } from "../../auth/Firebase";
 
 export const BrandListing = () => {
-
+    const theme = useTheme();
     const [loader, setLoader] = useState(true)
     let navigate = useNavigate()
     const [allCompanies, setCompanies] = useState([])
     const [allSegment, setSegment] = useState([])
     const [deleteModel, setDeleteModel] = useState(false)
     const [deletedComp, setDeletedComp] = useState({ id: '', index: '', icon: '' })
+    const [selectSegment, setSelectSegment] = useState([])
+   
+    console.log(selectSegment)
     console.log(deletedComp.icon)
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
@@ -33,10 +36,45 @@ export const BrandListing = () => {
         segment_array: [],
         brand_image: ''
     })
+    brandData.current.segment_array = selectSegment
+    console.log(brandData.current.brand_image)
     useEffect(() => {
         getAllCompany()
         getAllSegment()
     }, [])
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+            },
+        },
+    };
+
+    function getStyles(name, selectSegment, theme) {
+        return {
+            fontWeight:
+                selectSegment.indexOf(name) === -1
+                    ? theme.typography.fontWeightRegular
+                    : theme.typography.fontWeightMedium,
+        };
+    }
+
+    const handleChange = (event) => {
+        console.log(event)
+        const {
+            target: { value },
+        } = event;
+        setSelectSegment(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
+
+
     function getAllCompany() {
         CompanyClass.getAllCompany()
             .then(res => {
@@ -133,7 +171,7 @@ export const BrandListing = () => {
         e.preventDefault()
         setLoader(true)
         setOpen1(false)
-        console.log(id)
+        console.log(imgURL)
         if (img.name !== undefined) {
             if (brandData.current.brand_image !== '') {
                 const storage = getStorage();
@@ -151,6 +189,7 @@ export const BrandListing = () => {
                                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                                     console.log(url)
                                     brandData.current.brand_image = url
+                                    console.log(brandData.current.brand_image)
                                     CompanyClass.editCompany(id, brandData.current)
                                         .then((res) => {
                                             console.log(res)
@@ -302,13 +341,35 @@ export const BrandListing = () => {
                                 <div className="col-md-12">
                                     <div className="col-md-12"><small><b>Select Segment:</b></small></div>
                                     <div className="col-md-12" style={{ position: 'relative' }}>
-                                        <KeyboardArrowDownIcon sx={{ position: 'absolute', right: '10px', top: '10px' }} />
+                                            <Select
+                                                fullWidth
+                                                labelId="demo-multiple-name-label"
+                                                id="demo-multiple-name"
+                                                multiple
+                                                value={selectSegment}
+                                                onChange={handleChange}
+                                                input={<OutlinedInput label="Name" />}
+                                                MenuProps={MenuProps}
+                                            >
+                                                {allSegment.map((item, index) => (
+                                                    <MenuItem
+                                                        key={index}
+                                                        value={item._id}
+                                                        style={getStyles(item.vehicle_name, selectSegment, theme)}
+                                                    >
+                                                        {item.vehicle_name}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+
+
+                                        {/* <KeyboardArrowDownIcon sx={{ position: 'absolute', right: '10px', top: '10px' }} />
                                         <select className="w-100 py-2 px-2 form-control border" onChange={(e) => brandData.current.segment_array = [e.target.value]} placeholder="Select Segment">
                                             <option disabled selected >Select Segment</option>
                                             {
                                                 allSegment.map((item, index) => <option key={index} value={item._id}>{item.vehicle_name}</option>)
                                             }
-                                        </select>
+                                        </select> */}
                                     </div>
                                 </div>
                                 <div className="col-md-12">
@@ -458,7 +519,7 @@ export const BrandListing = () => {
                     <Box align='right' className='mt-3'>
                         <Button className='cancel_btn me-3' onClick={() => {
                             setOpen1(false)
-                            setLocalImg('')
+
                         }}>Cancel</Button>
                         <Button variant="contained" sx={{ background: '#534ba8' }} onClick={updateBrand}>Update</Button>
                     </Box>
