@@ -2,7 +2,6 @@
 import { Backdrop, Box, Button, Dialog, MenuItem, OutlinedInput, Select, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Triangle } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
 import { CompanyClass } from "../../services/Company";
 import { Delete, Edit } from "@mui/icons-material";
 import { VehicleClass } from "../../services/Vehicle";
@@ -20,8 +19,6 @@ export const BrandListing = () => {
     const [deleteModel, setDeleteModel] = useState(false)
     const [deletedComp, setDeletedComp] = useState({ id: '', index: '', icon: '' })
     const [selectSegment, setSelectSegment] = useState([])
-const [brandState,setBrandState]=useState([])
-
     console.log(selectSegment)
     console.log(deletedComp.icon)
     const [open, setOpen] = useState(false)
@@ -413,10 +410,10 @@ const [brandState,setBrandState]=useState([])
                                     </div>
                                 </div>
                                 <Box align='right' className='mt-3'>
-                                    <button className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                    <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
                                         setOpen(false)
                                         setLocalImg('')
-                                    }}>Cancel</button>
+                                    }}>Cancel</span>
                                     <button className="btn custom-btn py-1 px-3" type="submit">Add</button>
                                 </Box>
                             </div>
@@ -509,10 +506,10 @@ const [brandState,setBrandState]=useState([])
                                     </div>
                                 </div>
                                 <Box align='right' className='mt-3'>
-                                    <button className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                    <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
                                         setOpen(false)
                                         setLocalImg('')
-                                    }}>Cancel</button>
+                                    }}>Cancel</span>
                                     <button className="btn custom-btn py-1 px-3" type="submit">Update</button>
                                 </Box>
                             </div>

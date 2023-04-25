@@ -374,10 +374,10 @@ export const SegmentListing = () => {
                                         </div>
                                     </div>
                                     <Box align='right' className='mt-3'>
-                                        <button className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                        <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
                                             setOpen(false)
                                             setLocalImg('')
-                                        }}>Cancel</button>
+                                        }}>Cancel</span>
                                         <button className="btn custom-btn py-1 px-3" type="submit">Add</button>
                                     </Box>
                                 </div>
@@ -442,10 +442,10 @@ export const SegmentListing = () => {
                                         </div>
                                     </div>
                                     <Box align='right' className='mt-3'>
-                                        <button className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                        <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
                                             setOpen(false)
                                             setLocalImg('')
-                                        }}>Cancel</button>
+                                        }}>Cancel</span>
                                         <button className="btn custom-btn py-1 px-3" type="submit">Update</button>
                                     </Box>
                                 </div>
