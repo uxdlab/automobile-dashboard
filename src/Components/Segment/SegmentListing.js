@@ -332,7 +332,7 @@ export const SegmentListing = () => {
                                 <div className="row">
 
                                     <div className="col-md-12">
-                                        <div className="py-2"><small><b><sapn className='text-danger'>*</sapn>Segment Name:</b></small></div>
+                                        <div className="py-2"><small><b><span className='text-danger'>*</span>Segment Name:</b></small></div>
                                         <input type='text' required onChange={(e) => segmentData.current.vehicle_name = e.target.value} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
                                     </div>
                                     <div className="col-md-12">
@@ -346,7 +346,7 @@ export const SegmentListing = () => {
                                         />
                                     </div>
                                     <div className="col-md-12">
-                                        <div className="py-2"><small><b><sapn className='text-danger'>*</sapn>Add Segment Icon:</b></small></div>
+                                        <div className="py-2"><small><b><span className='text-danger'>*</span>Add Segment Icon:</b></small></div>
                                         <div className="d-flex">
                                             {localImg ?
                                                 <div className="w-25 me-1 relative">
@@ -400,7 +400,7 @@ export const SegmentListing = () => {
                                 <div className="row">
 
                                     <div className="col-md-12">
-                                        <div className="py-2"><small><b><sapn className='text-danger'>*</sapn>Segment Name:</b></small></div>
+                                        <div className="py-2"><small><b><span className='text-danger'>*</span>Segment Name:</b></small></div>
                                         <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
                                     </div>
                                     <div className="col-md-12">
@@ -414,7 +414,7 @@ export const SegmentListing = () => {
                                         />
                                     </div>
                                     <div className="col-md-12">
-                                        <div className="py-2"><small><b><sapn className='text-danger'>*</sapn>Update Segment Icon:</b></small></div>
+                                        <div className="py-2"><small><b><span className='text-danger'>*</span>Update Segment Icon:</b></small></div>
                                         <div className="d-flex">
                                             {localImg ?
                                                 <div className="w-25 me-1 relative">
@@ -452,81 +452,12 @@ export const SegmentListing = () => {
                             </div>
                         </form>
                     </Box>
-                    {/* <Box p={3}>
-                        <Typography variant="h5" className="text-center mb-2">Edit Segment</Typography>
-                        <div className="container-fluid p-0 m-0">
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="col-md-12"><small><b>Segment Name:</b></small></div>
-                                    <div className="col-md-12">
-                                        <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
-                                    </div>
-
-                                    <div className="col-md-12"><small><b>Segment Description:</b></small></div>
-                                    <div className="col-md-12"><textarea
-                                        defaultValue={segmentData.current.vehicle_description}
-                                        className="w-100 form-control"
-                                        onChange={(e) => segmentData.current.vehicle_description = e.target.value}
-                                        rows='3'
-                                        placeholder='Enter Description'
-
-                                    /></div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
-                                    <div className="col-md-12 d-flex justify-content-center py-2">
-                                        <div className="border w-50 px-2">
-                                            <img className="w-100" src={localImg !== undefined && localImg ? localImg : 'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-12 text-center">
-                                        <button
-                                            className="pt-1"
-                                            variant="other"
-                                            style={{
-                                                background: "#534ba8",
-                                                color: "#ffffff",
-                                                border: "1px solid #534ba8",
-                                                borderRadius: '5px'
-                                            }}
-                                        >
-                                            <input
-                                                onChange={(e) => {
-                                                    setImg(e.target.files[0])
-                                                    imgPrev(e.target.files[0])
-                                                }}
-                                                type="file"
-                                                id={`actual-btn`}
-                                                hidden
-                                            />
-                                            <label
-                                                htmlFor={`actual-btn`}
-                                                className="w-100 text-center "
-                                                role="button"
-                                            >
-                                                Upload Icon
-                                            </label>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <Box align='right' className='mt-3'>
-                            <Button className='cancel_btn me-3' onClick={() => {
-                                setOpen1(false)
-                                setLocalImg('')
-                            }}>Cancel</Button>
-                            <Button variant="contained" sx={{ background: '#534ba8' }} onClick={updateSegment}>Update</Button>
-                        </Box>
-                    </Box> */}
                 </Dialog>
 
 
                 <h1 className="mt-2 fs-2 ">Segment</h1>
                 <Box align='right' className='pb-3'>
-                    {/* <Link style={{ textDecoration: 'none' }} to='/addSegment'> */}
                     <Button className="btn_primary" variant="contained" onClick={() => setOpen(true)}>Add Segment</Button>
-                    {/* </Link> */}
                 </Box>
 
                 <TableContainer component={Paper}>

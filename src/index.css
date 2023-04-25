@@ -96,3 +96,9 @@ Button {
   right: 0;
   cursor: pointer;
 }
+
+/* Brand style */
+
+.select-style{
+  height: 38px;
+}

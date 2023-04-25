@@ -1,25 +1,27 @@
 
-import { Backdrop, Box, Button, Checkbox, Dialog, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, MenuItem, OutlinedInput, Select, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Triangle } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { CompanyClass } from "../../services/Company";
-import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import { VehicleClass } from "../../services/Vehicle";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../auth/Firebase";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 export const BrandListing = () => {
     const theme = useTheme();
     const [loader, setLoader] = useState(true)
-    let navigate = useNavigate()
     const [allCompanies, setCompanies] = useState([])
     const [allSegment, setSegment] = useState([])
     const [deleteModel, setDeleteModel] = useState(false)
     const [deletedComp, setDeletedComp] = useState({ id: '', index: '', icon: '' })
     const [selectSegment, setSelectSegment] = useState([])
-   
+const [brandState,setBrandState]=useState([])
+
     console.log(selectSegment)
     console.log(deletedComp.icon)
     const [open, setOpen] = useState(false)
@@ -36,8 +38,8 @@ export const BrandListing = () => {
         segment_array: [],
         brand_image: ''
     })
-    brandData.current.segment_array = selectSegment
-    console.log(brandData.current.brand_image)
+    // brandData.current.segment_array = selectSegment
+    console.log(brandData.current)
     useEffect(() => {
         getAllCompany()
         getAllSegment()
@@ -123,6 +125,7 @@ export const BrandListing = () => {
         console.log(brandData.current)
         setLoader(true)
         setOpen(false)
+        brandData.current.segment_array = selectSegment
         if (img.name !== undefined) {
             const storageRef = ref(storage, img.name);
             const uploadTask = uploadBytesResumable(storageRef, img);
@@ -135,7 +138,7 @@ export const BrandListing = () => {
                         console.log(url)
                         brandData.current.brand_image = url
                         console.log(brandData.current)
-
+                        
                         CompanyClass.addCompany(brandData.current)
                             .then((res) => {
                                 console.log(res)
@@ -163,7 +166,7 @@ export const BrandListing = () => {
         setLocalImg('')
         setImg({})
         brandData.current.brand_image = ''
-
+        setSelectSegment([])
 
     }
 
@@ -172,6 +175,7 @@ export const BrandListing = () => {
         setLoader(true)
         setOpen1(false)
         console.log(imgURL)
+        brandData.current.segment_array = selectSegment
         if (img.name !== undefined) {
             if (brandData.current.brand_image !== '') {
                 const storage = getStorage();
@@ -244,7 +248,7 @@ export const BrandListing = () => {
         }
         setLocalImg('')
         setImg({})
-
+        setSelectSegment([])
     }
 
     async function getBrandById(idd, icon) {
@@ -255,10 +259,12 @@ export const BrandListing = () => {
             .then((res) => {
                 console.log(res)
                 brandData.current = res.data.data[0]
+               
                 if (brandData.current.brand_image) {
                     console.log(brandData.current.brand_image)
                     setLocalImg(brandData.current.brand_image)
                 }
+                setSelectSegment(brandData.current.segment_array)
                 setLoader(false)
                 setOpen1(true)
             }).catch((err) => {
@@ -330,143 +336,141 @@ export const BrandListing = () => {
             {/* Add Brand Dialog Box */}
             <Dialog
                 open={open}
-                maxWidth={'sm'}
+                maxWidth={'xs'}
                 fullWidth={true}
             >
-                <Box p={3}>
-                    <Typography variant="h5" className="text-center mb-2">Add Brand</Typography>
-                    <div className="container-fluid p-0 m-0">
-                        <div className="row">
-                            <div className="col-md-6 ">
+                <Box py={2} px={1} className='over-flow-hide-x'>
+                    <h5 className="px-3">Add New Brand</h5>
+                    <hr />
+                    <form onSubmit={addBrand}>
+                        <div className="container-fluid">
+                            <div className="row">
                                 <div className="col-md-12">
-                                    <div className="col-md-12"><small><b>Select Segment:</b></small></div>
-                                    <div className="col-md-12" style={{ position: 'relative' }}>
-                                            <Select
-                                                fullWidth
-                                                labelId="demo-multiple-name-label"
-                                                id="demo-multiple-name"
-                                                multiple
-                                                value={selectSegment}
-                                                onChange={handleChange}
-                                                input={<OutlinedInput label="Name" />}
-                                                MenuProps={MenuProps}
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Select Segment:</b></small></div>
+                                    <Select
+                                        className="select-style"
+                                        fullWidth
+                                        labelId="demo-multiple-name-label"
+                                        id="demo-multiple-name"
+                                        multiple
+                                        required
+                                        value={selectSegment}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput label="Name" />}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {allSegment.map((item, index) => (
+                                            <MenuItem
+                                                key={index}
+                                                value={item._id}
+                                                style={getStyles(item.vehicle_name, selectSegment, theme)}
                                             >
-                                                {allSegment.map((item, index) => (
-                                                    <MenuItem
-                                                        key={index}
-                                                        value={item._id}
-                                                        style={getStyles(item.vehicle_name, selectSegment, theme)}
-                                                    >
-                                                        {item.vehicle_name}
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-
-
-                                        {/* <KeyboardArrowDownIcon sx={{ position: 'absolute', right: '10px', top: '10px' }} />
-                                        <select className="w-100 py-2 px-2 form-control border" onChange={(e) => brandData.current.segment_array = [e.target.value]} placeholder="Select Segment">
-                                            <option disabled selected >Select Segment</option>
-                                            {
-                                                allSegment.map((item, index) => <option key={index} value={item._id}>{item.vehicle_name}</option>)
-                                            }
-                                        </select> */}
-                                    </div>
+                                                {item.vehicle_name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
                                 </div>
                                 <div className="col-md-12">
-                                    <div className="col-md-12"><small><b>Brand Name:</b></small></div>
-                                    <div className="col-md-12">
-                                        <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
-                                    </div>
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Brand Name:</b></small></div>
+                                    <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
-                                    <small><b>Brand Description:</b></small>
+                                    <div className="py-2"><small><b>Brand Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
                                         onChange={(e) => brandData.current.brand_description = e.target.value}
                                         rows='3'
                                         placeholder='Enter Description'
 
-                                    /></div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
-                                <div className="col-md-12 d-flex justify-content-center">
-                                    <div className="border w-50 px-2 mb-2">
-                                        <img className="w-100 h" src={localImg !== undefined && localImg ? localImg : 'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
+                                    />
+                                </div>
+                                <div className="col-md-12">
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Add Brand Icon:</b></small></div>
+                                    <div className="d-flex">
+                                        {localImg ?
+                                            <div className="w-25 me-1 relative">
+                                                <CloseIcon onClick={() => {
+                                                    setLocalImg('')
+                                                    setImg({})
+                                                }} className="close-btn-position" />
+                                                <img className="img-style" src={localImg} />
+                                            </div> : ''}
+                                        <div className="w-25">
+                                            <div className="btn img-btn w-100">
+                                                <input type="file" id="2actual-btn" hidden
+                                                    onChange={(e) => {
+                                                        setImg(e.target.files[0])
+                                                        imgPrev(e.target.files[0])
+                                                        e.target.value = ''
+                                                    }}
+                                                />
+                                                <label className="text-center text-gray" htmlFor="2actual-btn">
+                                                    <CloudUploadIcon /><br />
+                                                    <span>Upload</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="col-md-12 text-center">
-                                    <button
-                                        className="pt-1"
-                                        variant="other"
-                                        style={{
-                                            background: "#534ba8",
-                                            color: "#ffffff",
-                                            border: "1px solid #534ba8",
-                                            borderRadius: '5px'
-                                        }}
-                                    >
-                                        <input
-                                            onChange={(e) => {
-                                                setImg(e.target.files[0])
-                                                imgPrev(e.target.files[0])
-                                            }}
-                                            type="file"
-                                            id={`actual-btn`}
-                                            hidden
-                                        />
-                                        <label
-                                            htmlFor={`actual-btn`}
-                                            className="w-100 text-center "
-                                            role="button"
-                                        >
-                                            Upload Icon
-                                        </label>
-                                    </button>
-                                </div>
+                                <Box align='right' className='mt-3'>
+                                    <button className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                        setOpen(false)
+                                        setLocalImg('')
+                                    }}>Cancel</button>
+                                    <button className="btn custom-btn py-1 px-3" type="submit">Add</button>
+                                </Box>
                             </div>
                         </div>
-
-                    </div>
-
-                    <Box align='right' className='mt-3'>
-                        <Button className='cancel_btn me-3' onClick={() => {
-                            setOpen(false)
-                            setLocalImg('')
-                        }}>Cancel</Button>
-                        <Button variant="contained" sx={{ background: '#534ba8' }} onClick={addBrand}>Add</Button>
-                    </Box>
+                    </form>
                 </Box>
+               
 
             </Dialog>
 
             {/* Edit Brand Dialog Box */}
             <Dialog
                 open={open1}
-                maxWidth={'sm'}
+                maxWidth={'xs'}
                 fullWidth={true}
             >
-                <Box p={3}>
-                    <Typography variant="h5" className="text-center mb-2">Edit Brand</Typography>
-                    <div className="container-fluid p-0 m-0">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="col-md-12"><small><b>Select Segment:</b></small></div>
-                                <div className="col-md-12" style={{ position: 'relative' }}>
-                                    <KeyboardArrowDownIcon sx={{ position: 'absolute', right: '10px', top: '10px' }} />
-                                    <select className="w-100 py-2 px-2 form-control border" defaultValue={brandData.current.segment_array[0]} onChange={(e) => brandData.current.segment_array = [e.target.value]} placeholder="Select Segment">
-                                        <option disabled selected >Select Segment</option>
-                                        {
-                                            allSegment.map((item, index) => <option key={index} value={item._id}>{item.vehicle_name}</option>)
-                                        }
-                                    </select>
-                                </div>
-                                <div className="col-md-12"><small><b>Brand Name:</b></small></div>
+                <Box py={2} px={1} className='over-flow-hide-x'>
+                    <h5 className="px-3">Edit Segment</h5>
+                    <hr />
+                    <form onSubmit={updateBrand}>
+                        <div className="container-fluid">
+                            <div className="row">
                                 <div className="col-md-12">
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Select Segment:</b></small></div>
+                                    <Select
+                                        className="select-style"
+                                        fullWidth
+                                        labelId="demo-multiple-name-label"
+                                        id="demo-multiple-name"
+                                        multiple
+                                        value={selectSegment}
+                                        onChange={(e)=>{
+                                            handleChange(e)
+                                        }}
+                                        input={<OutlinedInput label="Name" />}
+                                        MenuProps={MenuProps}
+                                    >
+                                        {allSegment.map((item, index) => (
+                                            <MenuItem
+                                                key={index}
+                                                value={item._id}
+                                                style={getStyles(item.vehicle_name, selectSegment, theme)}
+                                            >
+                                                {item.vehicle_name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </div>
+                                <div className="col-md-12">
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Brand Name:</b></small></div>
                                     <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} defaultValue={brandData.current.brand_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
-                                    <small><b>Segment Description:</b></small>
+                                    <div className="py-2"><small><b>Brand Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
                                         defaultValue={brandData.current.brand_description}
@@ -474,55 +478,46 @@ export const BrandListing = () => {
                                         rows='3'
                                         placeholder='Enter Description'
 
-                                    /></div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
-                                <div className="col-md-12 d-flex justify-content-center py-2">
-                                    <div className="border w-50 px-2">
-                                        <img className="w-100 h" src={localImg !== undefined && localImg ? localImg : 'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
+                                    />
+                                </div>
+                                <div className="col-md-12">
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Update Brand Icon:</b></small></div>
+                                    <div className="d-flex">
+                                        {localImg ?
+                                            <div className="w-25 me-1 relative">
+                                                <CloseIcon onClick={() => {
+                                                    setLocalImg('')
+                                                    setImg({})
+                                                }} className="close-btn-position" />
+                                                <img className="img-style" src={localImg} />
+                                            </div> : ''}
+                                        <div className="w-25">
+                                            <div className="btn img-btn w-100">
+                                                <input type="file" id="2actual-btn" hidden
+                                                    onChange={(e) => {
+                                                        setImg(e.target.files[0])
+                                                        imgPrev(e.target.files[0])
+                                                        e.target.value = ''
+                                                    }}
+                                                />
+                                                <label className="text-center text-gray" htmlFor="2actual-btn">
+                                                    <CloudUploadIcon /><br />
+                                                    <span>Upload</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="col-md-12 text-center">
-                                    <button
-                                        className="pt-1"
-                                        variant="other"
-                                        style={{
-                                            background: "#534ba8",
-                                            color: "#ffffff",
-                                            border: "1px solid #534ba8",
-                                            borderRadius: '5px'
-                                        }}
-                                    >
-                                        <input
-                                            onChange={(e) => {
-                                                setImg(e.target.files[0])
-                                                imgPrev(e.target.files[0])
-                                            }}
-                                            type="file"
-                                            id={`actual-btn`}
-                                            hidden
-                                        />
-                                        <label
-                                            htmlFor={`actual-btn`}
-                                            className="w-100 text-center "
-                                            role="button"
-                                        >
-                                            Upload Icon
-                                        </label>
-                                    </button>
-                                </div>
+                                <Box align='right' className='mt-3'>
+                                    <button className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                        setOpen(false)
+                                        setLocalImg('')
+                                    }}>Cancel</button>
+                                    <button className="btn custom-btn py-1 px-3" type="submit">Update</button>
+                                </Box>
                             </div>
                         </div>
-                    </div>
-
-                    <Box align='right' className='mt-3'>
-                        <Button className='cancel_btn me-3' onClick={() => {
-                            setOpen1(false)
-
-                        }}>Cancel</Button>
-                        <Button variant="contained" sx={{ background: '#534ba8' }} onClick={updateBrand}>Update</Button>
-                    </Box>
+                    </form>
                 </Box>
 
             </Dialog>
