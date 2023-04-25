@@ -443,7 +443,7 @@ export const SegmentListing = () => {
                                     </div>
                                     <Box align='right' className='mt-3'>
                                         <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
-                                            setOpen(false)
+                                            setOpen1(false)
                                             setLocalImg('')
                                         }}>Cancel</span>
                                         <button className="btn custom-btn py-1 px-3" type="submit">Update</button>
