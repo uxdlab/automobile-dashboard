@@ -1,24 +1,17 @@
 import React from "react";
 import { Routes, Route } from "react-router";
-import { AddSegment } from "./Components/Segment/AddSegment";
 import { SegmentListing } from "./Components/Segment/SegmentListing";
 import { WrongPath } from "./WrongPath";
-import { EditSegment } from "./Components/Segment/EditSegment";
 import { Category} from "./Components/Category/Category";
 import { AddCategory } from "./Components/Category/AddCategory";
 import { EditProduct } from "./Components/Category/EditCategory";
-import { ViewVehicles } from "./Components/Segment/ViewVehicle";
 import { ViewProduct } from "./Components/Category/ViewCategory";
 import { ModelListing } from "./Components/Model/ModelListing";
-import { AddModel } from "./Components/Model/AddModel";
 import { BrandListing } from "./Components/Brand/BrandListing";
-import { AddBrand } from "./Components/Brand/AddBrand";
-import { EditBrand } from "./Components/Brand/EditBrand";
-import { EditModel } from "./Components/Model/EditModel";
 import { LoginPage } from "./Components/Login/LoginPage";
 import { CheckAuth } from "./auth/CheckAuth";
 import { LoginKeeper } from "./auth/LoginKeeper";
-import { Model } from "./Components/Model/Model";
+
 import UsersListing from "./Components/Users/UsersListing";
 import PaymentListing from "./Components/Payment/PaymentListing";
 import ProductListing from "./Components/Product/ProductListing";
@@ -38,9 +31,6 @@ export const Router = () => {
 
                     {/* Segment Routes */}
                     <Route exact path='/' element={<SegmentListing />} />
-                    <Route path='addSegment' element={<AddSegment />} />
-                    <Route exact path='/editSegment/:id' element={<EditSegment />} />
-                    <Route exact path='/viewVehicle/:id' element={<ViewVehicles />} />
 
                     {/* Category Routes  */}
                     <Route exact path='/category' element={<Category />} />
@@ -50,14 +40,9 @@ export const Router = () => {
 
                     {/* Brand Routes */}
                     <Route exact path='/brand' element={<BrandListing />} />
-                    <Route exact path='/addBrand' element={<AddBrand />} />
-                    <Route exact path='/editBrand/:id' element={<EditBrand />} />
 
                     {/* Model Routes */}
-                    <Route exact path='/editModel/:id' element={<EditModel />} />
-                    <Route exact path='/model/:id' element={<Model />} />
                     <Route exact path='/models' element={<ModelListing />} />
-                    <Route exact path='/addModel' element={<AddModel />} />
 
                     {/* Users Routes */}
                     <Route exact path='/users' element={<UsersListing />} />
