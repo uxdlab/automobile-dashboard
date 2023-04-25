@@ -1,5 +1,5 @@
 export const apis = {
-    baseUrl: "https://ob0xnxnfil.execute-api.ap-southeast-1.amazonaws.com/dev/",
+    baseUrl: "https://automobile.herokuapp.com/",
     // baseUrl: "https://automobile-f7cf.onrender.com/",
 
     vehicle: {

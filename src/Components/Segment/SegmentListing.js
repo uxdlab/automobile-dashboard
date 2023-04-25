@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { Backdrop, Box, Button, Dialog, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { VehicleClass } from "../../services/Vehicle";
 import { Triangle } from 'react-loader-spinner'
-import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import { storage } from "../../auth/Firebase";
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
-
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const SegmentListing = () => {
 
@@ -15,7 +16,7 @@ export const SegmentListing = () => {
     const [deleteModel, setDeleteModel] = useState(false)
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
-    const [localImg,setLocalImg] = useState()
+    const [localImg, setLocalImg] = useState()
     console.log(localImg)
     const [img, setImg] = useState({})
     console.log(img)
@@ -70,16 +71,16 @@ export const SegmentListing = () => {
                 })
                 .catch((error) => { });
 
-        }else{
+        } else {
             VehicleClass.deleteVehicle(deleteVeh.id)
-                        .then(res => {
-                            console.log(res)
-                            let arr = [...allVehicles]
-                            arr.splice(deleteVeh.index, 1)
-                            setAllVehicles(arr)
-                            setLoader(false)
-                        })
-                        .catch(err => console.log(err))
+                .then(res => {
+                    console.log(res)
+                    let arr = [...allVehicles]
+                    arr.splice(deleteVeh.index, 1)
+                    setAllVehicles(arr)
+                    setLoader(false)
+                })
+                .catch(err => console.log(err))
         }
 
     }
@@ -89,45 +90,45 @@ export const SegmentListing = () => {
         setLoader(true)
         setOpen(false)
         if (img.name !== undefined) {
-        const storageRef = ref(storage, img.name);
-        const uploadTask = uploadBytesResumable(storageRef, img);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => { },
-            (err) => console.log(err),
-            () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    console.log(url)
-                    segmentData.current.vehicle_icon = url
-                    console.log(segmentData.current)
+            const storageRef = ref(storage, img.name);
+            const uploadTask = uploadBytesResumable(storageRef, img);
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => { },
+                (err) => console.log(err),
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                        console.log(url)
+                        segmentData.current.vehicle_icon = url
+                        console.log(segmentData.current)
 
-                    VehicleClass.addVehicle(segmentData.current)
-                        .then((res) => {
-                            console.log(res)
-                            setLoader(false)
-                            getAllVehicles()
-                        }).catch((err) => {
-                            console.log(err)
-                            getAllVehicles()
-                        })
-                   
-                });
-            })
-        }else{
-            segmentData.current.vehicle_icon= ''
-            VehicleClass.addVehicle(segmentData.current)
-                        .then((res) => {
-                            console.log(res)
-                            setLoader(false)
-                            getAllVehicles()
-                        }).catch((err) => {
-                            console.log(err)
-                            getAllVehicles()
-                        })
-        }
-            setLocalImg('')
-            setImg({})
+                        VehicleClass.addVehicle(segmentData.current)
+                            .then((res) => {
+                                console.log(res)
+                                setLoader(false)
+                                getAllVehicles()
+                            }).catch((err) => {
+                                console.log(err)
+                                getAllVehicles()
+                            })
+
+                    });
+                })
+        } else {
             segmentData.current.vehicle_icon = ''
+            VehicleClass.addVehicle(segmentData.current)
+                .then((res) => {
+                    console.log(res)
+                    setLoader(false)
+                    getAllVehicles()
+                }).catch((err) => {
+                    console.log(err)
+                    getAllVehicles()
+                })
+        }
+        setLocalImg('')
+        setImg({})
+        segmentData.current.vehicle_icon = ''
     }
 
     async function updateSegment(e) {
@@ -136,7 +137,7 @@ export const SegmentListing = () => {
         setOpen1(false)
         console.log(img)
         if (img.name !== undefined) {
-            if (segmentData.current.vehicle_icon !== '' ) {
+            if (segmentData.current.vehicle_icon !== '') {
                 const storage = getStorage();
                 const desertRef = ref(storage, imgURL);
                 deleteObject(desertRef)
@@ -157,7 +158,7 @@ export const SegmentListing = () => {
                                             console.log(res)
                                             setLoader(false)
                                             getAllVehicles()
-                                            
+
                                         }).catch((err) => {
                                             console.log(err)
                                         })
@@ -167,8 +168,8 @@ export const SegmentListing = () => {
                     })
                     .catch((error) => { });
 
-              
-            }else{
+
+            } else {
                 const storageRef = ref(storage, img.name);
                 const uploadTask = uploadBytesResumable(storageRef, img);
                 uploadTask.on(
@@ -184,7 +185,7 @@ export const SegmentListing = () => {
                                     console.log(res)
                                     setLoader(false)
                                     getAllVehicles()
-                                    
+
                                 }).catch((err) => {
                                     console.log(err)
                                 })
@@ -203,8 +204,8 @@ export const SegmentListing = () => {
                     console.log(err)
                 })
         }
-  setLocalImg('')
-  setImg({})
+        setLocalImg('')
+        setImg({})
     }
 
     async function getSegmentById(idd, icon) {
@@ -215,9 +216,9 @@ export const SegmentListing = () => {
             .then((res) => {
                 console.log(res)
                 segmentData.current = res.data.data[0]
-                if(segmentData.current.vehicle_icon){
+                if (segmentData.current.vehicle_icon) {
                     console.log(segmentData.current.vehicle_icon)
-                 setLocalImg(segmentData.current.vehicle_icon)
+                    setLocalImg(segmentData.current.vehicle_icon)
                 }
                 setLoader(false)
                 setOpen1(true)
@@ -269,16 +270,16 @@ export const SegmentListing = () => {
             })
     }
 
-    const imgPrev = (imgs)=>{
+    const imgPrev = (imgs) => {
         console.log('okkkkkkkkkkkkkkkkkkkkkkk')
         console.log(imgs)
-     if(imgs.name!==undefined){
-        let url = URL.createObjectURL(imgs)
-        setLocalImg(url)
-        console.log(url)
-     }else{
-      setLocalImg(undefined)
-     }
+        if (imgs.name !== undefined) {
+            let url = URL.createObjectURL(imgs)
+            setLocalImg(url)
+            console.log(url)
+        } else {
+            setLocalImg(undefined)
+        }
     }
 
     return (
@@ -320,86 +321,138 @@ export const SegmentListing = () => {
                 {/* Add Segment Dialog Box */}
                 <Dialog
                     open={open}
-                    maxWidth={'sm'}
-
+                    maxWidth={'xs'}
                     fullWidth={true}
                 >
-                    <Box p={3} sx={{ overflowX: 'hidden' }}>
-                        <Typography variant="h5" className="text-center mb-2">Add Segment</Typography>
-                        <div className="container-fluid p-0 m-0">
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="col-md-12"><small><b>Segment Name:</b></small></div>
+                    <Box py={2} px={1} className='over-flow-hide-x'>
+                        <h5 className="px-3">Add New Segment</h5>
+                        <hr />
+                        <form onSubmit={addSegment}>
+                            <div className="container-fluid">
+                                <div className="row">
+
                                     <div className="col-md-12">
-                                        <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
+                                        <div className="py-2"><small><b><sapn className='text-danger'>*</sapn>Segment Name:</b></small></div>
+                                        <input type='text' required onChange={(e) => segmentData.current.vehicle_name = e.target.value} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
                                     </div>
+                                    <div className="col-md-12">
+                                        <div className="py-2"><small><b>Segment Description:</b></small></div>
+                                        <textarea
+                                            className="w-100 form-control"
+                                            onChange={(e) => segmentData.current.vehicle_description = e.target.value}
+                                            rows='3'
+                                            placeholder='Enter Description'
 
-                                    <div className="col-md-12"><small><b>Segment Description:</b></small></div>
-                                    <div className="col-md-12"><textarea
-
-                                        className="w-100 form-control"
-                                        onChange={(e) => segmentData.current.vehicle_description = e.target.value}
-                                        rows='3'
-                                        placeholder='Enter Description'
-
-                                    /></div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
-                                    <div className="col-md-12 d-flex justify-content-center py-2">
-                                        <div className="border w-50 px-2">
-                                            <img className="w-100 h" src={localImg!==undefined && localImg?localImg:'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
+                                        />
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="py-2"><small><b><sapn className='text-danger'>*</sapn>Add Segment Icon:</b></small></div>
+                                        <div className="d-flex">
+                                            {localImg ?
+                                                <div className="w-25 me-1 relative">
+                                                    <CloseIcon onClick={() => {
+                                                        setLocalImg('')
+                                                        setImg({})
+                                                    }} className="close-btn-position" />
+                                                    <img className="img-style" src={localImg} />
+                                                </div> : ''}
+                                            <div className="w-25">
+                                                <div className="btn img-btn w-100">
+                                                    <input type="file" id="2actual-btn" hidden
+                                                        onChange={(e) => {
+                                                            setImg(e.target.files[0])
+                                                            imgPrev(e.target.files[0])
+                                                            e.target.value = ''
+                                                        }}
+                                                    />
+                                                    <label className="text-center text-gray" htmlFor="2actual-btn">
+                                                        <CloudUploadIcon /><br />
+                                                        <span>Upload</span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-12 text-center">
-                                        <button
-                                            className="pt-1"
-                                            variant="other"
-                                            style={{
-                                                background: "#534ba8",
-                                                color: "#ffffff",
-                                                border: "1px solid #534ba8",
-                                                borderRadius: '5px'
-                                            }}
-                                        >
-                                            <input
-                                                onChange={(e) => {setImg(e.target.files[0])
-                                                    imgPrev(e.target.files[0])}}
-                                                type="file"
-                                                id={`actual-btn`}
-                                                hidden
-                                            />
-                                            <label
-                                                htmlFor={`actual-btn`}
-                                                className="w-100 text-center "
-                                                role="button"
-                                            >
-                                                Upload Icon
-                                            </label>
-                                        </button>
-                                    </div>
+                                    <Box align='right' className='mt-3'>
+                                        <button className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                            setOpen(false)
+                                            setLocalImg('')
+                                        }}>Cancel</button>
+                                        <button className="btn custom-btn py-1 px-3" type="submit">Add</button>
+                                    </Box>
                                 </div>
                             </div>
-                        </div>
-
-                        <Box align='right' className='mt-3'>
-                            <Button className='cancel_btn me-3' onClick={() =>{
-                                setOpen(false)
-                                setLocalImg('')
-                                }}>Cancel</Button>
-                            <Button variant="contained" sx={{ background: '#534ba8' }} onClick={addSegment}>Add</Button>
-                        </Box>
+                        </form>
                     </Box>
-
                 </Dialog>
 
                 {/* Edit Segment Dialog Box */}
                 <Dialog
                     open={open1}
-                    maxWidth={'sm'}
+                    maxWidth={'xs'}
                     fullWidth={true}
                 >
-                    <Box p={3}>
+                    <Box py={2} px={1} className='over-flow-hide-x'>
+                        <h5 className="px-3">Edit Segment</h5>
+                        <hr />
+                        <form onSubmit={updateSegment}>
+                            <div className="container-fluid">
+                                <div className="row">
+
+                                    <div className="col-md-12">
+                                        <div className="py-2"><small><b><sapn className='text-danger'>*</sapn>Segment Name:</b></small></div>
+                                        <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="py-2"><small><b>Segment Description:</b></small></div>
+                                        <textarea
+                                            defaultValue={segmentData.current.vehicle_description}
+                                            className="w-100 form-control"
+                                            onChange={(e) => segmentData.current.vehicle_description = e.target.value}
+                                            rows='3'
+                                            placeholder='Enter Description'
+                                        />
+                                    </div>
+                                    <div className="col-md-12">
+                                        <div className="py-2"><small><b><sapn className='text-danger'>*</sapn>Update Segment Icon:</b></small></div>
+                                        <div className="d-flex">
+                                            {localImg ?
+                                                <div className="w-25 me-1 relative">
+                                                    <CloseIcon onClick={() => {
+                                                        setLocalImg('')
+                                                        setImg({})
+                                                    }} className="close-btn-position" />
+                                                    <img className="img-style" src={localImg} />
+                                                </div> : ''}
+                                            <div className="w-25">
+                                                <div className="btn img-btn w-100">
+                                                    <input type="file" id="2actual-btn" hidden
+                                                        onChange={(e) => {
+                                                            setImg(e.target.files[0])
+                                                            imgPrev(e.target.files[0])
+                                                            e.target.value = ''
+                                                        }}
+                                                    />
+                                                    <label className="text-center text-gray" htmlFor="2actual-btn">
+                                                        <CloudUploadIcon /><br />
+                                                        <span>Upload</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Box align='right' className='mt-3'>
+                                        <button className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                            setOpen(false)
+                                            setLocalImg('')
+                                        }}>Cancel</button>
+                                        <button className="btn custom-btn py-1 px-3" type="submit">Update</button>
+                                    </Box>
+                                </div>
+                            </div>
+                        </form>
+                    </Box>
+                    {/* <Box p={3}>
                         <Typography variant="h5" className="text-center mb-2">Edit Segment</Typography>
                         <div className="container-fluid p-0 m-0">
                             <div className="row">
@@ -423,7 +476,7 @@ export const SegmentListing = () => {
                                     <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
                                     <div className="col-md-12 d-flex justify-content-center py-2">
                                         <div className="border w-50 px-2">
-                                            <img className="w-100" src={localImg!==undefined && localImg?localImg:'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
+                                            <img className="w-100" src={localImg !== undefined && localImg ? localImg : 'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
                                         </div>
                                     </div>
                                     <div className="col-md-12 text-center">
@@ -438,8 +491,10 @@ export const SegmentListing = () => {
                                             }}
                                         >
                                             <input
-                                                onChange={(e) => {setImg(e.target.files[0])
-                                                    imgPrev(e.target.files[0])}}
+                                                onChange={(e) => {
+                                                    setImg(e.target.files[0])
+                                                    imgPrev(e.target.files[0])
+                                                }}
                                                 type="file"
                                                 id={`actual-btn`}
                                                 hidden
@@ -457,13 +512,13 @@ export const SegmentListing = () => {
                             </div>
                         </div>
                         <Box align='right' className='mt-3'>
-                            <Button className='cancel_btn me-3' onClick={() =>{ 
+                            <Button className='cancel_btn me-3' onClick={() => {
                                 setOpen1(false)
                                 setLocalImg('')
-                                }}>Cancel</Button>
+                            }}>Cancel</Button>
                             <Button variant="contained" sx={{ background: '#534ba8' }} onClick={updateSegment}>Update</Button>
                         </Box>
-                    </Box>
+                    </Box> */}
                 </Dialog>
 
 
