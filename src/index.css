@@ -102,3 +102,10 @@ Button {
 .select-style{
   height: 38px;
 }
+
+
+/* Model Style */
+
+.w-5{
+  width: 5%;
+}
