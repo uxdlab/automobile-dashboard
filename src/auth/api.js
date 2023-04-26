@@ -32,7 +32,7 @@ export const apis = {
         update: 'model/updateModel',
     },
     items: {
-        add: 'item/addItem',
+        add: 'product/addProduct',
         getAll: 'item/get/All',
         get: 'item/',
         delete:'item/delete/',

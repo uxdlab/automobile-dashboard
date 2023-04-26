@@ -11,12 +11,17 @@ export default function AddProduct() {
     const [loader, setLoader] = useState(false)
     const AllProducts = useRef([
         {
-            spare_partname: '',
+            product_name:'',
             oe_reference_number: '',
-            sparePart_description: '',
+            product_description:'',
             MRP: '',
             ke_partNumber: '',
-            image: 'test'
+            image: [],
+            product_segment_aaray: [],
+            product_brand_aaray: [],
+            product_model_aaray: [],
+            product_category_aaray: [],
+            product_manufacture_aaray: []
         }
     ])
 
