@@ -3,9 +3,6 @@ import { Routes, Route } from "react-router";
 import { SegmentListing } from "./Components/Segment/SegmentListing";
 import { WrongPath } from "./WrongPath";
 import { Category} from "./Components/Category/Category";
-import { AddCategory } from "./Components/Category/AddCategory";
-import { EditProduct } from "./Components/Category/EditCategory";
-import { ViewProduct } from "./Components/Category/ViewCategory";
 import { ModelListing } from "./Components/Model/ModelListing";
 import { BrandListing } from "./Components/Brand/BrandListing";
 import { LoginPage } from "./Components/Login/LoginPage";
@@ -34,9 +31,6 @@ export const Router = () => {
 
                     {/* Category Routes  */}
                     <Route exact path='/category' element={<Category />} />
-                    <Route exact path='/addCategory' element={<AddCategory />} />
-                    <Route exact path='/editProduct/:id' element={<EditProduct />} />
-                    <Route exact path='/viewProduct/:id' element={<ViewProduct />} />
 
                     {/* Brand Routes */}
                     <Route exact path='/brand' element={<BrandListing />} />
