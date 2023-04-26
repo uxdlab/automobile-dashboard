@@ -71,6 +71,10 @@ Button {
   overflow-x: hidden;
 }
 
+.pointer{
+  cursor: pointer;
+}
+
 .round-border{
   border-radius: 100%;
 }

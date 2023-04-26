@@ -114,7 +114,7 @@ export const BrandListing = () => {
                 })
                 .catch(err => console.log(err))
         }
-
+      setSelectSegment([])
     }
 
     async function addBrand(e) {
@@ -256,7 +256,6 @@ export const BrandListing = () => {
             .then((res) => {
                 console.log(res)
                 brandData.current = res.data.data[0]
-               
                 if (brandData.current.brand_image) {
                     console.log(brandData.current.brand_image)
                     setLocalImg(brandData.current.brand_image)
@@ -411,8 +410,9 @@ export const BrandListing = () => {
                                 </div>
                                 <Box align='right' className='mt-3'>
                                     <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
-                                        setOpen1(false)
+                                        setOpen(false)
                                         setLocalImg('')
+                                        setSelectSegment([])
                                     }}>Cancel</span>
                                     <button className="btn custom-btn py-1 px-3" type="submit">Add</button>
                                 </Box>
@@ -431,7 +431,7 @@ export const BrandListing = () => {
                 fullWidth={true}
             >
                 <Box py={2} px={1} className='over-flow-hide-x'>
-                    <h5 className="px-3">Edit Segment</h5>
+                    <h5 className="px-3">Edit Brand</h5>
                     <hr />
                     <form onSubmit={updateBrand}>
                         <div className="container-fluid">
@@ -507,7 +507,7 @@ export const BrandListing = () => {
                                 </div>
                                 <Box align='right' className='mt-3'>
                                     <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
-                                        setOpen(false)
+                                        setOpen1(false)
                                         setLocalImg('')
                                     }}>Cancel</span>
                                     <button className="btn custom-btn py-1 px-3" type="submit">Update</button>
@@ -548,12 +548,6 @@ export const BrandListing = () => {
                                         }} />
                                         <Edit onClick={() =>
                                             getBrandById(res._id, res.brand_image)} />
-                                        {/* <RemoveRedEye sx={{cursor:'pointer'}}
-                                        onClick={()=>{
-                                            navigate('/viewBrand')
-                                        }}
-                                        /> */}
-
                                     </TableCell>
                                 </TableRow>
                             )
