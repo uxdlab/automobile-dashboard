@@ -17,3 +17,7 @@ export const addManufacturers = async (data) => {
 export const editManufacturers = async (id,data) => {
     return await axios.put(`${apis.baseUrl}${apis.manufacture.edit}${id}`,data)
 }
+
+export const deleteManufacturers = async (id) => {
+    return await axios.delete(`${apis.baseUrl}${apis.manufacture.delete}${id}`)
+}

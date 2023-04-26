@@ -42,7 +42,7 @@ export const apis = {
         add: 'manufacturer/addManufacturer/',
         getAll: 'manufacturer/getAllManufacturer',
         get: 'manufacturer/',
-        delete:'item/delete/',
+        delete:'manufacturer/deleteManufacturer/',
         edit:'manufacturer/updateManufacturer/'
     }
 

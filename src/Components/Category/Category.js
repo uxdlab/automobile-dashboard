@@ -415,20 +415,7 @@ export const Category = () => {
                         </div>
                     </form>
                 </Box>
-                {/* <Box p={3}>
-                    <Typography variant="h5" className="text-center mb-2">Edit Category</Typography>
-                    <div className="container-fluid p-0 m-0">
-                        <div className="col-md-5"><small><b>Category Name:</b></small></div>
-                        <div className="col-md-7">
-                            <input type='text' onChange={(e) => allCategory.current.category_name = e.target.value} defaultValue={allCategory.current.category_name} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
-                        </div>
-                    </div>
-
-                    <Box align='right' className='mt-3'>
-                        <Button className='cancel_btn me-3' onClick={() => setOpen1(false)}>Cancel</Button>
-                        <Button variant="contained" onClick={updateCategory}>Update</Button>
-                    </Box>
-                </Box> */}
+                
 
             </Dialog>
 

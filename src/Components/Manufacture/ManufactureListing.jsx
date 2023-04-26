@@ -3,10 +3,12 @@ import { Backdrop, Box, Button, Dialog, Table, TableBody, TableCell, TableHead, 
 import React, { useEffect, useRef, useState } from "react";
 import { Triangle } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
-import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
-import { addManufacturers, editManufacturers, getAllManufacturers, getManufacturerById } from "../../services/Manufacture";
+import { Delete, Edit } from "@mui/icons-material";
+import { addManufacturers, deleteManufacturers, editManufacturers, getAllManufacturers, getManufacturerById } from "../../services/Manufacture";
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../auth/Firebase";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const ManufactureListing = () => {
 
@@ -48,13 +50,38 @@ export const ManufactureListing = () => {
     function deleteManufacturer() {
         setDeleteModel(false)
         setLoader(true)
-        console.log(deletedComp)
-            (deletedComp.id)
+        if (deletedComp.icon !== '') {
+
+            const storage = getStorage();
+            const desertRef = ref(storage, deletedComp.icon);
+            deleteObject(desertRef)
+                .then(() => {
+                    console.log("image deleted");
+                    deleteManufacturers(deletedComp.id)
+                    .then(res => {
+                        let arr = [...allManufecture]
+                    arr.splice(deletedComp.index, 1)
+                    setManufacture(arr)
+                        setLoader(false)
+                    })
+                    .catch(err => console.log(err))
+                })
+                .catch((error) => { });
+
+        } else {
+            deleteManufacturers(deletedComp.id)
             .then(res => {
-                setManufacture([...allManufecture].splice(deletedComp.index, 1))
+                    let arr = [...allManufecture]
+                    arr.splice(deletedComp.index, 1)
+                    setManufacture(arr)
                 setLoader(false)
             })
             .catch(err => console.log(err))
+        }
+
+
+
+       
     }
 
     async function addManufacturer(e) {
@@ -177,9 +204,10 @@ export const ManufactureListing = () => {
         }
         setLocalImg('')
         setImg({})
+        
     }
 
-    async function getManufacturerByIdd(idd,icon) {
+    async function getManufacturerByIdd(idd, icon) {
         setLoader(true)
         setImgURL(icon)
         setId(idd)
@@ -224,7 +252,7 @@ export const ManufactureListing = () => {
                     <Box>Are you sure you want to delete?</Box>
                     <Box align='right'>
                         <Button className='cancel_btn me-3' onClick={() => setDeleteModel(!deleteModel)}>Cancel</Button>
-                        <Button variant="contained" >Delete</Button>
+                        <Button variant="contained" onClick={deleteManufacturer}>Delete</Button>
                     </Box>
                 </Box>
 
@@ -249,25 +277,27 @@ export const ManufactureListing = () => {
                 </Box>
             </Backdrop>
 
-            {/* Add Brand Dialog Box */}
+            {/* Add Manufacturer Dialog Box */}
             <Dialog
                 open={open}
-                maxWidth={'sm'}
+                maxWidth={'xs'}
                 fullWidth={true}
             >
-                <Box p={3}>
-                    <Typography variant="h5" className="text-center mb-2">Add Manufacture</Typography>
-                    <div className="container-fluid p-0 m-0">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="col-md-12"><small><b>Manufacture Name:</b></small></div>
+                <Box py={2} px={1} className='over-flow-hide-x'>
+                    <h5 className="px-3">Add New Manufacturer</h5>
+                    <hr />
+                    <form onSubmit={addManufacturer}>
+                        <div className="container-fluid">
+                            <div className="row">
+
                                 <div className="col-md-12">
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Manufacturer Name:</b></small></div>
                                     <input type='text'
                                         onChange={(e) => manufacturerData.current.manufacturer_name = e.target.value}
                                         placeholder="Enter Manufacturer Name" className="form-control w-100 mb-2" />
                                 </div>
-                                <div className="col-md-12"><small><b>Manufacture Description:</b></small></div>
                                 <div className="col-md-12">
+                                    <div className="py-2"><small><b>Manufacturer Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
                                         onChange={(e) => manufacturerData.current.manufacturer_description = e.target.value}
@@ -276,80 +306,72 @@ export const ManufactureListing = () => {
 
                                     />
                                 </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
-                                <div className="col-md-12 d-flex justify-content-center py-2">
-                                    <div className="border w-50 px-2">
-                                        <img className="w-100 h" src={localImg !== undefined && localImg ? localImg : 'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
+                                <div className="col-md-12">
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Add Manufacturer Icon:</b></small></div>
+                                    <div className="d-flex">
+                                        {localImg ?
+                                            <div className="w-25 me-1 relative">
+                                                <CloseIcon onClick={() => {
+                                                    setLocalImg('')
+                                                    setImg({})
+                                                }} className="close-btn-position" />
+                                                <img className="img-style" src={localImg} />
+                                            </div> : ''}
+                                        <div className="w-25">
+                                            <div className="btn img-btn w-100">
+                                                <input type="file" id="2actual-btn" hidden
+                                                    onChange={(e) => {
+                                                        setImg(e.target.files[0])
+                                                        imgPrev(e.target.files[0])
+                                                        e.target.value = ''
+                                                    }}
+                                                />
+                                                <label className="text-center text-gray" htmlFor="2actual-btn">
+                                                    <CloudUploadIcon /><br />
+                                                    <span>Upload</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="col-md-12 text-center">
-                                    <button
-                                        className="pt-1"
-                                        variant="other"
-                                        style={{
-                                            background: "#534ba8",
-                                            color: "#ffffff",
-                                            border: "1px solid #534ba8",
-                                            borderRadius: '5px'
-                                        }}
-                                    >
-                                        <input
-                                            onChange={(e) => {
-                                                setImg(e.target.files[0])
-                                                imgPrev(e.target.files[0])
-                                            }}
-                                            type="file"
-                                            id={`actual-btn`}
-                                            hidden
-                                        />
-                                        <label
-                                            htmlFor={`actual-btn`}
-                                            className="w-100 text-center "
-                                            role="button"
-                                        >
-                                            Upload Icon
-                                        </label>
-                                    </button>
-                                </div>
+                                <Box align='right' className='mt-3'>
+                                    <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                        setOpen(false)
+                                        setLocalImg('')
+                                        manufacturerData.current = {}
+                                    }}>Cancel</span>
+                                    <button className="btn custom-btn py-1 px-3" type="submit">Add</button>
+                                </Box>
                             </div>
-
                         </div>
-
-                    </div>
-
-                    <Box align='right' className='mt-3'>
-                        <Button className='cancel_btn me-3' onClick={() => {
-                            setLocalImg('')
-                            setOpen(false)
-                        }}>Cancel</Button>
-                        <Button variant="contained" sx={{ background: '#534ba8' }} onClick={addManufacturer}>Add</Button>
-                    </Box>
+                    </form>
                 </Box>
 
             </Dialog>
 
-            {/* Edit Brand Dialog Box */}
+            {/* Edit Manufacturer Dialog Box */}
             <Dialog
                 open={open1}
-                maxWidth={'sm'}
+                maxWidth={'xs'}
                 fullWidth={true}
             >
-                <Box p={3}>
-                    <Typography variant="h5" className="text-center mb-2">Edit Manufacture</Typography>
-                    <div className="container-fluid p-0 m-0">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="col-md-12"><small><b>Manufacture Name:</b></small></div>
+
+                <Box py={2} px={1} className='over-flow-hide-x'>
+                    <h5 className="px-3">Edit Manufacturer</h5>
+                    <hr />
+                    <form onSubmit={updateManufacturer}>
+                        <div className="container-fluid">
+                            <div className="row">
+
                                 <div className="col-md-12">
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Manufacturer Name:</b></small></div>
                                     <input type='text'
                                         defaultValue={manufacturerData.current.manufacturer_name}
                                         onChange={(e) => manufacturerData.current.manufacturer_name = e.target.value}
                                         placeholder="Enter Manufacturer Name" className="form-control w-100 mb-2" />
                                 </div>
-                                <div className="col-md-12"><small><b>Manufacture Description:</b></small></div>
                                 <div className="col-md-12">
+                                    <div className="py-2"><small><b>Manufacturer Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
                                         defaultValue={manufacturerData.current.manufacturer_description}
@@ -359,55 +381,45 @@ export const ManufactureListing = () => {
 
                                     />
                                 </div>
-                            </div>
-                            <div className="col-md-6">
-                                <div className="col-md-12 text-center"><small><b>Add Icon</b></small></div>
-                                <div className="col-md-12 d-flex justify-content-center py-2">
-                                    <div className="border w-50 px-2">
-                                        <img className="w-100 h" src={localImg !== undefined && localImg ? localImg : 'https://cdn.iconscout.com/icon/free/png-256/photo-size-select-actual-1782180-1512958.png'} alt='' />
+                                <div className="col-md-12">
+                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Update Manufacturer Icon:</b></small></div>
+                                    <div className="d-flex">
+                                        {localImg ?
+                                            <div className="w-25 me-1 relative">
+                                                <CloseIcon onClick={() => {
+                                                    setLocalImg('')
+                                                    setImg({})
+                                                }} className="close-btn-position" />
+                                                <img className="img-style" src={localImg} />
+                                            </div> : ''}
+                                        <div className="w-25">
+                                            <div className="btn img-btn w-100">
+                                                <input type="file" id="2actual-btn" hidden
+                                                    onChange={(e) => {
+                                                        setImg(e.target.files[0])
+                                                        imgPrev(e.target.files[0])
+                                                        e.target.value = ''
+                                                    }}
+                                                />
+                                                <label className="text-center text-gray" htmlFor="2actual-btn">
+                                                    <CloudUploadIcon /><br />
+                                                    <span>Upload</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="col-md-12 text-center">
-                                    <button
-                                        className="pt-1"
-                                        variant="other"
-                                        style={{
-                                            background: "#534ba8",
-                                            color: "#ffffff",
-                                            border: "1px solid #534ba8",
-                                            borderRadius: '5px'
-                                        }}
-                                    >
-                                        <input
-                                            onChange={(e) => {
-                                                setImg(e.target.files[0])
-                                                imgPrev(e.target.files[0])
-                                            }}
-                                            type="file"
-                                            id={`actual-btn`}
-                                            hidden
-                                        />
-                                        <label
-                                            htmlFor={`actual-btn`}
-                                            className="w-100 text-center "
-                                            role="button"
-                                        >
-                                            Upload Icon
-                                        </label>
-                                    </button>
-                                </div>
+                                <Box align='right' className='mt-3'>
+                                    <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                        setOpen1(false)
+                                        setLocalImg('')
+                                        manufacturerData.current = {}
+                                    }}>Cancel</span>
+                                    <button className="btn custom-btn py-1 px-3" type="submit">Update</button>
+                                </Box>
                             </div>
-
                         </div>
-                    </div>
-
-                    <Box align='right' className='mt-3'>
-                        <Button className='cancel_btn me-3' onClick={() => {
-                            setLocalImg('')
-                            setOpen1(false)
-                        }}>Cancel</Button>
-                        <Button variant="contained" sx={{ background: '#534ba8' }} onClick={updateManufacturer}>Update</Button>
-                    </Box>
+                    </form>
                 </Box>
 
             </Dialog>
@@ -436,11 +448,11 @@ export const ManufactureListing = () => {
                                     <TableCell>{res.manufacturer_name}</TableCell>
                                     <TableCell>
                                         <Delete sx={{ cursor: 'pointer' }} onClick={() => {
-                                            setDeletedComp({ id: res._id, index })
+                                            setDeletedComp({ id: res._id, index, icon: res.manufacturer_icon })
                                             setDeleteModel(!deleteModel)
                                         }} />
                                         <Edit sx={{ cursor: 'pointer' }} onClick={() => {
-                                            getManufacturerByIdd(res._id,res.manufacturer_icon)
+                                            getManufacturerByIdd(res._id, res.manufacturer_icon)
                                             setOpen1(true)
                                         }} />
                                     </TableCell>
