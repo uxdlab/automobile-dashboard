@@ -119,7 +119,7 @@ export const ModelListing = () => {
         setLoader(true)
         setOpen(false)
         modelData.current.model_segment_array = selectSegment
-        modelData.current.model_brand_array = selectBrand
+        // modelData.current.model_brand_array = selectBrand
         if (img.name !== undefined) {
             const storageRef = ref(storage, img.name);
             const uploadTask = uploadBytesResumable(storageRef, img);
@@ -261,7 +261,7 @@ export const ModelListing = () => {
                     setLocalImg(modelData.current.model_icon)
                 }
                 setSelectSegment(modelData.current.model_segment_array)
-                setSelectBrand(modelData.current.model_brand_array)
+                // setSelectBrand(modelData.current.model_brand_array)
                 setLoader(false)
                 setOpen1(true)
             }).catch((err) => {
@@ -300,6 +300,19 @@ export const ModelListing = () => {
         } else {
             setLocalImg(undefined)
         }
+    }
+
+    function filterd(fil) {
+        setSelectSegment([fil])
+        let newArr = []
+        allBrand.map((res) => {
+            res.segment_array.map((res2) => {
+                if (res2 == fil) {
+                    newArr.push(res)
+                }
+            })
+        })
+        setSelectBrand([...newArr])
     }
 
     return (
@@ -357,7 +370,7 @@ export const ModelListing = () => {
                                         className="select-style"
                                         fullWidth
                                         required
-                                        onChange={(e)=>setSelectSegment([e.target.value])}
+                                        onChange={(e)=>filterd(e.target.value)}
                                     >
                                         {allSegment.map((item, index) => (
                                             <MenuItem
@@ -375,10 +388,10 @@ export const ModelListing = () => {
                                         className="select-style"
                                         fullWidth
                                         required
-                                        onChange={(e)=>setSelectBrand([e.target.value])}
+                                        onChange={(e)=> modelData.current.model_brand_array =[e.target.value]}
                                         
                                     >
-                                        {allBrand.map((item, index) => (
+                                        {selectBrand.map((item, index) => (
                                             <MenuItem
                                                 key={index}
                                                 value={item._id}
@@ -481,10 +494,10 @@ export const ModelListing = () => {
                                         className="select-style"
                                         fullWidth
                                         required
-                                        defaultValue={selectBrand[0]}
-                                        onChange={(e)=>setSelectBrand([e.target.value])}
+                                        defaultValue={modelData.current.model_brand_array[0]}
+                                        onChange={(e)=> modelData.current.model_brand_array = [e.target.value]}
                                     >
-                                        {allBrand.map((item, index) => (
+                                        {selectBrand.map((item, index) => (
                                             <MenuItem
                                                 key={index}
                                                 value={item._id}
