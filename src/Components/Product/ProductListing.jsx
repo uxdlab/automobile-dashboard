@@ -16,10 +16,10 @@ export default function ProductListing() {
         getAllProduct()
     }, [])
     function getAllProduct() {
-        getAllItem().then((res)=>{
-            
+        getAllItem().then((res) => {
+            console.log(res)
             setAllProduct(res.data.data)
-        }).catch((err)=>{
+        }).catch((err) => {
             console.log(err)
         })
         setLoader(false)
@@ -37,8 +37,8 @@ export default function ProductListing() {
             .catch(err => console.log(err))
     }
 
-  return (
-    <>
+    return (
+        <>
             <Dialog
                 open={deleteModel}
                 maxWidth={'sm'}
@@ -121,7 +121,7 @@ export default function ProductListing() {
                 </Table>
             </div>
 
-        
-    </>
-  )
+
+        </>
+    )
 }

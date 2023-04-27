@@ -33,10 +33,10 @@ export const apis = {
     },
     items: {
         add: 'product/addProduct',
-        getAll: 'item/get/All',
-        get: 'item/',
-        delete:'item/delete/',
-        edit:'item/updateItem/'
+        getAll: 'product/get/All',
+        get: 'product/',
+        delete:'product/delete/',
+        edit:'product/updateItem/'
     },
     manufacture: {
         add: 'manufacturer/addManufacturer/',
@@ -44,7 +44,9 @@ export const apis = {
         get: 'manufacturer/',
         delete:'manufacturer/deleteManufacturer/',
         edit:'manufacturer/updateManufacturer/'
-    }
+    },
+    getAllData:'vehicle/getSegmentBrandModel/all'
+
 
 
 
