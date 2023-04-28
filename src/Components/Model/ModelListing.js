@@ -13,12 +13,14 @@ import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } f
 import { storage } from "../../auth/Firebase";
 import { VehicleClass } from "../../services/Vehicle";
 import { CompanyClass } from "../../services/Company";
+import { CallMultipleApi } from "../../services/CallMultipleApi";
 
 export const ModelListing = () => {
     const theme = useTheme();
     const [loader, setLoader] = useState(true)
     const [selectSegment, setSelectSegment] = useState([])
     const [selectBrand, setSelectBrand] = useState([])
+    const [seleBrand, setSeleBrand] = useState([])
     console.log(selectSegment)
     console.log(selectBrand)
     const [allData, setData] = useState([])
@@ -52,8 +54,7 @@ export const ModelListing = () => {
     );
     useEffect(() => {
         getAllModels()
-        getAllSegment()
-        getAllBrand()
+        getSegmentBrand()
     }, [])
     function getAllModels() {
         setLoader(true)
@@ -91,21 +92,21 @@ export const ModelListing = () => {
                 .then(() => {
                     console.log("image deleted");
                     ModelClass.deleteModel(deleteMod.id)
-            .then(res => {
-                console.log(res)
-                getAllModels()
-            })
-            .catch(err => console.log(err))
+                        .then(res => {
+                            console.log(res)
+                            getAllModels()
+                        })
+                        .catch(err => console.log(err))
                 })
                 .catch((error) => { });
 
         } else {
             ModelClass.deleteModel(deleteMod.id)
-            .then(res => {
-                console.log(res)
-                getAllModels()
-            })
-            .catch(err => console.log(err))
+                .then(res => {
+                    console.log(res)
+                    getAllModels()
+                })
+                .catch(err => console.log(err))
         }
         setSelectSegment([])
         setSelectBrand([])
@@ -119,7 +120,7 @@ export const ModelListing = () => {
         setLoader(true)
         setOpen(false)
         modelData.current.model_segment_array = selectSegment
-        // modelData.current.model_brand_array = selectBrand
+        modelData.current.model_brand_array = seleBrand
         if (img.name !== undefined) {
             const storageRef = ref(storage, img.name);
             const uploadTask = uploadBytesResumable(storageRef, img);
@@ -189,14 +190,14 @@ export const ModelListing = () => {
                                     modelData.current.model_icon = url
                                     // console.log(brandData.current.brand_image)
                                     ModelClass.editModel(id, modelData.current)
-                                    .then((res) => {
-                                        console.log(res)
-                                        setLoader(false)
-                                        getAllModels()
-                                    }).catch((err) => {
-                                        console.log(err)
-                                        setLoader(false)
-                                    })
+                                        .then((res) => {
+                                            console.log(res)
+                                            setLoader(false)
+                                            getAllModels()
+                                        }).catch((err) => {
+                                            console.log(err)
+                                            setLoader(false)
+                                        })
                                 });
                             })
 
@@ -216,14 +217,14 @@ export const ModelListing = () => {
                             console.log(url)
                             modelData.current.model_icon = url
                             ModelClass.editModel(id, modelData.current)
-                            .then((res) => {
-                                console.log(res)
-                                setLoader(false)
-                                getAllModels()
-                            }).catch((err) => {
-                                console.log(err)
-                                setLoader(false)
-                            })
+                                .then((res) => {
+                                    console.log(res)
+                                    setLoader(false)
+                                    getAllModels()
+                                }).catch((err) => {
+                                    console.log(err)
+                                    setLoader(false)
+                                })
                         });
                     })
             }
@@ -231,24 +232,24 @@ export const ModelListing = () => {
         } else {
             console.log(modelData.current)
             ModelClass.editModel(id, modelData.current)
-            .then((res) => {
-                console.log(res)
-                setLoader(false)
-                getAllModels()
-            }).catch((err) => {
-                console.log(err)
-                setLoader(false)
-            })
+                .then((res) => {
+                    console.log(res)
+                    setLoader(false)
+                    getAllModels()
+                }).catch((err) => {
+                    console.log(err)
+                    setLoader(false)
+                })
         }
         setLocalImg('')
         setImg({})
         setSelectSegment([])
         setSelectBrand([])
 
-       
+
     }
 
-    async function getModelById(idd,icon) {
+    async function getModelById(idd, icon) {
         setLoader(true)
         setImgURL(icon)
         setId(idd)
@@ -261,7 +262,20 @@ export const ModelListing = () => {
                     setLocalImg(modelData.current.model_icon)
                 }
                 setSelectSegment(modelData.current.model_segment_array)
-                // setSelectBrand(modelData.current.model_brand_array)
+                let arr = modelData.current.model_brand_array[0]
+                let newArr = []
+                console.log(arr)
+                console.log(allBrand)
+                allBrand.map((res) => {
+                    res.segment_array.map((res2) => {
+                        if (res2 == selectSegment[0]) {
+                            newArr.push(res)
+                        }
+                    })
+                })
+                console.log(newArr)
+                setSelectBrand([...newArr])
+                setSeleBrand(modelData.current.model_brand_array)
                 setLoader(false)
                 setOpen1(true)
             }).catch((err) => {
@@ -270,25 +284,17 @@ export const ModelListing = () => {
             })
     }
 
-    async function getAllSegment() {
-        VehicleClass.getAllVehicles()
+    async function getSegmentBrand() {
+        VehicleClass.getSegmentBrandModel()
             .then((res) => {
                 console.log(res.data.data)
-                setSegment(res.data.data)
+                setSegment(res.data.data.segmentData)
+                setAllBrand(res.data.data.brandData)
             }).catch((err) => {
                 console.log(err)
             })
     }
 
-    async function getAllBrand() {
-        CompanyClass.getAllCompany()
-            .then((res) => {
-                console.log(res.data.data)
-                setAllBrand(res.data.data)
-            }).catch((err) => {
-                console.log(err)
-            })
-    }
 
     const imgPrev = (imgs) => {
         console.log('okkkkkkkkkkkkkkkkkkkkkkk')
@@ -370,7 +376,7 @@ export const ModelListing = () => {
                                         className="select-style"
                                         fullWidth
                                         required
-                                        onChange={(e)=>filterd(e.target.value)}
+                                        onChange={(e) => filterd(e.target.value)}
                                     >
                                         {allSegment.map((item, index) => (
                                             <MenuItem
@@ -388,8 +394,7 @@ export const ModelListing = () => {
                                         className="select-style"
                                         fullWidth
                                         required
-                                        onChange={(e)=> modelData.current.model_brand_array =[e.target.value]}
-                                        
+                                        onChange={(e) => setSeleBrand([e.target.value])}
                                     >
                                         {selectBrand.map((item, index) => (
                                             <MenuItem
@@ -403,13 +408,26 @@ export const ModelListing = () => {
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Model Name:</b></small></div>
-                                    <input type='text' onChange={(e) => modelData.current.model_name = e.target.value} placeholder="Enter Model Name" className="form-control w-100 mb-2" />
+                                    <input type='text' required onChange={(e) =>{ 
+                                        if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                modelData.current.model_name = e.target.value} 
+                                            }
+                                        }
+                                            placeholder="Enter Model Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Model Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
-                                        onChange={(e) => modelData.current.model_description = e.target.value}
+                                        onChange={(e) =>
+                                            {
+                                                if(e.target.value == ' '){
+                                                    e.target.value = ''
+                                                }else{
+                                                    modelData.current.model_description = e.target.value} 
+                                            } }
                                         rows='3'
                                         placeholder='Enter Description'
 
@@ -476,7 +494,7 @@ export const ModelListing = () => {
                                         fullWidth
                                         required
                                         defaultValue={selectSegment[0]}
-                                        onChange={(e)=>setSelectSegment([e.target.value])}
+                                        onChange={(e) => setSelectSegment([e.target.value])}
                                     >
                                         {allSegment.map((item, index) => (
                                             <MenuItem
@@ -494,8 +512,8 @@ export const ModelListing = () => {
                                         className="select-style"
                                         fullWidth
                                         required
-                                        defaultValue={modelData.current.model_brand_array[0]}
-                                        onChange={(e)=> modelData.current.model_brand_array = [e.target.value]}
+                                        defaultValue={seleBrand[0]}
+                                        onChange={(e) => setSeleBrand([e.target.value])}
                                     >
                                         {selectBrand.map((item, index) => (
                                             <MenuItem
@@ -551,7 +569,7 @@ export const ModelListing = () => {
                                     </div>
                                 </div>
                                 <Box align='right' className='mt-3'>
-                                <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                    <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
                                         setOpen1(false)
                                         setLocalImg('')
                                     }}>Cancel</span>
@@ -583,13 +601,13 @@ export const ModelListing = () => {
                                         <TableCell>
                                             {/* <RemoveRedEye onClick={() => navigate(`/model/${res._id}`)} /> */}
                                             <Delete
-                                            className="pointer"
+                                                className="pointer"
                                                 onClick={() => {
-                                                    setDeletedMod({ id: res._id, index ,icon:res.model_icon})
+                                                    setDeletedMod({ id: res._id, index, icon: res.model_icon })
                                                     setDeleteModel(true)
                                                 }}
                                             />
-                                            <Edit className="pointer" onClick={() => getModelById(res._id,res.model_icon)} />
+                                            <Edit className="pointer" onClick={() => getModelById(res._id, res.model_icon)} />
                                         </TableCell>
                                     </TableRow>
                                 )

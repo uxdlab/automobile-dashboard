@@ -28,5 +28,9 @@ export class VehicleClass extends React.Component {
         return await axios.delete(`${apis.baseUrl}${apis.vehicle.delete}/${id}`)
 
     }
+    static async getSegmentBrandModel() {
+        return await axios.get(`${apis.baseUrl}${apis.getAllData}`)
+
+    }
 
 }
