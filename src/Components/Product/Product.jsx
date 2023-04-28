@@ -122,7 +122,7 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                     <input type='number' placeholder='Enter In Rupees' onChange={(e) => AllProducts.current[index].MRP = e.target.value} defaultValue={productData ? productData[0].MRP : ''}  className="form-control w-100" />
                                 </Grid>
                                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                    <label>Select Sagment :</label><br />
+                                    <label>Select Segment :</label><br />
                                     <Select
                                         className="select-style"
                                         fullWidth
