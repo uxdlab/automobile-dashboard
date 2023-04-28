@@ -333,13 +333,28 @@ export const SegmentListing = () => {
 
                                     <div className="col-md-12">
                                         <div className="py-2"><small><b><span className='text-danger'>*</span>Segment Name:</b></small></div>
-                                        <input type='text' required onChange={(e) => segmentData.current.vehicle_name = e.target.value} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
+                                        <input type='text' required onChange={(e) =>
+                                        {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                segmentData.current.vehicle_name = e.target.value} 
+                                        }
+                                             
+                                             } placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
                                     </div>
                                     <div className="col-md-12">
                                         <div className="py-2"><small><b>Segment Description:</b></small></div>
                                         <textarea
                                             className="w-100 form-control"
-                                            onChange={(e) => segmentData.current.vehicle_description = e.target.value}
+                                            onChange={(e) => 
+                                                {
+                                                    if(e.target.value == ' '){
+                                                        e.target.value = ''
+                                                    }else{
+                                                        segmentData.current.vehicle_description = e.target.value} 
+                                                }
+                                                }
                                             rows='3'
                                             placeholder='Enter Description'
 
@@ -401,14 +416,25 @@ export const SegmentListing = () => {
 
                                     <div className="col-md-12">
                                         <div className="py-2"><small><b><span className='text-danger'>*</span>Segment Name:</b></small></div>
-                                        <input type='text' onChange={(e) => segmentData.current.vehicle_name = e.target.value} defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
+                                        <input type='text' required onChange={(e) =>
+                                        {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                segmentData.current.vehicle_name = e.target.value}
+                                        }
+                                            } defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
                                     </div>
                                     <div className="col-md-12">
                                         <div className="py-2"><small><b>Segment Description:</b></small></div>
                                         <textarea
                                             defaultValue={segmentData.current.vehicle_description}
                                             className="w-100 form-control"
-                                            onChange={(e) => segmentData.current.vehicle_description = e.target.value}
+                                            onChange={(e) => 
+                                                {if(e.target.value == ' '){
+                                                    e.target.value = ''
+                                                }else{
+                                                    segmentData.current.vehicle_description = e.target.value}}}
                                             rows='3'
                                             placeholder='Enter Description'
                                         />

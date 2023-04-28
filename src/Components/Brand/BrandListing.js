@@ -368,13 +368,25 @@ export const BrandListing = () => {
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Brand Name:</b></small></div>
-                                    <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
+                                    <input type='text' required onChange={(e) =>
+                                        {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                brandData.current.brand_name = e.target.value}
+                                        } } placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Brand Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
-                                        onChange={(e) => brandData.current.brand_description = e.target.value}
+                                        onChange={(e) =>
+                                        {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                brandData.current.brand_description = e.target.value}
+                                        }}
                                         rows='3'
                                         placeholder='Enter Description'
 
@@ -464,14 +476,28 @@ export const BrandListing = () => {
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Brand Name:</b></small></div>
-                                    <input type='text' onChange={(e) => brandData.current.brand_name = e.target.value} defaultValue={brandData.current.brand_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
+                                    <input type='text' required onChange={(e) =>
+                                    {
+                                        if(e.target.value == ' '){
+                                            e.target.value = ''
+                                        }else{
+                                            brandData.current.brand_name = e.target.value}
+                                    }
+                                       } defaultValue={brandData.current.brand_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Brand Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
                                         defaultValue={brandData.current.brand_description}
-                                        onChange={(e) => brandData.current.brand_description = e.target.value}
+                                        onChange={(e) => 
+                                            {
+                                                if(e.target.value == ' '){
+                                                    e.target.value = ''
+                                                }else{
+                                                    brandData.current.brand_description = e.target.value}
+                                            }
+                                            }
                                         rows='3'
                                         placeholder='Enter Description'
 
