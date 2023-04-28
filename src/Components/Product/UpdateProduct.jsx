@@ -59,7 +59,7 @@ export default function UpdateProduct() {
                     />
                 </Box>
             </Backdrop>
-            <Typography variant="h4" mx={2} mt={2}>Edit Product</Typography>
+            <Typography variant="h4" className='text-center' mx={2} mt={2}>Edit Product</Typography>
             {!loader ?
                 <Box>
                     <form onSubmit={formSubmit}>

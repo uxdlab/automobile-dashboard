@@ -4,11 +4,15 @@ import { useNavigate } from "react-router";
 import { Triangle } from "react-loader-spinner";
 import Product from './Product';
 import { addItem } from '../../services/Item';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '../../auth/Firebase';
 
 
 export default function AddProduct() {
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false)
+    const [files,setFiles] = useState([])
+    const [forUpload,setForUpload] = useState([])
     const AllProducts = useRef([
         {
             product_name:'',
@@ -25,10 +29,41 @@ export default function AddProduct() {
         }
     ])
 
-    const submitForm = (e) => {
+    const submitForm = async (e) => {
         e.preventDefault()
+        const promises = []
         setLoader(true)
-        addItem(AllProducts.current[0])
+        if(files.length!==0){
+           files.map((item)=>{
+                const storageRef = ref(storage, item.name);
+                const uploadTask = uploadBytesResumable(storageRef, item);
+                promises.push(uploadTask)
+                 uploadTask.on(
+                    "state_changed",
+                    (snapshot) => { },
+                    (err) => console.log(err),
+                    async () => {
+                        return await getDownloadURL(uploadTask.snapshot.ref)
+                    })
+            })
+
+            Promise.all(promises)
+            .then((res)=>{
+                console.log(res)
+                AllProducts.current.image = forUpload
+                console.log(AllProducts.current.image)
+                addItem(AllProducts.current[0])
+                .then((res) => {
+                    console.log(res)
+                    setLoader(false)
+                    navigate('/product')
+                }).catch((err) => {
+                    console.log(err)
+                })
+            }).catch((err)=>console.log(err))
+            
+        } else{
+            addItem(AllProducts.current[0])
             .then((res) => {
                 console.log(res)
                 setLoader(false)
@@ -36,6 +71,9 @@ export default function AddProduct() {
             }).catch((err) => {
                 console.log(err)
             })
+        }
+
+       
     }
     return (
         <>
@@ -56,13 +94,15 @@ export default function AddProduct() {
                 </Box>
             </Backdrop>
 
-            <Typography variant="h4" mx={2} mt={2}>Add Product</Typography>
+            <Typography variant="h4" className='text-center' mx={2} mt={2}>Add Product</Typography>
             {!loader ?
 
                 <form onSubmit={submitForm}>
                     {AllProducts.current.map((pro, index) => {
                         return (
                             <Product
+                                files = {files}
+                                setFiles = {setFiles}
                                 key={index}
                                 AllProducts={AllProducts}
                                 index={index}
@@ -71,9 +111,9 @@ export default function AddProduct() {
                         )
                     })}
 
-                    <Grid container>
-                        <Grid item xl={7} md={9} sm={12} sx={12}>
-                            <Box align='right' px={3} mt={6}>
+                    <Grid container className='d-flex justify-content-center pb-5'>
+                        <Grid item xl={5} md={6} sm={12} sx={12}>
+                            <Box align='right'  mt={6}>
                                 <Button className="cancel_btn me-3" onClick={() => navigate('/category')}>Cancel</Button>
                                 <Button type='submit' variant="contained">Save</Button>
                             </Box>

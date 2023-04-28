@@ -494,7 +494,7 @@ export const ModelListing = () => {
                                         fullWidth
                                         required
                                         defaultValue={selectSegment[0]}
-                                        onChange={(e) => setSelectSegment([e.target.value])}
+                                        onChange={(e) => filterd(e.target.value)}
                                     >
                                         {allSegment.map((item, index) => (
                                             <MenuItem

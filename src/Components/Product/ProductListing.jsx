@@ -96,7 +96,7 @@ export default function ProductListing() {
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{res.spare_partname}</TableCell>
+                                    <TableCell>{res.product_name}</TableCell>
                                     <TableCell>{res.oe_reference_number}</TableCell>
                                     <TableCell>{res.ke_partNumber}</TableCell>
                                     <TableCell>{res.MRP}</TableCell>
