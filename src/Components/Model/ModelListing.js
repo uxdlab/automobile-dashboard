@@ -262,20 +262,20 @@ export const ModelListing = () => {
                     setLocalImg(modelData.current.model_icon)
                 }
                 setSelectSegment(modelData.current.model_segment_array)
-                let arr = modelData.current.model_brand_array[0]
+                setSeleBrand(modelData.current.model_brand_array)
+                let arr = modelData.current.model_segment_array[0]
                 let newArr = []
                 console.log(arr)
                 console.log(allBrand)
                 allBrand.map((res) => {
                     res.segment_array.map((res2) => {
-                        if (res2 == selectSegment[0]) {
+                        if (res2 == modelData.current.model_segment_array[0]) {
                             newArr.push(res)
                         }
                     })
                 })
                 console.log(newArr)
                 setSelectBrand([...newArr])
-                setSeleBrand(modelData.current.model_brand_array)
                 setLoader(false)
                 setOpen1(true)
             }).catch((err) => {
@@ -527,14 +527,28 @@ export const ModelListing = () => {
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Model Name:</b></small></div>
-                                    <input type='text' onChange={(e) => modelData.current.model_name = e.target.value} defaultValue={modelData.current.model_name} placeholder="Enter Model Name" className="form-control w-100 mb-2" />
+                                    <input type='text' onChange={(e) => {
+                                         if(e.target.value == ' '){
+                                            e.target.value = ''
+                                        }else{
+                                            modelData.current.model_name = e.target.value} 
+                                        }
+                                    }
+                                       
+                                         defaultValue={modelData.current.model_name} placeholder="Enter Model Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Model Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
                                         defaultValue={modelData.current.model_description}
-                                        onChange={(e) => modelData.current.model_description = e.target.value}
+                                        onChange={(e) =>
+                                            {
+                                                if(e.target.value == ' '){
+                                                    e.target.value = ''
+                                                }else{
+                                                    modelData.current.model_description = e.target.value} 
+                                            } }
                                         rows='3'
                                         placeholder='Enter Description'
 
