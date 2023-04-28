@@ -295,14 +295,27 @@ export const ManufactureListing = () => {
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Manufacturer Name:</b></small></div>
                                     <input type='text'
-                                        onChange={(e) => manufacturerData.current.manufacturer_name = e.target.value}
+                                    required
+                                        onChange={(e) =>
+                                            {
+                                                if(e.target.value == ' '){
+                                                    e.target.value = ''
+                                                }else{
+                                                    manufacturerData.current.manufacturer_name = e.target.value}
+                                            } }
                                         placeholder="Enter Manufacturer Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Manufacturer Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
-                                        onChange={(e) => manufacturerData.current.manufacturer_description = e.target.value}
+                                        onChange={(e) =>
+                                            {
+                                                if(e.target.value == ' '){
+                                                    e.target.value = ''
+                                                }else{
+                                                    manufacturerData.current.manufacturer_description = e.target.value}
+                                            } }
                                         rows='3'
                                         placeholder='Enter Description'
 
@@ -368,8 +381,14 @@ export const ManufactureListing = () => {
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Manufacturer Name:</b></small></div>
                                     <input type='text'
+                                    required
                                         defaultValue={manufacturerData.current.manufacturer_name}
-                                        onChange={(e) => manufacturerData.current.manufacturer_name = e.target.value}
+                                        onChange={(e) =>{
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                manufacturerData.current.manufacturer_name = e.target.value}
+                                        } }
                                         placeholder="Enter Manufacturer Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
@@ -377,7 +396,12 @@ export const ManufactureListing = () => {
                                     <textarea
                                         className="w-100 form-control"
                                         defaultValue={manufacturerData.current.manufacturer_description}
-                                        onChange={(e) => manufacturerData.current.manufacturer_description = e.target.value}
+                                        onChange={(e) => {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                manufacturerData.current.manufacturer_description = e.target.value}
+                                        }}
                                         rows='3'
                                         placeholder='Enter Description'
 

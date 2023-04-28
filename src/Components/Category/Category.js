@@ -295,13 +295,25 @@ export const Category = () => {
 
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Category Name:</b></small></div>
-                                    <input type='text' onChange={(e) => allCategory.current.category_name = e.target.value} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
+                                    <input type='text' required onChange={(e) =>
+                                        {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                allCategory.current.category_name = e.target.value}
+                                        } } placeholder="Enter Category Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Category Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
-                                        onChange={(e) => allCategory.current.category_description = e.target.value}
+                                        onChange={(e) => 
+                                            {
+                                                if(e.target.value == ' '){
+                                                    e.target.value = ''
+                                                }else{
+                                                    allCategory.current.category_description = e.target.value}
+                                            }}
                                         rows='3'
                                         placeholder='Enter Description'
 
@@ -364,14 +376,25 @@ export const Category = () => {
 
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Category Name:</b></small></div>
-                                    <input type='text' onChange={(e) => allCategory.current.category_name = e.target.value} defaultValue={allCategory.current.category_name} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
+                                    <input type='text' required onChange={(e) =>
+                                        {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                allCategory.current.category_name = e.target.value}
+                                        } } defaultValue={allCategory.current.category_name} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Category Description:</b></small></div>
                                     <textarea
                                         defaultValue={allCategory.current.category_description}
                                         className="w-100 form-control"
-                                        onChange={(e) => allCategory.current.category_description = e.target.value}
+                                        onChange={(e) => {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                allCategory.current.category_description = e.target.value}
+                                        }}
                                         rows='3'
                                         placeholder='Enter Description'
                                     />
