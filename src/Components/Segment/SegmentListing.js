@@ -60,50 +60,48 @@ export const SegmentListing = () => {
         console.log(deleteVeh.icon)
         setDeleteModel(false)
         setLoader(true)
-        if (deleteVeh.icon !== '') {
-
-            const storage = getStorage();
-            const desertRef = ref(storage, deleteVeh.icon);
-            deleteObject(desertRef)
-                .then(() => {
-                    console.log("image deleted");
-                    VehicleClass.deleteVehicle(deleteVeh.id)
-                        .then(res => {
-                            console.log(res)
-                            let arr = [...allVehicles]
-                            arr.splice(deleteVeh.index, 1)
-                            setAllVehicles(arr)
-                            setLoader(false)
-                            ShowSnackbar({
-                                show: true,
-                                vertical: "top",
-                                horizontal: "right",
-                                msg: "Segment Deleted successfully",
-                                type: "success",
-                              });
-                        })
-                        .catch(err => console.log(err))
-                })
-                .catch((error) => { });
-
-        } else {
-            VehicleClass.deleteVehicle(deleteVeh.id)
-                .then(res => {
-                    console.log(res)
-                    let arr = [...allVehicles]
-                    arr.splice(deleteVeh.index, 1)
-                    setAllVehicles(arr)
-                    setLoader(false)
-                    ShowSnackbar({
-                        show: true,
-                        vertical: "top",
-                        horizontal: "right",
-                        msg: "Segment Deleted successfully",
-                        type: "success",
-                      });
-                })
-                .catch(err => console.log(err))
-        }
+        VehicleClass.deleteVehicle(deleteVeh.id)
+        .then(res => {
+            console.log(res)
+            let arr = [...allVehicles]
+            arr.splice(deleteVeh.index, 1)
+            setAllVehicles(arr)
+            if (deleteVeh.icon !== '') {
+                const storage = getStorage();
+                const desertRef = ref(storage, deleteVeh.icon);
+                deleteObject(desertRef)
+                    .then(() => {
+                        console.log("image deleted");
+                        VehicleClass.deleteVehicle(deleteVeh.id)
+                            .then(res => {
+                                console.log(res)
+                                let arr = [...allVehicles]
+                                arr.splice(deleteVeh.index, 1)
+                                setAllVehicles(arr)
+                                setLoader(false)
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Segment Deleted successfully",
+                                    type: "success",
+                                  });
+                            })
+                            .catch(err => console.log(err))
+                    })
+                    .catch((error) => { });
+            }
+            setLoader(false)
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Segment Deleted successfully",
+                type: "success",
+              });
+        })
+        .catch(err => console.log(err))
+       
 
     }
 
@@ -396,7 +394,7 @@ export const SegmentListing = () => {
                                             if(e.target.value == ' '){
                                                 e.target.value = ''
                                             }else{
-                                                segmentData.current.vehicle_name = e.target.value} 
+                                                segmentData.current.vehicle_name = e.target.value.trim()} 
                                         }
                                              
                                              } placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
@@ -410,7 +408,7 @@ export const SegmentListing = () => {
                                                     if(e.target.value == ' '){
                                                         e.target.value = ''
                                                     }else{
-                                                        segmentData.current.vehicle_description = e.target.value} 
+                                                        segmentData.current.vehicle_description = e.target.value.trim()} 
                                                 }
                                                 }
                                             rows='3'
@@ -479,7 +477,7 @@ export const SegmentListing = () => {
                                             if(e.target.value == ' '){
                                                 e.target.value = ''
                                             }else{
-                                                segmentData.current.vehicle_name = e.target.value}
+                                                segmentData.current.vehicle_name = e.target.value.trim()}
                                         }
                                             } defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
                                     </div>
@@ -492,7 +490,7 @@ export const SegmentListing = () => {
                                                 {if(e.target.value == ' '){
                                                     e.target.value = ''
                                                 }else{
-                                                    segmentData.current.vehicle_description = e.target.value}}}
+                                                    segmentData.current.vehicle_description = e.target.value.trim()}}}
                                             rows='3'
                                             placeholder='Enter Description'
                                         />
@@ -549,7 +547,8 @@ export const SegmentListing = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell><b>Sno.</b></TableCell>
-                                <TableCell><b>Segment name</b></TableCell>
+                                <TableCell className="w-25"><b>Icon</b></TableCell>
+                                <TableCell ><b>Segment name</b></TableCell>
                                 <TableCell><b>Status</b></TableCell>
                                 {/* <TableCell><b>Icon</b></TableCell> */}
                                 <TableCell><b>Action</b></TableCell>
@@ -561,6 +560,7 @@ export const SegmentListing = () => {
                                     return (
                                         <TableRow key={index}>
                                             <TableCell>{index + 1}</TableCell>
+                                            <TableCell><img className='w-25' src={res.vehicle_icon}/></TableCell>
                                             <TableCell>{res.vehicle_name}</TableCell>
                                             <TableCell><Switch checked={res.is_active} onChange={(e) => switchBtn(e, res._id, index)} /></TableCell>
                                             {/* <TableCell>{res.vehicle_icon}</TableCell> */}
