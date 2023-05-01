@@ -8,9 +8,9 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Sidebar>
+        {/* <Sidebar> */}
           <Router />
-        </Sidebar>
+        {/* </Sidebar> */}
       </BrowserRouter>
     </>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Backdrop, Box, Button, Dialog, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, Paper, Snackbar, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { VehicleClass } from "../../services/Vehicle";
 import { Triangle } from 'react-loader-spinner'
 import { Delete, Edit } from "@mui/icons-material";
@@ -7,6 +7,7 @@ import { storage } from "../../auth/Firebase";
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
+import { SnackBar } from "../Assets/SnackBar";
 
 export const SegmentListing = () => {
 
@@ -16,6 +17,13 @@ export const SegmentListing = () => {
     const [deleteModel, setDeleteModel] = useState(false)
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
+    const [snackbar, ShowSnackbar] = useState({
+    show: false,
+    vertical: "top",
+    horizontal: "right",
+    msg: "data added",
+    type: "error",
+  });
     const [localImg, setLocalImg] = useState()
     console.log(localImg)
     const [img, setImg] = useState({})
@@ -66,6 +74,13 @@ export const SegmentListing = () => {
                             arr.splice(deleteVeh.index, 1)
                             setAllVehicles(arr)
                             setLoader(false)
+                            ShowSnackbar({
+                                show: true,
+                                vertical: "top",
+                                horizontal: "right",
+                                msg: "Segment Deleted successfully",
+                                type: "success",
+                              });
                         })
                         .catch(err => console.log(err))
                 })
@@ -79,6 +94,13 @@ export const SegmentListing = () => {
                     arr.splice(deleteVeh.index, 1)
                     setAllVehicles(arr)
                     setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Segment Deleted successfully",
+                        type: "success",
+                      });
                 })
                 .catch(err => console.log(err))
         }
@@ -107,6 +129,13 @@ export const SegmentListing = () => {
                                 console.log(res)
                                 setLoader(false)
                                 getAllVehicles()
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Segment Added successfully",
+                                    type: "success",
+                                  });
                             }).catch((err) => {
                                 console.log(err)
                                 getAllVehicles()
@@ -121,6 +150,13 @@ export const SegmentListing = () => {
                     console.log(res)
                     setLoader(false)
                     getAllVehicles()
+                    ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Segment Added successfully",
+          type: "success",
+        });
                 }).catch((err) => {
                     console.log(err)
                     getAllVehicles()
@@ -158,6 +194,13 @@ export const SegmentListing = () => {
                                             console.log(res)
                                             setLoader(false)
                                             getAllVehicles()
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Segment Updated successfully",
+                                                type: "success",
+                                              });
 
                                         }).catch((err) => {
                                             console.log(err)
@@ -185,6 +228,13 @@ export const SegmentListing = () => {
                                     console.log(res)
                                     setLoader(false)
                                     getAllVehicles()
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Segment Edited successfully",
+                                        type: "success",
+                                      });
 
                                 }).catch((err) => {
                                     console.log(err)
@@ -200,6 +250,13 @@ export const SegmentListing = () => {
                     console.log(res)
                     setLoader(false)
                     getAllVehicles()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Segment Edited successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                 })
@@ -284,6 +341,7 @@ export const SegmentListing = () => {
 
     return (
         <>
+           <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             <Box sx={{ width: '100%' }} px={2}>
                 <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

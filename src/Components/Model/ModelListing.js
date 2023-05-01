@@ -14,6 +14,7 @@ import { storage } from "../../auth/Firebase";
 import { VehicleClass } from "../../services/Vehicle";
 import { CompanyClass } from "../../services/Company";
 import { CallMultipleApi } from "../../services/CallMultipleApi";
+import { SnackBar } from "../Assets/SnackBar";
 
 export const ModelListing = () => {
     const theme = useTheme();
@@ -33,6 +34,13 @@ export const ModelListing = () => {
     const [allBrand, setAllBrand] = useState([])
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
+    const [snackbar, ShowSnackbar] = useState({
+        show: false,
+        vertical: "top",
+        horizontal: "right",
+        msg: "data added",
+        type: "error",
+      });
     const [localImg, setLocalImg] = useState()
     console.log(localImg)
     const [img, setImg] = useState({})
@@ -95,6 +103,13 @@ export const ModelListing = () => {
                         .then(res => {
                             console.log(res)
                             getAllModels()
+                            ShowSnackbar({
+                                show: true,
+                                vertical: "top",
+                                horizontal: "right",
+                                msg: "Model Deleted successfully",
+                                type: "success",
+                              });
                         })
                         .catch(err => console.log(err))
                 })
@@ -105,6 +120,13 @@ export const ModelListing = () => {
                 .then(res => {
                     console.log(res)
                     getAllModels()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Model Deleted successfully",
+                        type: "success",
+                      });
                 })
                 .catch(err => console.log(err))
         }
@@ -139,6 +161,13 @@ export const ModelListing = () => {
                                 console.log(res)
                                 setLoader(false)
                                 getAllModels()
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Model Added successfully",
+                                    type: "success",
+                                  });
                             }).catch((err) => {
                                 console.log(err)
                                 getAllModels()
@@ -152,6 +181,13 @@ export const ModelListing = () => {
                     console.log(res)
                     setLoader(false)
                     getAllModels()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Model Added successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                     getAllModels()
@@ -194,6 +230,13 @@ export const ModelListing = () => {
                                             console.log(res)
                                             setLoader(false)
                                             getAllModels()
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Model Updated successfully",
+                                                type: "success",
+                                              });
                                         }).catch((err) => {
                                             console.log(err)
                                             setLoader(false)
@@ -221,6 +264,13 @@ export const ModelListing = () => {
                                     console.log(res)
                                     setLoader(false)
                                     getAllModels()
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Model Updated successfully",
+                                        type: "success",
+                                      });
                                 }).catch((err) => {
                                     console.log(err)
                                     setLoader(false)
@@ -236,6 +286,13 @@ export const ModelListing = () => {
                     console.log(res)
                     setLoader(false)
                     getAllModels()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Model Updated successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                     setLoader(false)
@@ -323,6 +380,7 @@ export const ModelListing = () => {
 
     return (
         <>
+        <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             <h1 className="mt-2 fs-2 mx-3">Models</h1>
             <Box align='right' className='px-3 pb-3'>
                 <Button className="btn_primary" onClick={() => setOpen(true)} variant="contained">Add Model</Button>

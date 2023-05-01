@@ -9,6 +9,7 @@ import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } f
 import { storage } from "../../auth/Firebase";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
+import { SnackBar } from "../Assets/SnackBar";
 
 
 export const BrandListing = () => {
@@ -23,6 +24,13 @@ export const BrandListing = () => {
     console.log(deletedComp.icon)
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
+    const [snackbar, ShowSnackbar] = useState({
+        show: false,
+        vertical: "top",
+        horizontal: "right",
+        msg: "data added",
+        type: "error",
+      });
     const [localImg, setLocalImg] = useState()
     console.log(localImg)
     const [img, setImg] = useState({})
@@ -99,6 +107,13 @@ export const BrandListing = () => {
                             arr.splice(deletedComp.index, 1)
                             setCompanies(arr)
                             setLoader(false)
+                            ShowSnackbar({
+                                show: true,
+                                vertical: "top",
+                                horizontal: "right",
+                                msg: "Brand Deleted successfully",
+                                type: "success",
+                              });
                         })
                         .catch(err => console.log(err))
                 })
@@ -111,6 +126,13 @@ export const BrandListing = () => {
                     arr.splice(deletedComp.index, 1)
                     setCompanies(arr)
                     setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Brand Deleted successfully",
+                        type: "success",
+                      });
                 })
                 .catch(err => console.log(err))
         }
@@ -141,6 +163,13 @@ export const BrandListing = () => {
                                 console.log(res)
                                 setLoader(false)
                                 getAllCompany()
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Brand Added successfully",
+                                    type: "success",
+                                  });
                             }).catch((err) => {
                                 console.log(err)
                                 getAllCompany()
@@ -155,6 +184,13 @@ export const BrandListing = () => {
                     console.log(res)
                     setLoader(false)
                     getAllCompany()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Brand Added successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                     getAllCompany()
@@ -196,6 +232,13 @@ export const BrandListing = () => {
                                             console.log(res)
                                             setLoader(false)
                                             getAllCompany()
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Brand Updated successfully",
+                                                type: "success",
+                                              });
                                         }).catch((err) => {
                                             console.log(err)
                                             setLoader(false)
@@ -223,6 +266,13 @@ export const BrandListing = () => {
                                     console.log(res)
                                     setLoader(false)
                                     getAllCompany()
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Brand Updated successfully",
+                                        type: "success",
+                                      });
                                 }).catch((err) => {
                                     console.log(err)
                                     setLoader(false)
@@ -238,6 +288,13 @@ export const BrandListing = () => {
                     console.log(res)
                     setLoader(false)
                     getAllCompany()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Brand Updated successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                     setLoader(false)
@@ -294,6 +351,7 @@ export const BrandListing = () => {
 
     return (
         <>
+        <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             {/* Delete Dialog Box */}
             <Dialog
                 open={deleteModel}

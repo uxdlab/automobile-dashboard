@@ -24,7 +24,7 @@ export const Sidebar = ({ children }) => {
     console.log('ll')
     return (
         <>
-            {localStorage.getItem("isLoggedIn") ?
+       
                 <div className="d-flex" style={{ height: '100%', width: '100%' }}>
                     <div className="sidebar_main_con" style={{ width: toggleSidebar ? '270px' : '0px' }}>
                         <div className="align-center px-2">
@@ -69,7 +69,7 @@ export const Sidebar = ({ children }) => {
                         <div className="child_con">{children}</div>
                     </div>
                 </div>
-                : <LoginPage />}
+              
         </>
     )
 }

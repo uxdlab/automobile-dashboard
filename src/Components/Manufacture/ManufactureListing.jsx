@@ -21,6 +21,13 @@ export const ManufactureListing = () => {
     const [deletedComp, setDeletedComp] = useState({ id: '', index: '' })
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
+    const [snackbar, ShowSnackbar] = useState({
+        show: false,
+        vertical: "top",
+        horizontal: "right",
+        msg: "data added",
+        type: "error",
+      });
     const [localImg, setLocalImg] = useState()
     console.log(localImg)
     const [img, setImg] = useState({})
@@ -65,6 +72,13 @@ export const ManufactureListing = () => {
                     arr.splice(deletedComp.index, 1)
                     setManufacture(arr)
                         setLoader(false)
+                        ShowSnackbar({
+                            show: true,
+                            vertical: "top",
+                            horizontal: "right",
+                            msg: "Manufacturer Deleted successfully",
+                            type: "success",
+                          });
                     })
                     .catch(err => console.log(err))
                 })
@@ -77,6 +91,13 @@ export const ManufactureListing = () => {
                     arr.splice(deletedComp.index, 1)
                     setManufacture(arr)
                 setLoader(false)
+                ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Manufacturer Deleted successfully",
+                    type: "success",
+                  });
             })
             .catch(err => console.log(err))
         }
@@ -106,6 +127,13 @@ export const ManufactureListing = () => {
                             .then((res) => {
                                 console.log(res)
                                 getAllManufacture()
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Manufacturer Added successfully",
+                                    type: "success",
+                                  });
                             }).catch((err) => {
                                 console.log(err)
                                 getAllManufacture()
@@ -119,6 +147,13 @@ export const ManufactureListing = () => {
                 .then((res) => {
                     console.log(res)
                     getAllManufacture()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Manufacturer Added successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                     getAllManufacture()
@@ -157,6 +192,13 @@ export const ManufactureListing = () => {
                                             console.log(res)
                                             setLoader(false)
                                             getAllManufacture()
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Manufacturer Updated successfully",
+                                                type: "success",
+                                              });
                                         }).catch((err) => {
                                             console.log(err)
                                             setLoader(false)
@@ -184,6 +226,13 @@ export const ManufactureListing = () => {
                                     console.log(res)
                                     setLoader(false)
                                     getAllManufacture()
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Manufacturer Updated successfully",
+                                        type: "success",
+                                      });
                                 }).catch((err) => {
                                     console.log(err)
                                     setLoader(false)
@@ -199,6 +248,13 @@ export const ManufactureListing = () => {
                     console.log(res)
                     setLoader(false)
                     getAllManufacture()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Manufacturer Updated successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                     setLoader(false)

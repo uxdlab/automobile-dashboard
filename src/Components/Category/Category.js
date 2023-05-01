@@ -16,6 +16,13 @@ export const Category = () => {
     const [deletedVeh, setDeletedVeh] = useState({ id: '', index: '', icon: '' })
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
+    const [snackbar, ShowSnackbar] = useState({
+        show: false,
+        vertical: "top",
+        horizontal: "right",
+        msg: "data added",
+        type: "error",
+      });
     const [localImg, setLocalImg] = useState()
     console.log(localImg)
     const [img, setImg] = useState({})
@@ -65,6 +72,13 @@ export const Category = () => {
                             arr.splice(deletedVeh.index, 1)
                             setAllProducts(arr)
                             setLoader(false)
+                            ShowSnackbar({
+                                show: true,
+                                vertical: "top",
+                                horizontal: "right",
+                                msg: "Category Deleted successfully",
+                                type: "success",
+                              });
                         })
                         .catch(err => console.log(err))
                 })
@@ -78,6 +92,13 @@ export const Category = () => {
                     arr.splice(deletedVeh.index, 1)
                     setAllProducts(arr)
                     setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Category Deleted successfully",
+                        type: "success",
+                      });
                 })
                 .catch(err => console.log(err))
         }
@@ -109,6 +130,13 @@ export const Category = () => {
                                 console.log(res)
                                 setLoader(false)
                                 getAllProducts()
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Category Added successfully",
+                                    type: "success",
+                                  });
                             }).catch((err) => {
                                 console.log(err)
                                 getAllProducts()
@@ -123,6 +151,13 @@ export const Category = () => {
                     console.log(res)
                     setLoader(false)
                     getAllProducts()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Category Added successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                     getAllProducts()
@@ -161,6 +196,13 @@ export const Category = () => {
                                             console.log(res)
                                             setLoader(false)
                                             getAllProducts()
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Category Updated successfully",
+                                                type: "success",
+                                              });
                                         }).catch((err) => {
                                             console.log(err)
                                             setLoader(false)
@@ -188,6 +230,13 @@ export const Category = () => {
                                     console.log(res)
                                     setLoader(false)
                                     getAllProducts()
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Category Updated successfully",
+                                        type: "success",
+                                      });
                                 }).catch((err) => {
                                     console.log(err)
                                     setLoader(false)
@@ -203,6 +252,13 @@ export const Category = () => {
                     console.log(res)
                     setLoader(false)
                     getAllProducts()
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Category Updated successfully",
+                        type: "success",
+                      });
                 }).catch((err) => {
                     console.log(err)
                     setLoader(false)
