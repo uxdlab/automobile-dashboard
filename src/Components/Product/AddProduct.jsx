@@ -11,13 +11,13 @@ import { storage } from '../../auth/Firebase';
 export default function AddProduct() {
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false)
-    const [files,setFiles] = useState([])
-    const [forUpload,setForUpload] = useState([])
+    const [files, setFiles] = useState([])
+    const [forUpload, setForUpload] = useState([])
     const AllProducts = useRef([
         {
-            product_name:'',
+            product_name: '',
             oe_reference_number: '',
-            product_description:'',
+            product_description: '',
             MRP: '',
             ke_partNumber: '',
             image: [],
@@ -33,26 +33,40 @@ export default function AddProduct() {
         e.preventDefault()
         const promises = []
         setLoader(true)
-        if(files.length!==0){
-           files.map((item)=>{
-                const storageRef = ref(storage, item.name);
+        console.log(files)
+        if (files.length !== 0) {
+            files.map((item) => {
+                const storageRef = ref(storage, `image${Math.random()}${item.name}`);
                 const uploadTask = uploadBytesResumable(storageRef, item);
                 promises.push(uploadTask)
-                 uploadTask.on(
-                    "state_changed",
-                    (snapshot) => { },
-                    (err) => console.log(err),
-                    async () => {
-                        return await getDownloadURL(uploadTask.snapshot.ref)
-                    })
             })
-
             Promise.all(promises)
-            .then((res)=>{
-                console.log(res)
-                AllProducts.current.image = forUpload
-                console.log(AllProducts.current.image)
-                addItem(AllProducts.current[0])
+                .then((res) => {
+                    console.log(res)
+                    let urls = []
+                    res.map((res2, index) => {
+                        getDownloadURL(res2.ref).then((url) => {
+                            console.log(url)
+                            urls.push(url)
+                            if (index == res.length - 1) {
+                                console.log(urls)
+                                AllProducts.current[0].image = [...urls]
+                                console.log(AllProducts.current.image)
+                                addItem(AllProducts.current[0])
+                                .then((res) => {
+                                    console.log(res)
+                                    setLoader(false)
+                                    navigate('/product')
+                                }).catch((err) => {
+                                    console.log(err)
+                                })
+                            }
+                        })
+                    })
+                }).catch((err) => console.log(err))
+
+        } else {
+            addItem(AllProducts.current[0])
                 .then((res) => {
                     console.log(res)
                     setLoader(false)
@@ -60,20 +74,7 @@ export default function AddProduct() {
                 }).catch((err) => {
                     console.log(err)
                 })
-            }).catch((err)=>console.log(err))
-            
-        } else{
-            addItem(AllProducts.current[0])
-            .then((res) => {
-                console.log(res)
-                setLoader(false)
-                navigate('/product')
-            }).catch((err) => {
-                console.log(err)
-            })
         }
-
-       
     }
     return (
         <>
@@ -101,8 +102,8 @@ export default function AddProduct() {
                     {AllProducts.current.map((pro, index) => {
                         return (
                             <Product
-                                files = {files}
-                                setFiles = {setFiles}
+                                files={files}
+                                setFiles={setFiles}
                                 key={index}
                                 AllProducts={AllProducts}
                                 index={index}
@@ -113,7 +114,7 @@ export default function AddProduct() {
 
                     <Grid container className='d-flex justify-content-center pb-5'>
                         <Grid item xl={5} md={6} sm={12} sx={12}>
-                            <Box align='right'  mt={6}>
+                            <Box align='right' mt={6}>
                                 <Button className="cancel_btn me-3" onClick={() => navigate('/category')}>Cancel</Button>
                                 <Button type='submit' variant="contained">Save</Button>
                             </Box>
