@@ -5,15 +5,34 @@ import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
 import { getAllItem } from '../../services/Item';
 import { deleteItem } from '../../services/Item';
+import { SnackBar } from '../Assets/SnackBar';
+import { deleteObject, getStorage, ref } from 'firebase/storage';
 
 export default function ProductListing() {
     const [loader, setLoader] = useState(true)
     let navigate = useNavigate()
     const [allProduct, setAllProduct] = useState([])
     const [deleteModel, setDeleteModel] = useState(false)
-    const [deletedComp, setDeletedComp] = useState('')
+    const [deletedComp, setDeletedComp] = useState({ id: '', images: [] })
+    const [snackbar, ShowSnackbar] = useState({
+        show: false,
+        vertical: "top",
+        horizontal: "right",
+        msg: "data added",
+        type: "error",
+    });
     useEffect(() => {
         getAllProduct()
+        if (sessionStorage.getItem('updated') == 'true') {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Product Updated successfully",
+                type: "success",
+            });
+            sessionStorage.removeItem('updated')
+        }
     }, [])
     function getAllProduct() {
         getAllItem().then((res) => {
@@ -27,18 +46,37 @@ export default function ProductListing() {
     function deleteProduct() {
         setDeleteModel(false)
         setLoader(true)
-        console.log(deletedComp)
-        deleteItem(deletedComp)
+        console.log(deletedComp.id)
+        deleteItem(deletedComp.id)
             .then(res => {
                 console.log(res)
-                // setLoader(false)
+                setLoader(false)
                 getAllProduct()
+                ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Product Deleted successfully",
+                    type: "success",
+                });
+                console.log(deletedComp.images)
+               if(deletedComp.images.length!==0){
+                deletedComp.images.map((item)=>{
+                    const storage = getStorage();
+                    const desertRef = ref(storage, item);
+                    deleteObject(desertRef)
+                        .then(() => {
+                            console.log("image deleted");
+                        }).catch((err) => { })
+                    })
+               }
             })
             .catch(err => console.log(err))
     }
 
     return (
         <>
+            <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             <Dialog
                 open={deleteModel}
                 maxWidth={'sm'}
@@ -103,16 +141,10 @@ export default function ProductListing() {
                                     {/* <TableCell>{res.sparePart_description}</TableCell> */}
                                     <TableCell>
                                         <Delete onClick={() => {
-                                            setDeletedComp(res._id)
+                                            setDeletedComp({ id: res._id, images: res.image })
                                             setDeleteModel(true)
                                         }} />
                                         <Edit onClick={() => navigate(`/updateProduct/${res._id}`)} />
-                                        {/* <RemoveRedEye sx={{cursor:'pointer'}}
-                                        onClick={()=>{
-                                            navigate('/viewBrand')
-                                        }}
-                                        /> */}
-
                                     </TableCell>
                                 </TableRow>
                             )
