@@ -321,18 +321,7 @@ export const ModelListing = () => {
                 setSelectSegment(modelData.current.model_segment_array)
                 setSeleBrand(modelData.current.model_brand_array)
                 let arr = modelData.current.model_segment_array[0]
-                let newArr = []
-                console.log(arr)
-                console.log(allBrand)
-                allBrand.map((res) => {
-                    res.segment_array.map((res2) => {
-                        if (res2 == modelData.current.model_segment_array[0]) {
-                            newArr.push(res)
-                        }
-                    })
-                })
-                console.log(newArr)
-                setSelectBrand([...newArr])
+                setSelectBrand(allBrand.filter(e=>e.segment_array.includes(arr)))
                 setLoader(false)
                 setOpen1(true)
             }).catch((err) => {
@@ -367,15 +356,7 @@ export const ModelListing = () => {
 
     function filterd(fil) {
         setSelectSegment([fil])
-        let newArr = []
-        allBrand.map((res) => {
-            res.segment_array.map((res2) => {
-                if (res2 == fil) {
-                    newArr.push(res)
-                }
-            })
-        })
-        setSelectBrand([...newArr])
+        setSelectBrand(allBrand.filter(e=>e.segment_array.includes(fil)))
     }
 
     return (

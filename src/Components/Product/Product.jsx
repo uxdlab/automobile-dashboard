@@ -22,28 +22,13 @@ export default function Product({ AllProducts, index, productData,files,setFiles
 
     function filterd(fil) {
         AllProducts.current[index].product_segment_aaray = [fil]
-        let newArr = []
-        brand.map((res) => {
-            res.segment_array.map((res2) => {
-                if (res2 == fil) {
-                    newArr.push(res)
-                }
-            })
-        })
-        setSelectBrand([...newArr])
+        setSelectBrand(brand.filter(e=>e.segment_array.includes(fil)))
+        setSelectModel([])
     }
 
     function filteredModel(fil) {
         AllProducts.current[index].product_brand_aaray = [fil]
-        let newArr = []
-        model.map((res) => {
-            res.model_brand_array.map((res2) => {
-                if (res2 == fil) {
-                    newArr.push(res)
-                }
-            })
-        })
-        setSelectModel([...newArr])
+        setSelectModel(model.filter(e=>e.model_brand_array.includes(fil)))
     }
 
     const imgPrev = (imgs) => {
