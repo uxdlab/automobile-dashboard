@@ -36,7 +36,7 @@ export const apis = {
         getAll: 'product/get/All',
         get: 'product/',
         delete:'product/delete/',
-        edit:'product/updateItem/'
+        edit:'product/updateProduct/'
     },
     manufacture: {
         add: 'manufacturer/addManufacturer/',

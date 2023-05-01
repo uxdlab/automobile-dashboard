@@ -8,6 +8,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../auth/Firebase";
+import { SnackBar } from "../Assets/SnackBar";
 
 export const Category = () => {
     const [loader, setLoader] = useState(false)
@@ -304,6 +305,7 @@ export const Category = () => {
 
     return (
         <Box>
+             <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loader}

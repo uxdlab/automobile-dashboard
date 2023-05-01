@@ -9,6 +9,7 @@ import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } f
 import { storage } from "../../auth/Firebase";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
+import { SnackBar } from "../Assets/SnackBar";
 
 export const ManufactureListing = () => {
 
@@ -300,6 +301,7 @@ export const ManufactureListing = () => {
 
     return (
         <>
+         <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             {/* Delete Dialog Box */}
             <Dialog
                 open={deleteModel}

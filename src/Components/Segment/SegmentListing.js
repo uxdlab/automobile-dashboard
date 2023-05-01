@@ -232,7 +232,7 @@ export const SegmentListing = () => {
                                         show: true,
                                         vertical: "top",
                                         horizontal: "right",
-                                        msg: "Segment Edited successfully",
+                                        msg: "Segment Updated successfully",
                                         type: "success",
                                       });
 
@@ -254,7 +254,7 @@ export const SegmentListing = () => {
                         show: true,
                         vertical: "top",
                         horizontal: "right",
-                        msg: "Segment Edited successfully",
+                        msg: "Segment Updated successfully",
                         type: "success",
                       });
                 }).catch((err) => {
