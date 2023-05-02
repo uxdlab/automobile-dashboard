@@ -137,6 +137,13 @@ export const ManufactureListing = () => {
                                   });
                             }).catch((err) => {
                                 console.log(err)
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Manufacturer Already Exist",
+                                    type: "error",
+                                  });
                                 getAllManufacture()
                             })
                         setLoader(false)
@@ -157,6 +164,13 @@ export const ManufactureListing = () => {
                       });
                 }).catch((err) => {
                     console.log(err)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Manufacturer Already Exist",
+                        type: "error",
+                      });
                     getAllManufacture()
                 })
             setLoader(false)
@@ -202,6 +216,13 @@ export const ManufactureListing = () => {
                                               });
                                         }).catch((err) => {
                                             console.log(err)
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Manufacturer Already Exist",
+                                                type: "error",
+                                              });
                                             setLoader(false)
                                         })
                                 });
@@ -236,6 +257,13 @@ export const ManufactureListing = () => {
                                       });
                                 }).catch((err) => {
                                     console.log(err)
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Manufacturer Already Exist",
+                                        type: "error",
+                                      });
                                     setLoader(false)
                                 })
                         });
@@ -258,6 +286,13 @@ export const ManufactureListing = () => {
                       });
                 }).catch((err) => {
                     console.log(err)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Manufacturer Already Exist",
+                        type: "error",
+                      });
                     setLoader(false)
                 })
         }
@@ -359,7 +394,7 @@ export const ManufactureListing = () => {
                                                 if(e.target.value == ' '){
                                                     e.target.value = ''
                                                 }else{
-                                                    manufacturerData.current.manufacturer_name = e.target.value}
+                                                    manufacturerData.current.manufacturer_name = e.target.value.trim().toLocaleLowerCase()}
                                             } }
                                         placeholder="Enter Manufacturer Name" className="form-control w-100 mb-2" />
                                 </div>
@@ -445,7 +480,7 @@ export const ManufactureListing = () => {
                                             if(e.target.value == ' '){
                                                 e.target.value = ''
                                             }else{
-                                                manufacturerData.current.manufacturer_name = e.target.value}
+                                                manufacturerData.current.manufacturer_name = e.target.value.trim().toLocaleLowerCase()}
                                         } }
                                         placeholder="Enter Manufacturer Name" className="form-control w-100 mb-2" />
                                 </div>
@@ -529,7 +564,7 @@ export const ManufactureListing = () => {
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{res.manufacturer_name}</TableCell>
+                                    <TableCell sx={{textTransform:'capitalize'}}>{res.manufacturer_name}</TableCell>
                                     <TableCell>
                                         <Delete sx={{ cursor: 'pointer' }} onClick={() => {
                                             setDeletedComp({ id: res._id, index, icon: res.manufacturer_icon })

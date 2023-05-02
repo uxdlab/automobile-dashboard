@@ -88,30 +88,70 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                             <Grid container mt={2}>
                                 <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
                                     <label>Product Name :</label><br />
-                                    <input type='text' placeholder='Enter Product Name' onChange={(e) => AllProducts.current[index].product_name = e.target.value} defaultValue={productData ? productData[0].product_name : ''}  className="form-control w-100" />
+                                    <input required type='text' placeholder='Enter Product Name' onChange={(e) =>
+                                     {
+                                        if(e.target.value == ' '){
+                                            e.target.value = ''
+                                        }else{
+                                            AllProducts.current[index].product_name = e.target.value.trim().toLocaleLowerCase()}
+                                    } 
+        
+                                         } defaultValue={productData ? productData[0].product_name : ''}  className="form-control w-100" />
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={12} className="px-3 mt-2">
                                     <label>Product Description :</label><br />
-                                    <textarea  placeholder='Enter Product Description' onChange={(e) => AllProducts.current[index].product_description = e.target.value} defaultValue={productData ? productData[0].product_description : ''} className="form-control w-100" rows='3' />
+                                    <textarea  placeholder='Enter Product Description' onChange={(e) =>
+                                          {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                AllProducts.current[index].product_description = e.target.value.trim()}
+                                        } 
+                                         
+                                         } defaultValue={productData ? productData[0].product_description : ''} className="form-control w-100" rows='3' />
                                 </Grid>
                                 <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
                                     <label>OE Reference Number :</label><br />
-                                    <input type='text' placeholder='Enter OE Reference Number' onChange={(e) => AllProducts.current[index].oe_reference_number = e.target.value} defaultValue={productData ? productData[0].oe_reference_number : ''}  className="form-control w-100" />
+                                    <input required type='text' placeholder='Enter OE Reference Number' onChange={(e) =>
+                                          {
+                                            if(e.target.value == ' '){
+                                                e.target.value = ''
+                                            }else{
+                                                AllProducts.current[index].oe_reference_number = e.target.value.trim()}
+                                        } 
+                                         
+                                         } defaultValue={productData ? productData[0].oe_reference_number : ''}  className="form-control w-100" />
                                 </Grid>
                                 <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
                                     <label>KE Part Number :</label><br />
-                                    <input type='text' placeholder='Enter KE Part Number' onChange={(e) => AllProducts.current[index].ke_partNumber = e.target.value} defaultValue={productData ? productData[0].ke_partNumber : ''}  className="form-control w-100" />
+                                    <input required type='text' placeholder='Enter KE Part Number' onChange={(e) =>
+                                     {
+                                        if(e.target.value == ' '){
+                                            e.target.value = ''
+                                        }else{
+                                            AllProducts.current[index].ke_partNumber = e.target.value.trim()}
+                                    } 
+                                         
+                                         } defaultValue={productData ? productData[0].ke_partNumber : ''}  className="form-control w-100" />
                                 </Grid>
                                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                                     <label>Product MRP(₹) :</label><br />
-                                    <input type='number' placeholder='Enter In Rupees' onChange={(e) => AllProducts.current[index].MRP = e.target.value} defaultValue={productData ? productData[0].MRP : ''}  className="form-control w-100" />
+                                    <input required type='number' placeholder='Enter In Rupees' onChange={(e) =>
+                                     {
+                                        if(e.target.value == ' '){
+                                            e.target.value = ''
+                                        }else{
+                                            AllProducts.current[index].MRP = e.target.value.trim()}
+                                    } 
+                                         
+                                         } defaultValue={productData ? productData[0].MRP : ''}  className="form-control w-100" />
                                 </Grid>
                                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                                     <label>Select Segment :</label><br />
                                     <Select
                                         className="select-style"
                                         fullWidth
-                                        
+                                        required
                                         defaultValue={productData ? productData[0].product_segment_aaray[0] : ''}
                                         onChange={(e) => filterd(e.target.value)}
                                     >
@@ -130,7 +170,7 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                     <Select
                                         className="select-style"
                                         fullWidth
-                                        
+                                        required
                                         defaultValue={productData ? productData[0].product_brand_aaray[0] : ''}
                                         onChange={(e) => filteredModel(e.target.value)}
                                     >
@@ -149,7 +189,7 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                     <Select
                                         className="select-style"
                                         fullWidth
-                                        
+                                        required
                                         defaultValue={productData ? productData[0].product_model_aaray[0] : ''}
                                         onChange={(e) => AllProducts.current[index].product_model_aaray = [e.target.value]}
                                     >
@@ -168,7 +208,7 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                     <Select
                                         className="select-style"
                                         fullWidth
-                                        
+                                        required
                                         defaultValue={productData ? productData[0].product_category_aaray[0] : ''}
                                         onChange={(e) => AllProducts.current[index].product_category_aaray = [e.target.value]}
                                     >
@@ -189,6 +229,7 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                     <Select
                                         className="select-style"
                                         fullWidth
+                                        required
                                         defaultValue={productData ? productData[0].product_manufacture_aaray[0] : ''}
                                         onChange={(e) => AllProducts.current[index].product_manufacture_aaray = [e.target.value]}
                                     >

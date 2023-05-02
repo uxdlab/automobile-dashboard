@@ -170,6 +170,14 @@ export const ModelListing = () => {
                                   });
                             }).catch((err) => {
                                 console.log(err)
+                                setLoader(false)
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Model Already Exist",
+                                        type: "error",
+                                      });
                                 getAllModels()
                             })
                     });
@@ -190,6 +198,14 @@ export const ModelListing = () => {
                       });
                 }).catch((err) => {
                     console.log(err)
+                    setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Model Already Exist",
+                        type: "error",
+                      });
                     getAllModels()
                 })
         }
@@ -240,6 +256,14 @@ export const ModelListing = () => {
                                         }).catch((err) => {
                                             console.log(err)
                                             setLoader(false)
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Model Already Exist",
+                                                type: "error",
+                                              });
+                                            setLoader(false)
                                         })
                                 });
                             })
@@ -262,8 +286,8 @@ export const ModelListing = () => {
                             ModelClass.editModel(id, modelData.current)
                                 .then((res) => {
                                     console.log(res)
-                                    setLoader(false)
                                     getAllModels()
+                                    setLoader(false)
                                     ShowSnackbar({
                                         show: true,
                                         vertical: "top",
@@ -273,6 +297,14 @@ export const ModelListing = () => {
                                       });
                                 }).catch((err) => {
                                     console.log(err)
+                                    setLoader(false)
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Model Already Exist",
+                                        type: "error",
+                                      });
                                     setLoader(false)
                                 })
                         });
@@ -296,6 +328,14 @@ export const ModelListing = () => {
                 }).catch((err) => {
                     console.log(err)
                     setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Model Already Exist",
+                        type: "error",
+                      });
+                    setLoader(false)
                 })
         }
         setLocalImg('')
@@ -313,11 +353,13 @@ export const ModelListing = () => {
         ModelClass.getModel(idd)
             .then((res) => {
                 console.log(res)
-                modelData.current = res.data.data[0]
+                modelData.current = res.data.data
                 if (modelData.current.model_icon) {
+                    console.log('ififififif')
                     console.log(modelData.current.model_icon)
                     setLocalImg(modelData.current.model_icon)
                 }
+            
                 setSelectSegment(modelData.current.model_segment_array)
                 setSeleBrand(modelData.current.model_brand_array)
                 let arr = modelData.current.model_segment_array[0]
@@ -333,7 +375,7 @@ export const ModelListing = () => {
     async function getSegmentBrand() {
         VehicleClass.getSegmentBrandModel()
             .then((res) => {
-                console.log(res.data.data)
+                console.log(res.data.data.brandData)
                 setSegment(res.data.data.segmentData)
                 setAllBrand(res.data.data.brandData)
             }).catch((err) => {
@@ -451,7 +493,7 @@ export const ModelListing = () => {
                                         if(e.target.value == ' '){
                                                 e.target.value = ''
                                             }else{
-                                                modelData.current.model_name = e.target.value} 
+                                                modelData.current.model_name = e.target.value.trim().toLocaleLowerCase()} 
                                             }
                                         }
                                             placeholder="Enter Model Name" className="form-control w-100 mb-2" />
@@ -570,17 +612,17 @@ export const ModelListing = () => {
                                          if(e.target.value == ' '){
                                             e.target.value = ''
                                         }else{
-                                            modelData.current.model_name = e.target.value} 
+                                            modelData.current.model_name = e.target.value.trim().toLocaleLowerCase()} 
                                         }
                                     }
                                        
-                                         defaultValue={modelData.current.model_name} placeholder="Enter Model Name" className="form-control w-100 mb-2" />
+                                         defaultValue={modelData.current?modelData.current.model_name:''} placeholder="Enter Model Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Model Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
-                                        defaultValue={modelData.current.model_description}
+                                        defaultValue={modelData.current?modelData.current.model_description:''}
                                         onChange={(e) =>
                                             {
                                                 if(e.target.value == ' '){
@@ -650,7 +692,7 @@ export const ModelListing = () => {
                                 return (
                                     <TableRow key={index}>
                                         <TableCell>{index + 1}</TableCell>
-                                        <TableCell>{res.model_name}</TableCell>
+                                        <TableCell sx={{textTransform:'capitalize'}}>{res.model_name}</TableCell>
                                         <TableCell>
                                             {/* <RemoveRedEye onClick={() => navigate(`/model/${res._id}`)} /> */}
                                             <Delete

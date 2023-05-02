@@ -30,7 +30,7 @@ export const BrandListing = () => {
         horizontal: "right",
         msg: "data added",
         type: "error",
-      });
+    });
     const [localImg, setLocalImg] = useState()
     console.log(localImg)
     const [img, setImg] = useState({})
@@ -113,7 +113,7 @@ export const BrandListing = () => {
                                 horizontal: "right",
                                 msg: "Brand Deleted successfully",
                                 type: "success",
-                              });
+                            });
                         })
                         .catch(err => console.log(err))
                 })
@@ -132,11 +132,11 @@ export const BrandListing = () => {
                         horizontal: "right",
                         msg: "Brand Deleted successfully",
                         type: "success",
-                      });
+                    });
                 })
                 .catch(err => console.log(err))
         }
-      setSelectSegment([])
+        setSelectSegment([])
     }
 
     async function addBrand(e) {
@@ -157,21 +157,29 @@ export const BrandListing = () => {
                         console.log(url)
                         brandData.current.brand_image = url
                         console.log(brandData.current)
-                        
+
                         CompanyClass.addCompany(brandData.current)
                             .then((res) => {
                                 console.log(res)
-                                setLoader(false)
                                 getAllCompany()
+                                setLoader(false)
                                 ShowSnackbar({
                                     show: true,
                                     vertical: "top",
                                     horizontal: "right",
                                     msg: "Brand Added successfully",
                                     type: "success",
-                                  });
+                                });
                             }).catch((err) => {
                                 console.log(err)
+                                setLoader(false)
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Brand Aleady Exist",
+                                    type: "error",
+                                });
                                 getAllCompany()
                             })
 
@@ -190,9 +198,17 @@ export const BrandListing = () => {
                         horizontal: "right",
                         msg: "Brand Added successfully",
                         type: "success",
-                      });
+                    });
                 }).catch((err) => {
                     console.log(err)
+                    setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Brand Aleady Exist",
+                        type: "error",
+                    });
                     getAllCompany()
                 })
         }
@@ -238,9 +254,17 @@ export const BrandListing = () => {
                                                 horizontal: "right",
                                                 msg: "Brand Updated successfully",
                                                 type: "success",
-                                              });
+                                            });
                                         }).catch((err) => {
                                             console.log(err)
+                                            setLoader(false)
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Brand Aleady Exist",
+                                                type: "error",
+                                            });
                                             setLoader(false)
                                         })
                                 });
@@ -272,9 +296,17 @@ export const BrandListing = () => {
                                         horizontal: "right",
                                         msg: "Brand Updated successfully",
                                         type: "success",
-                                      });
+                                    });
                                 }).catch((err) => {
                                     console.log(err)
+                                    setLoader(false)
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Brand Aleady Exist",
+                                        type: "error",
+                                    });
                                     setLoader(false)
                                 })
                         });
@@ -294,9 +326,17 @@ export const BrandListing = () => {
                         horizontal: "right",
                         msg: "Brand Updated successfully",
                         type: "success",
-                      });
+                    });
                 }).catch((err) => {
                     console.log(err)
+                    setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Brand Aleady Exist",
+                        type: "error",
+                    });
                     setLoader(false)
                 })
         }
@@ -351,7 +391,7 @@ export const BrandListing = () => {
 
     return (
         <>
-        <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
+            <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             {/* Delete Dialog Box */}
             <Dialog
                 open={deleteModel}
@@ -426,24 +466,24 @@ export const BrandListing = () => {
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Brand Name:</b></small></div>
-                                    <input type='text' required onChange={(e) =>
-                                        {
-                                            if(e.target.value == ' '){
-                                                e.target.value = ''
-                                            }else{
-                                                brandData.current.brand_name = e.target.value}
-                                        } } placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
+                                    <input type='text' required onChange={(e) => {
+                                        if (e.target.value == ' ') {
+                                            e.target.value = ''
+                                        } else {
+                                            brandData.current.brand_name = e.target.value.trim().toLocaleLowerCase()
+                                        }
+                                    }} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Brand Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
-                                        onChange={(e) =>
-                                        {
-                                            if(e.target.value == ' '){
+                                        onChange={(e) => {
+                                            if (e.target.value == ' ') {
                                                 e.target.value = ''
-                                            }else{
-                                                brandData.current.brand_description = e.target.value}
+                                            } else {
+                                                brandData.current.brand_description = e.target.value
+                                            }
                                         }}
                                         rows='3'
                                         placeholder='Enter Description'
@@ -490,7 +530,7 @@ export const BrandListing = () => {
                         </div>
                     </form>
                 </Box>
-               
+
 
             </Dialog>
 
@@ -515,7 +555,7 @@ export const BrandListing = () => {
                                         id="demo-multiple-name"
                                         multiple
                                         value={selectSegment}
-                                        onChange={(e)=>{
+                                        onChange={(e) => {
                                             handleChange(e)
                                         }}
                                         input={<OutlinedInput label="Name" />}
@@ -534,28 +574,28 @@ export const BrandListing = () => {
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Brand Name:</b></small></div>
-                                    <input type='text' required onChange={(e) =>
-                                    {
-                                        if(e.target.value == ' '){
+                                    <input type='text' required onChange={(e) => {
+                                        if (e.target.value == ' ') {
                                             e.target.value = ''
-                                        }else{
-                                            brandData.current.brand_name = e.target.value}
+                                        } else {
+                                            brandData.current.brand_name = e.target.value.trim().toLocaleLowerCase()
+                                        }
                                     }
-                                       } defaultValue={brandData.current.brand_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
+                                    } defaultValue={brandData.current.brand_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Brand Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
                                         defaultValue={brandData.current.brand_description}
-                                        onChange={(e) => 
-                                            {
-                                                if(e.target.value == ' '){
-                                                    e.target.value = ''
-                                                }else{
-                                                    brandData.current.brand_description = e.target.value}
+                                        onChange={(e) => {
+                                            if (e.target.value == ' ') {
+                                                e.target.value = ''
+                                            } else {
+                                                brandData.current.brand_description = e.target.value
                                             }
-                                            }
+                                        }
+                                        }
                                         rows='3'
                                         placeholder='Enter Description'
 
@@ -624,7 +664,7 @@ export const BrandListing = () => {
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{res.brand_name}</TableCell>
+                                    <TableCell sx={{textTransform:'capitalize'}}>{res.brand_name}</TableCell>
                                     <TableCell>
                                         <Delete onClick={() => {
                                             setDeletedComp({ id: res._id, index, icon: res.brand_image })

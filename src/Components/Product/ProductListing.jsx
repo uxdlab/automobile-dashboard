@@ -33,6 +33,16 @@ export default function ProductListing() {
             });
             sessionStorage.removeItem('updated')
         }
+        if (sessionStorage.getItem('added') == 'true') {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Product Added successfully",
+                type: "success",
+            });
+            sessionStorage.removeItem('added')
+        }
     }, [])
     function getAllProduct() {
         getAllItem().then((res) => {
@@ -134,7 +144,7 @@ export default function ProductListing() {
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{res.product_name}</TableCell>
+                                    <TableCell sx={{textTransform:'capitalize'}}>{res.product_name}</TableCell>
                                     <TableCell>{res.oe_reference_number}</TableCell>
                                     <TableCell>{res.ke_partNumber}</TableCell>
                                     <TableCell>{res.MRP}</TableCell>

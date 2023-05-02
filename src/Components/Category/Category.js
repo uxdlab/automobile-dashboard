@@ -23,7 +23,7 @@ export const Category = () => {
         horizontal: "right",
         msg: "data added",
         type: "error",
-      });
+    });
     const [localImg, setLocalImg] = useState()
     console.log(localImg)
     const [img, setImg] = useState({})
@@ -79,7 +79,7 @@ export const Category = () => {
                                 horizontal: "right",
                                 msg: "Category Deleted successfully",
                                 type: "success",
-                              });
+                            });
                         })
                         .catch(err => console.log(err))
                 })
@@ -99,7 +99,7 @@ export const Category = () => {
                         horizontal: "right",
                         msg: "Category Deleted successfully",
                         type: "success",
-                      });
+                    });
                 })
                 .catch(err => console.log(err))
         }
@@ -129,17 +129,25 @@ export const Category = () => {
                         ProductClass.addProduct(allCategory.current)
                             .then((res) => {
                                 console.log(res)
-                                setLoader(false)
                                 getAllProducts()
+                                setLoader(false)
                                 ShowSnackbar({
                                     show: true,
                                     vertical: "top",
                                     horizontal: "right",
                                     msg: "Category Added successfully",
                                     type: "success",
-                                  });
+                                });
                             }).catch((err) => {
                                 console.log(err)
+                                setLoader(false)
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Category Already Exist",
+                                    type: "error",
+                                });
                                 getAllProducts()
                             })
 
@@ -158,9 +166,17 @@ export const Category = () => {
                         horizontal: "right",
                         msg: "Category Added successfully",
                         type: "success",
-                      });
+                    });
                 }).catch((err) => {
                     console.log(err)
+                    setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Category Already Exist",
+                        type: "error",
+                    });
                     getAllProducts()
                 })
         }
@@ -203,9 +219,17 @@ export const Category = () => {
                                                 horizontal: "right",
                                                 msg: "Category Updated successfully",
                                                 type: "success",
-                                              });
+                                            });
                                         }).catch((err) => {
                                             console.log(err)
+                                            setLoader(false)
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Category Already Exist",
+                                                type: "error",
+                                            });
                                             setLoader(false)
                                         })
                                 });
@@ -237,9 +261,17 @@ export const Category = () => {
                                         horizontal: "right",
                                         msg: "Category Updated successfully",
                                         type: "success",
-                                      });
+                                    });
                                 }).catch((err) => {
                                     console.log(err)
+                                    setLoader(false)
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Category Already Exist",
+                                        type: "error",
+                                    });
                                     setLoader(false)
                                 })
                         });
@@ -259,9 +291,17 @@ export const Category = () => {
                         horizontal: "right",
                         msg: "Category Updated successfully",
                         type: "success",
-                      });
+                    });
                 }).catch((err) => {
                     console.log(err)
+                    setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Category Already Exist",
+                        type: "error",
+                    });
                     setLoader(false)
                 })
         }
@@ -305,7 +345,7 @@ export const Category = () => {
 
     return (
         <Box>
-             <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
+            <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loader}
@@ -353,25 +393,25 @@ export const Category = () => {
 
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Category Name:</b></small></div>
-                                    <input type='text' required onChange={(e) =>
-                                        {
-                                            if(e.target.value == ' '){
-                                                e.target.value = ''
-                                            }else{
-                                                allCategory.current.category_name = e.target.value}
-                                        } } placeholder="Enter Category Name" className="form-control w-100 mb-2" />
+                                    <input type='text' required onChange={(e) => {
+                                        if (e.target.value == ' ') {
+                                            e.target.value = ''
+                                        } else {
+                                            allCategory.current.category_name = e.target.value.trim().toLocaleLowerCase()
+                                        }
+                                    }} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Category Description:</b></small></div>
                                     <textarea
                                         className="w-100 form-control"
-                                        onChange={(e) => 
-                                            {
-                                                if(e.target.value == ' '){
-                                                    e.target.value = ''
-                                                }else{
-                                                    allCategory.current.category_description = e.target.value}
-                                            }}
+                                        onChange={(e) => {
+                                            if (e.target.value == ' ') {
+                                                e.target.value = ''
+                                            } else {
+                                                allCategory.current.category_description = e.target.value
+                                            }
+                                        }}
                                         rows='3'
                                         placeholder='Enter Description'
 
@@ -434,13 +474,13 @@ export const Category = () => {
 
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Category Name:</b></small></div>
-                                    <input type='text' required onChange={(e) =>
-                                        {
-                                            if(e.target.value == ' '){
-                                                e.target.value = ''
-                                            }else{
-                                                allCategory.current.category_name = e.target.value}
-                                        } } defaultValue={allCategory.current.category_name} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
+                                    <input type='text' required onChange={(e) => {
+                                        if (e.target.value == ' ') {
+                                            e.target.value = ''
+                                        } else {
+                                            allCategory.current.category_name = e.target.value.trim().toLocaleLowerCase()
+                                        }
+                                    }} defaultValue={allCategory.current.category_name} placeholder="Enter Category Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Category Description:</b></small></div>
@@ -448,10 +488,11 @@ export const Category = () => {
                                         defaultValue={allCategory.current.category_description}
                                         className="w-100 form-control"
                                         onChange={(e) => {
-                                            if(e.target.value == ' '){
+                                            if (e.target.value == ' ') {
                                                 e.target.value = ''
-                                            }else{
-                                                allCategory.current.category_description = e.target.value}
+                                            } else {
+                                                allCategory.current.category_description = e.target.value
+                                            }
                                         }}
                                         rows='3'
                                         placeholder='Enter Description'
@@ -496,7 +537,7 @@ export const Category = () => {
                         </div>
                     </form>
                 </Box>
-                
+
 
             </Dialog>
 
@@ -522,7 +563,7 @@ export const Category = () => {
                                 return (
                                     <TableRow key={index}>
                                         <TableCell>{index + 1}</TableCell>
-                                        <TableCell>{res.category_name}</TableCell>
+                                        <TableCell sx={{textTransform:'capitalize'}}>{res.category_name}</TableCell>
                                         {/* <TableCell>{res.product_icon}</TableCell> */}
                                         <TableCell>
                                             <Delete className="pointer" onClick={() => {

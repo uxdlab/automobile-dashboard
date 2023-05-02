@@ -136,6 +136,14 @@ export const SegmentListing = () => {
                                   });
                             }).catch((err) => {
                                 console.log(err)
+                                setLoader(false)
+                                ShowSnackbar({
+                                    show: true,
+                                    vertical: "top",
+                                    horizontal: "right",
+                                    msg: "Segment Already Exist",
+                                    type: "error",
+                                  });
                                 getAllVehicles()
                             })
 
@@ -157,6 +165,14 @@ export const SegmentListing = () => {
         });
                 }).catch((err) => {
                     console.log(err)
+                    setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Segment Already Exist",
+                        type: "error",
+                      });
                     getAllVehicles()
                 })
         }
@@ -202,6 +218,13 @@ export const SegmentListing = () => {
 
                                         }).catch((err) => {
                                             console.log(err)
+                                            ShowSnackbar({
+                                                show: true,
+                                                vertical: "top",
+                                                horizontal: "right",
+                                                msg: "Segment Already Exist",
+                                                type: "error",
+                                              });
                                         })
                                 });
                             })
@@ -226,6 +249,7 @@ export const SegmentListing = () => {
                                     console.log(res)
                                     setLoader(false)
                                     getAllVehicles()
+                                    setLoader(false)
                                     ShowSnackbar({
                                         show: true,
                                         vertical: "top",
@@ -236,6 +260,14 @@ export const SegmentListing = () => {
 
                                 }).catch((err) => {
                                     console.log(err)
+                                    setLoader(false)
+                                    ShowSnackbar({
+                                        show: true,
+                                        vertical: "top",
+                                        horizontal: "right",
+                                        msg: "Segment Already Exist",
+                                        type: "error",
+                                      });
                                 })
                         });
                     })
@@ -257,6 +289,14 @@ export const SegmentListing = () => {
                       });
                 }).catch((err) => {
                     console.log(err)
+                    setLoader(false)
+                    ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Segment Already Exist",
+                        type: "error",
+                      });
                 })
         }
         setLocalImg('')
@@ -394,7 +434,7 @@ export const SegmentListing = () => {
                                             if(e.target.value == ' '){
                                                 e.target.value = ''
                                             }else{
-                                                segmentData.current.vehicle_name = e.target.value.trim()} 
+                                                segmentData.current.vehicle_name = e.target.value.trim().toLocaleLowerCase()} 
                                         }
                                              
                                              } placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
@@ -477,7 +517,7 @@ export const SegmentListing = () => {
                                             if(e.target.value == ' '){
                                                 e.target.value = ''
                                             }else{
-                                                segmentData.current.vehicle_name = e.target.value.trim()}
+                                                segmentData.current.vehicle_name = e.target.value.trim().toLocaleLowerCase()}
                                         }
                                             } defaultValue={segmentData.current.vehicle_name} placeholder="Enter Segment Name" className="form-control w-100 mb-2" />
                                     </div>
@@ -561,7 +601,7 @@ export const SegmentListing = () => {
                                         <TableRow key={index}>
                                             <TableCell>{index + 1}</TableCell>
                                             <TableCell><img className='w-25' src={res.vehicle_icon}/></TableCell>
-                                            <TableCell>{res.vehicle_name}</TableCell>
+                                            <TableCell sx={{textTransform:'capitalize'}}>{res.vehicle_name}</TableCell>
                                             <TableCell><Switch checked={res.is_active} onChange={(e) => switchBtn(e, res._id, index)} /></TableCell>
                                             {/* <TableCell>{res.vehicle_icon}</TableCell> */}
                                             <TableCell>

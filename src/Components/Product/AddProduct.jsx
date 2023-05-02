@@ -13,6 +13,13 @@ export default function AddProduct() {
     const [loader, setLoader] = useState(false)
     const [files, setFiles] = useState([])
     const [forUpload, setForUpload] = useState([])
+    const [snackbar, ShowSnackbar] = useState({
+        show: false,
+        vertical: "top",
+        horizontal: "right",
+        msg: "data added",
+        type: "error",
+      });
     const AllProducts = useRef([
         {
             product_name: '',
@@ -57,6 +64,7 @@ export default function AddProduct() {
                                     console.log(res)
                                     setLoader(false)
                                     navigate('/product')
+                                    sessionStorage.setItem('added','true')
                                 }).catch((err) => {
                                     console.log(err)
                                 })
@@ -70,6 +78,7 @@ export default function AddProduct() {
                 .then((res) => {
                     console.log(res)
                     setLoader(false)
+                    sessionStorage.setItem('added','true')
                     navigate('/product')
                 }).catch((err) => {
                     console.log(err)
@@ -115,7 +124,7 @@ export default function AddProduct() {
                     <Grid container className='d-flex justify-content-center pb-5'>
                         <Grid item xl={5} md={6} sm={12} sx={12}>
                             <Box align='right' mt={6}>
-                                <Button className="cancel_btn me-3" onClick={() => navigate('/category')}>Cancel</Button>
+                                <Button className="cancel_btn me-3" onClick={() => navigate('/product')}>Cancel</Button>
                                 <Button type='submit' variant="contained">Save</Button>
                             </Box>
                         </Grid>
