@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import './Sidebar.css'
 import { Menu } from "@mui/icons-material";
-import { Box } from "@mui/material"
+import { Box, useMediaQuery } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom";
 import { LoginPage } from "../Login/LoginPage";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -10,6 +10,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 export const Sidebar = ({ children }) => {
     const [toggleSidebar, setToggleSidebar] = useState(true)
     const [toggle,setToggle] = useState(false)
+    const matches = useMediaQuery("(min-width:900px)");
 
     const sidebarData = [
         { text: 'All Products', path: '/product' },
@@ -26,7 +27,7 @@ export const Sidebar = ({ children }) => {
         <>
        
                 <div className="d-flex" style={{ height: '100%', width: '100%' }}>
-                    <div className="sidebar_main_con" style={{ width: toggleSidebar ? '270px' : '0px' }}>
+                    <div className="sidebar_main_con" style={{ width: matches? toggleSidebar ? '270px' : '0px' : !toggleSidebar ? '270px' : '0px'}}>
                         <div className="align-center px-2">
                             <img src="images/navbar_logo.png" className="w-100" alt=''/>
                             {/* Kapoor Enterprises */}
