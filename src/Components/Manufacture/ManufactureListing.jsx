@@ -554,7 +554,8 @@ export const ManufactureListing = () => {
                 <Table className="border">
                     <TableHead>
                         <TableRow>
-                            <TableCell><b>S.No.</b></TableCell>
+                            <TableCell className="w-12"><b>S.No.</b></TableCell>
+                            <TableCell className="w-25"><b>Manufacturer Icon</b></TableCell>
                             <TableCell><b>Manufacture Name</b></TableCell>
                             <TableCell><b>Action</b></TableCell>
                         </TableRow>
@@ -564,6 +565,7 @@ export const ManufactureListing = () => {
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
+                                    <TableCell><img className='w-12' src={res.manufacturer_icon?res.manufacturer_icon:'images/noImage.png'}/></TableCell>
                                     <TableCell sx={{textTransform:'capitalize'}}>{res.manufacturer_name}</TableCell>
                                     <TableCell>
                                         <Delete sx={{ cursor: 'pointer' }} onClick={() => {

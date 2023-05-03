@@ -551,7 +551,8 @@ export const Category = () => {
                 <Table className="border">
                     <TableHead>
                         <TableRow>
-                            <TableCell><b>S.No.</b></TableCell>
+                            <TableCell className="w-12"><b>S.No.</b></TableCell>
+                            <TableCell className="w-25"><b>Category Icon</b></TableCell>
                             <TableCell><b>Category name</b></TableCell>
                             {/* <TableCell><b>Icon</b></TableCell> */}
                             <TableCell><b>Action</b></TableCell>
@@ -563,6 +564,7 @@ export const Category = () => {
                                 return (
                                     <TableRow key={index}>
                                         <TableCell>{index + 1}</TableCell>
+                                        <TableCell><img className='w-12' src={res.category_icon?res.category_icon:'images/noImage.png'}/></TableCell>
                                         <TableCell sx={{textTransform:'capitalize'}}>{res.category_name}</TableCell>
                                         {/* <TableCell>{res.product_icon}</TableCell> */}
                                         <TableCell>

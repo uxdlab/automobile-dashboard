@@ -600,7 +600,7 @@ export const SegmentListing = () => {
                                     return (
                                         <TableRow key={index}>
                                             <TableCell>{index + 1}</TableCell>
-                                            <TableCell><img className='w-25' src={res.vehicle_icon}/></TableCell>
+                                            <TableCell><img className='w-12' src={res.vehicle_icon?res.vehicle_icon:'images/noImage.png'}/></TableCell>
                                             <TableCell sx={{textTransform:'capitalize'}}>{res.vehicle_name}</TableCell>
                                             <TableCell><Switch checked={res.is_active} onChange={(e) => switchBtn(e, res._id, index)} /></TableCell>
                                             {/* <TableCell>{res.vehicle_icon}</TableCell> */}

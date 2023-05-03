@@ -682,7 +682,8 @@ export const ModelListing = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell className="w-5"><b>S.No</b></TableCell>
+                                <TableCell className="w-12"><b>S.No</b></TableCell>
+                                <TableCell className="w-25"><b>Model Icon</b></TableCell>
                                 <TableCell><b>Name</b></TableCell>
                                 <TableCell><b>Action</b></TableCell>
                             </TableRow>
@@ -692,6 +693,7 @@ export const ModelListing = () => {
                                 return (
                                     <TableRow key={index}>
                                         <TableCell>{index + 1}</TableCell>
+                                        <TableCell><img className='w-12' src={res.model_icon?res.model_icon:'images/noImage.png'}/></TableCell>
                                         <TableCell sx={{textTransform:'capitalize'}}>{res.model_name}</TableCell>
                                         <TableCell>
                                             {/* <RemoveRedEye onClick={() => navigate(`/model/${res._id}`)} /> */}
