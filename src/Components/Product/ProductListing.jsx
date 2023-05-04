@@ -132,7 +132,7 @@ export default function ProductListing() {
                 <Table className="border">
                     <TableHead>
                         <TableRow>
-                            <TableCell><b>Sno.</b></TableCell>
+                            {/* <TableCell><b>Sno.</b></TableCell> */}
                             <TableCell><b>Product Name</b></TableCell>
                             <TableCell><b>Product OE Reference Number</b></TableCell>
                             <TableCell><b>Product KE Part Number</b></TableCell>
@@ -145,7 +145,7 @@ export default function ProductListing() {
                         {allProduct.map((res, index) => {
                             return (
                                 <TableRow key={index}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    {/* <TableCell>{index + 1}</TableCell> */}
                                     <TableCell sx={{textTransform:'capitalize'}}>{res.product_name}</TableCell>
                                     <TableCell>{res.oe_reference_number}</TableCell>
                                     <TableCell>{res.ke_partNumber}</TableCell>
