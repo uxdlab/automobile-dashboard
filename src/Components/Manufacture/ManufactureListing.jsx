@@ -587,7 +587,7 @@ export const ManufactureListing = () => {
                 <Table className="border">
                     <TableHead>
                         <TableRow>
-                            <TableCell className="w-12"><b>S.No.</b></TableCell>
+                            {/* <TableCell className="w-12"><b>S.No.</b></TableCell> */}
                             <TableCell className="w-25"><b>Manufacturer Icon</b></TableCell>
                             <TableCell><b>Manufacture Name</b></TableCell>
                             <TableCell><b>Action</b></TableCell>
@@ -597,14 +597,14 @@ export const ManufactureListing = () => {
                         {allManufecture.map((res, index) => {
                             return (
                                 <TableRow key={index}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    {/* <TableCell>{index + 1}</TableCell> */}
                                     <TableCell><img className='w-12' src={res.manufacturer_icon?res.manufacturer_icon:'images/noImage.png'}/></TableCell>
                                     <TableCell sx={{textTransform:'capitalize'}}>{res.manufacturer_name}</TableCell>
                                     <TableCell>
                                         <Delete sx={{ cursor: 'pointer' }} onClick={() => {
                                             setDeletedComp({ id: res._id, index, icon: res.manufacturer_icon })
                                             setDeleteModel(!deleteModel)
-                                        }} />
+                                        }} />&nbsp;&nbsp;
                                         <Edit sx={{ cursor: 'pointer' }} onClick={() => {
                                             getManufacturerByIdd(res._id, res.manufacturer_icon)
                                             setOpen1(true)

@@ -584,7 +584,7 @@ export const Category = () => {
                 <Table className="border">
                     <TableHead>
                         <TableRow>
-                            <TableCell className="w-12"><b>S.No.</b></TableCell>
+                            {/* <TableCell className="w-12"><b>S.No.</b></TableCell> */}
                             <TableCell className="w-25"><b>Category Icon</b></TableCell>
                             <TableCell><b>Category name</b></TableCell>
                             {/* <TableCell><b>Icon</b></TableCell> */}
@@ -596,7 +596,7 @@ export const Category = () => {
                             allProducts.map((res, index) => {
                                 return (
                                     <TableRow key={index}>
-                                        <TableCell>{index + 1}</TableCell>
+                                        {/* <TableCell>{index + 1}</TableCell> */}
                                         <TableCell><img className='w-12' src={res.category_icon?res.category_icon:'images/noImage.png'}/></TableCell>
                                         <TableCell sx={{textTransform:'capitalize'}}>{res.category_name}</TableCell>
                                         {/* <TableCell>{res.product_icon}</TableCell> */}
@@ -604,7 +604,7 @@ export const Category = () => {
                                             <Delete className="pointer" onClick={() => {
                                                 setDeletedVeh({ id: res._id, index, icon: res.category_icon })
                                                 setDeleteModel(true)
-                                            }} />
+                                            }} />&nbsp;&nbsp;
                                             <Edit className="pointer" onClick={() => getCategoryById(res._id, res.category_icon)} />
 
                                         </TableCell>

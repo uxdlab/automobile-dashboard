@@ -132,9 +132,7 @@ export const ModelListing = () => {
         }
         setSelectSegment([])
         setSelectBrand([])
-
     }
-
 
     async function addModel(e) {
         e.preventDefault()
@@ -666,7 +664,7 @@ export const ModelListing = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell className="w-12"><b>S.No</b></TableCell>
+                                {/* <TableCell className="w-12"><b>S.No</b></TableCell> */}
                                 <TableCell className="w-25"><b>Model Icon</b></TableCell>
                                 <TableCell><b>Name</b></TableCell>
                                 <TableCell><b>Action</b></TableCell>
@@ -676,7 +674,7 @@ export const ModelListing = () => {
                             {allData.map((res, index) => {
                                 return (
                                     <TableRow key={index}>
-                                        <TableCell>{index + 1}</TableCell>
+                                        {/* <TableCell>{index + 1}</TableCell> */}
                                         <TableCell><img className='w-12' src={res.model_icon?res.model_icon:'images/noImage.png'}/></TableCell>
                                         <TableCell sx={{textTransform:'capitalize'}}>{res.model_name}</TableCell>
                                         <TableCell>
@@ -687,7 +685,7 @@ export const ModelListing = () => {
                                                     setDeletedMod({ id: res._id, index, icon: res.model_icon })
                                                     setDeleteModel(true)
                                                 }}
-                                            />
+                                            />&nbsp;&nbsp;
                                             <Edit className="pointer" onClick={() => getModelById(res._id, res.model_icon)} />
                                         </TableCell>
                                     </TableRow>

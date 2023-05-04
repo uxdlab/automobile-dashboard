@@ -25,28 +25,13 @@ export const Router = () => {
                 </Route>
 
                 <Route element={<CheckAuth />} >
-
-                    {/* Segment Routes */}
-                    <Route exact path='/' element={<SegmentListing />} />
-
-                    {/* Category Routes  */}
+                    <Route exact path='/segment' element={<SegmentListing />} />
                     <Route exact path='/category' element={<Category />} />
-
-                    {/* Brand Routes */}
                     <Route exact path='/brand' element={<BrandListing />} />
-
-                    {/* Model Routes */}
                     <Route exact path='/models' element={<ModelListing />} />
-
-                    {/* Users Routes */}
-                    <Route exact path='/users' element={<UsersListing />} />
-
-                    {/* Orders Routes  */}
+                    <Route exact path='/' element={<UsersListing />} />
                     <Route exact path='/orders' element={<PaymentListing />} />
-
-                    {/* Manufecture Routes  */}
                     <Route exact path='/manufacture' element={<ManufactureListing />} />
-
                     {/* product Routes */}
                     <Route exact path='/product' element={<ProductListing />} />
                     <Route exact path='/addProduct' element={<AddProduct />} />

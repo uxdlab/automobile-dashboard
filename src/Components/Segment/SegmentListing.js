@@ -148,7 +148,6 @@ export const SegmentListing = () => {
         setLoader(true)
         setOpen1(false)
         console.log(img)
-        // if (img.name !== undefined) {
             if (segmentData.current.vehicle_icon !== '') {
                 const storage = getStorage();
                 const desertRef = ref(storage, imgURL);
@@ -220,26 +219,6 @@ export const SegmentListing = () => {
                         });
                     })
             }
-
-        // } else {
-
-        //     VehicleClass.editVehicle(id, segmentData.current)
-        //         .then((res) => {
-        //             console.log(res)
-        //             setLoader(false)
-        //             getAllVehicles()
-        //             ShowSnackbar({
-        //                 show: true,
-        //                 vertical: "top",
-        //                 horizontal: "right",
-        //                 msg: "Segment Updated successfully",
-        //                 type: "success",
-        //             });
-        //         }).catch((err) => {
-        //             console.log(err)
-        //             setLoader(false)
-        //         })
-        // }
         setLocalImg('')
         setImg({})
     }
@@ -262,36 +241,6 @@ export const SegmentListing = () => {
                 console.log(err)
             })
     }
-
-    // const UploadImage = (e) => {
-    //     console.log(e.target.files[0])
-    //     let image = e.target.files[0]
-
-    //     if (segmentData.current.vehicle_icon !== undefined) {
-
-    //         const storage = getStorage();
-    //         const desertRef = ref(storage, segmentData.current.vehicle_icon);
-    //         deleteObject(desertRef)
-    //             .then(() => {
-    //                 console.log("image deleted");
-    //             })
-    //             .catch((error) => { });
-
-    //     }
-
-    //     const storageRef = ref(storage, image.name);
-    //     const uploadTask = uploadBytesResumable(storageRef, image);
-    //     uploadTask.on(
-    //         "state_changed",
-    //         (snapshot) => { },
-    //         (err) => console.log(err),
-    //         () => {
-    //             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-    //                 console.log(url)
-    //                 segmentData.current.vehicle_icon = url
-    //             });
-    //         })
-    // }
 
     function switchBtn(e, id, index) {
         setLoader(true)
@@ -567,10 +516,10 @@ export const SegmentListing = () => {
                     <Table className="border">
                         <TableHead>
                             <TableRow>
-                                <TableCell><b>Sno.</b></TableCell>
+                                {/* <TableCell><b>Sno.</b></TableCell> */}
                                 <TableCell className="w-25"><b>Icon</b></TableCell>
                                 <TableCell ><b>Segment name</b></TableCell>
-                                <TableCell><b>Status</b></TableCell>
+                                {/* <TableCell><b>Status</b></TableCell> */}
                                 {/* <TableCell><b>Icon</b></TableCell> */}
                                 <TableCell><b>Action</b></TableCell>
                             </TableRow>
@@ -580,17 +529,17 @@ export const SegmentListing = () => {
                                 allVehicles.map((res, index) => {
                                     return (
                                         <TableRow key={index}>
-                                            <TableCell>{index + 1}</TableCell>
+                                            {/* <TableCell>{index + 1}</TableCell> */}
                                             <TableCell><img className='w-12' src={res.vehicle_icon ? res.vehicle_icon : 'images/noImage.png'} /></TableCell>
                                             <TableCell sx={{ textTransform: 'capitalize' }}>{res.vehicle_name}</TableCell>
-                                            <TableCell><Switch checked={res.is_active} onChange={(e) => switchBtn(e, res._id, index)} /></TableCell>
+                                            {/* <TableCell><Switch checked={res.is_active} onChange={(e) => switchBtn(e, res._id, index)} /></TableCell> */}
                                             {/* <TableCell>{res.vehicle_icon}</TableCell> */}
                                             <TableCell>
-                                                <Delete sx={{ cursor: 'pointer' }} onClick={() => {
+                                                <Delete className="pointer" onClick={() => {
                                                     setDeletedVeh({ id: res._id, index, icon: res.vehicle_icon })
                                                     setDeleteModel(true)
-                                                }} />
-                                                <Edit sx={{ cursor: 'pointer' }} onClick={() => { getSegmentById(res._id, res.vehicle_icon) }} />
+                                                }} />&nbsp;&nbsp;
+                                                <Edit className="pointer" onClick={() => { getSegmentById(res._id, res.vehicle_icon) }} />
                                                 {/* <RemoveRedEye sx={{ cursor: 'pointer' }} onClick={() => navigate(`/viewVehicle/${res._id}`)} /> */}
                                             </TableCell>
                                         </TableRow>

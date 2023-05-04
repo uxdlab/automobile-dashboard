@@ -661,7 +661,7 @@ export const BrandListing = () => {
                 <Table className="border">
                     <TableHead>
                         <TableRow>
-                            <TableCell className="w-12"><b>Sno.</b></TableCell>
+                            {/* <TableCell className="w-12"><b>Sno.</b></TableCell> */}
                             <TableCell className="w-25"><b>Brand Icon</b></TableCell>
                             <TableCell><b>Brand Name</b></TableCell>
                             <TableCell><b>Action</b></TableCell>
@@ -671,15 +671,15 @@ export const BrandListing = () => {
                         {allCompanies.map((res, index) => {
                             return (
                                 <TableRow key={index}>
-                                    <TableCell>{index + 1}</TableCell>
+                                    {/* <TableCell>{index + 1}</TableCell> */}
                                     <TableCell><img className='w-12' src={res.brand_image ? res.brand_image : 'images/noImage.png'} /></TableCell>
                                     <TableCell sx={{ textTransform: 'capitalize' }}>{res.brand_name}</TableCell>
                                     <TableCell>
-                                        <Delete onClick={() => {
+                                        <Delete className="pointer" onClick={() => {
                                             setDeletedComp({ id: res._id, index, icon: res.brand_image })
                                             setDeleteModel(true)
-                                        }} />
-                                        <Edit onClick={() =>
+                                        }} />&nbsp;&nbsp;
+                                        <Edit className="pointer" onClick={() =>
                                             getBrandById(res._id, res.brand_image)} />
                                     </TableCell>
                                 </TableRow>
