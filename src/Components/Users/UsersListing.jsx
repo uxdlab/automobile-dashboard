@@ -1,141 +1,84 @@
-import React from 'react'
+import React, { useState } from 'react'
 import  './Style.css'
+import { Box, Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+
 
 export default function UsersListing() {
+    const [allUsers,setAllUsers] = useState([])
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [countPerPage, setCountPerPage] = useState(5);
+    const [value, setValue] = React.useState("");
+    const [collection, setCollection] = React.useState(
+        (allUsers.slice(0, countPerPage))
+    );
+
+    React.useEffect(() => {
+        if (!value) {
+            updatePage(1);
+        }
+    }, [value, countPerPage, allUsers]);
+
+    const updatePage = p => {
+        setCurrentPage(p);
+        const to = countPerPage * p;
+        const from = to - countPerPage;
+        setCollection(allUsers.slice(from, to));
+    };
   return (
     <>
     <div class="container-fluid">
-        <div class="row">
-            {/* <div class="col">
-                <span class="para1">Dashboard / Student</span>
-            </div> */}
-        </div>
             <div class="col mt-2 d-flex justify-content-between">
-                <h1 class="d-inline-block">Users</h1>
-                {/* <input type="search" placeholder='Search here' class="search_box mt-1 border"></input> */}
+                <h1 class="d-inline-block">Customers</h1>
             </div>
     </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-            <div class="table-responsive">
-            <table class="table my-3 border">
-                <thead class="thead-light">
-                <tr>
-                    <th scope="col">User Name</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Mobile No.</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Akash</td>
-                    <td>22</td>
-                    <td>Male</td>
-                    <td>Akash@gmail.com</td>
-                    <td>6598653265</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="toggle_button"/>
-                            <label class="form-check-label" for="toggle_button"></label>
-                        </div>
-                    </td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>Rajeev</td>
-                    <td>20</td>
-                    <td>Male</td>
-                    <td>Rajeev@gmail.com</td>
-                    <td>9854345659</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="toggle_button"/>
-                            <label class="form-check-label" for="toggle_button"></label>
-                        </div>
-                    </td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>Larry</td>
-                    <td>26</td>
-                    <td>Male</td>
-                    <td>Larry@gamil.com</td>
-                    <td>9865873265</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="toggle_button"/>
-                            <label class="form-check-label" for="toggle_button"></label>
-                        </div>
-                    </td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>vidhi</td>
-                    <td>21</td>
-                    <td>Female</td>
-                    <td>vidhi@gamil.com</td>
-                    <td>9865873265</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="toggle_button"/>
-                            <label class="form-check-label" for="toggle_button"></label>
-                        </div>
-                    </td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>Ankush</td>
-                    <td>26</td>
-                    <td>Male</td>
-                    <td>Ankush@gamil.com</td>
-                    <td>8986587326</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="toggle_button"/>
-                            <label class="form-check-label" for="toggle_button"></label>
-                        </div>
-                    </td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>Rahul</td>
-                    <td>24</td>
-                    <td>Male</td>
-                    <td>Rahul@gamil.com</td>
-                    <td>7896573265</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="toggle_button"/>
-                            <label class="form-check-label" for="toggle_button"></label>
-                        </div>
-                    </td>
-                    <td>...</td>
-                </tr>
-                <tr>
-                    <td>Nisha</td>
-                    <td>25</td>
-                    <td>Female</td>
-                    <td>Nisha@gamil.com</td>
-                    <td>9535473265</td>
-                    <td>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="toggle_button"/>
-                            <label class="form-check-label" for="toggle_button"></label>
-                        </div>
-                    </td>
-                    <td>...</td>
-                </tr>
-                </tbody>
-            </table>
-            </div>
-            </div>
-        </div>
-    </div>
+    <Box sx={{ mx: 2 }} className='border'>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                {/* <TableCell className="w-12"><b>S.No</b></TableCell> */}
+                                <TableCell className="w-25"><b>Model Icon</b></TableCell>
+                                <TableCell><b>Name</b></TableCell>
+                                <TableCell><b>Action</b></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {collection.map((res, index) => {
+                                return (
+                                    <TableRow key={index}>
+                                        {/* <TableCell>{index + 1}</TableCell> */}
+                                        <TableCell><img className='w-12' src={res.model_icon?res.model_icon:'images/noImage.png'}/></TableCell>
+                                        <TableCell sx={{textTransform:'capitalize'}}>{res.model_name}</TableCell>
+                                        <TableCell>
+                                            {/* <RemoveRedEye onClick={() => navigate(`/model/${res._id}`)} /> */}
+                                            {/* <Delete
+                                                className="pointer"
+                                                onClick={() => {
+                                                    setDeletedMod({ id: res._id, index, icon: res.model_icon })
+                                                    setDeleteModel(true)
+                                                }}
+                                            />&nbsp;&nbsp;
+                                            <Edit className="pointer" onClick={() => getModelById(res._id, res.model_icon)} /> */}
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                    <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                        <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                        </select>
+                        <Pagination
+                            pageSize={countPerPage}
+                            onChange={updatePage}
+                            current={currentPage}
+                            total={allUsers.length}
+                            style={{ color: 'green' }}
+                        />
+                    </Box>
+                </Box>
     </>
   )
 }

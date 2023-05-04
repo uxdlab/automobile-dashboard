@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
-import { Backdrop, Box, Button, Dialog, MenuItem, OutlinedInput, Select, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import "rc-pagination/assets/index.css";
 import { ModelClass } from "../../services/Model";
 import { Delete, Edit } from "@mui/icons-material";
@@ -12,12 +12,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../auth/Firebase";
 import { VehicleClass } from "../../services/Vehicle";
-import { CompanyClass } from "../../services/Company";
-import { CallMultipleApi } from "../../services/CallMultipleApi";
 import { SnackBar } from "../Assets/SnackBar";
 
 export const ModelListing = () => {
-    const theme = useTheme();
     const [loader, setLoader] = useState(true)
     const [selectSegment, setSelectSegment] = useState([])
     const [selectBrand, setSelectBrand] = useState([])
@@ -671,7 +668,7 @@ export const ModelListing = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {allData.map((res, index) => {
+                            {collection.map((res, index) => {
                                 return (
                                     <TableRow key={index}>
                                         {/* <TableCell>{index + 1}</TableCell> */}
@@ -693,7 +690,7 @@ export const ModelListing = () => {
                             })}
                         </TableBody>
                     </Table>
-                    {/* <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                    <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
                         <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
                             <option>5</option>
                             <option>10</option>
@@ -706,7 +703,7 @@ export const ModelListing = () => {
                             total={allData.length}
                             style={{ color: 'green' }}
                         />
-                    </Box> */}
+                    </Box>
                 </Box>
                 : null}
 
