@@ -143,75 +143,40 @@ export const BrandListing = () => {
         e.preventDefault()
         console.log(brandData.current)
         setLoader(true)
-        setOpen(false)
         brandData.current.segment_array = selectSegment
-        if (img.name !== undefined) {
-            const storageRef = ref(storage, img.name);
-            const uploadTask = uploadBytesResumable(storageRef, img);
-            uploadTask.on(
-                "state_changed",
-                (snapshot) => { },
-                (err) => console.log(err),
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                        console.log(url)
-                        brandData.current.brand_image = url
-                        console.log(brandData.current)
+        setOpen(false)
+        const storageRef = ref(storage, img.name);
+        const uploadTask = uploadBytesResumable(storageRef, img);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => { },
+            (err) => console.log(err),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    console.log(url)
+                    brandData.current.brand_image = url
+                    console.log(brandData.current)
 
-                        CompanyClass.addCompany(brandData.current)
-                            .then((res) => {
-                                console.log(res)
-                                getAllCompany()
-                                setLoader(false)
-                                ShowSnackbar({
-                                    show: true,
-                                    vertical: "top",
-                                    horizontal: "right",
-                                    msg: "Brand Added successfully",
-                                    type: "success",
-                                });
-                            }).catch((err) => {
-                                console.log(err)
-                                setLoader(false)
-                                ShowSnackbar({
-                                    show: true,
-                                    vertical: "top",
-                                    horizontal: "right",
-                                    msg: "Brand Aleady Exist",
-                                    type: "error",
-                                });
-                                getAllCompany()
-                            })
+                    CompanyClass.addCompany(brandData.current)
+                        .then((res) => {
+                            console.log(res)
+                            getAllCompany()
+                            setLoader(false)
+                            ShowSnackbar({
+                                show: true,
+                                vertical: "top",
+                                horizontal: "right",
+                                msg: "Brand Added successfully",
+                                type: "success",
+                            });
+                        }).catch((err) => {
+                            console.log(err)
+                            setLoader(false)
+                            getAllCompany()
+                        })
 
-                    });
-                })
-        } else {
-            brandData.current.brand_image = ''
-            CompanyClass.addCompany(brandData.current)
-                .then((res) => {
-                    console.log(res)
-                    setLoader(false)
-                    getAllCompany()
-                    ShowSnackbar({
-                        show: true,
-                        vertical: "top",
-                        horizontal: "right",
-                        msg: "Brand Added successfully",
-                        type: "success",
-                    });
-                }).catch((err) => {
-                    console.log(err)
-                    setLoader(false)
-                    ShowSnackbar({
-                        show: true,
-                        vertical: "top",
-                        horizontal: "right",
-                        msg: "Brand Aleady Exist",
-                        type: "error",
-                    });
-                    getAllCompany()
-                })
-        }
+                });
+            })
         setLocalImg('')
         setImg({})
         brandData.current.brand_image = ''
@@ -389,6 +354,48 @@ export const BrandListing = () => {
         }
     }
 
+    const ExistNameCheck = (e) => {
+        e.preventDefault()
+        if (img.name !== undefined) {
+            let arr = allCompanies.filter((item) => item.brand_name === brandData.current.brand_name)
+            if (arr.length !== 0) {
+                ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Brand Already Exist",
+                    type: "error",
+                });
+            } else {
+                addBrand(e)
+            }
+        } else {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Please Upload Icon",
+                type: "error",
+            });
+        }
+    }
+
+    const checkNameForUpdate = (e) => {
+        e.preventDefault()
+        let arr = allCompanies.filter((item) => item.brand_name === brandData.current.brand_name && item._id !== brandData.current._id)
+        if (arr.length !== 0) {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Brand Already Exist",
+                type: "error",
+            });
+        } else {
+            updateBrand(e)
+        }
+    }
+
     return (
         <>
             <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
@@ -402,7 +409,7 @@ export const BrandListing = () => {
                     <Box>Are you sure you want to delete?</Box>
                     <Box align='right'>
                         <Button className='cancel_btn me-3' onClick={() => setDeleteModel(false)}>Cancel</Button>
-                        <Button variant="contained" onClick={deleteCompany}>Delete</Button>
+                        <Button variant="contained" className="custom-btn" onClick={deleteCompany}>Delete</Button>
                     </Box>
                 </Box>
 
@@ -436,7 +443,7 @@ export const BrandListing = () => {
                 <Box py={2} px={1} className='over-flow-hide-x'>
                     <h5 className="px-3">Add New Brand</h5>
                     <hr />
-                    <form onSubmit={addBrand}>
+                    <form onSubmit={ExistNameCheck}>
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-12">
@@ -543,7 +550,7 @@ export const BrandListing = () => {
                 <Box py={2} px={1} className='over-flow-hide-x'>
                     <h5 className="px-3">Edit Brand</h5>
                     <hr />
-                    <form onSubmit={updateBrand}>
+                    <form onSubmit={checkNameForUpdate}>
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-12">
@@ -665,8 +672,8 @@ export const BrandListing = () => {
                             return (
                                 <TableRow key={index}>
                                     <TableCell>{index + 1}</TableCell>
-                                    <TableCell><img className='w-12' src={res.brand_image?res.brand_image:'images/noImage.png'}/></TableCell>
-                                    <TableCell sx={{textTransform:'capitalize'}}>{res.brand_name}</TableCell>
+                                    <TableCell><img className='w-12' src={res.brand_image ? res.brand_image : 'images/noImage.png'} /></TableCell>
+                                    <TableCell sx={{ textTransform: 'capitalize' }}>{res.brand_name}</TableCell>
                                     <TableCell>
                                         <Delete onClick={() => {
                                             setDeletedComp({ id: res._id, index, icon: res.brand_image })

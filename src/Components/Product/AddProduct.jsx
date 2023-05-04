@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Backdrop, Box, Button, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 import { Triangle } from "react-loader-spinner";
@@ -6,20 +6,22 @@ import Product from './Product';
 import { addItem } from '../../services/Item';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '../../auth/Firebase';
+import { SnackBar } from '../Assets/SnackBar';
+import { getAllItem } from '../../services/Item';
 
 
 export default function AddProduct() {
     const navigate = useNavigate()
     const [loader, setLoader] = useState(false)
     const [files, setFiles] = useState([])
-    const [forUpload, setForUpload] = useState([])
+    const [data,setData] = useState([])
     const [snackbar, ShowSnackbar] = useState({
         show: false,
         vertical: "top",
         horizontal: "right",
         msg: "data added",
         type: "error",
-      });
+    });
     const AllProducts = useRef([
         {
             product_name: '',
@@ -35,6 +37,17 @@ export default function AddProduct() {
             product_manufacture_aaray: []
         }
     ])
+
+    useEffect(()=>{
+        getAllItem()
+        .then((res)=>{
+            setData(res.data.data)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    },[])
+
 
     const submitForm = async (e) => {
         e.preventDefault()
@@ -60,33 +73,61 @@ export default function AddProduct() {
                                 AllProducts.current[0].image = [...urls]
                                 console.log(AllProducts.current.image)
                                 addItem(AllProducts.current[0])
-                                .then((res) => {
-                                    console.log(res)
-                                    setLoader(false)
-                                    navigate('/product')
-                                    sessionStorage.setItem('added','true')
-                                }).catch((err) => {
-                                    console.log(err)
-                                })
+                                    .then((res) => {
+                                        console.log(res)
+                                        setLoader(false)
+                                        navigate('/product')
+                                        sessionStorage.setItem('added', 'true')
+                                    }).catch((err) => {
+                                        console.log(err)
+                                    })
                             }
                         })
                     })
                 }).catch((err) => console.log(err))
 
         } else {
-            addItem(AllProducts.current[0])
-                .then((res) => {
-                    console.log(res)
-                    setLoader(false)
-                    sessionStorage.setItem('added','true')
-                    navigate('/product')
-                }).catch((err) => {
-                    console.log(err)
-                })
+            setLoader(false)
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Please Upload Images",
+                type: "error",
+            });
         }
     }
+
+    const ExistNameCheck = (e) => {
+        e.preventDefault()
+        console.log(files)
+        if (files.length !== 0) {
+            let arr = data.filter((item) => item.product_name === AllProducts.current[0].product_name)
+            if (arr.length !== 0) {
+                ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Model Already Exist",
+                    type: "error",
+                });
+            } else {
+                submitForm(e)
+            }
+        } else {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Please Upload Images",
+                type: "error",
+            });
+        }
+    }
+
     return (
         <>
+            <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loader}
@@ -107,7 +148,7 @@ export default function AddProduct() {
             <Typography variant="h4" className='text-center' mx={2} mt={2}>Add Product</Typography>
             {!loader ?
 
-                <form onSubmit={submitForm}>
+                <form onSubmit={ExistNameCheck}>
                     {AllProducts.current.map((pro, index) => {
                         return (
                             <Product

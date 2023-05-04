@@ -23,7 +23,7 @@ export const ModelListing = () => {
     const [selectBrand, setSelectBrand] = useState([])
     const [seleBrand, setSeleBrand] = useState([])
     console.log(selectSegment)
-    console.log(selectBrand)
+    console.log(seleBrand)
     const [allData, setData] = useState([])
     const [countPerPage, setCountPerPage] = useState(5);
     const [value, setValue] = React.useState("");
@@ -140,10 +140,9 @@ export const ModelListing = () => {
         e.preventDefault()
         console.log(modelData.current)
         setLoader(true)
-        setOpen(false)
         modelData.current.model_segment_array = selectSegment
         modelData.current.model_brand_array = seleBrand
-        if (img.name !== undefined) {
+            setOpen(false)
             const storageRef = ref(storage, img.name);
             const uploadTask = uploadBytesResumable(storageRef, img);
             uploadTask.on(
@@ -171,44 +170,10 @@ export const ModelListing = () => {
                             }).catch((err) => {
                                 console.log(err)
                                 setLoader(false)
-                                    ShowSnackbar({
-                                        show: true,
-                                        vertical: "top",
-                                        horizontal: "right",
-                                        msg: "Model Already Exist",
-                                        type: "error",
-                                      });
                                 getAllModels()
                             })
                     });
                 })
-        } else {
-            modelData.current.model_icon = ''
-            ModelClass.addModel(modelData.current)
-                .then((res) => {
-                    console.log(res)
-                    setLoader(false)
-                    getAllModels()
-                    ShowSnackbar({
-                        show: true,
-                        vertical: "top",
-                        horizontal: "right",
-                        msg: "Model Added successfully",
-                        type: "success",
-                      });
-                }).catch((err) => {
-                    console.log(err)
-                    setLoader(false)
-                    ShowSnackbar({
-                        show: true,
-                        vertical: "top",
-                        horizontal: "right",
-                        msg: "Model Already Exist",
-                        type: "error",
-                      });
-                    getAllModels()
-                })
-        }
         setLocalImg('')
         setImg({})
         modelData.current.model_icon = ''
@@ -222,7 +187,7 @@ export const ModelListing = () => {
         setOpen1(false)
         console.log(id)
         modelData.current.model_segment_array = selectSegment
-        modelData.current.model_brand_array = selectBrand
+        modelData.current.model_brand_array = seleBrand
         if (img.name !== undefined) {
             if (modelData.current.model_icon !== '') {
                 const storage = getStorage();
@@ -256,22 +221,12 @@ export const ModelListing = () => {
                                         }).catch((err) => {
                                             console.log(err)
                                             setLoader(false)
-                                            ShowSnackbar({
-                                                show: true,
-                                                vertical: "top",
-                                                horizontal: "right",
-                                                msg: "Model Already Exist",
-                                                type: "error",
-                                              });
                                             setLoader(false)
                                         })
                                 });
                             })
-
                     })
                     .catch((error) => { });
-
-
             } else {
                 const storageRef = ref(storage, img.name);
                 const uploadTask = uploadBytesResumable(storageRef, img);
@@ -298,13 +253,6 @@ export const ModelListing = () => {
                                 }).catch((err) => {
                                     console.log(err)
                                     setLoader(false)
-                                    ShowSnackbar({
-                                        show: true,
-                                        vertical: "top",
-                                        horizontal: "right",
-                                        msg: "Model Already Exist",
-                                        type: "error",
-                                      });
                                     setLoader(false)
                                 })
                         });
@@ -328,13 +276,6 @@ export const ModelListing = () => {
                 }).catch((err) => {
                     console.log(err)
                     setLoader(false)
-                    ShowSnackbar({
-                        show: true,
-                        vertical: "top",
-                        horizontal: "right",
-                        msg: "Model Already Exist",
-                        type: "error",
-                      });
                     setLoader(false)
                 })
         }
@@ -401,6 +342,49 @@ export const ModelListing = () => {
         setSelectBrand(allBrand.filter(e=>e.segment_array.includes(fil)))
     }
 
+    const ExistNameCheck = (e) => {
+        e.preventDefault()
+        if (img.name !== undefined) {
+            let arr = allData.filter((item) => item.model_name === modelData.current.model_name)
+            if (arr.length !== 0) {
+                ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Model Already Exist",
+                    type: "error",
+                });
+            } else {
+                addModel(e)
+            }
+        } else {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Please Upload Icon",
+                type: "error",
+            });
+        }
+    }
+
+    const checkNameForUpdate = (e) => {
+        e.preventDefault()
+        let arr = allData.filter((item) => item.model_name === modelData.current.model_name && item._id !== modelData.current._id)
+        if (arr.length !== 0) {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Model Already Exist",
+                type: "error",
+            });
+        } else {
+            updateModel(e)
+        }
+    }
+
+
     return (
         <>
         <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
@@ -421,7 +405,7 @@ export const ModelListing = () => {
                         <Box>Are you sure you want to delete?</Box>
                         <Box align='right'>
                             <Button className='cancel_btn me-3' onClick={() => setDeleteModel(false)}>Cancel</Button>
-                            <Button variant="contained" onClick={deleteModelf}>Delete</Button>
+                            <Button variant="contained" className="custom-btn" onClick={deleteModelf}>Delete</Button>
                         </Box>
                     </Box>
 
@@ -448,7 +432,7 @@ export const ModelListing = () => {
                 <Box py={2} px={1} className='over-flow-hide-x'>
                     <h5 className="px-3">Add New Model</h5>
                     <hr />
-                    <form onSubmit={addModel}>
+                    <form onSubmit={ExistNameCheck}>
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-6 col-sm-6 col-6">
@@ -565,7 +549,7 @@ export const ModelListing = () => {
                 <Box py={2} px={1} className='over-flow-hide-x'>
                     <h5 className="px-3">Edit Model</h5>
                     <hr />
-                    <form onSubmit={updateModel}>
+                    <form onSubmit={checkNameForUpdate}>
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-6">

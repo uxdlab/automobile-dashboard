@@ -334,6 +334,39 @@ export const ManufactureListing = () => {
         }
     }
 
+    const ExistNameCheck = (e) => {
+        e.preventDefault()
+            let arr = allManufecture.filter((item) => item.manufacturer_name === manufacturerData.current.manufacturer_name)
+            if (arr.length !== 0) {
+                ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Manufecturer Already Exist",
+                    type: "error",
+                });
+            } else {
+                addManufacturer(e)
+            }
+    }
+
+    const checkNameForUpdate = (e) => {
+        e.preventDefault()
+        let arr = allManufecture.filter((item) => item.manufacturer_name === manufacturerData.current.manufacturer_name && item._id!== manufacturerData.current._id)
+        if (arr.length !== 0) {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Manufecturer Already Exist",
+                type: "error",
+            });
+        } else {
+            updateManufacturer(e)
+        }
+    }
+
+
     return (
         <>
          <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
@@ -347,7 +380,7 @@ export const ManufactureListing = () => {
                     <Box>Are you sure you want to delete?</Box>
                     <Box align='right'>
                         <Button className='cancel_btn me-3' onClick={() => setDeleteModel(!deleteModel)}>Cancel</Button>
-                        <Button variant="contained" onClick={deleteManufacturer}>Delete</Button>
+                        <Button variant="contained" className="custom-btn" onClick={deleteManufacturer}>Delete</Button>
                     </Box>
                 </Box>
 
@@ -381,7 +414,7 @@ export const ManufactureListing = () => {
                 <Box py={2} px={1} className='over-flow-hide-x'>
                     <h5 className="px-3">Add New Manufacturer</h5>
                     <hr />
-                    <form onSubmit={addManufacturer}>
+                    <form onSubmit={ExistNameCheck}>
                         <div className="container-fluid">
                             <div className="row">
 
@@ -467,7 +500,7 @@ export const ManufactureListing = () => {
                 <Box py={2} px={1} className='over-flow-hide-x'>
                     <h5 className="px-3">Edit Manufacturer</h5>
                     <hr />
-                    <form onSubmit={updateManufacturer}>
+                    <form onSubmit={checkNameForUpdate}>
                         <div className="container-fluid">
                             <div className="row">
 

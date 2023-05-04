@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { editItem, getItem } from '../../services/Item'
+import { editItem, getAllItem, getItem } from '../../services/Item'
 import { Backdrop, Box, Button, Grid, MenuItem, Select, Typography } from '@mui/material'
 import { Triangle } from 'react-loader-spinner'
 import { CallMultipleApi } from '../../services/CallMultipleApi'
@@ -9,12 +9,14 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { storage } from '../../auth/Firebase'
+import { SnackBar } from '../Assets/SnackBar'
 
 export default function UpdateProduct() {
     const { id } = useParams()
     const [loader, setLoader] = useState(true)
     const navigate = useNavigate()
     const [productData, setProductData] = useState({})
+    const [allProductData,setAllProductData] = useState([])
     const [imgURLs, setimgURLs] = useState([])
     const [checkURL, setCheckURL] = useState([])
     const [newImgURL, setNewImgURL] = useState([])
@@ -30,6 +32,13 @@ export default function UpdateProduct() {
     const [manufacturer, setManufacturer] = useState([])
     const AllProducts = useRef([])
     console.log(AllProducts.current[0])
+    const [snackbar, ShowSnackbar] = useState({
+        show: false,
+        vertical: "top",
+        horizontal: "right",
+        msg: "data added",
+        type: "error",
+    });
 
     const getProductById = (reqData) => {
         console.log(reqData)
@@ -183,7 +192,33 @@ export default function UpdateProduct() {
             console.log(url)
         })
         setimgURLs([...imgURLs, ...arr])
+    }
 
+    const ExistNameCheck = (e) => {
+        e.preventDefault()
+        console.log(checkURL)
+        if (checkURL.length!==0 || imgURLs.length!==0) {
+            let arr = allProductData.filter((item) => item.product_name === AllProducts.current[0].product_name)
+            if (arr.length !== 0) {
+                ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Product Already Exist",
+                    type: "error",
+                });
+            } else {
+                formSubmit(e)
+            }
+        } else {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Please Upload Images",
+                type: "error",
+            });
+        }
     }
 
     useEffect(() => {
@@ -203,9 +238,13 @@ export default function UpdateProduct() {
                 console.log(res[0].data.data.brandData)
                 getProductById(res[0].data.data)
             })
+        getAllItem()
+        .then(res=>setAllProductData(res.data.data))
+        .catch(err=>console.log(err))
     }, [])
     return (
         <>
+        <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loader}
@@ -225,7 +264,7 @@ export default function UpdateProduct() {
             <Typography variant="h4" className='text-center' mx={2} mt={2}>Edit Product</Typography>
             {!loader ?
                 <Box>
-                    <form onSubmit={formSubmit}>
+                    <form onSubmit={ExistNameCheck}>
                         {AllProducts.current.map((res, index) => {
                             return <Grid container className='d-flex justify-content-center '>
                                 <Grid item xl={5} md={6} sm={12} sx={12} className='border pb-3'>
@@ -438,7 +477,7 @@ export default function UpdateProduct() {
                         })}
                         <Grid container>
                             <Grid item xl={7} md={9} sm={12} sx={12}>
-                                <Box align='right' px={3} mt={6}>
+                                <Box align='right' mt={6}>
                                     <Button className="cancel_btn me-3" onClick={() => navigate('/product')}>Cancel</Button>
                                     <Button type='submit' variant="contained">Update</Button>
                                 </Box>

@@ -342,6 +342,39 @@ export const Category = () => {
         }
     }
 
+    const ExistNameCheck = (e) => {
+        e.preventDefault()
+            let arr = allProducts.filter((item) => item.category_name === allCategory.current.category_name)
+            if (arr.length !== 0) {
+                ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Category Already Exist",
+                    type: "error",
+                });
+            } else {
+                addCategory(e)
+            }
+    }
+
+    const checkNameForUpdate = (e) => {
+        e.preventDefault()
+        let arr = allProducts.filter((item) => item.category_name === allCategory.current.category_name && item._id !== allCategory.current._id)
+        if (arr.length !== 0) {
+            ShowSnackbar({
+                show: true,
+                vertical: "top",
+                horizontal: "right",
+                msg: "Category Already Exist",
+                type: "error",
+            });
+        } else {
+            updateCategory(e)
+        }
+    }
+
+
 
     return (
         <Box>
@@ -371,7 +404,7 @@ export const Category = () => {
                     <Box>Are you sure you want to delete?</Box>
                     <Box align='right'>
                         <Button className='cancel_btn me-3' onClick={() => setDeleteModel(false)}>Cancel</Button>
-                        <Button variant="contained" onClick={deleteProduct}>Delete</Button>
+                        <Button variant="contained" className="custom-btn" onClick={deleteProduct}>Delete</Button>
                     </Box>
                 </Box>
 
@@ -387,7 +420,7 @@ export const Category = () => {
                 <Box py={2} px={1} className='over-flow-hide-x'>
                     <h5 className="px-3">Add New Category</h5>
                     <hr />
-                    <form onSubmit={addCategory}>
+                    <form onSubmit={ExistNameCheck}>
                         <div className="container-fluid">
                             <div className="row">
 
@@ -468,7 +501,7 @@ export const Category = () => {
                 <Box py={2} px={1} className='over-flow-hide-x'>
                     <h5 className="px-3">Edit Category</h5>
                     <hr />
-                    <form onSubmit={updateCategory}>
+                    <form onSubmit={checkNameForUpdate}>
                         <div className="container-fluid">
                             <div className="row">
 

@@ -257,8 +257,11 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                             <div key={index} className=" mb-1 pe-1 relative" style={{width:'25%'}}>
                                             <CancelIcon sx={{fontSize:'12px',color:'red'}} onClick={()=>{
                                                 let arr = [...imgURLs]
+                                                let fileArr = [...files]
+                                                fileArr.splice(index,1)
                                                 arr.splice(index, 1)
                                                 setimgURLs(arr)
+                                                setFiles(fileArr)
                                             }} className="close-btn-position" />
                                             <img className="img-style" src={item}/>
                                         </div>)

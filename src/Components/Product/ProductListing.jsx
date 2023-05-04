@@ -98,7 +98,7 @@ export default function ProductListing() {
                     <Box>Are you sure you want to delete?</Box>
                     <Box align='right'>
                         <Button className='cancel_btn me-3' onClick={() => setDeleteModel(false)}>Cancel</Button>
-                        <Button variant="contained" onClick={deleteProduct}>Delete</Button>
+                        <Button variant="contained" className="custom-btn" onClick={deleteProduct}>Delete</Button>
                     </Box>
                 </Box>
 
