@@ -8,6 +8,7 @@ import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } f
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { SnackBar } from "../Assets/SnackBar";
+import Pagination from "rc-pagination";
 
 export const SegmentListing = () => {
 
@@ -38,7 +39,25 @@ export const SegmentListing = () => {
             vehicle_icon: ''
         }
     )
-    console.log(segmentData.current)
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [countPerPage, setCountPerPage] = useState(5);
+    const [value, setValue] = React.useState("");
+    const [collection, setCollection] = React.useState(
+        (allVehicles.slice(0, countPerPage))
+    );
+
+    React.useEffect(() => {
+        if (!value) {
+            updatePage(1);
+        }
+    }, [value, countPerPage, allVehicles]);
+
+    const updatePage = p => {
+        setCurrentPage(p);
+        const to = countPerPage * p;
+        const from = to - countPerPage;
+        setCollection(allVehicles.slice(from, to));
+    };
 
     useEffect(() => {
         getAllVehicles()
@@ -523,7 +542,7 @@ export const SegmentListing = () => {
                         </TableHead>
                         <TableBody>
                             {
-                                allVehicles.map((res, index) => {
+                                collection.map((res, index) => {
                                     return (
                                         <TableRow key={index}>
                                             <TableCell className="ps-md-5"><img className='w-12' src={res.vehicle_icon ? res.vehicle_icon : 'images/noImage.png'} /></TableCell>
@@ -541,6 +560,20 @@ export const SegmentListing = () => {
                             }
                         </TableBody>
                     </Table>
+                    <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                        <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                        </select>
+                        <Pagination
+                            pageSize={countPerPage}
+                            onChange={updatePage}
+                            current={currentPage}
+                            total={allVehicles.length}
+                            style={{ color: 'green' }}
+                        />
+                    </Box>
                 </TableContainer>
             </Box >
 

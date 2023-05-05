@@ -1,5 +1,5 @@
 
-import { Backdrop, Box, Button, Dialog, MenuItem, OutlinedInput, Select, Table, TableBody, TableCell, TableHead, TableRow, Typography, useTheme } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, MenuItem, OutlinedInput, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Triangle } from "react-loader-spinner";
 import { CompanyClass } from "../../services/Company";
@@ -10,6 +10,7 @@ import { storage } from "../../auth/Firebase";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { SnackBar } from "../Assets/SnackBar";
+import Pagination from "rc-pagination";
 
 
 export const BrandListing = () => {
@@ -44,6 +45,26 @@ export const BrandListing = () => {
         brand_image: ''
     })
     // brandData.current.segment_array = selectSegment
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [countPerPage, setCountPerPage] = useState(5);
+    const [value, setValue] = React.useState("");
+    const [collection, setCollection] = React.useState(
+        (allCompanies.slice(0, countPerPage))
+    );
+
+    React.useEffect(() => {
+        if (!value) {
+            updatePage(1);
+        }
+    }, [value, countPerPage, allCompanies]);
+
+    const updatePage = p => {
+        setCurrentPage(p);
+        const to = countPerPage * p;
+        const from = to - countPerPage;
+        setCollection(allCompanies.slice(from, to));
+    };
+
     console.log(brandData.current)
     useEffect(() => {
         getAllCompany()
@@ -658,7 +679,8 @@ export const BrandListing = () => {
                 <Button className="btn_primary" onClick={() => setOpen(true)} variant="contained">Add Brand</Button>
             </Box>
             <div className="px-3">
-                <Table className="border">
+               <TableContainer component={Paper}>
+               <Table className="">
                     <TableHead>
                         <TableRow>
                             <TableCell className="w-25"><b>&nbsp;</b></TableCell>
@@ -667,7 +689,7 @@ export const BrandListing = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {allCompanies.map((res, index) => {
+                        {collection.map((res, index) => {
                             return (
                                 <TableRow key={index}>
                                     <TableCell className="ps-md-5"><img className='w-12' src={res.brand_image ? res.brand_image : 'images/noImage.png'} /></TableCell>
@@ -685,6 +707,21 @@ export const BrandListing = () => {
                         })}
                     </TableBody>
                 </Table>
+                <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                        <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                        </select>
+                        <Pagination
+                            pageSize={countPerPage}
+                            onChange={updatePage}
+                            current={currentPage}
+                            total={allCompanies.length}
+                            style={{ color: 'green' }}
+                        />
+                    </Box>
+               </TableContainer>
             </div>
 
         </>

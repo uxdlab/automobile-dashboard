@@ -1,5 +1,5 @@
 
-import { Backdrop, Box, Button, Dialog, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Triangle } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import { storage } from "../../auth/Firebase";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { SnackBar } from "../Assets/SnackBar";
+import Pagination from "rc-pagination";
 
 export const ManufactureListing = () => {
 
@@ -42,6 +43,26 @@ export const ManufactureListing = () => {
             manufacturer_icon: ''
         }
     )
+
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [countPerPage, setCountPerPage] = useState(5);
+    const [value, setValue] = React.useState("");
+    const [collection, setCollection] = React.useState(
+        (allManufecture.slice(0, countPerPage))
+    );
+
+    React.useEffect(() => {
+        if (!value) {
+            updatePage(1);
+        }
+    }, [value, countPerPage, allManufecture]);
+
+    const updatePage = p => {
+        setCurrentPage(p);
+        const to = countPerPage * p;
+        const from = to - countPerPage;
+        setCollection(allManufecture.slice(from, to));
+    };
     useEffect(() => {
         getAllManufacture()
     }, [])
@@ -584,7 +605,8 @@ export const ManufactureListing = () => {
                 <Button className="btn_primary" onClick={() => setOpen(true)} variant="contained">Add Manufacture</Button>
             </Box>
             <div className="px-3">
-                <Table className="border">
+                <TableContainer component={Paper}>
+                <Table >
                     <TableHead>
                         <TableRow>
                             <TableCell className="w-25"><b>&nbsp;</b></TableCell>
@@ -613,6 +635,21 @@ export const ManufactureListing = () => {
                         })}
                     </TableBody>
                 </Table>
+                <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                        <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                        </select>
+                        <Pagination
+                            pageSize={countPerPage}
+                            onChange={updatePage}
+                            current={currentPage}
+                            total={allManufecture.length}
+                            style={{ color: 'green' }}
+                        />
+                    </Box>
+                </TableContainer>
             </div>
 
         </>

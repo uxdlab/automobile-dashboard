@@ -1,6 +1,6 @@
 
 import { Delete, Edit } from "@mui/icons-material";
-import { Backdrop, Box, Button, Dialog, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Triangle } from "react-loader-spinner";
 import { ProductClass } from "../../services/Product";
@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../auth/Firebase";
 import { SnackBar } from "../Assets/SnackBar";
+import Pagination from "rc-pagination";
 
 export const Category = () => {
     const [loader, setLoader] = useState(false)
@@ -37,6 +38,25 @@ export const Category = () => {
             category_icon: ''
         }
     )
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [countPerPage, setCountPerPage] = useState(5);
+    const [value, setValue] = React.useState("");
+    const [collection, setCollection] = React.useState(
+        (allProducts.slice(0, countPerPage))
+    );
+
+    React.useEffect(() => {
+        if (!value) {
+            updatePage(1);
+        }
+    }, [value, countPerPage, allProducts]);
+
+    const updatePage = p => {
+        setCurrentPage(p);
+        const to = countPerPage * p;
+        const from = to - countPerPage;
+        setCollection(allProducts.slice(from, to));
+    };
 
 
     useEffect(() => {
@@ -581,7 +601,8 @@ export const Category = () => {
             </Box>
 
             <div className="p-3">
-                <Table className="border">
+                <TableContainer component={Paper}>
+                <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell className="w-25"><b>&nbsp;</b></TableCell>
@@ -591,7 +612,7 @@ export const Category = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            allProducts.map((res, index) => {
+                            collection.map((res, index) => {
                                 return (
                                     <TableRow key={index}>
                                         <TableCell className="ps-md-5"><img className='w-12' src={res.category_icon?res.category_icon:'images/noImage.png'}/></TableCell>
@@ -610,6 +631,21 @@ export const Category = () => {
                         }
                     </TableBody>
                 </Table>
+                <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                        <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                        </select>
+                        <Pagination
+                            pageSize={countPerPage}
+                            onChange={updatePage}
+                            current={currentPage}
+                            total={allProducts.length}
+                            style={{ color: 'green' }}
+                        />
+                    </Box>
+                </TableContainer>
             </div>
         </Box >
     )

@@ -27,7 +27,7 @@ export const apis = {
     model: {
         add: "model/addModel",
         getAll: 'model/getAllModel',
-        get: 'model',
+        get: 'model/getCategoryManProduct/',
         delete: 'model/deleteModel',
         update: 'model/updateModel',
     },

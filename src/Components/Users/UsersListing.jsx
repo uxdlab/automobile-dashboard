@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import  './Style.css'
-import { Box, Pagination, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import Pagination from 'rc-pagination';
 
 
 export default function UsersListing() {

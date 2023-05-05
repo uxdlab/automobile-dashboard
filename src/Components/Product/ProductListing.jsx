@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Backdrop, Box, Button, Dialog, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
@@ -7,6 +7,7 @@ import { getAllItem } from '../../services/Item';
 import { deleteItem } from '../../services/Item';
 import { SnackBar } from '../Assets/SnackBar';
 import { deleteObject, getStorage, ref } from 'firebase/storage';
+import Pagination from 'rc-pagination';
 
 export default function ProductListing() {
     const [loader, setLoader] = useState(true)
@@ -21,6 +22,27 @@ export default function ProductListing() {
         msg: "data added",
         type: "error",
     });
+    
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [countPerPage, setCountPerPage] = useState(5);
+    const [value, setValue] = React.useState("");
+    const [collection, setCollection] = React.useState(
+        (allProduct.slice(0, countPerPage))
+    );
+
+    React.useEffect(() => {
+        if (!value) {
+            updatePage(1);
+        }
+    }, [value, countPerPage, allProduct]);
+
+    const updatePage = p => {
+        setCurrentPage(p);
+        const to = countPerPage * p;
+        const from = to - countPerPage;
+        setCollection(allProduct.slice(from, to));
+    };
+
     useEffect(() => {
         getAllProduct()
         if (sessionStorage.getItem('updated') == 'true') {
@@ -129,7 +151,8 @@ export default function ProductListing() {
                 </Link>
             </Box>
             <div className="px-3">
-                <Table className="border">
+                <TableContainer component={Paper}>
+                <Table>
                     <TableHead>
                         <TableRow>
                             {/* <TableCell><b>Sno.</b></TableCell> */}
@@ -142,7 +165,7 @@ export default function ProductListing() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {allProduct.map((res, index) => {
+                        {collection.map((res, index) => {
                             return (
                                 <TableRow key={index}>
                                     {/* <TableCell>{index + 1}</TableCell> */}
@@ -163,6 +186,21 @@ export default function ProductListing() {
                         })}
                     </TableBody>
                 </Table>
+                <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                        <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                        </select>
+                        <Pagination
+                            pageSize={countPerPage}
+                            onChange={updatePage}
+                            current={currentPage}
+                            total={allProduct.length}
+                            style={{ color: 'green' }}
+                        />
+                    </Box>
+                </TableContainer>
             </div>
 
 
