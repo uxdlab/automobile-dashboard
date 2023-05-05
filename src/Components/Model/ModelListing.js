@@ -497,15 +497,15 @@ export const ModelListing = () => {
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Add Model Icon:</b></small></div>
                                     <div className="d-flex">
                                         {localImg ?
-                                            <div className="w-25 me-1 relative">
+                                            <div className="box_style border me-1 relative">
                                                 <CloseIcon onClick={() => {
                                                     setLocalImg('')
                                                     setImg({})
                                                 }} className="close-btn-position" />
                                                 <img className="img-style" src={localImg} />
                                             </div> : ''}
-                                        <div className="w-25">
-                                            <div className="btn img-btn w-100">
+                                        <div className="box_style img-btn">
+                                            <div className="btn w-100">
                                                 <input type="file" id="2actual-btn" hidden
                                                     onChange={(e) => {
                                                         setImg(e.target.files[0])
@@ -618,15 +618,15 @@ export const ModelListing = () => {
                                     <div className="py-2"><small><b><span className='text-danger'>*</span>Update Brand Icon:</b></small></div>
                                     <div className="d-flex">
                                         {localImg ?
-                                            <div className="w-25 me-1 relative">
+                                            <div className="box_style border me-1 relative">
                                                 <CloseIcon onClick={() => {
                                                     setLocalImg('')
                                                     setImg({})
                                                 }} className="close-btn-position" />
                                                 <img className="img-style" src={localImg} />
                                             </div> : ''}
-                                        <div className="w-25">
-                                            <div className="btn img-btn w-100">
+                                        <div className="box_style img-btn">
+                                            <div className="btn w-100">
                                                 <input type="file" id="2actual-btn" hidden
                                                     onChange={(e) => {
                                                         setImg(e.target.files[0])
@@ -661,21 +661,18 @@ export const ModelListing = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                {/* <TableCell className="w-12"><b>S.No</b></TableCell> */}
                                 <TableCell className="w-25"><b>Model Icon</b></TableCell>
-                                <TableCell><b>Name</b></TableCell>
-                                <TableCell><b>Action</b></TableCell>
+                                <TableCell className="text-center"><b>Name</b></TableCell>
+                                <TableCell className="text-center"><b>Action</b></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {collection.map((res, index) => {
                                 return (
                                     <TableRow key={index}>
-                                        {/* <TableCell>{index + 1}</TableCell> */}
-                                        <TableCell><img className='w-12' src={res.model_icon?res.model_icon:'images/noImage.png'}/></TableCell>
-                                        <TableCell sx={{textTransform:'capitalize'}}>{res.model_name}</TableCell>
-                                        <TableCell>
-                                            {/* <RemoveRedEye onClick={() => navigate(`/model/${res._id}`)} /> */}
+                                        <TableCell className="ps-md-5"><img className='w-12' src={res.model_icon?res.model_icon:'images/noImage.png'}/></TableCell>
+                                        <TableCell className="text_cap text-center">{res.model_name}</TableCell>
+                                        <TableCell className="text-center">
                                             <Delete
                                                 className="pointer"
                                                 onClick={() => {

@@ -85,7 +85,7 @@ Button {
 .img-btn{
   background: #f1f1f1!important;
   color: white!important;
-  padding: 15px 15px!important;
+  padding: 15px 8px!important;
 }
 .img-style{
   width: 100%;
@@ -114,5 +114,16 @@ Button {
   width: 5%;
 }
 .w-12{
-  width: 12%;
+  width: 35px;
+}
+
+.text_cap{
+  text-transform: capitalize!important;
+}
+
+/* upload Icon box style */
+
+.box_style{
+  width:100px!important;
+  height:100px!important;
 }

@@ -392,15 +392,15 @@ export const SegmentListing = () => {
                                         <div className="py-2"><small><b><span className='text-danger'>*</span>Add Segment Icon:</b></small></div>
                                         <div className="d-flex">
                                             {localImg ?
-                                                <div className="w-25 me-1 relative">
+                                                <div className="box_style border me-1 relative">
                                                     <CloseIcon onClick={() => {
                                                         setLocalImg('')
                                                         setImg({})
                                                     }} className="close-btn-position" />
                                                     <img className="img-style" src={localImg} />
                                                 </div> : ''}
-                                            <div className="w-25">
-                                                <div className="btn img-btn w-100">
+                                            <div className="box_style img-btn border">
+                                                <div className="btn w-100">
                                                     <input type="file" id="2actual-btn" hidden
                                                         onChange={(e) => {
                                                             setImg(e.target.files[0])
@@ -473,11 +473,11 @@ export const SegmentListing = () => {
                                         <div className="py-2"><small><b><span className='text-danger'>*</span>Update Segment Icon:</b></small></div>
                                         <div className="d-flex">
                                             {localImg ?
-                                                <div className="w-25 me-1 relative">
+                                                <div className="box_style border me-1 relative">
                                                     <img className="img-style" src={localImg} />
                                                 </div> : ''}
-                                            <div className="w-25">
-                                                <div className="btn img-btn w-100">
+                                            <div className="box_style img-btn border">
+                                                <div className="btn w-100">
                                                     <input type="file" id="2actual-btn" hidden
                                                         onChange={(e) => {
                                                             setImg(e.target.files[0])
@@ -516,12 +516,9 @@ export const SegmentListing = () => {
                     <Table className="border">
                         <TableHead>
                             <TableRow>
-                                {/* <TableCell><b>Sno.</b></TableCell> */}
-                                <TableCell className="w-25"><b>Icon</b></TableCell>
-                                <TableCell ><b>Segment name</b></TableCell>
-                                {/* <TableCell><b>Status</b></TableCell> */}
-                                {/* <TableCell><b>Icon</b></TableCell> */}
-                                <TableCell><b>Action</b></TableCell>
+                                <TableCell className="w-25"><b>&nbsp;</b></TableCell>
+                                <TableCell className="text-center" ><b>Segment name</b></TableCell>
+                                <TableCell className="text-center"><b>Action</b></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -529,18 +526,14 @@ export const SegmentListing = () => {
                                 allVehicles.map((res, index) => {
                                     return (
                                         <TableRow key={index}>
-                                            {/* <TableCell>{index + 1}</TableCell> */}
-                                            <TableCell><img className='w-12' src={res.vehicle_icon ? res.vehicle_icon : 'images/noImage.png'} /></TableCell>
-                                            <TableCell sx={{ textTransform: 'capitalize' }}>{res.vehicle_name}</TableCell>
-                                            {/* <TableCell><Switch checked={res.is_active} onChange={(e) => switchBtn(e, res._id, index)} /></TableCell> */}
-                                            {/* <TableCell>{res.vehicle_icon}</TableCell> */}
-                                            <TableCell>
+                                            <TableCell className="ps-md-5"><img className='w-12' src={res.vehicle_icon ? res.vehicle_icon : 'images/noImage.png'} /></TableCell>
+                                            <TableCell className="text_cap text-center">{res.vehicle_name}</TableCell>
+                                            <TableCell className="text-center">
                                                 <Delete className="pointer" onClick={() => {
                                                     setDeletedVeh({ id: res._id, index, icon: res.vehicle_icon })
                                                     setDeleteModel(true)
                                                 }} />&nbsp;&nbsp;
                                                 <Edit className="pointer" onClick={() => { getSegmentById(res._id, res.vehicle_icon) }} />
-                                                {/* <RemoveRedEye sx={{ cursor: 'pointer' }} onClick={() => navigate(`/viewVehicle/${res._id}`)} /> */}
                                             </TableCell>
                                         </TableRow>
                                     )
