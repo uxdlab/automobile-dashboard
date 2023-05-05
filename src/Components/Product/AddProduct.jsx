@@ -166,7 +166,7 @@ export default function AddProduct() {
                         <Grid item xl={5} md={6} sm={12} sx={12}>
                             <Box align='right' mt={6}>
                                 <Button className="cancel_btn me-3" onClick={() => navigate('/product')}>Cancel</Button>
-                                <Button type='submit' variant="contained">Save</Button>
+                                <Button type='submit' className='custom-btn' variant="contained">Save</Button>
                             </Box>
                         </Grid>
                     </Grid>

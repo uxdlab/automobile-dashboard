@@ -363,7 +363,7 @@ export const ManufactureListing = () => {
                     show: true,
                     vertical: "top",
                     horizontal: "right",
-                    msg: "Manufecturer Already Exist",
+                    msg: "Manufacturer Already Exist",
                     type: "error",
                 });
             } else {
@@ -379,7 +379,7 @@ export const ManufactureListing = () => {
                 show: true,
                 vertical: "top",
                 horizontal: "right",
-                msg: "Manufecturer Already Exist",
+                msg: "Manufacturer Already Exist",
                 type: "error",
             });
         } else {

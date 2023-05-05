@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Backdrop, Box, Button, Dialog, Paper, Snackbar, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, Grid, Paper, Snackbar, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { VehicleClass } from "../../services/Vehicle";
 import { Triangle } from 'react-loader-spinner'
 import { Delete, Edit } from "@mui/icons-material";
@@ -527,8 +527,12 @@ export const SegmentListing = () => {
 
 
                 <h1 className="mt-2 fs-2 ">Segment</h1>
-                <Box align='right' className='pb-3'>
-                    <Button className="btn_primary" variant="contained" onClick={() => setOpen(true)}>Add Segment</Button>
+                <Box className='pb-3 d-flex justify-content-between'>
+                   <Grid container>
+                   <Grid item md={6} xs={12}><input className="w-75 form-control" type='search' placeholder="Search"/></Grid>
+                   <Grid item md={6} xs={12} className="d-flex justify-content-end"><Button className="btn_primary" align='' variant="contained" onClick={() => setOpen(true)}>Add Segment</Button></Grid>
+                   </Grid>
+                    
                 </Box>
 
                 <TableContainer component={Paper}>
