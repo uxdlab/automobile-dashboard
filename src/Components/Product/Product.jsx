@@ -254,7 +254,7 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                     <div className='w-100 d-flex flex-wrap'>
                                         {
                                             imgURLs.map((item,index)=>
-                                            <div key={index} className=" mb-1 pe-1 relative" style={{width:'25%'}}>
+                                            <div key={index} className=" mb-1 pe-1 relative box_style border">
                                             <CancelIcon sx={{fontSize:'12px',color:'red'}} onClick={()=>{
                                                 let arr = [...imgURLs]
                                                 let fileArr = [...files]
@@ -266,8 +266,8 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                             <img className="img-style" src={item}/>
                                         </div>)
                                         }
-                                        <div className="" style={{width:'25%'}}>
-                                            <div className="btn img-btn w-100">
+                                        <div className="box_style img-btn">
+                                            <div className="btn w-100">
                                                 <input type="file" multiple id="2actual-btn" hidden
                                                    onChange={(e)=>imgPrev(Object.values(e.target.files))}
                                                 />
