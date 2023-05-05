@@ -15,7 +15,7 @@ export class ModelClass extends React.Component {
     }
     // Get single model by document id 
     static async getModel(id) {
-        return await axios.get(`${apis.baseUrl}${apis.model.get}/${id}`)
+        return await axios.get(`${apis.baseUrl}${apis.model.get}${id}`)
     }
     // Edit single model with document id 
     static async editModel(id, data) {

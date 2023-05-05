@@ -289,13 +289,13 @@ export const ModelListing = () => {
         ModelClass.getModel(idd)
             .then((res) => {
                 console.log(res)
-                modelData.current = res.data.data
+                modelData.current = res.data.data[0]
                 if (modelData.current.model_icon) {
                     console.log('ififififif')
                     console.log(modelData.current.model_icon)
                     setLocalImg(modelData.current.model_icon)
                 }
-            
+                console.log(modelData.current.model_segment_array)
                 setSelectSegment(modelData.current.model_segment_array)
                 setSeleBrand(modelData.current.model_brand_array)
                 let arr = modelData.current.model_segment_array[0]
