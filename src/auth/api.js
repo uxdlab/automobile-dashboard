@@ -45,7 +45,8 @@ export const apis = {
         delete:'manufacturer/deleteManufacturer/',
         edit:'manufacturer/updateManufacturer/'
     },
-    getAllData:'vehicle/getSegmentBrandModel/all'
+    getAllData:'vehicle/getSegmentBrandModel/all',
+    getAllUsers:'user/getAllUser'
 
 
 

@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import  './Style.css'
-import { Box, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box, Switch, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import Pagination from 'rc-pagination';
+import { getAllUsers } from '../../services/Users';
+import { Delete, Edit } from '@mui/icons-material';
 
 
 export default function UsersListing() {
@@ -18,6 +20,15 @@ export default function UsersListing() {
             updatePage(1);
         }
     }, [value, countPerPage, allUsers]);
+
+    const getUsers = ()=>{
+        getAllUsers()
+        .then(res=>setAllUsers(res.data.data))
+        .catch(err=>console.log(err))
+    }
+    useEffect(()=>{
+        getUsers()
+    },[])
 
     const updatePage = p => {
         setCurrentPage(p);
@@ -37,9 +48,11 @@ export default function UsersListing() {
                         <TableHead>
                             <TableRow>
                                 {/* <TableCell className="w-12"><b>S.No</b></TableCell> */}
-                                <TableCell className="w-25"><b>Model Icon</b></TableCell>
-                                <TableCell><b>Name</b></TableCell>
-                                <TableCell><b>Action</b></TableCell>
+                                <TableCell className="w-25"><b>Name</b></TableCell>
+                                <TableCell><b>Email</b></TableCell>
+                                <TableCell><b>Phone No.</b></TableCell>
+                                <TableCell><b>Active</b></TableCell>
+                                <TableCell><b>Actions</b></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -47,18 +60,17 @@ export default function UsersListing() {
                                 return (
                                     <TableRow key={index}>
                                         {/* <TableCell>{index + 1}</TableCell> */}
-                                        <TableCell><img className='w-12' src={res.model_icon?res.model_icon:'images/noImage.png'}/></TableCell>
-                                        <TableCell sx={{textTransform:'capitalize'}}>{res.model_name}</TableCell>
+                                        <TableCell className='text_cap'>{res.fullName}</TableCell>
+                                        <TableCell >{res.email}</TableCell>
+                                        <TableCell >{res.mobile_number}</TableCell>
+                                        <TableCell ><Switch defaultChecked /></TableCell>
                                         <TableCell>
-                                            {/* <RemoveRedEye onClick={() => navigate(`/model/${res._id}`)} /> */}
-                                            {/* <Delete
+                                            {/* <RemoveRedEye  /> */}
+                                            <Delete
                                                 className="pointer"
-                                                onClick={() => {
-                                                    setDeletedMod({ id: res._id, index, icon: res.model_icon })
-                                                    setDeleteModel(true)
-                                                }}
+                                               
                                             />&nbsp;&nbsp;
-                                            <Edit className="pointer" onClick={() => getModelById(res._id, res.model_icon)} /> */}
+                                            <Edit className="pointer" />
                                         </TableCell>
                                     </TableRow>
                                 )

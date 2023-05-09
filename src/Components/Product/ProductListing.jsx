@@ -169,7 +169,7 @@ export default function ProductListing() {
                             return (
                                 <TableRow key={index}>
                                     {/* <TableCell>{index + 1}</TableCell> */}
-                                    <TableCell sx={{textTransform:'capitalize'}}>{res.product_name}</TableCell>
+                                    <TableCell className='text_cap'>{res.product_name}</TableCell>
                                     <TableCell>{res.oe_reference_number}</TableCell>
                                     <TableCell>{res.ke_partNumber}</TableCell>
                                     <TableCell>{res.MRP}</TableCell>

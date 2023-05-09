@@ -198,7 +198,8 @@ export default function UpdateProduct() {
         e.preventDefault()
         console.log(checkURL)
         if (checkURL.length!==0 || imgURLs.length!==0) {
-            let arr = allProductData.filter((item) => item.product_name === AllProducts.current[0].product_name)
+            
+            let arr = allProductData.filter((item) => item.product_name === AllProducts.current[0].product_name && item._id !== AllProducts.current[0]._id)
             if (arr.length !== 0) {
                 ShowSnackbar({
                     show: true,
