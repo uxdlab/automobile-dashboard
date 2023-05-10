@@ -246,6 +246,10 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                     </Select>
 
                                 </Grid>
+                                <Grid item md={12} lg={12} sm={12} sx={12} className="px-3 mt-2">
+                                <label>Upload Excel File :</label><br />
+                                <input className='form-control' type='file'/>
+                                </Grid>
 
                                 <Grid item md={12} lg={12} sm={12} sx={12} className="px-3 mt-2">
                          
