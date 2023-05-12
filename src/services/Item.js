@@ -23,3 +23,8 @@ export const editItem = async (id,data) =>{
     console.log(data)
     return await axios.put(`${apis.baseUrl}${apis.items.edit}${id}`,data)
 }
+export const bulkProduct = async(data) =>{
+    console.log(data)
+
+    return await axios.post(`${apis.baseUrl1}${apis.bulkUpload}`,data)
+}

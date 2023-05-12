@@ -1,6 +1,6 @@
 export const apis = {
     baseUrl: "https://automobile.herokuapp.com/",
-    // baseUrl: "https://automobile-f7cf.onrender.com/",
+    baseUrl1: "http://localhost:3001/",
 
     vehicle: {
         add: "vehicle/addVehicle",
@@ -46,7 +46,8 @@ export const apis = {
         edit:'manufacturer/updateManufacturer/'
     },
     getAllData:'vehicle/getSegmentBrandModel/all',
-    getAllUsers:'user/getAllUser'
+    getAllUsers:'user/getAllUser',
+    bulkUpload : 'product/bulkAddProduct'
 
 
 
