@@ -26,5 +26,5 @@ export const editItem = async (id,data) =>{
 export const bulkProduct = async(data) =>{
     console.log(data)
 
-    return await axios.post(`${apis.baseUrl1}${apis.bulkUpload}`,data)
+    return await axios.post(`${apis.baseUrl}${apis.bulkUpload}`,data)
 }
