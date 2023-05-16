@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Backdrop, Box, Button, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
-import { Delete, Edit, RemoveRedEye } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import { getAllItem ,bulkProduct} from '../../services/Item';
 import { deleteItem } from '../../services/Item';
 import { SnackBar } from '../Assets/SnackBar';
@@ -40,8 +40,9 @@ export default function ProductListing() {
                 const sheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[sheetName];
                 const json = xlsx.utils.sheet_to_json(worksheet);
-                const body = { "dataSet":json }
-                await bulkProduct(body).then(es=>console.log(es)    )
+                let ss= json.filter(e=>allProduct.findIndex(s=>s.product_name.toLowerCase()===e.product_name.toLowerCase())===-1)
+                const body = { "dataSet":ss }
+                await bulkProduct(body).then(es=>console.log(es))
                 
             };
             reader.readAsArrayBuffer(e.target.files[0]);
