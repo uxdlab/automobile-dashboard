@@ -3,7 +3,7 @@ import { Backdrop, Box, Button, Dialog, Paper, Table, TableBody, TableCell, Tabl
 import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
-import { getAllItem ,bulkProduct} from '../../services/Item';
+import { getAllItem, bulkProduct } from '../../services/Item';
 import { deleteItem } from '../../services/Item';
 import { SnackBar } from '../Assets/SnackBar';
 import { deleteObject, getStorage, ref } from 'firebase/storage';
@@ -34,16 +34,20 @@ export default function ProductListing() {
         e.preventDefault();
         if (e.target.files) {
             const reader = new FileReader();
-            reader.onload = async(e) => {
+            reader.onload = async (e) => {
                 const data = e.target.result;
                 const workbook = xlsx.read(data, { type: "array" });
                 const sheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[sheetName];
                 const json = xlsx.utils.sheet_to_json(worksheet);
-                let ss= json.filter(e=>allProduct.findIndex(s=>s.product_name.toLowerCase()===e.product_name.toLowerCase())===-1)
-                const body = { "dataSet":ss }
-                await bulkProduct(body).then(es=>console.log(es))
-                
+                if (json.length !== 0) {
+                    let ss = json.filter(e => allProduct.findIndex(s => s.product_name.toLowerCase() === e.product_name.toLowerCase()) === -1)
+                    const body = { "dataSet": ss }
+                    await bulkProduct(body).then(es => console.log(es))
+                }else{
+                    return (<><alert>Do not upload empty sheet</alert></>)
+                }
+
             };
             reader.readAsArrayBuffer(e.target.files[0]);
         }
@@ -173,7 +177,7 @@ export default function ProductListing() {
                         type="file"
                         name="upload"
                         id="upload"
-                    onChange={readUploadFile}
+                        onChange={readUploadFile}
                     />
                 </form>
                 <Link style={{ textDecoration: 'none' }} to='/addProduct'>
