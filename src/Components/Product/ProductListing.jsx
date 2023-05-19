@@ -41,8 +41,7 @@ export default function ProductListing() {
     const readUploadFile = (e) => {
         if (e.target !== undefined) {
             e.preventDefault();
-            setLoader(true)
-            setOpen1(false)
+           
             if (e.target.files) {
                 const reader = new FileReader();
                 reader.onload = async (e) => {
@@ -51,9 +50,11 @@ export default function ProductListing() {
                     const sheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[sheetName];
                     const json = xlsx.utils.sheet_to_json(worksheet);
-
                     if (json.length !== 0) {
+
                         let ss = json.filter(e => allProduct.findIndex(s => s.product_name.toLowerCase() === e.product_name.toLowerCase()) === -1)
+                        setLoader(true)
+                        setOpen1(false)
                         const body = { "dataSet": ss }
 
                         await bulkProduct(body).then(es => {
@@ -72,7 +73,7 @@ export default function ProductListing() {
                             setRows(result)
                         })
                     } else {
-                        return (<><alert>Do not upload empty sheet</alert></>)
+                        alert("You upload empty file.Plase check!")
                     }
 
                 };
