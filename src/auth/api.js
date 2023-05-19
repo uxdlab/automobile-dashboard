@@ -47,7 +47,8 @@ export const apis = {
     },
     getAllData:'vehicle/getSegmentBrandModel/all',
     getAllUsers:'user/getAllUser',
-    bulkUpload : 'product/bulkAddProduct'
+    bulkUpload : 'product/bulkAddProduct',
+    activeUser: 'user/userActiveInactive/'
 
 
 
