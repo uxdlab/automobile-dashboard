@@ -39,43 +39,47 @@ export default function ProductListing() {
 
 
     const readUploadFile = (e) => {
-        e.preventDefault();
-        setOpen1(false)
-        if (e.target.files) {
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                const data = e.target.result;
-                const workbook = xlsx.read(data, { type: "array" });
-                const sheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[sheetName];
-                const json = xlsx.utils.sheet_to_json(worksheet);
+        if (e.target !== undefined) {
+            e.preventDefault();
+            setLoader(true)
+            setOpen1(false)
+            if (e.target.files) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const data = e.target.result;
+                    const workbook = xlsx.read(data, { type: "array" });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const json = xlsx.utils.sheet_to_json(worksheet);
 
-                if (json.length !== 0) {
-                    let ss = json.filter(e => allProduct.findIndex(s => s.product_name.toLowerCase() === e.product_name.toLowerCase()) === -1)
-                    const body = { "dataSet": ss }
+                    if (json.length !== 0) {
+                        let ss = json.filter(e => allProduct.findIndex(s => s.product_name.toLowerCase() === e.product_name.toLowerCase()) === -1)
+                        const body = { "dataSet": ss }
 
-                    await bulkProduct(body).then(es => {
-                        setOpen1(true);
-                        let data = es.data.data
+                        await bulkProduct(body).then(es => {
+                            setOpen1(true);
+                            let data = es.data.data
 
-                        let result = []
-                        if (data[0].error) {
-                            data.map(e => {
-                                result.push({ error: Object.keys(e.error), row: e.index + 2 })
-                            })
-                        } else {
-                            setOpen1(false);
-                        }
-                        setLoader(false)
-                        setRows(result)
-                    })
-                } else {
-                    return (<><alert>Do not upload empty sheet</alert></>)
-                }
+                            let result = []
+                            if (data[0].error) {
+                                data.map(e => {
+                                    result.push({ error: Object.keys(e.error), row: e.index + 2 })
+                                })
+                            } else {
+                                setOpen1(false);
+                            }
+                            setLoader(false)
+                            setRows(result)
+                        })
+                    } else {
+                        return (<><alert>Do not upload empty sheet</alert></>)
+                    }
 
-            };
-            reader.readAsArrayBuffer(e.target.files[0]);
+                };
+                reader.readAsArrayBuffer(e.target.files[0]);
+            }
         }
+
     }
 
 
@@ -263,7 +267,7 @@ export default function ProductListing() {
                     open={open1}
                     maxWidth={'xs'}
                     fullWidth={true}
-                  
+
                 >
                     {isLoading ? (<><CircularProgress /></>) : (<>
 
@@ -320,9 +324,9 @@ export default function ProductListing() {
                                     </div>
                                     <Box align='right' className='mt-3'>
                                         <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
-                                            setOpen1(false);setRows([])
+                                            setOpen1(false); setRows([]); setFileData({})
                                         }}>Cancel</span>
-                                        <button className="btn custom-btn py-1 px-3" onClick={() => { readUploadFile(fileData); setLoader(true) }}>Submit</button>
+                                        <button className="btn custom-btn py-1 px-3" onClick={() => { readUploadFile(fileData);  }}>Submit</button>
                                     </Box>
                                 </div>
                             </div>
