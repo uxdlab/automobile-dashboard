@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Backdrop, Box, Button, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Backdrop, Box, Button, Dialog, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
@@ -7,15 +7,19 @@ import { getAllItem, bulkProduct } from '../../services/Item';
 import { deleteItem } from '../../services/Item';
 import { SnackBar } from '../Assets/SnackBar';
 import { deleteObject, getStorage, ref } from 'firebase/storage';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
 import Pagination from 'rc-pagination';
 import * as xlsx from "xlsx"
 
 export default function ProductListing() {
     const [loader, setLoader] = useState(true)
     let navigate = useNavigate()
-    const [allProduct, setAllProduct] = useState([])
+    const [allProduct, setAllProduct] = useState([1, 2])
     const [deleteModel, setDeleteModel] = useState(false)
     const [deletedComp, setDeletedComp] = useState({ id: '', images: [] })
+    const [open1, setOpen1] = useState(false)
+
     const [snackbar, ShowSnackbar] = useState({
         show: false,
         vertical: "top",
@@ -26,12 +30,17 @@ export default function ProductListing() {
     const [currentPage, setCurrentPage] = React.useState(1);
     const [countPerPage, setCountPerPage] = useState(5);
     const [value, setValue] = React.useState("");
+    const [fileData, setFileData] = useState({});
+    const [rows, setRows] = useState([])
+    const [isLoading, setLoading] = useState(false)
     const [collection, setCollection] = React.useState(
         (allProduct.slice(0, countPerPage))
     );
 
+
     const readUploadFile = (e) => {
         e.preventDefault();
+        setOpen1(false)
         if (e.target.files) {
             const reader = new FileReader();
             reader.onload = async (e) => {
@@ -40,11 +49,27 @@ export default function ProductListing() {
                 const sheetName = workbook.SheetNames[0];
                 const worksheet = workbook.Sheets[sheetName];
                 const json = xlsx.utils.sheet_to_json(worksheet);
+
                 if (json.length !== 0) {
                     let ss = json.filter(e => allProduct.findIndex(s => s.product_name.toLowerCase() === e.product_name.toLowerCase()) === -1)
                     const body = { "dataSet": ss }
-                    await bulkProduct(body).then(es => console.log(es))
-                }else{
+
+                    await bulkProduct(body).then(es => {
+                        setOpen1(true);
+                        let data = es.data.data
+
+                        let result = []
+                        if (data[0].error) {
+                            data.map(e => {
+                                result.push({ error: Object.keys(e.error), row: e.index + 2 })
+                            })
+                        } else {
+                            setOpen1(false);
+                        }
+                        setLoader(false)
+                        setRows(result)
+                    })
+                } else {
                     return (<><alert>Do not upload empty sheet</alert></>)
                 }
 
@@ -133,7 +158,10 @@ export default function ProductListing() {
     }
 
     return (
+
+
         <>
+
             <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
             <Dialog
                 open={deleteModel}
@@ -171,18 +199,14 @@ export default function ProductListing() {
             <h1 className="mt-2 fs-2 mx-3">Products</h1>
 
             <Box align='right' className='px-3 pb-3'>
-                <form>
-                    <label htmlFor="upload">Upload File</label>
-                    <input
-                        type="file"
-                        name="upload"
-                        id="upload"
-                        onChange={readUploadFile}
-                    />
-                </form>
+
+
+                <Button className="btn_primary" style={{ marginRight: "10px" }} variant="contained" onClick={() => setOpen1(true)}>Import Products</Button>
+
                 <Link style={{ textDecoration: 'none' }} to='/addProduct'>
                     <Button className="btn_primary" variant="contained">Add Product</Button>
                 </Link>
+
             </Box>
             <div className="px-3">
                 <TableContainer component={Paper}>
@@ -235,9 +259,82 @@ export default function ProductListing() {
                         />
                     </Box>
                 </TableContainer>
+                <Dialog
+                    open={open1}
+                    maxWidth={'xs'}
+                    fullWidth={true}
+                  
+                >
+                    {isLoading ? (<><CircularProgress /></>) : (<>
+
+                        <Box py={2} px={1} className='over-flow-hide-x'>
+                            <h5 className="px-3">Upload Excel File(.xlsx)</h5>
+                            <hr />
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        {/* <div className="box_style img-btn border"> */}
+                                        <div className="btn w-100">
+                                            {/* <input type="file" id="2actual-btn" hidden
+                                                
+                                            />
+                                            <label className="text-center text-gray" htmlFor="2actual-btn">
+                                                <CloudUploadIcon /><br />
+                                                <span>Upload</span>
+                                            </label> */}
+                                            <Button variant="contained" component="label">
+                                                Upload
+                                                <input hidden accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" type="file" onChange={(e) => setFileData(e)} />
+                                            </Button>
+                                        </div>
+                                        {/* </div> */}
+                                        <br />
+                                        {rows.length !== 0 ? (<>
+                                            <TableContainer component={Paper}>
+                                                <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell>Row</TableCell>
+                                                            <TableCell >ERROR</TableCell>
+
+
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {rows.map((row) => (
+                                                            <TableRow
+                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                            >
+                                                                <TableCell >
+                                                                    {row.row}
+                                                                </TableCell>
+                                                                <TableCell >{row.error.toString()}</TableCell>
+
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+                                        </>) : (<></>)}
+
+                                    </div>
+                                    <Box align='right' className='mt-3'>
+                                        <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
+                                            setOpen1(false);setRows([])
+                                        }}>Cancel</span>
+                                        <button className="btn custom-btn py-1 px-3" onClick={() => { readUploadFile(fileData); setLoader(true) }}>Submit</button>
+                                    </Box>
+                                </div>
+                            </div>
+                        </Box>
+                    </>
+                    )}
+                </Dialog>
             </div>
 
 
         </>
+
+
     )
 }
