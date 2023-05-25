@@ -43,7 +43,7 @@ export const BrandListing = () => {
         brand_description: '',
         segment_array: [],
         brand_image: ''
-    })
+    })  
     // brandData.current.segment_array = selectSegment
     const [currentPage, setCurrentPage] = React.useState(1);
     const [countPerPage, setCountPerPage] = useState(5);
@@ -51,7 +51,7 @@ export const BrandListing = () => {
     const [collection, setCollection] = React.useState(
         (allCompanies.slice(0, countPerPage))
     );
-
+ 
     React.useEffect(() => {
         if (!value) {
             updatePage(1);
@@ -609,7 +609,7 @@ export const BrandListing = () => {
                                             brandData.current.brand_name = e.target.value.trim().toLocaleLowerCase()
                                         }
                                     }
-                                    } defaultValue={brandData.current.brand_name} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
+                                    } defaultValue={brandData?brandData.current.brand_name:''} placeholder="Enter Brand Name" className="form-control w-100 mb-2" />
                                 </div>
                                 <div className="col-md-12">
                                     <div className="py-2"><small><b>Brand Description:</b></small></div>
@@ -679,35 +679,35 @@ export const BrandListing = () => {
                 <Button className="btn_primary" onClick={() => setOpen(true)} variant="contained">Add Brand</Button>
             </Box>
             <div className="px-3">
-               <TableContainer component={Paper}>
-               <Table className="">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell className="w-25"><b>&nbsp;</b></TableCell>
-                            <TableCell className="text-center"><b>Brand Name</b></TableCell>
-                            <TableCell className="text-center"><b>Action</b></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {collection.map((res, index) => {
-                            return (
-                                <TableRow key={index}>
-                                    <TableCell className="ps-md-5"><img className='w-12' src={res.brand_image ? res.brand_image : 'images/noImage.png'} /></TableCell>
-                                    <TableCell className="text_cap text-center">{res.brand_name}</TableCell>
-                                    <TableCell className="text-center">
-                                        <Delete className="pointer" onClick={() => {
-                                            setDeletedComp({ id: res._id, index, icon: res.brand_image })
-                                            setDeleteModel(true)
-                                        }} />&nbsp;&nbsp;
-                                        <Edit className="pointer" onClick={() =>
-                                            getBrandById(res._id, res.brand_image)} />
-                                    </TableCell>
-                                </TableRow>
-                            )
-                        })}
-                    </TableBody>
-                </Table>
-                <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
+                <TableContainer component={Paper}>
+                    <Table className="">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className="w-25"><b>&nbsp;</b></TableCell>
+                                <TableCell className="text-center"><b>Brand Name</b></TableCell>
+                                <TableCell className="text-center"><b>Action</b></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {collection.map((res, index) => {
+                                return (
+                                    <TableRow key={index}>
+                                        <TableCell className="ps-md-5"><img className='w-12' src={res.brand_image ? res.brand_image : 'images/noImage.png'} /></TableCell>
+                                        <TableCell className="text_cap text-center">{res.brand_name}</TableCell>
+                                        <TableCell className="text-center">
+                                            <Delete className="pointer" onClick={() => {
+                                                setDeletedComp({ id: res._id, index, icon: res.brand_image })
+                                                setDeleteModel(true)
+                                            }} />&nbsp;&nbsp;
+                                            <Edit className="pointer" onClick={() =>
+                                                getBrandById(res._id, res.brand_image)} />
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                    <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
                         <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
                             <option>5</option>
                             <option>10</option>
@@ -721,7 +721,7 @@ export const BrandListing = () => {
                             style={{ color: 'green' }}
                         />
                     </Box>
-               </TableContainer>
+                </TableContainer>
             </div>
 
         </>

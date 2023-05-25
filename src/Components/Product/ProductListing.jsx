@@ -41,7 +41,7 @@ export default function ProductListing() {
     const readUploadFile = (e) => {
         if (e.target !== undefined) {
             e.preventDefault();
-           
+
             if (e.target.files) {
                 const reader = new FileReader();
                 reader.onload = async (e) => {
@@ -51,8 +51,7 @@ export default function ProductListing() {
                     const worksheet = workbook.Sheets[sheetName];
                     const json = xlsx.utils.sheet_to_json(worksheet);
                     if (json.length !== 0) {
-
-                        let ss = json.filter(e => allProduct.findIndex(s => s.product_name.toLowerCase() === e.product_name.toLowerCase()) === -1)
+                        let ss = json.filter(e => allProduct.findIndex(s => s.product_name === e.product_name.toLowerCase()) === -1)
                         setLoader(true)
                         setOpen1(false)
                         const body = { "dataSet": ss }
@@ -62,12 +61,16 @@ export default function ProductListing() {
                             let data = es.data.data
 
                             let result = []
-                            if (data[0].error) {
-                                data.map(e => {
-                                    result.push({ error: Object.keys(e.error), row: e.index + 2 })
-                                })
-                            } else {
-                                setOpen1(false);
+                            if(data.length !==0){
+
+                                if (data[0].error) {
+                                    data.map(e => {
+                                        result.push({ error: Object.keys(e.error), row: e.index + 2 })
+                                    })
+                                } else {
+                                    setOpen1(false);
+                                 
+                                }
                             }
                             setLoader(false)
                             setRows(result)
@@ -327,7 +330,7 @@ export default function ProductListing() {
                                         <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
                                             setOpen1(false); setRows([]); setFileData({})
                                         }}>Cancel</span>
-                                        <button className="btn custom-btn py-1 px-3" onClick={() => { readUploadFile(fileData);  }}>Submit</button>
+                                        <button className="btn custom-btn py-1 px-3" onClick={() => { readUploadFile(fileData); }}>Submit</button>
                                     </Box>
                                 </div>
                             </div>
