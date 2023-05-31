@@ -26,12 +26,11 @@ export default function UpdateProduct() {
     const [model, setModel] = useState([])
     const [selectBrand, setSelectBrand] = useState([])
     const [selectModel, setSelectModel] = useState([])
-    console.log(selectBrand)
-    console.log(selectModel)
+  
     const [category, setCategory] = useState([])
     const [manufacturer, setManufacturer] = useState([])
     const AllProducts = useRef([])
-    console.log(AllProducts.current[0])
+   
     const [snackbar, ShowSnackbar] = useState({
         show: false,
         vertical: "top",
@@ -41,14 +40,14 @@ export default function UpdateProduct() {
     });
 
     const getProductById = (reqData) => {
-        console.log(reqData)
+     
         getItem(id)
             .then((res) => {
-                console.log(res)
+                
                 AllProducts.current[0] = res.data.data[0]
                 setProductData(res.data.data)
                 setCheckURL(res.data.data[0].image)
-                console.log('okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+                
                 setSelectBrand(reqData.brandData.filter(e => e.segment_array.includes(res.data.data[0].product_segment_aaray[0])))
                 setSelectModel(reqData.modelData.filter(e => e.model_brand_array.includes(res.data.data[0].product_brand_aaray[0])))
                 setLoader(false)
@@ -79,19 +78,19 @@ export default function UpdateProduct() {
                     })
                     Promise.all(promises)
                         .then((res) => {
-                            console.log(res)
+                          
                             let urls = []
                             res.map((res2, index) => {
                                 getDownloadURL(res2.ref).then((url) => {
-                                    console.log(url)
+                                 
                                     urls.push(url)
                                     if (index == res.length - 1) {
-                                        console.log(urls)
+                                        
                                         AllProducts.current[0].image = [...urls,...checkURL]
-                                        console.log(AllProducts.current.image)
+                                       
                                         editItem(id, AllProducts.current[0])
                                             .then((res) => {
-                                                console.log(res)
+                                               
                                                 sessionStorage.setItem('updated', 'true')
                                                 navigate('/product')
                                             }).catch((err) => {
@@ -106,7 +105,7 @@ export default function UpdateProduct() {
                     AllProducts.current[0].image = checkURL
                     editItem(id, AllProducts.current[0])
                     .then((res) => {
-                        console.log(res)
+                       
                         sessionStorage.setItem('updated', 'true')
                         navigate('/product')
                     }).catch((err) => {
@@ -122,19 +121,19 @@ export default function UpdateProduct() {
                     })
                     Promise.all(promises)
                         .then((res) => {
-                            console.log(res)
+                           
                             let urls = []
                             res.map((res2, index) => {
                                 getDownloadURL(res2.ref).then((url) => {
-                                    console.log(url)
+                                    
                                     urls.push(url)
                                     if (index == res.length - 1) {
-                                        console.log(urls)
+                                       
                                         AllProducts.current[0].image = [...urls,...checkURL]
-                                        console.log(AllProducts.current.image)
+                                       
                                         editItem(id, AllProducts.current[0])
                                             .then((res) => {
-                                                console.log(res)
+                                            
                                                 sessionStorage.setItem('updated', 'true')
                                                 navigate('/product')
                                             }).catch((err) => {
@@ -149,7 +148,7 @@ export default function UpdateProduct() {
                     AllProducts.current[0].image = checkURL
                     editItem(id, AllProducts.current[0])
                     .then((res) => {
-                        console.log(res)
+                        
                         sessionStorage.setItem('updated', 'true')
                         navigate('/product')
                     }).catch((err) => {
@@ -160,7 +159,7 @@ export default function UpdateProduct() {
         }else{
             editItem(id, AllProducts.current[0])
             .then((res) => {
-                console.log(res)
+     
                 sessionStorage.setItem('updated', 'true')
                 navigate('/product')
             }).catch((err) => {
@@ -172,18 +171,41 @@ export default function UpdateProduct() {
     }
 
     function filterd(fil) {
+
+
+       
+        let singleSegment = segment.filter(item=>item._id === fil)
+
+       
         AllProducts.current[0].product_segment_aaray = [fil]
+        AllProducts.current[0].segment_name = singleSegment[0].vehicle_name
         setSelectBrand(brand.filter(e => e.segment_array.includes(fil)))
         setSelectModel([])
     }
 
+    function addModelData(e){
+        AllProducts.current[0].product_model_aaray = [e.target.value]
+
+        let modelName = selectModel.filter(item=>item._id === e.target.value)
+
+AllProducts.current[0].model_name = modelName[0].model_name
+    }
+
     function filteredModel(fil) {
         AllProducts.current[0].product_brand_aaray = [fil]
+
+
+        let brandName = selectBrand.filter((item)=>item._id === fil)
+       
+
+AllProducts.current[0].brand_name = brandName[0].brand_name
+
+
         setSelectModel(model.filter(e => e.model_brand_array.includes(fil)))
     }
 
     const imgPrev = (imgs) => {
-        console.log('okkkkkkkkkkkkkkkkkkkkkkk')
+        
         setFiles(imgs)
         let arr = []
         imgs.map((item) => {
@@ -196,7 +218,7 @@ export default function UpdateProduct() {
 
     const ExistNameCheck = (e) => {
         e.preventDefault()
-        console.log(checkURL)
+       
         if (checkURL.length!==0 || imgURLs.length!==0) {
             
             let arr = allProductData.filter((item) => item.product_name === AllProducts.current[0].product_name && item._id !== AllProducts.current[0]._id)
@@ -230,13 +252,13 @@ export default function UpdateProduct() {
             `${apis.manufacture.getAll}`,
         ])
             .then((res) => {
-                console.log(res)
+              
                 setSegment(res[0].data.data.segmentData)
                 setBrand(res[0].data.data.brandData)
                 setModel(res[0].data.data.modelData)
                 setCategory(res[1].data.data)
                 setManufacturer(res[2].data.data)
-                console.log(res[0].data.data.brandData)
+                
                 getProductById(res[0].data.data)
             })
         getAllItem()
@@ -371,7 +393,7 @@ export default function UpdateProduct() {
                                                     fullWidth
                                                     required
                                                     defaultValue={productData ? productData[0].product_model_aaray[0] : ''}
-                                                    onChange={(e) => AllProducts.current[0].product_model_aaray = [e.target.value]}
+                                                    onChange={addModelData}
                                                 >
                                                     {selectModel.map((item, index) => (
                                                         <MenuItem
