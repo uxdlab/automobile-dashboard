@@ -56,7 +56,7 @@ export default function AddProduct() {
         e.preventDefault()
         const promises = []
         setLoader(true)
-        console.log(files)
+      
         if (files.length !== 0) {
             files.map((item) => {
                 const storageRef = ref(storage, `image${Math.random()}${item.name}`);
@@ -65,19 +65,19 @@ export default function AddProduct() {
             })
             Promise.all(promises)
                 .then((res) => {
-                    console.log(res)
+                
                     let urls = []
                     res.map((res2, index) => {
                         getDownloadURL(res2.ref).then((url) => {
-                            console.log(url)
+                         
                             urls.push(url)
                             if (index == res.length - 1) {
-                                console.log(urls)
+                              
                                 AllProducts.current[0].image = [...urls]
-                                console.log(AllProducts.current.image)
+                               
                                 addItem(AllProducts.current[0])
                                     .then((res) => {
-                                        console.log(res)
+                                      
                                         setLoader(false)
                                         navigate('/product')
                                         sessionStorage.setItem('added', 'true')
@@ -103,7 +103,7 @@ export default function AddProduct() {
 
     const ExistNameCheck = (e) => {
         e.preventDefault()
-        console.log(files)
+       
         if (files.length !== 0) {
             let arr = data.filter((item) => item.product_name === AllProducts.current[0].product_name)
             if (arr.length !== 0) {

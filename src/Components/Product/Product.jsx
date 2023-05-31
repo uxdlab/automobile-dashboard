@@ -19,14 +19,12 @@ export default function Product({ AllProducts, index, productData,files,setFiles
 
 
 
-    console.log(productData)
+   
     const [imgURLs,setimgURLs] = useState([])
-    console.log(files)
-    console.log(imgURLs)
+    
 
     function filterd(fil) {
 
-        console.log(fil, "okokkokok")
         let singleSegment = segment.filter(item=>item._id === fil)
        
         AllProducts.current[index].product_segment_aaray = [fil]
@@ -56,14 +54,14 @@ AllProducts.current[index].brand_name = brandName[0].brand_name
     }
 
     const imgPrev = (imgs) => {
-        console.log('okkkkkkkkkkkkkkkkkkkkkkk')
+   
         setFiles(imgs)
-        console.log(imgs)
+    
         let arr = []
         imgs.map((item)=>{
                 let url = URL.createObjectURL(item)
                 arr.push(url)
-                console.log(url)
+             
         })
         setimgURLs([...imgURLs,...arr])
         
@@ -77,13 +75,13 @@ AllProducts.current[index].brand_name = brandName[0].brand_name
             `${apis.manufacture.getAll}`,
         ])
             .then((res) => {
-                console.log(res)
+                
                 setSegment(res[0].data.data.segmentData)
                 setBrand(res[0].data.data.brandData)
                 setModel(res[0].data.data.modelData)
                 setCategory(res[1].data.data)
                 setManufacturer(res[2].data.data)
-                console.log(res[1].data.data)
+             
                 setLoader(false)
             })
     }, [])
