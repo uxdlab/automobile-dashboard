@@ -21,8 +21,7 @@ export const BrandListing = () => {
     const [deleteModel, setDeleteModel] = useState(false)
     const [deletedComp, setDeletedComp] = useState({ id: '', index: '', icon: '' })
     const [selectSegment, setSelectSegment] = useState([])
-    console.log(selectSegment)
-    console.log(deletedComp.icon)
+
     const [open, setOpen] = useState(false)
     const [open1, setOpen1] = useState(false)
     const [snackbar, ShowSnackbar] = useState({
@@ -33,9 +32,9 @@ export const BrandListing = () => {
         type: "error",
     });
     const [localImg, setLocalImg] = useState()
-    console.log(localImg)
+
     const [img, setImg] = useState({})
-    console.log(img)
+ 
     const [imgURL, setImgURL] = useState('')
     const [id, setId] = useState('')
     let brandData = useRef({
@@ -65,7 +64,7 @@ export const BrandListing = () => {
         setCollection(allCompanies.slice(from, to));
     };
 
-    console.log(brandData.current)
+
     useEffect(() => {
         getAllCompany()
         getAllSegment()
@@ -92,7 +91,7 @@ export const BrandListing = () => {
     }
 
     const handleChange = (event) => {
-        console.log(event)
+
         const {
             target: { value },
         } = event;
@@ -108,7 +107,7 @@ export const BrandListing = () => {
             .then(res => {
                 setLoader(false)
                 setCompanies(res.data.data)
-                console.log(res.data.data)
+             
             })
     }
     function deleteCompany() {

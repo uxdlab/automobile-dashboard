@@ -183,7 +183,7 @@ export default function UpdateProduct() {
         setSelectModel([])
     }
 
-    function addModelData(e){
+    function editModelData(e){
         AllProducts.current[0].product_model_aaray = [e.target.value]
 
         let modelName = selectModel.filter(item=>item._id === e.target.value)
@@ -393,7 +393,7 @@ AllProducts.current[0].brand_name = brandName[0].brand_name
                                                     fullWidth
                                                     required
                                                     defaultValue={productData ? productData[0].product_model_aaray[0] : ''}
-                                                    onChange={addModelData}
+                                                    onChange={editModelData}
                                                 >
                                                     {selectModel.map((item, index) => (
                                                         <MenuItem
