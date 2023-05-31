@@ -15,19 +15,43 @@ export default function Product({ AllProducts, index, productData,files,setFiles
     const [selectModel, setSelectModel] = useState([])
     const [category, setCategory] = useState([])
     const [manufacturer, setManufacturer] = useState([])
+
+
+
+
     console.log(productData)
     const [imgURLs,setimgURLs] = useState([])
     console.log(files)
     console.log(imgURLs)
 
     function filterd(fil) {
+
+        console.log(fil, "okokkokok")
+        let singleSegment = segment.filter(item=>item._id === fil)
+       
         AllProducts.current[index].product_segment_aaray = [fil]
+        AllProducts.current[index].segment_name = singleSegment[0].vehicle_name
         setSelectBrand(brand.filter(e=>e.segment_array.includes(fil)))
         setSelectModel([])
     }
 
+    function addModelData(e){
+
+
+        AllProducts.current[index].product_model_aaray = [e.target.value]
+
+let modelName = selectModel.filter(item=>item._id === e.target.value)
+
+AllProducts.current[index].model_name = modelName[0].model_name
+    }
+
     function filteredModel(fil) {
         AllProducts.current[index].product_brand_aaray = [fil]
+let brandName = selectBrand.filter((item)=>item._id === fil)
+
+
+AllProducts.current[index].brand_name = brandName[0].brand_name
+
         setSelectModel(model.filter(e=>e.model_brand_array.includes(fil)))
     }
 
@@ -191,7 +215,7 @@ export default function Product({ AllProducts, index, productData,files,setFiles
                                         fullWidth
                                         required
                                         defaultValue={productData ? productData[0].product_model_aaray[0] : ''}
-                                        onChange={(e) => AllProducts.current[index].product_model_aaray = [e.target.value]}
+                                        onChange={addModelData}
                                     >
                                         {selectModel.map((item, index) => (
                                             <MenuItem

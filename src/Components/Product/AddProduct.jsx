@@ -34,7 +34,10 @@ export default function AddProduct() {
             product_brand_aaray: [],
             product_model_aaray: [],
             product_category_aaray: [],
-            product_manufacture_aaray: []
+            product_manufacture_aaray: [],
+            brand_name:'' ,
+            segment_name:'',
+            model_name:'' ,
         }
     ])
 
