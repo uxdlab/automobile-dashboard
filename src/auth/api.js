@@ -1,3 +1,5 @@
+import { deleteUser } from "../services/Users";
+
 export const apis = {
     baseUrl: "https://automobile.herokuapp.com/",
     baseUrl1: "http://localhost:3001/",
@@ -48,7 +50,8 @@ export const apis = {
     getAllData:'vehicle/getSegmentBrandModel/all',
     getAllUsers:'user/getAllUser',
     bulkUpload : 'product/bulkAddProduct',
-    activeUser: 'user/userActiveInactive/'
+    activeUser: 'user/userActiveInactive/',
+    deleteUsers:'user/deleteUser/'
 
 
 

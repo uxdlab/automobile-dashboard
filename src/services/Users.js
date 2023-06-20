@@ -7,3 +7,7 @@ export const getAllUsers = async()=>{
 export const activeUser = async(id)=>{
     return await axios.put(`${apis.baseUrl}${apis.activeUser}${id}`)
 }
+
+export const deleteUsers = async(id)=>{
+    return await axios.delete(`${apis.baseUrl}${apis.deleteUsers}${id}`)
+}

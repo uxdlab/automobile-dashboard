@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Style.css'
 import { Box, Switch, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import Pagination from 'rc-pagination';
-import { getAllUsers, activeUser } from '../../services/Users';
+import { getAllUsers, activeUser, deleteUsers } from "../../services/Users";
 import { Delete, Edit } from '@mui/icons-material';
 
 
@@ -31,6 +31,12 @@ export default function UsersListing() {
     useEffect(() => {
         getUsers()
     }, [])
+    const deleteusers = (id)=>{
+        deleteUsers(id)
+        .then(res =>{console.log(res)
+         getUsers();})
+        .catch(err =>{console.log(err)})
+    }
 
     const updatePage = p => {
         setCurrentPage(p);
@@ -60,22 +66,30 @@ export default function UsersListing() {
                     <TableBody>
                         {collection.map((res, index) => {
                             return (
-                                <TableRow key={index}>
-                                    {/* <TableCell>{index + 1}</TableCell> */}
-                                    <TableCell className='text_cap'>{res.fullName}</TableCell>
-                                    <TableCell >{res.email}</TableCell>
-                                    <TableCell >{res.mobile_number}</TableCell>
-                                    <TableCell ><Switch defaultChecked={res.user_login} onChange={()=>active(res._id)} /></TableCell>
-                                    <TableCell>
-                                        {/* <RemoveRedEye  /> */}
-                                        <Delete
-                                            className="pointer"
-
-                                        />&nbsp;&nbsp;
-                                        <Edit className="pointer" />
-                                    </TableCell>
-                                </TableRow>
-                            )
+                              <TableRow key={index}>
+                                {/* <TableCell>{index + 1}</TableCell> */}
+                                <TableCell className="text_cap">
+                                  {res.fullName}
+                                </TableCell>
+                                <TableCell>{res.email}</TableCell>
+                                <TableCell>{res.mobile_number}</TableCell>
+                                <TableCell>
+                                  <Switch
+                                    defaultChecked={res.user_login}
+                                    onChange={() => active(res._id)}
+                                  />
+                                </TableCell>
+                                <TableCell>
+                                  {/* <RemoveRedEye  /> */}
+                                  <Delete
+                                    className="pointer"
+                                    onClick={e=>deleteusers(res._id)}
+                                  />
+                                  &nbsp;&nbsp;
+                                  {/* <Edit className="pointer" /> */}
+                                </TableCell>
+                              </TableRow>
+                            );
                         })}
                     </TableBody>
                 </Table>
