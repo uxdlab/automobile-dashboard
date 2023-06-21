@@ -15,6 +15,10 @@ import ProductListing from "./Components/Product/ProductListing";
 import AddProduct from "./Components/Product/AddProduct";
 import UpdateProduct from "./Components/Product/UpdateProduct";
 import { ManufactureListing } from "./Components/Manufacture/ManufactureListing";
+import Abouts from "./Components/Container/Abouts";
+import PrivacyPolicy from "./Components/Container/PrivacyPolicy";
+import TermAndCondition from "./Components/Container/TermAndCondition";
+import Onboarding from "./Components/Container/Onboarding";
 
 export const Router = () => {
     return (
@@ -36,6 +40,10 @@ export const Router = () => {
                     <Route exact path='/product' element={<ProductListing />} />
                     <Route exact path='/addProduct' element={<AddProduct />} />
                     <Route exact path='/updateProduct/:id' element={<UpdateProduct />} />
+                    <Route exact path="/about-us" element={<Abouts/>} />
+                    <Route exact path="privacy-policy" element={<PrivacyPolicy/>}/>
+                    <Route exact path="term-condition" element={<TermAndCondition/>} />
+                    <Route exact path="on-boarding" element={<Onboarding/>}/>
                     
                     <Route path='*' element={<WrongPath />} />
                 </Route>

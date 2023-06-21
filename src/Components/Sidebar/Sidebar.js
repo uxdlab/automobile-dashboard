@@ -10,6 +10,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 export const Sidebar = ({ children }) => {
     const [toggleSidebar, setToggleSidebar] = useState(true)
     const [toggle,setToggle] = useState(false)
+    const [containerToggel,setContainerToggel] = useState(false)
     const matches = useMediaQuery("(min-width:900px)");
 
     const sidebarData = [
@@ -20,6 +21,13 @@ export const Sidebar = ({ children }) => {
         { text: 'Category', path: '/category' },
         { text: 'Manufacturer', path: '/manufacture' },
     ]
+
+    const containerData = [
+      { text: "About Us", path: "/about-us" },
+      { text: "Privacy Policy", path: "/privacy-policy" },
+      { text: "Term & Condition", path: "/term-condition" },
+      { text: "Onboarding", path: "/on-boarding" },
+    ];
 
     let navigate = useNavigate()
     console.log('ll')
@@ -44,8 +52,15 @@ export const Sidebar = ({ children }) => {
                                 )
                             })}
                            </Box>
-                            <Box onClick={() => navigate('/orders')} className="fs-5" sx={{ cursor: 'pointer' }}>Orders  <hr className="mb-3 mt-1" /></Box>
-                            
+                        <Box onClick={() => navigate('/orders')} className="fs-5" sx={{ cursor: 'pointer' }}>Orders  <hr className="mb-3 mt-1" /></Box>
+                        <Box onClick={() => setContainerToggel(!containerToggel)} className="fs-5" sx={{cursor:"pointer"}}><span className="d-flex justify-content-between align-items-center"><span>Container</span> <KeyboardArrowDownIcon sx={{transition:'0.3s',transform:containerToggel?'rotate(180deg)':'rotate(360deg)'}}/></span><hr className="mb-3 mt-1"/></Box>
+                            <Box sx={{padding:"0 0 0 20px",transition:"0.3s",overflow:"hidden",height:containerToggel ? '310px' :'0px'}}>
+                                {containerData.map((item,index) => {
+                                    return (
+                                        <Box key={index} onClick={() => navigate(item.path)} className="fs-5" sx={{cursor: 'pointer'}}>{item.text}<hr className="mb-3 mt-1"/></Box>
+                                    )
+                                })}
+                            </Box>
                         </div>
 
                     </div>
