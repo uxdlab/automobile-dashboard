@@ -60,6 +60,7 @@ export const apis = {
            addPrivacy: "privacypolicy/create",
            getPrivacy: "privacypolicy/getAll",
            addTerm: "termConditon/create",
+           getTermsCondition: "termConditon/getAll",
          },
        };
 

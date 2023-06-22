@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Button } from "@mui/material";
 import Editor from "react-simple-wysiwyg";
-import { addTerm } from '../../services/Contain';
+import { addTerm, getTermsCondition } from "../../services/Contain";
+import { useEffect } from 'react';
 
 export default function TermAndCondition() {
-  const [addCondition, setAddCondition] = useState("")
+  const [addCondition, setAddCondition] = useState("");
+  const [getCondition,setGetCondition] = useState([]);
 
   const addTermCondition = (e,data)=>{
      e.preventDefault();
@@ -17,6 +19,20 @@ export default function TermAndCondition() {
        .then((res) => console.log(res))
        .catch((err) => console.log(err));
   }
+
+  const getAllTermsAndCondition = ()=>{
+      getTermsCondition()
+      .then((res)=>{console.log(res);
+        setAddCondition(res.data.data[0].term_condition);
+        setGetCondition(res.data.data[0])
+      })
+      .catch((err)=>{console.log(err)})
+  }
+  useEffect(()=>{
+    if(addCondition.length ===0){
+      getAllTermsAndCondition()
+    }
+  })
   return (
     <div>
       <form>

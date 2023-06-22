@@ -19,3 +19,6 @@ export const getPrivacy = async ()=> {
 export const addTerm = async(data)=>{
     return await axios.post(`${apis.baseUrl}${apis.contain.addTerm}`,data)
 }
+export const getTermsCondition = async(data)=>{
+    return await axios.get(`${apis.baseUrl}${apis.contain.getTermsCondition}`)
+}
