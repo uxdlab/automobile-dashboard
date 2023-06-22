@@ -56,11 +56,13 @@ export const apis = {
          contain: {
            addabout: "aboutus/create",
            getAbout: "aboutus/getAll",
-           updataAbout: "aboutus/updateData",
+           updataAbout: "aboutus/updateData/",
            addPrivacy: "privacypolicy/create",
            getPrivacy: "privacypolicy/getAll",
+           updatePrivacy: "privacypolicy/updateData/",
            addTerm: "termConditon/create",
            getTermsCondition: "termConditon/getAll",
+           updateTerms: "termConditon/updateData/",
          },
        };
 

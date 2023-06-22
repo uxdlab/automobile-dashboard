@@ -16,9 +16,15 @@ export const addPrivacy = async (data)=>{
 export const getPrivacy = async ()=> {
     return await axios.get(`${apis.baseUrl}${apis.contain.getPrivacy}`)
 }
+export const updatePrivacy = async (id,data)=>{
+    return await axios.put(`${apis.baseUrl}${apis.contain.updatePrivacy}${id}`,data)
+}
 export const addTerm = async(data)=>{
     return await axios.post(`${apis.baseUrl}${apis.contain.addTerm}`,data)
 }
-export const getTermsCondition = async(data)=>{
+export const getTermsCondition = async()=>{
     return await axios.get(`${apis.baseUrl}${apis.contain.getTermsCondition}`)
+}
+export const updateTerms = async (id,data)=>{
+    return await axios.put(`${apis.baseUrl}${apis.contain.updateTerms}${id}`,data)
 }
