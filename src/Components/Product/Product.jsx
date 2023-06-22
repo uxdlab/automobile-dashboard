@@ -17,7 +17,6 @@ export default function Product({ AllProducts, index, productData,files,setFiles
     const [manufacturer, setManufacturer] = useState([])
 
 
-console.log("data")
 
    
     const [imgURLs,setimgURLs] = useState([])

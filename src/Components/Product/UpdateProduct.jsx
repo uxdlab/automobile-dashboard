@@ -30,7 +30,7 @@ export default function UpdateProduct() {
     const [category, setCategory] = useState([])
     const [manufacturer, setManufacturer] = useState([])
     const AllProducts = useRef([])
-    console.log("data")
+    
     const [snackbar, ShowSnackbar] = useState({
         show: false,
         vertical: "top",
