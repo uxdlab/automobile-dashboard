@@ -1,11 +1,13 @@
 import React from 'react'
 import { Button } from "@mui/material";
 import Editor from "react-simple-wysiwyg";
-import { addPrivacy } from '../../services/Contain';
+import { addPrivacy, getPrivacy } from "../../services/Contain";
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function PrivacyPolicy() {
   const [addPolicy,setAddPolicy] = useState("")
+  const [policyData,setPolicyData] = useState([])
 
   const submitPolicy = (e,data)=>{
      e.preventDefault();
@@ -15,9 +17,24 @@ export default function PrivacyPolicy() {
        },
        data
      )
-     .then((res)=>console.log(res))
+     .then((res)=>{console.log(res)
+   })
      .catch((err)=>console.log(err))
   }
+  const getAllPrivacy = ()=>{
+      getPrivacy()
+      .then((res)=>{console.log(res);
+       setAddPolicy(res.data.data[0].privacy_policy);
+       setPolicyData(res.data.data[0]);})
+      .catch((err)=>console.log(err))
+  }
+  useEffect(()=>{
+    if(addPolicy.length ===0){
+      getAllPrivacy();
+      console.log("addPolicy")
+    }
+  })
+
   return (
     <div>
       <form>

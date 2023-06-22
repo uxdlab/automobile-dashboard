@@ -58,6 +58,7 @@ export const apis = {
            getAbout: "aboutus/getAll",
            updataAbout: "aboutus/updateData",
            addPrivacy: "privacypolicy/create",
+           getPrivacy: "privacypolicy/getAll",
            addTerm: "termConditon/create",
          },
        };

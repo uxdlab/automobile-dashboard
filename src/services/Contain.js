@@ -13,6 +13,9 @@ export const updataAbout = async(id,data)=>{
 export const addPrivacy = async (data)=>{
     return await axios.post(`${apis.baseUrl}${apis.contain.addPrivacy}`,data)
 }
+export const getPrivacy = async ()=> {
+    return await axios.get(`${apis.baseUrl}${apis.contain.getPrivacy}`)
+}
 export const addTerm = async(data)=>{
     return await axios.post(`${apis.baseUrl}${apis.contain.addTerm}`,data)
 }
