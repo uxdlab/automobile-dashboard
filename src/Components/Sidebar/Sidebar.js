@@ -25,7 +25,7 @@ export const Sidebar = ({ children }) => {
     const containerData = [
       { text: "About Us", path: "/about-us" },
       { text: "Privacy Policy", path: "/privacy-policy" },
-      { text: "Term & Condition", path: "/term-condition" },
+      { text: "Terms & Condition", path: "/term-condition" },
       { text: "Onboarding", path: "/on-boarding" },
     ];
 

@@ -55,6 +55,7 @@ export const apis = {
 
          contain: {
            addabout: "aboutus/create",
+           getAbout: "aboutus/getAll",
            updataAbout: "aboutus/updateData",
            addPrivacy: "privacypolicy/create",
            addTerm: "termConditon/create",
