@@ -22,7 +22,7 @@ export const ModelListing = () => {
     console.log(selectSegment)
     console.log(seleBrand)
     const [allData, setData] = useState([])
-    const [countPerPage, setCountPerPage] = useState(5);
+    const [countPerPage, setCountPerPage] = useState(10);
     const [value, setValue] = React.useState("");
     const [deleteModel, setDeleteModel] = useState(false)
     const [currentPage, setCurrentPage] = React.useState(1);
@@ -689,7 +689,7 @@ export const ModelListing = () => {
                     </Table>
                     <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
                         <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
-                            <option>5</option>
+                            {/* <option>5</option> */}
                             <option>10</option>
                             <option>15</option>
                         </select>

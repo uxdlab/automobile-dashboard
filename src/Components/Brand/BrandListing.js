@@ -38,6 +38,7 @@ import Pagination from "rc-pagination";
 
 export const BrandListing = () => {
   const theme = useTheme();
+  const [allData, setData] = useState([]);
   const [loader, setLoader] = useState(true);
   const [allCompanies, setCompanies] = useState([]);
   const [allSegment, setSegment] = useState([]);
@@ -370,10 +371,10 @@ export const BrandListing = () => {
     CompanyClass.getCompany(idd)
       .then((res) => {
         console.log(res);
-        brandData.current = res.data.data[0];
+        brandData.current = res.data.data;
         if (brandData.current.brand_image) {
-          console.log(brandData.current.brand_image);
-          setLocalImg(brandData.current.brand_image);
+          console.log(brandData?.current.brand_image);
+          setLocalImg(brandData?.current.brand_image);
         }
         setSelectSegment(brandData.current.segment_array);
         setLoader(false);
@@ -412,7 +413,11 @@ export const BrandListing = () => {
     e.preventDefault();
     if (img.name !== undefined) {
       let arr = allCompanies.filter(
-        (item) => item.brand_name === brandData.current.brand_name
+        (item) =>
+          item.brand_name ===
+          allCompanies.filter(
+            (item) => item.brand_name === brandData.current.brand_name
+          )
       );
       if (arr.length !== 0) {
         ShowSnackbar({
@@ -731,7 +736,7 @@ export const BrandListing = () => {
                           .toLocaleLowerCase();
                       }
                     }}
-                    defaultValue={brandData ? brandData.current.brand_name : ""}
+                    defaultValue={brandData.current ? brandData.current.brand_name : ""}
                     placeholder="Enter Brand Name"
                     className="form-control w-100 mb-2"
                   />
@@ -744,7 +749,7 @@ export const BrandListing = () => {
                   </div>
                   <textarea
                     className="w-100 form-control"
-                    defaultValue={brandData.current.brand_description}
+                    defaultValue={brandData.current?brandData.current.brand_description:""}
                     onChange={(e) => {
                       if (e.target.value == " ") {
                         e.target.value = "";

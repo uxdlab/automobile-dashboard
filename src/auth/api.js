@@ -21,7 +21,7 @@ export const apis = {
          company: {
            add: "brand/addBrand",
            getAll: "brand/getAllBrand",
-           get: "brand",
+           get: "brand/getBrandByIdForDashboard",
            delete: "brand/deleteBrand",
            update: "brand/updateBrand",
          },
