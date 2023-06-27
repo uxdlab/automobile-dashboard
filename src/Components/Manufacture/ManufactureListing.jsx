@@ -43,14 +43,25 @@ export const ManufactureListing = () => {
             manufacturer_icon: ''
         }
     )
-
+    const [searchValue, setSearchValue] = useState("");
     const [currentPage, setCurrentPage] = React.useState(1);
-    const [countPerPage, setCountPerPage] = useState(5);
+    const [countPerPage, setCountPerPage] = useState(10);
     const [value, setValue] = React.useState("");
     const [collection, setCollection] = React.useState(
         (allManufecture.slice(0, countPerPage))
     );
-
+    
+     function handleSearchClick (name){
+        console.log(name)
+        if(searchValue ===""){
+            setCollection(allManufecture)
+        }else{
+            const filterBySearch = collection.filter((item)=>{
+                return item.manufacturer_name.includes(name.trim().toLocaleLowerCase());
+            })
+            setCollection(filterBySearch);
+        }
+     }
     React.useEffect(() => {
         if (!value) {
             updatePage(1);
@@ -389,269 +400,401 @@ export const ManufactureListing = () => {
 
 
     return (
-        <>
-         <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
-            {/* Delete Dialog Box */}
-            <Dialog
-                open={deleteModel}
-                maxWidth={'sm'}
-                fullWidth={true}
-            >
-                <Box p={3}>
-                    <Box>Are you sure you want to delete?</Box>
-                    <Box align='right'>
-                        <Button className='cancel_btn me-3' onClick={() => setDeleteModel(!deleteModel)}>Cancel</Button>
-                        <Button variant="contained" className="custom-btn" onClick={deleteManufacturer}>Delete</Button>
-                    </Box>
-                </Box>
-
-            </Dialog>
-
-
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={loader}
-            >
-                <Box>
-                    <Triangle
-                        height="80"
-                        width="80"
-                        color="black"
-                        ariaLabel="triangle-loading"
-                        wrapperStyle={{}}
-                        wrapperClassName=""
-                        visible={loader}
-
-                    />
-                </Box>
-            </Backdrop>
-
-            {/* Add Manufacturer Dialog Box */}
-            <Dialog
-                open={open}
-                maxWidth={'xs'}
-                fullWidth={true}
-            >
-                <Box py={2} px={1} className='over-flow-hide-x'>
-                    <h5 className="px-3">Add New Manufacturer</h5>
-                    <hr />
-                    <form onSubmit={ExistNameCheck}>
-                        <div className="container-fluid">
-                            <div className="row">
-
-                                <div className="col-md-12">
-                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Manufacturer Name:</b></small></div>
-                                    <input type='text'
-                                    required
-                                        onChange={(e) =>
-                                            {
-                                                if(e.target.value == ' '){
-                                                    e.target.value = ''
-                                                }else{
-                                                    manufacturerData.current.manufacturer_name = e.target.value.trim().toLocaleLowerCase()}
-                                            } }
-                                        placeholder="Enter Manufacturer Name" className="form-control w-100 mb-2" />
-                                </div>
-                                <div className="col-md-12">
-                                    <div className="py-2"><small><b>Manufacturer Description:</b></small></div>
-                                    <textarea
-                                        className="w-100 form-control"
-                                        onChange={(e) =>
-                                            {
-                                                if(e.target.value == ' '){
-                                                    e.target.value = ''
-                                                }else{
-                                                    manufacturerData.current.manufacturer_description = e.target.value}
-                                            } }
-                                        rows='3'
-                                        placeholder='Enter Description'
-
-                                    />
-                                </div>
-                                <div className="col-md-12">
-                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Add Manufacturer Icon:</b></small></div>
-                                    <div className="d-flex">
-                                        {localImg ?
-                                            <div className="box_style border me-1 relative">
-                                                <CloseIcon onClick={() => {
-                                                    setLocalImg('')
-                                                    setImg({})
-                                                }} className="close-btn-position" />
-                                                <img className="img-style" src={localImg} />
-                                            </div> : ''}
-                                        <div className="box_style img-btn border">
-                                            <div className="btn w-100">
-                                                <input type="file" id="2actual-btn" hidden
-                                                    onChange={(e) => {
-                                                        setImg(e.target.files[0])
-                                                        imgPrev(e.target.files[0])
-                                                        e.target.value = ''
-                                                    }}
-                                                />
-                                                <label className="text-center text-gray" htmlFor="2actual-btn">
-                                                    <CloudUploadIcon /><br />
-                                                    <span>Upload</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <Box align='right' className='mt-3'>
-                                    <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
-                                        setOpen(false)
-                                        setLocalImg('')
-                                        manufacturerData.current = {}
-                                    }}>Cancel</span>
-                                    <button className="btn custom-btn py-1 px-3" type="submit">Add</button>
-                                </Box>
-                            </div>
-                        </div>
-                    </form>
-                </Box>
-
-            </Dialog>
-
-            {/* Edit Manufacturer Dialog Box */}
-            <Dialog
-                open={open1}
-                maxWidth={'xs'}
-                fullWidth={true}
-            >
-
-                <Box py={2} px={1} className='over-flow-hide-x'>
-                    <h5 className="px-3">Edit Manufacturer</h5>
-                    <hr />
-                    <form onSubmit={checkNameForUpdate}>
-                        <div className="container-fluid">
-                            <div className="row">
-
-                                <div className="col-md-12">
-                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Manufacturer Name:</b></small></div>
-                                    <input type='text'
-                                    required
-                                        defaultValue={manufacturerData.current.manufacturer_name}
-                                        onChange={(e) =>{
-                                            if(e.target.value == ' '){
-                                                e.target.value = ''
-                                            }else{
-                                                manufacturerData.current.manufacturer_name = e.target.value.trim().toLocaleLowerCase()}
-                                        } }
-                                        placeholder="Enter Manufacturer Name" className="form-control w-100 mb-2" />
-                                </div>
-                                <div className="col-md-12">
-                                    <div className="py-2"><small><b>Manufacturer Description:</b></small></div>
-                                    <textarea
-                                        className="w-100 form-control"
-                                        defaultValue={manufacturerData.current.manufacturer_description}
-                                        onChange={(e) => {
-                                            if(e.target.value == ' '){
-                                                e.target.value = ''
-                                            }else{
-                                                manufacturerData.current.manufacturer_description = e.target.value}
-                                        }}
-                                        rows='3'
-                                        placeholder='Enter Description'
-
-                                    />
-                                </div>
-                                <div className="col-md-12">
-                                    <div className="py-2"><small><b><span className='text-danger'>*</span>Update Manufacturer Icon:</b></small></div>
-                                    <div className="d-flex">
-                                        {localImg ?
-                                            <div className="box_style border me-1 relative">
-                                                <CloseIcon onClick={() => {
-                                                    setLocalImg('')
-                                                    setImg({})
-                                                }} className="close-btn-position" />
-                                                <img className="img-style" src={localImg} />
-                                            </div> : ''}
-                                        <div className="box_style img-btn border">
-                                            <div className="btn w-100">
-                                                <input type="file" id="2actual-btn" hidden
-                                                    onChange={(e) => {
-                                                        setImg(e.target.files[0])
-                                                        imgPrev(e.target.files[0])
-                                                        e.target.value = ''
-                                                    }}
-                                                />
-                                                <label className="text-center text-gray" htmlFor="2actual-btn">
-                                                    <CloudUploadIcon /><br />
-                                                    <span>Upload</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <Box align='right' className='mt-3'>
-                                    <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
-                                        setOpen1(false)
-                                        setLocalImg('')
-                                        manufacturerData.current = {}
-                                    }}>Cancel</span>
-                                    <button className="btn custom-btn py-1 px-3" type="submit">Update</button>
-                                </Box>
-                            </div>
-                        </div>
-                    </form>
-                </Box>
-
-            </Dialog>
-
-
-
-            <h1 className="mt-2 fs-2 mx-3">Manufactures</h1>
-
-            <Box align='right' className='px-3 pb-3'>
-                <Button className="btn_primary" onClick={() => setOpen(true)} variant="contained">Add Manufacture</Button>
+      <>
+        <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
+        {/* Delete Dialog Box */}
+        <Dialog open={deleteModel} maxWidth={"sm"} fullWidth={true}>
+          <Box p={3}>
+            <Box>Are you sure you want to delete?</Box>
+            <Box align="right">
+              <Button
+                className="cancel_btn me-3"
+                onClick={() => setDeleteModel(!deleteModel)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                className="custom-btn"
+                onClick={deleteManufacturer}
+              >
+                Delete
+              </Button>
             </Box>
-            <div className="px-3">
-                <TableContainer component={Paper}>
-                <Table >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell className="w-25"><b>&nbsp;</b></TableCell>
-                            <TableCell className="text-center"><b>Manufacture Name</b></TableCell>
-                            <TableCell className="text-center"><b>Action</b></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {allManufecture.map((res, index) => {
-                            return (
-                                <TableRow key={index}>
-                                    <TableCell className="ps-md-5"><img className='w-12' src={res.manufacturer_icon?res.manufacturer_icon:'images/noImage.png'}/></TableCell>
-                                    <TableCell className="text-center text_cap">{res.manufacturer_name}</TableCell>
-                                    <TableCell className="text-center">
-                                        <Delete sx={{ cursor: 'pointer' }} onClick={() => {
-                                            setDeletedComp({ id: res._id, index, icon: res.manufacturer_icon })
-                                            setDeleteModel(!deleteModel)
-                                        }} />&nbsp;&nbsp;
-                                        <Edit sx={{ cursor: 'pointer' }} onClick={() => {
-                                            getManufacturerByIdd(res._id, res.manufacturer_icon)
-                                            setOpen1(true)
-                                        }} />
-                                    </TableCell>
-                                </TableRow>
-                            )
-                        })}
-                    </TableBody>
-                </Table>
-                <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
-                        <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
-                            <option>5</option>
-                            <option>10</option>
-                            <option>15</option>
-                        </select>
-                        <Pagination
-                            pageSize={countPerPage}
-                            onChange={updatePage}
-                            current={currentPage}
-                            total={allManufecture.length}
-                            style={{ color: 'green' }}
-                        />
-                    </Box>
-                </TableContainer>
-            </div>
+          </Box>
+        </Dialog>
 
-        </>
-    )
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loader}
+        >
+          <Box>
+            <Triangle
+              height="80"
+              width="80"
+              color="black"
+              ariaLabel="triangle-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={loader}
+            />
+          </Box>
+        </Backdrop>
+
+        {/* Add Manufacturer Dialog Box */}
+        <Dialog open={open} maxWidth={"xs"} fullWidth={true}>
+          <Box py={2} px={1} className="over-flow-hide-x">
+            <h5 className="px-3">Add New Manufacturer</h5>
+            <hr />
+            <form onSubmit={ExistNameCheck}>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
+                        <b>
+                          <span className="text-danger">*</span>Manufacturer
+                          Name:
+                        </b>
+                      </small>
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      onChange={(e) => {
+                        if (e.target.value == " ") {
+                          e.target.value = "";
+                        } else {
+                          manufacturerData.current.manufacturer_name = e.target.value
+                            .trim()
+                            .toLocaleLowerCase();
+                        }
+                      }}
+                      placeholder="Enter Manufacturer Name"
+                      className="form-control w-100 mb-2"
+                    />
+                  </div>
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
+                        <b>Manufacturer Description:</b>
+                      </small>
+                    </div>
+                    <textarea
+                      className="w-100 form-control"
+                      onChange={(e) => {
+                        if (e.target.value == " ") {
+                          e.target.value = "";
+                        } else {
+                          manufacturerData.current.manufacturer_description =
+                            e.target.value;
+                        }
+                      }}
+                      rows="3"
+                      placeholder="Enter Description"
+                    />
+                  </div>
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
+                        <b>
+                          <span className="text-danger">*</span>Add Manufacturer
+                          Icon:
+                        </b>
+                      </small>
+                    </div>
+                    <div className="d-flex">
+                      {localImg ? (
+                        <div className="box_style border me-1 relative">
+                          <CloseIcon
+                            onClick={() => {
+                              setLocalImg("");
+                              setImg({});
+                            }}
+                            className="close-btn-position"
+                          />
+                          <img className="img-style" src={localImg} />
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <div className="box_style img-btn border">
+                        <div className="btn w-100">
+                          <input
+                            type="file"
+                            id="2actual-btn"
+                            hidden
+                            onChange={(e) => {
+                              setImg(e.target.files[0]);
+                              imgPrev(e.target.files[0]);
+                              e.target.value = "";
+                            }}
+                          />
+                          <label
+                            className="text-center text-gray"
+                            htmlFor="2actual-btn"
+                          >
+                            <CloudUploadIcon />
+                            <br />
+                            <span>Upload</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Box align="right" className="mt-3">
+                    <span
+                      className="btn cancel_btn me-3 py-1 px-3"
+                      onClick={() => {
+                        setOpen(false);
+                        setLocalImg("");
+                        manufacturerData.current = {};
+                      }}
+                    >
+                      Cancel
+                    </span>
+                    <button className="btn custom-btn py-1 px-3" type="submit">
+                      Add
+                    </button>
+                  </Box>
+                </div>
+              </div>
+            </form>
+          </Box>
+        </Dialog>
+
+        {/* Edit Manufacturer Dialog Box */}
+        <Dialog open={open1} maxWidth={"xs"} fullWidth={true}>
+          <Box py={2} px={1} className="over-flow-hide-x">
+            <h5 className="px-3">Edit Manufacturer</h5>
+            <hr />
+            <form onSubmit={checkNameForUpdate}>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
+                        <b>
+                          <span className="text-danger">*</span>Manufacturer
+                          Name:
+                        </b>
+                      </small>
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      defaultValue={manufacturerData.current.manufacturer_name}
+                      onChange={(e) => {
+                        if (e.target.value == " ") {
+                          e.target.value = "";
+                        } else {
+                          manufacturerData.current.manufacturer_name = e.target.value
+                            .trim()
+                            .toLocaleLowerCase();
+                        }
+                      }}
+                      placeholder="Enter Manufacturer Name"
+                      className="form-control w-100 mb-2"
+                    />
+                  </div>
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
+                        <b>Manufacturer Description:</b>
+                      </small>
+                    </div>
+                    <textarea
+                      className="w-100 form-control"
+                      defaultValue={
+                        manufacturerData.current.manufacturer_description
+                      }
+                      onChange={(e) => {
+                        if (e.target.value == " ") {
+                          e.target.value = "";
+                        } else {
+                          manufacturerData.current.manufacturer_description =
+                            e.target.value;
+                        }
+                      }}
+                      rows="3"
+                      placeholder="Enter Description"
+                    />
+                  </div>
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
+                        <b>
+                          <span className="text-danger">*</span>Update
+                          Manufacturer Icon:
+                        </b>
+                      </small>
+                    </div>
+                    <div className="d-flex">
+                      {localImg ? (
+                        <div className="box_style border me-1 relative">
+                          <CloseIcon
+                            onClick={() => {
+                              setLocalImg("");
+                              setImg({});
+                            }}
+                            className="close-btn-position"
+                          />
+                          <img className="img-style" src={localImg} />
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      <div className="box_style img-btn border">
+                        <div className="btn w-100">
+                          <input
+                            type="file"
+                            id="2actual-btn"
+                            hidden
+                            onChange={(e) => {
+                              setImg(e.target.files[0]);
+                              imgPrev(e.target.files[0]);
+                              e.target.value = "";
+                            }}
+                          />
+                          <label
+                            className="text-center text-gray"
+                            htmlFor="2actual-btn"
+                          >
+                            <CloudUploadIcon />
+                            <br />
+                            <span>Upload</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Box align="right" className="mt-3">
+                    <span
+                      className="btn cancel_btn me-3 py-1 px-3"
+                      onClick={() => {
+                        setOpen1(false);
+                        setLocalImg("");
+                        manufacturerData.current = {};
+                      }}
+                    >
+                      Cancel
+                    </span>
+                    <button className="btn custom-btn py-1 px-3" type="submit">
+                      Update
+                    </button>
+                  </Box>
+                </div>
+              </div>
+            </form>
+          </Box>
+        </Dialog>
+
+        <h1 className="mt-2 fs-2 mx-3">Manufactures</h1>
+        <div className=" d-flex justify-content-between">
+          <div style={{ marginLeft: "18px", width: "600px" }}>
+            <input
+              className="w-75 form-control ml-4"
+              type="search"
+              placeholder="Search"
+              onChange={(e)=>{
+                setSearchValue(e.target.value);
+                handleSearchClick(e.target.value)
+              }}
+            />
+          </div>
+          <div style={{ marginRight: "18px" }}>
+            <Button
+              className="btn_primary"
+              onClick={() => setOpen(true)}
+              variant="contained"
+            >
+              Add manufacturer
+            </Button>
+          </div>
+        </div>
+
+        {/* <Box align="right" className="px-3 pb-3"></Box> */}
+        <div className="px-3">
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell className="w-25">
+                    <b>&nbsp;</b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b>manufacturer Name</b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b>Action</b>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {collection.map((res, index) => {
+                  return (
+                    <TableRow key={index}>
+                      <TableCell className="ps-md-5">
+                        <img
+                          className="w-12"
+                          src={
+                            res.manufacturer_icon
+                              ? res.manufacturer_icon
+                              : "images/noImage.png"
+                          }
+                        />
+                      </TableCell>
+                      <TableCell className="text-center text_cap">
+                        {res.manufacturer_name}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Delete
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => {
+                            setDeletedComp({
+                              id: res._id,
+                              index,
+                              icon: res.manufacturer_icon,
+                            });
+                            setDeleteModel(!deleteModel);
+                          }}
+                        />
+                        &nbsp;&nbsp;
+                        <Edit
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => {
+                            getManufacturerByIdd(
+                              res._id,
+                              res.manufacturer_icon
+                            );
+                            setOpen1(true);
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+            <Box sx={{ m: 1 }} className="d-flex justify-content-end">
+              <select
+                className="me-2"
+                onChange={(e) => setCountPerPage(e.target.value * 1)}
+              >
+                {/* <option>5</option> */}
+                <option>10</option>
+                <option>15</option>
+              </select>
+              <Pagination
+                pageSize={countPerPage}
+                onChange={updatePage}
+                current={currentPage}
+                total={allManufecture.length}
+                style={{ color: "green" }}
+              />
+            </Box>
+          </TableContainer>
+        </div>
+      </>
+    );
 }

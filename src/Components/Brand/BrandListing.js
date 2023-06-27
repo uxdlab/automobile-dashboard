@@ -528,7 +528,7 @@ export const BrandListing = () => {
                   </div>
                   <FormControl fullWidth>
                     <InputLabel id="demo-multiple-name-label">
-                      Select Segment
+                       Segment
                     </InputLabel>
 
                     <Select
