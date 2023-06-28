@@ -1,317 +1,397 @@
-import { Backdrop, Box, Grid, MenuItem, Select } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { apis } from '../../auth/api'
-import { CallMultipleApi } from '../../services/CallMultipleApi'
-import { Triangle } from 'react-loader-spinner'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { Backdrop, Box, Grid, MenuItem, Select } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { apis } from "../../auth/api";
+import { CallMultipleApi } from "../../services/CallMultipleApi";
+import { Triangle } from "react-loader-spinner";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CancelIcon from "@mui/icons-material/Cancel";
 
-export default function Product({ AllProducts, index, productData,files,setFiles }) {
-    const [loader, setLoader] = useState(true)
-    const [segment, setSegment] = useState([])
-    const [brand, setBrand] = useState([])
-    const [model, setModel] = useState([])
-    const [selectBrand, setSelectBrand] = useState([])
-    const [selectModel, setSelectModel] = useState([])
-    const [category, setCategory] = useState([])
-    const [manufacturer, setManufacturer] = useState([])
+export default function Product({
+  AllProducts,
+  index,
+  productData,
+  files,
+  setFiles,
+}) {
+  const [loader, setLoader] = useState(true);
+  const [segment, setSegment] = useState([]);
+  const [brand, setBrand] = useState([]);
+  const [model, setModel] = useState([]);
+  const [selectBrand, setSelectBrand] = useState([]);
+  const [selectModel, setSelectModel] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [manufacturer, setManufacturer] = useState([]);
 
+  const [imgURLs, setimgURLs] = useState([]);
 
+  function filterd(fil) {
+    let singleSegment = segment.filter((item) => item._id === fil);
 
-   
-    const [imgURLs,setimgURLs] = useState([])
-    
+    AllProducts.current[index].product_segment_aaray = [fil];
+    AllProducts.current[index].segment_name = singleSegment[0].vehicle_name;
+    setSelectBrand(brand.filter((e) => e.segment_array.includes(fil)));
+    setSelectModel([]);
+  }
 
-    function filterd(fil) {
+  function addModelData(e) {
+    AllProducts.current[index].product_model_aaray = [e.target.value];
 
-        let singleSegment = segment.filter(item=>item._id === fil)
-       
-        AllProducts.current[index].product_segment_aaray = [fil]
-        AllProducts.current[index].segment_name = singleSegment[0].vehicle_name
-        setSelectBrand(brand.filter(e=>e.segment_array.includes(fil)))
-        setSelectModel([])
-    }
+    let modelName = selectModel.filter((item) => item._id === e.target.value);
 
-    function addModelData(e){
+    AllProducts.current[index].model_name = modelName[0].model_name;
+  }
 
+  function filteredModel(fil) {
+    AllProducts.current[index].product_brand_aaray = [fil];
+    let brandName = selectBrand.filter((item) => item._id === fil);
 
-        AllProducts.current[index].product_model_aaray = [e.target.value]
+    AllProducts.current[index].brand_name = brandName[0].brand_name;
 
-let modelName = selectModel.filter(item=>item._id === e.target.value)
+    setSelectModel(model.filter((e) => e.model_brand_array.includes(fil)));
+  }
 
-AllProducts.current[index].model_name = modelName[0].model_name
-    }
+  const imgPrev = (imgs) => {
+    setFiles(imgs);
 
-    function filteredModel(fil) {
-        AllProducts.current[index].product_brand_aaray = [fil]
-let brandName = selectBrand.filter((item)=>item._id === fil)
+    let arr = [];
+    imgs.map((item) => {
+      let url = URL.createObjectURL(item);
+      arr.push(url);
+    });
+    setimgURLs([...imgURLs, ...arr]);
+  };
 
+  useEffect(() => {
+    CallMultipleApi.CallMultipleApi([
+      `${apis.getAllData}`,
+      `${apis.product.getAll}`,
+      `${apis.manufacture.getAll}`,
+    ]).then((res) => {
+      setSegment(res[0].data.data.segmentData);
+      setBrand(res[0].data.data.brandData);
+      setModel(res[0].data.data.modelData);
+      setCategory(res[1].data.data);
+      setManufacturer(res[2].data.data);
 
-AllProducts.current[index].brand_name = brandName[0].brand_name
+      setLoader(false);
+    });
+  }, []);
+  return (
+    <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loader}
+      >
+        <Box>
+          <Triangle
+            height="80"
+            width="80"
+            color="black"
+            ariaLabel="triangle-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={loader}
+          />
+        </Box>
+      </Backdrop>
+      {!loader ? (
+        <Grid container className="d-flex justify-content-center ">
+          <Grid item xl={5} md={6} sm={12} sx={12} className="border pb-3">
+            <Box>
+              <Grid container mt={2}>
+                <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
+                  <label>Product Name :</label>
+                  <br />
+                  <input
+                    required
+                    type="text"
+                    placeholder="Enter Product Name"
+                    onChange={(e) => {
+                      if (e.target.value == " ") {
+                        e.target.value = "";
+                      } else {
+                        AllProducts.current[
+                          index
+                        ].product_name = e.target.value
+                          .trim()
+                          .toLocaleLowerCase();
+                      }
+                    }}
+                    defaultValue={
+                      productData ? productData[0].product_name : ""
+                    }
+                    className="form-control w-100"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} className="px-3 mt-2">
+                  <label>Product Description :</label>
+                  <br />
+                  <textarea
+                    placeholder="Enter Product Description"
+                    required
+                    onChange={(e) => {
+                      if (e.target.value == " ") {
+                        e.target.value = "";
+                      } else {
+                        AllProducts.current[
+                          index
+                        ].product_description = e.target.value.trim();
+                      }
+                    }}
+                    defaultValue={
+                      productData ? productData[0].product_description : ""
+                    }
+                    className="form-control w-100"
+                    rows="3"
+                  />
+                </Grid>
+                <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
+                  <label>OE Reference Number :</label>
+                  <br />
+                  <input
+                    required
+                    type="text"
+                    placeholder="Enter OE Reference Number"
+                    onChange={(e) => {
+                      if (e.target.value == " ") {
+                        e.target.value = "";
+                      } else {
+                        AllProducts.current[
+                          index
+                        ].oe_reference_number = e.target.value.trim();
+                      }
+                    }}
+                    defaultValue={
+                      productData ? productData[0].oe_reference_number : ""
+                    }
+                    className="form-control w-100"
+                  />
+                </Grid>
+                <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
+                  <label>KE Part Number :</label>
+                  <br />
+                  <input
+                    required
+                    type="text"
+                    placeholder="Enter KE Part Number"
+                    onChange={(e) => {
+                      if (e.target.value == " ") {
+                        e.target.value = "";
+                      } else {
+                        AllProducts.current[
+                          index
+                        ].ke_partNumber = e.target.value.trim();
+                      }
+                    }}
+                    defaultValue={
+                      productData ? productData[0].ke_partNumber : ""
+                    }
+                    className="form-control w-100"
+                  />
+                </Grid>
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
+                  <label>Product MRP(₹) :</label>
+                  <br />
+                  <input
+                    required
+                    type="number"
+                    placeholder="Enter In Rupees"
+                    onChange={(e) => {
+                      if (e.target.value == " ") {
+                        e.target.value = "";
+                      } else {
+                        AllProducts.current[index].MRP = e.target.value.trim();
+                      }
+                    }}
+                    defaultValue={productData ? productData[0].MRP : ""}
+                    className="form-control w-100"
+                  />
+                </Grid>
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
+                  <label>Select Segment :</label>
+                  <br />
+                  <Select
+                    className="select-style"
+                    fullWidth
+                    required
+                    defaultValue={
+                      productData ? productData[0].product_segment_aaray[0] : ""
+                    }
+                    onChange={(e) => filterd(e.target.value)}
+                  >
+                    {segment.map((item, index) => (
+                      <MenuItem key={index} value={item._id}>
+                        {item.vehicle_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
+                  <label>Select Brand :</label>
+                  <br />
+                  <Select
+                    className="select-style"
+                    fullWidth
+                    required
+                    defaultValue={
+                      productData ? productData[0].product_brand_aaray[0] : ""
+                    }
+                    onChange={(e) => filteredModel(e.target.value)}
+                  >
+                    {selectBrand.map((item, index) => (
+                      <MenuItem key={index} value={item._id}>
+                        {item.brand_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
+                  <label>Select Model :</label>
+                  <br />
+                  <Select
+                    className="select-style"
+                    fullWidth
+                    required
+                    defaultValue={
+                      productData ? productData[0].product_model_aaray[0] : ""
+                    }
+                    onChange={addModelData}
+                  >
+                    {selectModel.map((item, index) => (
+                      <MenuItem key={index} value={item._id}>
+                        {item.model_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
+                  <label>Select Category :</label>
+                  <br />
+                  <Select
+                    className="select-style"
+                    fullWidth
+                    required
+                    defaultValue={
+                      productData
+                        ? productData[0].product_category_aaray[0]
+                        : ""
+                    }
+                    onChange={(e) =>
+                      (AllProducts.current[index].product_category_aaray = [
+                        e.target.value,
+                      ])
+                    }
+                  >
+                    {category.map((item, index) => (
+                      <MenuItem key={index} value={item._id}>
+                        {item.category_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
+                  <label>Select Manufacturer :</label>
+                  <br />
 
-        setSelectModel(model.filter(e=>e.model_brand_array.includes(fil)))
-    }
+                  <Select
+                    className="select-style"
+                    fullWidth
+                    required
+                    defaultValue={
+                      productData
+                        ? productData[0].product_manufacture_aaray[0]
+                        : ""
+                    }
+                    onChange={(e) =>
+                      (AllProducts.current[index].product_manufacture_aaray = [
+                        e.target.value,
+                      ])
+                    }
+                  >
+                    {manufacturer.map((res, index) => {
+                      return (
+                        <MenuItem value={res._id}>
+                          {res.manufacturer_name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </Grid>
+                <Grid
+                  item
+                  md={12}
+                  lg={12}
+                  sm={12}
+                  sx={12}
+                  className="px-3 mt-2"
+                >
+                  <label>Upload Excel File :</label>
+                  <br />
+                  <input className="form-control" type="file" />
+                </Grid>
 
-    const imgPrev = (imgs) => {
-   
-        setFiles(imgs)
-    
-        let arr = []
-        imgs.map((item)=>{
-                let url = URL.createObjectURL(item)
-                arr.push(url)
-             
-        })
-        setimgURLs([...imgURLs,...arr])
-        
-    }
+                <Grid
+                  item
+                  md={12}
+                  lg={12}
+                  sm={12}
+                  sx={12}
+                  className="px-3 mt-2"
+                >
+                  <label>Add Product Images :</label>
+                  <br />
 
-
-    useEffect(() => {
-        CallMultipleApi.CallMultipleApi([
-            `${apis.getAllData}`,
-            `${apis.product.getAll}`,
-            `${apis.manufacture.getAll}`,
-        ])
-            .then((res) => {
-                
-                setSegment(res[0].data.data.segmentData)
-                setBrand(res[0].data.data.brandData)
-                setModel(res[0].data.data.modelData)
-                setCategory(res[1].data.data)
-                setManufacturer(res[2].data.data)
-             
-                setLoader(false)
-            })
-    }, [])
-    return (
-        <>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={loader}
-            >
-                <Box>
-                    <Triangle
-                        height="80"
-                        width="80"
-                        color="black"
-                        ariaLabel="triangle-loading"
-                        wrapperStyle={{}}
-                        wrapperClassName=""
-                        visible={loader}
-                    />
-                </Box>
-            </Backdrop>
-            {!loader ?
-                <Grid container className='d-flex justify-content-center '>
-                    <Grid item xl={5} md={6} sm={12} sx={12} className='border pb-3'>
-                        <Box>
-                            <Grid container mt={2}>
-                                <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
-                                    <label>Product Name :</label><br />
-                                    <input required type='text' placeholder='Enter Product Name' onChange={(e) =>
-                                     {
-                                        if(e.target.value == ' '){
-                                            e.target.value = ''
-                                        }else{
-                                            AllProducts.current[index].product_name = e.target.value.trim().toLocaleLowerCase()}
-                                    } 
-        
-                                         } defaultValue={productData ? productData[0].product_name : ''}  className="form-control w-100" />
-                                </Grid>
-                                <Grid item xs={12} sm={12} md={12} className="px-3 mt-2">
-                                    <label>Product Description :</label><br />
-                                    <textarea  placeholder='Enter Product Description' onChange={(e) =>
-                                          {
-                                            if(e.target.value == ' '){
-                                                e.target.value = ''
-                                            }else{
-                                                AllProducts.current[index].product_description = e.target.value.trim()}
-                                        } 
-                                         
-                                         } defaultValue={productData ? productData[0].product_description : ''} className="form-control w-100" rows='3' />
-                                </Grid>
-                                <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
-                                    <label>OE Reference Number :</label><br />
-                                    <input required type='text' placeholder='Enter OE Reference Number' onChange={(e) =>
-                                          {
-                                            if(e.target.value == ' '){
-                                                e.target.value = ''
-                                            }else{
-                                                AllProducts.current[index].oe_reference_number = e.target.value.trim()}
-                                        } 
-                                         
-                                         } defaultValue={productData ? productData[0].oe_reference_number : ''}  className="form-control w-100" />
-                                </Grid>
-                                <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
-                                    <label>KE Part Number :</label><br />
-                                    <input required type='text' placeholder='Enter KE Part Number' onChange={(e) =>
-                                     {
-                                        if(e.target.value == ' '){
-                                            e.target.value = ''
-                                        }else{
-                                            AllProducts.current[index].ke_partNumber = e.target.value.trim()}
-                                    } 
-                                         
-                                         } defaultValue={productData ? productData[0].ke_partNumber : ''}  className="form-control w-100" />
-                                </Grid>
-                                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                    <label>Product MRP(₹) :</label><br />
-                                    <input required type='number' placeholder='Enter In Rupees' onChange={(e) =>
-                                     {
-                                        if(e.target.value == ' '){
-                                            e.target.value = ''
-                                        }else{
-                                            AllProducts.current[index].MRP = e.target.value.trim()}
-                                    } 
-                                         
-                                         } defaultValue={productData ? productData[0].MRP : ''}  className="form-control w-100" />
-                                </Grid>
-                                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                    <label>Select Segment :</label><br />
-                                    <Select
-                                        className="select-style"
-                                        fullWidth
-                                        required
-                                        defaultValue={productData ? productData[0].product_segment_aaray[0] : ''}
-                                        onChange={(e) => filterd(e.target.value)}
-                                    >
-                                        {segment.map((item, index) => (
-                                            <MenuItem
-                                                key={index}
-                                                value={item._id}
-                                            >
-                                                {item.vehicle_name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </Grid>
-                                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                    <label>Select Brand :</label><br />
-                                    <Select
-                                        className="select-style"
-                                        fullWidth
-                                        required
-                                        defaultValue={productData ? productData[0].product_brand_aaray[0] : ''}
-                                        onChange={(e) => filteredModel(e.target.value)}
-                                    >
-                                        {selectBrand.map((item, index) => (
-                                            <MenuItem
-                                                key={index}
-                                                value={item._id}
-                                            >
-                                                {item.brand_name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </Grid>
-                                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                    <label>Select Model :</label><br />
-                                    <Select
-                                        className="select-style"
-                                        fullWidth
-                                        required
-                                        defaultValue={productData ? productData[0].product_model_aaray[0] : ''}
-                                        onChange={addModelData}
-                                    >
-                                        {selectModel.map((item, index) => (
-                                            <MenuItem
-                                                key={index}
-                                                value={item._id}
-                                            >
-                                                {item.model_name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </Grid>
-                                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                    <label>Select Category :</label><br />
-                                    <Select
-                                        className="select-style"
-                                        fullWidth
-                                        required
-                                        defaultValue={productData ? productData[0].product_category_aaray[0] : ''}
-                                        onChange={(e) => AllProducts.current[index].product_category_aaray = [e.target.value]}
-                                    >
-                                        {category.map((item, index) => (
-                                            <MenuItem
-                                                key={index}
-                                                value={item._id}
-                                            >
-                                                {item.category_name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </Grid>
-                                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                    <label>Select Manufacturer :</label><br />
-
-
-                                    <Select
-                                        className="select-style"
-                                        fullWidth
-                                        required
-                                        defaultValue={productData ? productData[0].product_manufacture_aaray[0] : ''}
-                                        onChange={(e) => AllProducts.current[index].product_manufacture_aaray = [e.target.value]}
-                                    >
-                                        {manufacturer.map((res, index) => {
-                                            return (
-                                                <MenuItem
-                                                    value={res._id}
-                                                >
-                                                    {res.manufacturer_name}
-                                                </MenuItem>
-                                            )
-                                        })}
-
-                                    </Select>
-
-                                </Grid>
-                                <Grid item md={12} lg={12} sm={12} sx={12} className="px-3 mt-2">
-                                <label>Upload Excel File :</label><br />
-                                <input className='form-control' type='file'/>
-                                </Grid>
-
-                                <Grid item md={12} lg={12} sm={12} sx={12} className="px-3 mt-2">
-                         
-                                    <label>Add Product Images :</label><br />
-                                    
-                                    <div className='w-100 d-flex flex-wrap'>
-                                        {
-                                            imgURLs.map((item,index)=>
-                                            <div key={index} className=" mb-1 pe-1 relative box_style border">
-                                            <CancelIcon sx={{fontSize:'12px',color:'red'}} onClick={()=>{
-                                                let arr = [...imgURLs]
-                                                let fileArr = [...files]
-                                                fileArr.splice(index,1)
-                                                arr.splice(index, 1)
-                                                setimgURLs(arr)
-                                                setFiles(fileArr)
-                                            }} className="close-btn-position" />
-                                            <img className="img-style" src={item}/>
-                                        </div>)
-                                        }
-                                        <div className="box_style img-btn">
-                                            <div className="btn w-100">
-                                                <input type="file" multiple id="2actual-btn" hidden
-                                                   onChange={(e)=>imgPrev(Object.values(e.target.files))}
-                                                />
-                                                <label className="text-center text-gray" htmlFor="2actual-btn">
-                                                    <CloudUploadIcon /><br />
-                                                    <span>Upload</span>
-                                                </label>
-                                            </div>
-                                            </div>
-
-                                    </div>
-                                </Grid>
-
-
-                            </Grid>
-
-                        </Box >
-                    </Grid>
-                </Grid> : ''}
-        </>
-    )
+                  <div className="w-100 d-flex flex-wrap">
+                    {imgURLs.map((item, index) => (
+                      <div
+                        key={index}
+                        className=" mb-1 pe-1 relative box_style border"
+                      >
+                        <CancelIcon
+                          sx={{ fontSize: "12px", color: "red" }}
+                          onClick={() => {
+                            let arr = [...imgURLs];
+                            let fileArr = [...files];
+                            fileArr.splice(index, 1);
+                            arr.splice(index, 1);
+                            setimgURLs(arr);
+                            setFiles(fileArr);
+                          }}
+                          className="close-btn-position"
+                        />
+                        <img className="img-style" src={item} />
+                      </div>
+                    ))}
+                    <div className="box_style img-btn">
+                      <div className="btn w-100">
+                        <input
+                          type="file"
+                          multiple
+                          id="2actual-btn"
+                          hidden
+                          onChange={(e) =>
+                            imgPrev(Object.values(e.target.files))
+                          }
+                        />
+                        <label
+                          className="text-center text-gray"
+                          htmlFor="2actual-btn"
+                        >
+                          <CloudUploadIcon />
+                          <br />
+                          <span>Upload</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid>
+            </Box>
+          </Grid>
+        </Grid>
+      ) : (
+        ""
+      )}
+    </>
+  );
 }

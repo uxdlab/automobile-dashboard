@@ -28,7 +28,7 @@ export default function ProductListing() {
         type: "error",
     });
     const [currentPage, setCurrentPage] = React.useState(1);
-    const [countPerPage, setCountPerPage] = useState(5);
+    const [countPerPage, setCountPerPage] = useState(10);
     const [value, setValue] = React.useState("");
     const [fileData, setFileData] = useState({});
     const [rows, setRows] = useState([])
@@ -254,7 +254,7 @@ export default function ProductListing() {
                     </Table>
                     <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
                         <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
-                            <option>5</option>
+                            {/* <option>5</option> */}
                             <option>10</option>
                             <option>15</option>
                         </select>
