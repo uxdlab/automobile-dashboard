@@ -214,6 +214,7 @@ AllProducts.current[0].brand_name = brandName[0].brand_name
             console.log(url)
         })
         setimgURLs([...imgURLs, ...arr])
+        console.log(imgURLs)
     }
 
     const ExistNameCheck = (e) => {

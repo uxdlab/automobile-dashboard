@@ -885,10 +885,10 @@ export const ModelListing = () => {
                       {res.model_name}
                     </TableCell>
                     <TableCell className="text_cap text-center">
-                      {res.segment[0].vehicle_name}
+                      {res?.segment[0]?.vehicle_name}
                     </TableCell>
                     <TableCell className="text_cap text-center">
-                      {res.brand[0].brand_name}
+                      {res?.brand[0]?.brand_name}
                     </TableCell>
                     <TableCell className="text-center">
                       <Delete

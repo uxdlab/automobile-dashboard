@@ -1,4 +1,4 @@
-import { Backdrop, Box, Grid, MenuItem, Select } from "@mui/material";
+import { Backdrop, Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { apis } from "../../auth/api";
 import { CallMultipleApi } from "../../services/CallMultipleApi";
@@ -59,6 +59,7 @@ export default function Product({
       arr.push(url);
     });
     setimgURLs([...imgURLs, ...arr]);
+     console.log(imgURLs);
   };
 
   useEffect(() => {
@@ -205,89 +206,112 @@ export default function Product({
                     }}
                     defaultValue={productData ? productData[0].MRP : ""}
                     className="form-control w-100"
+                    style={{ height: "50px" }}
                   />
                 </Grid>
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                   <label>Select Segment :</label>
                   <br />
-                  <Select
-                    className="select-style"
-                    fullWidth
-                    required
-                    defaultValue={
-                      productData ? productData[0].product_segment_aaray[0] : ""
-                    }
-                    onChange={(e) => filterd(e.target.value)}
-                  >
-                    {segment.map((item, index) => (
-                      <MenuItem key={index} value={item._id}>
-                        {item.vehicle_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-multiple-name-label">
+                      Segment
+                    </InputLabel>
+                    <Select
+                      className="select-style1"
+                      fullWidth
+                      required
+                      defaultValue={
+                        productData
+                          ? productData[0].product_segment_aaray[0]
+                          : ""
+                      }
+                      onChange={(e) => filterd(e.target.value)}
+                      input={<OutlinedInput label="Name" />}
+                    >
+                      {segment.map((item, index) => (
+                        <MenuItem key={index} value={item._id}>
+                          {item.vehicle_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                   <label>Select Brand :</label>
                   <br />
-                  <Select
-                    className="select-style"
-                    fullWidth
-                    required
-                    defaultValue={
-                      productData ? productData[0].product_brand_aaray[0] : ""
-                    }
-                    onChange={(e) => filteredModel(e.target.value)}
-                  >
-                    {selectBrand.map((item, index) => (
-                      <MenuItem key={index} value={item._id}>
-                        {item.brand_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-multiple-name-label">Brand</InputLabel>
+                    <Select
+                      className="select-style1"
+                      fullWidth
+                      required
+                      defaultValue={
+                        productData ? productData[0].product_brand_aaray[0] : ""
+                      }
+                      onChange={(e) => filteredModel(e.target.value)}
+                      input={<OutlinedInput label="Name" />}
+                    >
+                      {selectBrand.map((item, index) => (
+                        <MenuItem key={index} value={item._id}>
+                          {item.brand_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                   <label>Select Model :</label>
                   <br />
-                  <Select
-                    className="select-style"
-                    fullWidth
-                    required
-                    defaultValue={
-                      productData ? productData[0].product_model_aaray[0] : ""
-                    }
-                    onChange={addModelData}
-                  >
-                    {selectModel.map((item, index) => (
-                      <MenuItem key={index} value={item._id}>
-                        {item.model_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-multiple-name-label">Model</InputLabel>
+                    <Select
+                      className="select-style1"
+                      fullWidth
+                      required
+                      defaultValue={
+                        productData ? productData[0].product_model_aaray[0] : ""
+                      }
+                      onChange={addModelData}
+                      input={<OutlinedInput label="Name" />}
+                    >
+                      {selectModel.map((item, index) => (
+                        <MenuItem key={index} value={item._id}>
+                          {item.model_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                   <label>Select Category :</label>
                   <br />
-                  <Select
-                    className="select-style"
-                    fullWidth
-                    required
-                    defaultValue={
-                      productData
-                        ? productData[0].product_category_aaray[0]
-                        : ""
-                    }
-                    onChange={(e) =>
-                      (AllProducts.current[index].product_category_aaray = [
-                        e.target.value,
-                      ])
-                    }
-                  >
-                    {category.map((item, index) => (
-                      <MenuItem key={index} value={item._id}>
-                        {item.category_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-multiple-name-label">
+                      Category
+                    </InputLabel>
+                    <Select
+                      className="select-style1"
+                      fullWidth
+                      required
+                      defaultValue={
+                        productData
+                          ? productData[0].product_category_aaray[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        (AllProducts.current[index].product_category_aaray = [
+                          e.target.value,
+                        ])
+                      }
+                      input={<OutlinedInput label="Name" />}
+                    >
+                      {category.map((item, index) => (
+                        <MenuItem key={index} value={item._id}>
+                          {item.category_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                   <label>Select Manufacturer :</label>
