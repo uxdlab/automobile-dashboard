@@ -90,20 +90,26 @@ export const SegmentListing = () => {
 //     data.filter((item)=>item.name.includes(e.target.value.toLocalLowerCase()))
 //   }
 
-  function handleSearchClick (name){
-    console.log(name.trim().toLowerCase());
-    if(serchValue === ""){
-        setCollection(allVehicles);   
-
-    }else{
-       console.log(collection);
-
-        const filterBySearch = collection.filter((item)=>{
-           return item.vehicle_name.includes(name.trim().toLocaleLowerCase()) ;
-        })
-       console.log(filterBySearch);
-        setCollection(filterBySearch);
+  function handleSearchClick(search) {
+    console.log(search)
+    if(search.length ===0){
+      setCollection(allVehicles.slice(0, countPerPage));
     }
+     const filterBySearch = allVehicles.filter((item) => {
+       return item.vehicle_name.includes(search.trim().toLocaleLowerCase());
+     });
+     setCollection(filterBySearch);
+    // if (serchValue === "") {
+    //   setCollection(allVehicles);
+    // } else {
+    //   console.log(collection);
+
+    //   const filterBySearch = collection.filter((item) => {
+    //     return item.vehicle_name.includes(name.trim().toLocaleLowerCase());
+    //   });
+    //   console.log(filterBySearch);
+    //   setCollection(filterBySearch);
+    // }
   }
   async function getAllVehicles() {
     setLoader(true);

@@ -80,16 +80,25 @@ export const BrandListing = () => {
   );
   const [searchValue, setSearchValue] = useState("")
 
-  function handleSearchClick (name){
-    //  console.log(name.trim().toLowerCase());
-    if(searchValue ===""){
-        setCollection(allCompanies);
-    }else{
-        const filterBySearch = collection.filter((item)=>{
-            return item.brand_name.includes(name.trim().toLocaleLowerCase());
-        })
-        setCollection(filterBySearch)
+  function handleSearchClick (search){
+
+    if(search.length ===0){
+      setCollection(allCompanies.slice(0, countPerPage));
     }
+     const filterBySearch = allCompanies.filter((item) => {
+       return item.brand_name.includes(search.trim().toLocaleLowerCase());
+     });
+     setCollection(filterBySearch)
+
+   
+    // if(searchValue ===""){
+    //     setCollection(allCompanies);
+    // }else{
+    //     const filterBySearch = collection.filter((item)=>{
+    //         return item.brand_name.includes(name.trim().toLocaleLowerCase());
+    //     })
+    //     setCollection(filterBySearch)
+    // }
   }
 
   React.useEffect(() => {
