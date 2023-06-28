@@ -37,7 +37,15 @@ export default function ProductListing() {
         (allProduct.slice(0, countPerPage))
     );
 
-
+ function handleSearchClick(search) {
+    if(search.length ===0){
+        setCollection(allProduct.slice(0, countPerPage));
+    }
+    const filterBySearch = allProduct.filter((item)=>{
+        return item.product_name.includes(search.trim().toLocaleLowerCase());
+    })
+    setCollection(filterBySearch)
+ } 
     const readUploadFile = (e) => {
         if (e.target !== undefined) {
             e.preventDefault();
@@ -166,183 +174,244 @@ export default function ProductListing() {
     }
 
     return (
-
-
-        <>
-
-            <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
-            <Dialog
-                open={deleteModel}
-                maxWidth={'sm'}
-                fullWidth={true}
-            >
-
-                <Box p={3}>
-                    <Box>Are you sure you want to delete?</Box>
-                    <Box align='right'>
-                        <Button className='cancel_btn me-3' onClick={() => setDeleteModel(false)}>Cancel</Button>
-                        <Button variant="contained" className="custom-btn" onClick={deleteProduct}>Delete</Button>
-                    </Box>
-                </Box>
-
-            </Dialog>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={loader}
-            >
-                <Box>
-                    <Triangle
-                        height="80"
-                        width="80"
-                        color="black"
-                        ariaLabel="triangle-loading"
-                        wrapperStyle={{}}
-                        wrapperClassName=""
-                        visible={loader}
-
-                    />
-                </Box>
-            </Backdrop>
-
-            <h1 className="mt-2 fs-2 mx-3">Products</h1>
-
-            <Box align='right' className='px-3 pb-3'>
-
-
-                <Button className="btn_primary" style={{ marginRight: "10px" }} variant="contained" onClick={() => setOpen1(true)}>Import Products</Button>
-
-                <Link style={{ textDecoration: 'none' }} to='/addProduct'>
-                    <Button className="btn_primary" variant="contained">Add Product</Button>
-                </Link>
-
+      <>
+        <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
+        <Dialog open={deleteModel} maxWidth={"sm"} fullWidth={true}>
+          <Box p={3}>
+            <Box>Are you sure you want to delete?</Box>
+            <Box align="right">
+              <Button
+                className="cancel_btn me-3"
+                onClick={() => setDeleteModel(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                className="custom-btn"
+                onClick={deleteProduct}
+              >
+                Delete
+              </Button>
             </Box>
-            <div className="px-3">
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                {/* <TableCell><b>Sno.</b></TableCell> */}
-                                <TableCell><b>Product Name</b></TableCell>
-                                <TableCell><b>Product OE Reference Number</b></TableCell>
-                                <TableCell><b>Product KE Part Number</b></TableCell>
-                                <TableCell><b>Product MRP</b></TableCell>
-                                {/* <TableCell><b>Product Description</b></TableCell> */}
-                                <TableCell><b>Action</b></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {collection.map((res, index) => {
-                                return (
-                                    <TableRow key={index}>
-                                        {/* <TableCell>{index + 1}</TableCell> */}
-                                        <TableCell className='text_cap'>{res.product_name}</TableCell>
-                                        <TableCell>{res.oe_reference_number}</TableCell>
-                                        <TableCell>{res.ke_partNumber}</TableCell>
-                                        <TableCell>{res.MRP}</TableCell>
-                                        {/* <TableCell>{res.sparePart_description}</TableCell> */}
-                                        <TableCell>
-                                            <Delete onClick={() => {
-                                                setDeletedComp({ id: res._id, images: res.image })
-                                                setDeleteModel(true)
-                                            }} />
-                                            <Edit onClick={() => navigate(`/updateProduct/${res._id}`)} />
-                                        </TableCell>
-                                    </TableRow>
-                                )
-                            })}
-                        </TableBody>
-                    </Table>
-                    <Box sx={{ m: 1 }} className='d-flex justify-content-end'>
-                        <select className="me-2" onChange={(e) => setCountPerPage(e.target.value * 1)}>
-                            {/* <option>5</option> */}
-                            <option>10</option>
-                            <option>15</option>
-                        </select>
-                        <Pagination
-                            pageSize={countPerPage}
-                            onChange={updatePage}
-                            current={currentPage}
-                            total={allProduct.length}
-                            style={{ color: 'green' }}
+          </Box>
+        </Dialog>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loader}
+        >
+          <Box>
+            <Triangle
+              height="80"
+              width="80"
+              color="black"
+              ariaLabel="triangle-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={loader}
+            />
+          </Box>
+        </Backdrop>
+
+        <h1 className="mt-2 fs-2 mx-3">Products</h1>
+        <div className="d-flex justify-content-between">
+          <div style={{marginLeft:"18px"}}>
+            <input
+              className="w-250 form-control ml-4"
+              type="search"
+              placeholder="Search"
+              style={{width:"300px"}}
+              onChange={(e)=>{
+                handleSearchClick(e.target.value)
+              }}
+            />
+          </div>
+          <Box align="right" className="px-3 pb-3">
+            <Button
+              className="btn_primary"
+              style={{ marginRight: "10px" }}
+              variant="contained"
+              onClick={() => setOpen1(true)}
+            >
+              Import Products
+            </Button>
+
+            <Link style={{ textDecoration: "none" }} to="/addProduct">
+              <Button className="btn_primary" variant="contained">
+                Add Product
+              </Button>
+            </Link>
+          </Box>
+        </div>
+
+        <div className="px-3">
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {/* <TableCell><b>Sno.</b></TableCell> */}
+                  <TableCell>
+                    <b>Product Name</b>
+                  </TableCell>
+                  <TableCell>
+                    <b>Product OE Reference Number</b>
+                  </TableCell>
+                  <TableCell>
+                    <b>Product KE Part Number</b>
+                  </TableCell>
+                  <TableCell>
+                    <b>Product MRP</b>
+                  </TableCell>
+                  {/* <TableCell><b>Product Description</b></TableCell> */}
+                  <TableCell>
+                    <b>Action</b>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {collection.map((res, index) => {
+                  return (
+                    <TableRow key={index}>
+                      {/* <TableCell>{index + 1}</TableCell> */}
+                      <TableCell className="text_cap">
+                        {res.product_name}
+                      </TableCell>
+                      <TableCell>{res.oe_reference_number}</TableCell>
+                      <TableCell>{res.ke_partNumber}</TableCell>
+                      <TableCell>{res.MRP}</TableCell>
+                      {/* <TableCell>{res.sparePart_description}</TableCell> */}
+                      <TableCell>
+                        <Delete
+                          onClick={() => {
+                            setDeletedComp({ id: res._id, images: res.image });
+                            setDeleteModel(true);
+                          }}
                         />
-                    </Box>
-                </TableContainer>
-                <Dialog
-                    open={open1}
-                    maxWidth={'xs'}
-                    fullWidth={true}
-
-                >
-                    {isLoading ? (<><CircularProgress /></>) : (<>
-
-                        <Box py={2} px={1} className='over-flow-hide-x'>
-                            <h5 className="px-3">Upload Excel File(.xlsx)</h5>
-                            <hr />
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        {/* <div className="box_style img-btn border"> */}
-                                        <div className="btn w-100">
-                                            {/* <input type="file" id="2actual-btn" hidden
+                        <Edit
+                          onClick={() => navigate(`/updateProduct/${res._id}`)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+            <Box sx={{ m: 1 }} className="d-flex justify-content-end">
+              <select
+                className="me-2"
+                onChange={(e) => setCountPerPage(e.target.value * 1)}
+              >
+                {/* <option>5</option> */}
+                <option>10</option>
+                <option>15</option>
+              </select>
+              <Pagination
+                pageSize={countPerPage}
+                onChange={updatePage}
+                current={currentPage}
+                total={allProduct.length}
+                style={{ color: "green" }}
+              />
+            </Box>
+          </TableContainer>
+          <Dialog open={open1} maxWidth={"xs"} fullWidth={true}>
+            {isLoading ? (
+              <>
+                <CircularProgress />
+              </>
+            ) : (
+              <>
+                <Box py={2} px={1} className="over-flow-hide-x">
+                  <h5 className="px-3">Upload Excel File(.xlsx)</h5>
+                  <hr />
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div className="col-md-12">
+                        {/* <div className="box_style img-btn border"> */}
+                        <div className="btn w-100">
+                          {/* <input type="file" id="2actual-btn" hidden
                                                 
                                             />
                                             <label className="text-center text-gray" htmlFor="2actual-btn">
                                                 <CloudUploadIcon /><br />
                                                 <span>Upload</span>
                                             </label> */}
-                                            <Button variant="contained" component="label">
-                                                Upload
-                                                <input hidden accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" type="file" onChange={(e) => setFileData(e)} />
-                                            </Button>
-                                        </div>
-                                        {/* </div> */}
-                                        <br />
-                                        {rows.length !== 0 ? (<>
-                                            <TableContainer component={Paper}>
-                                                <Table sx={{ minWidth: 250 }} size="small" aria-label="a dense table">
-                                                    <TableHead>
-                                                        <TableRow>
-                                                            <TableCell>Row</TableCell>
-                                                            <TableCell >ERROR</TableCell>
-
-
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        {rows.map((row) => (
-                                                            <TableRow
-                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                            >
-                                                                <TableCell >
-                                                                    {row.row}
-                                                                </TableCell>
-                                                                <TableCell >{row.error.toString()}</TableCell>
-
-                                                            </TableRow>
-                                                        ))}
-                                                    </TableBody>
-                                                </Table>
-                                            </TableContainer>
-                                        </>) : (<></>)}
-
-                                    </div>
-                                    <Box align='right' className='mt-3'>
-                                        <span className='btn cancel_btn me-3 py-1 px-3' onClick={() => {
-                                            setOpen1(false); setRows([]); setFileData({})
-                                        }}>Cancel</span>
-                                        <button className="btn custom-btn py-1 px-3" onClick={() => { readUploadFile(fileData); }}>Submit</button>
-                                    </Box>
-                                </div>
-                            </div>
-                        </Box>
-                    </>
-                    )}
-                </Dialog>
-            </div>
-
-
-        </>
-
-
-    )
+                          <Button variant="contained" component="label">
+                            Upload
+                            <input
+                              hidden
+                              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                              type="file"
+                              onChange={(e) => setFileData(e)}
+                            />
+                          </Button>
+                        </div>
+                        {/* </div> */}
+                        <br />
+                        {rows.length !== 0 ? (
+                          <>
+                            <TableContainer component={Paper}>
+                              <Table
+                                sx={{ minWidth: 250 }}
+                                size="small"
+                                aria-label="a dense table"
+                              >
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>Row</TableCell>
+                                    <TableCell>ERROR</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {rows.map((row) => (
+                                    <TableRow
+                                      sx={{
+                                        "&:last-child td, &:last-child th": {
+                                          border: 0,
+                                        },
+                                      }}
+                                    >
+                                      <TableCell>{row.row}</TableCell>
+                                      <TableCell>
+                                        {row.error.toString()}
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                      <Box align="right" className="mt-3">
+                        <span
+                          className="btn cancel_btn me-3 py-1 px-3"
+                          onClick={() => {
+                            setOpen1(false);
+                            setRows([]);
+                            setFileData({});
+                          }}
+                        >
+                          Cancel
+                        </span>
+                        <button
+                          className="btn custom-btn py-1 px-3"
+                          onClick={() => {
+                            readUploadFile(fileData);
+                          }}
+                        >
+                          Submit
+                        </button>
+                      </Box>
+                    </div>
+                  </div>
+                </Box>
+              </>
+            )}
+          </Dialog>
+        </div>
+      </>
+    );
 }

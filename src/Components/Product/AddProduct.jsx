@@ -166,12 +166,12 @@ export default function AddProduct() {
                     })}
 
                     <Grid container className='d-flex justify-content-center pb-5'>
-                        <Grid item xl={5} md={6} sm={12} sx={12}>
+                        {/* <Grid item xl={5} md={6} sm={12} sx={12}>
                             <Box align='right' mt={6}>
                                 <Button className="cancel_btn me-3" onClick={() => navigate('/product')}>Cancel</Button>
                                 <Button type='submit' className='custom-btn' variant="contained">Save</Button>
                             </Box>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </form>
 

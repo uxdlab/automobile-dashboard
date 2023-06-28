@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { editItem, getAllItem, getItem } from '../../services/Item'
-import { Backdrop, Box, Button, Grid, MenuItem, Select, Typography } from '@mui/material'
+import { Backdrop, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material'
 import { Triangle } from 'react-loader-spinner'
 import { CallMultipleApi } from '../../services/CallMultipleApi'
 import { apis } from '../../auth/api'
@@ -290,214 +290,472 @@ AllProducts.current[0].brand_name = brandName[0].brand_name
                 <Box>
                     <form onSubmit={ExistNameCheck}>
                         {AllProducts.current.map((res, index) => {
-                            return <Grid container className='d-flex justify-content-center '>
-                                <Grid item xl={5} md={6} sm={12} sx={12} className='border pb-3'>
-                                    <Box>
-                                        <Grid container mt={2}>
-                                            <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
-                                                <label>Product Name :</label><br />
-                                                <input required type='text' placeholder='Enter Product Name' onChange={(e) =>
-                                                      {
-                                                        if(e.target.value == ' '){
-                                                            e.target.value = ''
-                                                        }else{
-                                                            AllProducts.current[index].product_name = e.target.value.trim().toLocaleLowerCase()}
-                                                    } 
-                                                     } defaultValue={productData ? productData[0].product_name : ''} className="form-control w-100" />
-                                            </Grid>
-                                            <Grid item xs={12} sm={12} md={12} className="px-3 mt-2">
-                                                <label>Product Description :</label><br />
-                                                <textarea placeholder='Enter Product Description' onChange={(e) => 
-                                                    {
-                                                        if(e.target.value == ' '){
-                                                            e.target.value = ''
-                                                        }else{
-                                                            AllProducts.current[index].product_description = e.target.value.trim()}
-                                                    } 
-                                                    } defaultValue={productData ? productData[0].product_description : ''} className="form-control w-100" rows='3' />
-                                            </Grid>
-                                            <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
-                                                <label>OE Reference Number :</label><br />
-                                                <input required type='text' placeholder='Enter OE Reference Number' onChange={(e) =>
-                                                    {
-                                                        if(e.target.value == ' '){
-                                                            e.target.value = ''
-                                                        }else{
-                                                            AllProducts.current[index].oe_reference_number = e.target.value.trim()}
-                                                    } 
-                                                     } defaultValue={productData ? productData[0].oe_reference_number : ''} className="form-control w-100" />
-                                            </Grid>
-                                            <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
-                                                <label>KE Part Number :</label><br />
-                                                <input required type='text' placeholder='Enter KE Part Number' onChange={(e) =>
-                                                    {
-                                                        if(e.target.value == ' '){
-                                                            e.target.value = ''
-                                                        }else{
-                                                            AllProducts.current[index].ke_partNumber = e.target.value.trim()}
-                                                    } 
-                                                     } defaultValue={productData ? productData[0].ke_partNumber : ''} className="form-control w-100" />
-                                            </Grid>
-                                            <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                                <label>Product MRP(₹) :</label><br />
-                                                <input required type='number' placeholder='Enter In Rupees' onChange={(e) =>
-                                                    {
-                                                        if(e.target.value == ' '){
-                                                            e.target.value = ''
-                                                        }else{
-                                                            AllProducts.current[index].MRP = e.target.value.trim()}
-                                                    } 
-                                                     } defaultValue={productData ? productData[0].MRP : ''} className="form-control w-100" />
-                                            </Grid>
-                                            <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                                <label>Select Segment :</label><br />
-                                                <Select
-                                                    className="select-style"
-                                                    fullWidth
-                                                    required
-                                                    defaultValue={productData ? productData[0].product_segment_aaray[0] : ''}
-                                                    onChange={(e) => filterd(e.target.value)}
-                                                >
-                                                    {segment.map((item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item._id}
-                                                        >
-                                                            {item.vehicle_name}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </Grid>
-                                            <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                                <label>Select Brand :</label><br />
-                                                <Select
-                                                    className="select-style"
-                                                    fullWidth
-                                                    required
-                                                    defaultValue={productData ? productData[0].product_brand_aaray[0] : ''}
-                                                    onChange={(e) => filteredModel(e.target.value)}
-                                                >
-                                                    {selectBrand.map((item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item._id}
-                                                        >
-                                                            {item.brand_name}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </Grid>
-                                            <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                                <label>Select Model :</label><br />
-                                                <Select
-                                                    className="select-style"
-                                                    fullWidth
-                                                    required
-                                                    defaultValue={productData ? productData[0].product_model_aaray[0] : ''}
-                                                    onChange={editModelData}
-                                                >
-                                                    {selectModel.map((item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item._id}
-                                                        >
-                                                            {item.model_name}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </Grid>
-                                            <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                                <label>Select Category :</label><br />
-                                                <Select
-                                                    className="select-style"
-                                                    fullWidth
-                                                    required
-                                                    defaultValue={productData ? productData[0].product_category_aaray[0] : ''}
-                                                    onChange={(e) => AllProducts.current[0].product_category_aaray = [e.target.value]}
-                                                >
-                                                    {category.map((item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item._id}
-                                                        >
-                                                            {item.category_name}
-                                                        </MenuItem>
-                                                    ))}
-                                                </Select>
-                                            </Grid>
-                                            <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                                                <label>Select Manufacturer :</label><br />
+                            return (
+                              <Grid
+                                container
+                                className="d-flex justify-content-center "
+                              >
+                                <Grid
+                                  item
+                                  xl={5}
+                                  md={6}
+                                  sm={12}
+                                  sx={12}
+                                  className="border pb-3"
+                                >
+                                  <Box>
+                                    <Grid container mt={2}>
+                                      <Grid
+                                        item
+                                        md={12}
+                                        sm={12}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Product Name :</label>
+                                        <br />
+                                        <input
+                                          required
+                                          type="text"
+                                          placeholder="Enter Product Name"
+                                          onChange={(e) => {
+                                            if (e.target.value == " ") {
+                                              e.target.value = "";
+                                            } else {
+                                              AllProducts.current[
+                                                index
+                                              ].product_name = e.target.value
+                                                .trim()
+                                                .toLocaleLowerCase();
+                                            }
+                                          }}
+                                          defaultValue={
+                                            productData
+                                              ? productData[0].product_name
+                                              : ""
+                                          }
+                                          className="form-control w-100"
+                                        />
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        xs={12}
+                                        sm={12}
+                                        md={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Product Description :</label>
+                                        <br />
+                                        <textarea
+                                          placeholder="Enter Product Description"
+                                          onChange={(e) => {
+                                            if (e.target.value == " ") {
+                                              e.target.value = "";
+                                            } else {
+                                              AllProducts.current[
+                                                index
+                                              ].product_description = e.target.value.trim();
+                                            }
+                                          }}
+                                          defaultValue={
+                                            productData
+                                              ? productData[0]
+                                                  .product_description
+                                              : ""
+                                          }
+                                          className="form-control w-100"
+                                          rows="3"
+                                        />
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        md={12}
+                                        sm={12}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>OE Reference Number :</label>
+                                        <br />
+                                        <input
+                                          required
+                                          type="text"
+                                          placeholder="Enter OE Reference Number"
+                                          onChange={(e) => {
+                                            if (e.target.value == " ") {
+                                              e.target.value = "";
+                                            } else {
+                                              AllProducts.current[
+                                                index
+                                              ].oe_reference_number = e.target.value.trim();
+                                            }
+                                          }}
+                                          defaultValue={
+                                            productData
+                                              ? productData[0]
+                                                  .oe_reference_number
+                                              : ""
+                                          }
+                                          className="form-control w-100"
+                                        />
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        md={12}
+                                        sm={12}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>KE Part Number :</label>
+                                        <br />
+                                        <input
+                                          required
+                                          type="text"
+                                          placeholder="Enter KE Part Number"
+                                          onChange={(e) => {
+                                            if (e.target.value == " ") {
+                                              e.target.value = "";
+                                            } else {
+                                              AllProducts.current[
+                                                index
+                                              ].ke_partNumber = e.target.value.trim();
+                                            }
+                                          }}
+                                          defaultValue={
+                                            productData
+                                              ? productData[0].ke_partNumber
+                                              : ""
+                                          }
+                                          className="form-control w-100"
+                                        />
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        md={6}
+                                        sm={6}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Product MRP(₹) :</label>
+                                        <br />
+                                        <input
+                                          required
+                                          type="number"
+                                          placeholder="Enter In Rupees"
+                                          onChange={(e) => {
+                                            if (e.target.value == " ") {
+                                              e.target.value = "";
+                                            } else {
+                                              AllProducts.current[
+                                                index
+                                              ].MRP = e.target.value.trim();
+                                            }
+                                          }}
+                                          defaultValue={
+                                            productData
+                                              ? productData[0].MRP
+                                              : ""
+                                          }
+                                          className="form-control w-100"
+                                          style={{ height: "50px" }}
+                                        />
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        md={6}
+                                        sm={6}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Select Segment :</label>
+                                        <br />
+                                        <FormControl fullWidth>
+                                          <InputLabel id="demo-multiple-name-label">
+                                            Segment
+                                          </InputLabel>
+                                          <Select
+                                            className="select-style1"
+                                            fullWidth
+                                            required
+                                            label="Outlined"
+                                            variant="outlined"
+                                            defaultValue={
+                                              productData
+                                                ? productData[0]
+                                                    .product_segment_aaray[0]
+                                                : ""
+                                            }
+                                            onChange={(e) =>
+                                              filterd(e.target.value)
+                                            }
+                                          >
+                                            {segment.map((item, index) => (
+                                              <MenuItem
+                                                key={index}
+                                                value={item._id}
+                                              >
+                                                {item.vehicle_name}
+                                              </MenuItem>
+                                            ))}
+                                          </Select>
+                                        </FormControl>
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        md={6}
+                                        sm={6}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Select Brand :</label>
+                                        <br />
+                                        <FormControl fullWidth>
+                                          <InputLabel id="demo-multiple-name-label">
+                                            Brand
+                                          </InputLabel>
+                                          <Select
+                                            className="select-style1"
+                                            fullWidth
+                                            required
+                                            label="Outlined"
+                                            variant="outlined"
+                                            defaultValue={
+                                              productData
+                                                ? productData[0]
+                                                    .product_brand_aaray[0]
+                                                : ""
+                                            }
+                                            onChange={(e) =>
+                                              filteredModel(e.target.value)
+                                            }
+                                          >
+                                            {selectBrand.map((item, index) => (
+                                              <MenuItem
+                                                key={index}
+                                                value={item._id}
+                                              >
+                                                {item.brand_name}
+                                              </MenuItem>
+                                            ))}
+                                          </Select>
+                                        </FormControl>
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        md={6}
+                                        sm={6}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Select Model :</label>
+                                        <br />
+                                        <FormControl fullWidth>
+                                          <InputLabel id="demo-multiple-name-label">
+                                            Model
+                                          </InputLabel>
+                                          <Select
+                                            className="select-style1"
+                                            fullWidth
+                                            required
+                                            defaultValue={
+                                              productData
+                                                ? productData[0]
+                                                    .product_model_aaray[0]
+                                                : ""
+                                            }
+                                            onChange={editModelData}
+                                            label="Outlined"
+                                            variant="outlined"
+                                          >
+                                            {selectModel.map((item, index) => (
+                                              <MenuItem
+                                                key={index}
+                                                value={item._id}
+                                              >
+                                                {item.model_name}
+                                              </MenuItem>
+                                            ))}
+                                          </Select>
+                                        </FormControl>
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        md={6}
+                                        sm={6}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Select Category :</label>
+                                        <br />
+                                        <FormControl fullWidth>
+                                          <InputLabel id="demo-multiple-name-label">
+                                            Category
+                                          </InputLabel>
+                                          <Select
+                                            className="select-style1"
+                                            fullWidth
+                                            required
+                                            label="Outlined"
+                                            variant="outlined"
+                                            defaultValue={
+                                              productData
+                                                ? productData[0]
+                                                    .product_category_aaray[0]
+                                                : ""
+                                            }
+                                            onChange={(e) =>
+                                              (AllProducts.current[0].product_category_aaray = [
+                                                e.target.value,
+                                              ])
+                                            }
+                                          >
+                                            {category.map((item, index) => (
+                                              <MenuItem
+                                                key={index}
+                                                value={item._id}
+                                              >
+                                                {item.category_name}
+                                              </MenuItem>
+                                            ))}
+                                          </Select>
+                                        </FormControl>
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        md={6}
+                                        sm={6}
+                                        xs={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Select Manufacturer :</label>
+                                        <br />
+                                        <FormControl fullWidth>
+                                          <InputLabel id="demo-multiple-name-label">
+                                            Manufacturer
+                                          </InputLabel>
+                                          <Select
+                                            className="select-style1"
+                                            fullWidth
+                                            required
+                                            label="Outlined"
+                                            variant="outlined"
+                                            defaultValue={
+                                              productData
+                                                ? productData[0]
+                                                    .product_manufacture_aaray[0]
+                                                : ""
+                                            }
+                                            onChange={(e) =>
+                                              (AllProducts.current[0].product_manufacture_aaray = [
+                                                e.target.value,
+                                              ])
+                                            }
+                                          >
+                                            {manufacturer.map((res, index) => {
+                                              return (
+                                                <MenuItem value={res._id}>
+                                                  {res.manufacturer_name}
+                                                </MenuItem>
+                                              );
+                                            })}
+                                          </Select>
+                                        </FormControl>
+                                      </Grid>
 
+                                      <Grid
+                                        item
+                                        md={12}
+                                        lg={12}
+                                        sm={12}
+                                        sx={12}
+                                        className="px-3 mt-2"
+                                      >
+                                        <label>Add Product Images :</label>
+                                        <br />
 
-                                                <Select
-                                                    className="select-style"
-                                                    fullWidth
-                                                    required
-                                                    defaultValue={productData ? productData[0].product_manufacture_aaray[0] : ''}
-                                                    onChange={(e) => AllProducts.current[0].product_manufacture_aaray = [e.target.value]}
-                                                >
-                                                    {manufacturer.map((res, index) => {
-                                                        return (
-                                                            <MenuItem
-                                                                value={res._id}
-                                                            >
-                                                                {res.manufacturer_name}
-                                                            </MenuItem>
-                                                        )
-                                                    })}
-
-                                                </Select>
-
-                                            </Grid>
-
-                                            <Grid item md={12} lg={12} sm={12} sx={12} className="px-3 mt-2">
-
-                                                <label>Add Product Images :</label><br />
-
-                                                <div className='w-100 d-flex flex-wrap'>
-                                                    {
-                                                        checkURL.map((item, index) =>
-                                                            <div key={index} className=" mb-1 pe-1 relative" style={{ width: '25%' }}>
-                                                                <CancelIcon sx={{ fontSize: '12px', color: 'red' }} onClick={() => {
-                                                                    let arr = [...checkURL]
-                                                                    let del = arr.splice(index, 1)
-                                                                    setCheckURL(arr)
-                                                                    setNewImgURL(del)
-                                                                }} className="close-btn-position" />
-                                                                <img className="img-style" src={item} />
-                                                            </div>)
-                                                    }
-                                                    {
-                                                        imgURLs.map((item, index) =>
-                                                            <div key={index} className=" mb-1 pe-1 relative box_style border" >
-                                                                <CancelIcon sx={{ fontSize: '12px', color: 'red' }} onClick={() => {
-                                                                    let arr = [...imgURLs]
-                                                                    arr.splice(index, 1)
-                                                                    setimgURLs(arr)
-                                                                }} className="close-btn-position" />
-                                                                <img className="img-style" src={item} /></div>)
-                                                    }
-                                                    <div className="box_style img-btn">
-                                                        <div className="btn w-100">
-                                                            <input type="file" multiple id="2actual-btn" hidden
-                                                                onChange={(e) => imgPrev(Object.values(e.target.files))}
-                                                            />
-                                                            <label className="text-center text-gray" htmlFor="2actual-btn">
-                                                                <CloudUploadIcon /><br />
-                                                                <span>Upload</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </Grid>
-
-
-                                        </Grid>
-
-                                    </Box >
+                                        <div className="w-100 d-flex flex-wrap">
+                                          {checkURL.map((item, index) => (
+                                            <div
+                                              key={index}
+                                              className=" mb-1 pe-1 relative"
+                                              style={{ width: "25%" }}
+                                            >
+                                              <CancelIcon
+                                                sx={{
+                                                  fontSize: "12px",
+                                                  color: "red",
+                                                }}
+                                                onClick={() => {
+                                                  let arr = [...checkURL];
+                                                  let del = arr.splice(
+                                                    index,
+                                                    1
+                                                  );
+                                                  setCheckURL(arr);
+                                                  setNewImgURL(del);
+                                                }}
+                                                className="close-btn-position"
+                                              />
+                                              <img
+                                                className="img-style"
+                                                src={item}
+                                              />
+                                            </div>
+                                          ))}
+                                          {imgURLs.map((item, index) => (
+                                            <div
+                                              key={index}
+                                              className=" mb-1 pe-1 relative box_style border"
+                                            >
+                                              <CancelIcon
+                                                sx={{
+                                                  fontSize: "12px",
+                                                  color: "red",
+                                                }}
+                                                onClick={() => {
+                                                  let arr = [...imgURLs];
+                                                  arr.splice(index, 1);
+                                                  setimgURLs(arr);
+                                                }}
+                                                className="close-btn-position"
+                                              />
+                                              <img
+                                                className="img-style"
+                                                src={item}
+                                              />
+                                            </div>
+                                          ))}
+                                          <div className="box_style img-btn">
+                                            <div className="btn w-100">
+                                              <input
+                                                type="file"
+                                                multiple
+                                                id="2actual-btn"
+                                                hidden
+                                                onChange={(e) =>
+                                                  imgPrev(
+                                                    Object.values(
+                                                      e.target.files
+                                                    )
+                                                  )
+                                                }
+                                              />
+                                              <label
+                                                className="text-center text-gray"
+                                                htmlFor="2actual-btn"
+                                              >
+                                                <CloudUploadIcon />
+                                                <br />
+                                                <span>Upload</span>
+                                              </label>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </Grid>
+                                    </Grid>
+                                  </Box>
                                 </Grid>
-                            </Grid>
+                              </Grid>
+                            );
                         })}
                         <Grid container>
                             <Grid item xl={7} md={9} sm={12} sx={12}>

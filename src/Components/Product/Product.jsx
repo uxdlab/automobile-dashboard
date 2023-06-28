@@ -1,10 +1,11 @@
-import { Backdrop, Box, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Backdrop, Box, Button, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { apis } from "../../auth/api";
 import { CallMultipleApi } from "../../services/CallMultipleApi";
 import { Triangle } from "react-loader-spinner";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { useNavigate } from "react-router";
 
 export default function Product({
   AllProducts,
@@ -23,6 +24,7 @@ export default function Product({
   const [manufacturer, setManufacturer] = useState([]);
 
   const [imgURLs, setimgURLs] = useState([]);
+   const navigate = useNavigate();
 
   function filterd(fil) {
     let singleSegment = segment.filter((item) => item._id === fil);
@@ -226,7 +228,8 @@ export default function Product({
                           : ""
                       }
                       onChange={(e) => filterd(e.target.value)}
-                      input={<OutlinedInput label="Name" />}
+                      label="Outlined"
+                      variant="outlined"
                     >
                       {segment.map((item, index) => (
                         <MenuItem key={index} value={item._id}>
@@ -303,7 +306,8 @@ export default function Product({
                           e.target.value,
                         ])
                       }
-                      input={<OutlinedInput label="Name" />}
+                      label="Outlined"
+                      variant="outlined"
                     >
                       {category.map((item, index) => (
                         <MenuItem key={index} value={item._id}>
@@ -316,32 +320,38 @@ export default function Product({
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
                   <label>Select Manufacturer :</label>
                   <br />
-
-                  <Select
-                    className="select-style"
-                    fullWidth
-                    required
-                    defaultValue={
-                      productData
-                        ? productData[0].product_manufacture_aaray[0]
-                        : ""
-                    }
-                    onChange={(e) =>
-                      (AllProducts.current[index].product_manufacture_aaray = [
-                        e.target.value,
-                      ])
-                    }
-                  >
-                    {manufacturer.map((res, index) => {
-                      return (
-                        <MenuItem value={res._id}>
-                          {res.manufacturer_name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-multiple-name-label">
+                      Manufacturer
+                    </InputLabel>
+                    <Select
+                      className="select-style1"
+                      fullWidth
+                      required
+                      defaultValue={
+                        productData
+                          ? productData[0].product_manufacture_aaray[0]
+                          : ""
+                      }
+                      onChange={(e) =>
+                        (AllProducts.current[
+                          index
+                        ].product_manufacture_aaray = [e.target.value])
+                      }
+                      label="Outlined"
+                      variant="outlined"
+                    >
+                      {manufacturer.map((res, index) => {
+                        return (
+                          <MenuItem value={res._id}>
+                            {res.manufacturer_name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
                 </Grid>
-                <Grid
+                {/* <Grid
                   item
                   md={12}
                   lg={12}
@@ -352,7 +362,7 @@ export default function Product({
                   <label>Upload Excel File :</label>
                   <br />
                   <input className="form-control" type="file" />
-                </Grid>
+                </Grid> */}
 
                 <Grid
                   item
@@ -408,6 +418,23 @@ export default function Product({
                       </div>
                     </div>
                   </div>
+                </Grid>
+                <Grid item xl={5} md={6} sm={12} sx={12}>
+                  <Box align="right" mt={6}>
+                    <Button
+                      className="cancel_btn me-3"
+                      onClick={() => navigate("/product")}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="custom-btn"
+                      variant="contained"
+                    >
+                      Save
+                    </Button>
+                  </Box>
                 </Grid>
               </Grid>
             </Box>
