@@ -43,12 +43,15 @@ export default function UpdateProduct() {
   const [model, setModel] = useState([]);
   const [selectBrand, setSelectBrand] = useState([]);
   const [selectModel, setSelectModel] = useState([]);
-  const [useValidation, setUseValidation] = useState("");
+  const [useValidation, setUseValidation] = useState();
   const [modelValidation, setModelValidation] = useState("");
+  const [brandError,setBrandError] = useState("")
+  const [modelError, setModelError]= useState("");
 
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
   const AllProducts = useRef([]);
+ console.log(productData)
 
   const [snackbar, ShowSnackbar] = useState({
     show: false,
@@ -58,12 +61,17 @@ export default function UpdateProduct() {
     type: "error",
   });
   function validationForm() {
+    let errors = {}
     if (useValidation.length === 0) {
-      alert("please select brand");
+      // alert("please select brand");
+      errors.useValidation = "Please select brand";
+      setBrandError({useValidation :"Please select brand"})
       return false;
     } else {
       if (modelValidation.length === 0) {
-        alert("please select modal");
+        // alert("please select modal");
+        setBrandError({ modelValidation: "Please select model" });
+        
         return false;
       }
       return true;
@@ -75,6 +83,10 @@ export default function UpdateProduct() {
       .then((res) => {
         AllProducts.current[0] = res.data.data[0];
         setProductData(res.data.data);
+          if (res.data.data) {
+            setUseValidation(res.data.data[0].product_brand_aaray[0]);
+            setModelValidation(res.data.data[0].product_model_aaray[0]);
+          }
         setCheckURL(res.data.data[0].image);
 
         setSelectBrand(
@@ -550,6 +562,11 @@ export default function UpdateProduct() {
                                 </MenuItem>
                               ))}
                             </Select>
+                            {brandError.useValidation ? (
+                              <p style={{color:"red"}}>{brandError.useValidation}</p>
+                            ) : (
+                              ""
+                            )}
                           </FormControl>
                         </Grid>
                         <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
@@ -581,6 +598,9 @@ export default function UpdateProduct() {
                                 </MenuItem>
                               ))}
                             </Select>
+                            {
+                              brandError.modelValidation ?(<p style={{color:"red"}}>{brandError.modelValidation}</p>):("")
+                            }
                           </FormControl>
                         </Grid>
                         <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">

@@ -537,7 +537,7 @@ export const BrandListing = () => {
                   </div>
                   <FormControl fullWidth>
                     <InputLabel id="demo-multiple-name-label">
-                       Segment
+                      Segment
                     </InputLabel>
 
                     <Select
@@ -550,7 +550,9 @@ export const BrandListing = () => {
                       required
                       value={selectSegment}
                       onChange={handleChange}
-                      input={<OutlinedInput label="Name" />}
+                      // input={<OutlinedInput label="Name" />}
+                      label="Outlined"
+                      variant="outlined"
                       MenuProps={MenuProps}
                     >
                       {allSegment.map((item, index) => (
@@ -697,33 +699,41 @@ export const BrandListing = () => {
                       </b>
                     </small>
                   </div>
-                  <Select
-                    className="select-style"
-                    fullWidth
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    multiple
-                    value={selectSegment}
-                    onChange={(e) => {
-                      handleChange(e);
-                    }}
-                    input={<OutlinedInput label="Name" />}
-                    MenuProps={MenuProps}
-                  >
-                    {allSegment.map((item, index) => (
-                      <MenuItem
-                        key={index}
-                        value={item._id}
-                        style={getStyles(
-                          item.vehicle_name,
-                          selectSegment,
-                          theme
-                        )}
-                      >
-                        {item.vehicle_name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-multiple-name-label">
+                      Segment
+                    </InputLabel>
+
+                    <Select
+                      className="select-style"
+                      fullWidth
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      multiple
+                      value={selectSegment}
+                      onChange={(e) => {
+                        handleChange(e);
+                      }}
+                      // input={<OutlinedInput label="Name" />}
+                      label="Outlined"
+                      variant="outlined"
+                      MenuProps={MenuProps}
+                    >
+                      {allSegment.map((item, index) => (
+                        <MenuItem
+                          key={index}
+                          value={item._id}
+                          style={getStyles(
+                            item.vehicle_name,
+                            selectSegment,
+                            theme
+                          )}
+                        >
+                          {item.vehicle_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
                 <div className="col-md-12">
                   <div className="py-2">
@@ -745,7 +755,9 @@ export const BrandListing = () => {
                           .toLocaleLowerCase();
                       }
                     }}
-                    defaultValue={brandData.current ? brandData.current.brand_name : ""}
+                    defaultValue={
+                      brandData.current ? brandData.current.brand_name : ""
+                    }
                     placeholder="Enter Brand Name"
                     className="form-control w-100 mb-2"
                   />
@@ -758,7 +770,11 @@ export const BrandListing = () => {
                   </div>
                   <textarea
                     className="w-100 form-control"
-                    defaultValue={brandData.current?brandData.current.brand_description:""}
+                    defaultValue={
+                      brandData.current
+                        ? brandData.current.brand_description
+                        : ""
+                    }
                     onChange={(e) => {
                       if (e.target.value == " ") {
                         e.target.value = "";
@@ -839,32 +855,32 @@ export const BrandListing = () => {
 
       <h1 className="mt-2 fs-2 mx-3">Brands</h1>
       {/* <Box className="pb-3 d-flex justify-content-between"> */}
-        <div className=" d-flex justify-content-between">
-          <div style={{ marginLeft: "18px", width: "600px" }} md={6}>
-            <input
-              className="w-75 form-control ml-4"
-              type="search"
-              placeholder="Search"
-              onChange={(e)=>{
-                setSearchValue(e.target.value);
-                handleSearchClick(e.target.value  );
-              }}
-            />
-          </div>
-          <div
-            style={{ display: "flex",marginRight:"18px" }}
-            // className="d-flex justify-content-end"
-            // md={6}
-          >
-            <Button
-              className="btn_primary"
-              onClick={() => setOpen(true)}
-              variant="contained"
-            >
-              Add Brand
-            </Button>
-          </div>
+      <div className=" d-flex justify-content-between">
+        <div style={{ marginLeft: "18px", width: "600px" }} md={6}>
+          <input
+            className="w-75 form-control ml-4"
+            type="search"
+            placeholder="Search"
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              handleSearchClick(e.target.value);
+            }}
+          />
         </div>
+        <div
+          style={{ display: "flex", marginRight: "18px" }}
+          // className="d-flex justify-content-end"
+          // md={6}
+        >
+          <Button
+            className="btn_primary"
+            onClick={() => setOpen(true)}
+            variant="contained"
+          >
+            Add Brand
+          </Button>
+        </div>
+      </div>
       {/* </Box> */}
 
       <Box align="right" className="px-3 pb-3"></Box>
@@ -916,7 +932,9 @@ export const BrandListing = () => {
                       &nbsp;&nbsp;
                       <Edit
                         className="pointer"
-                        onClick={() => {getBrandById(res._id, res.brand_image)}}
+                        onClick={() => {
+                          getBrandById(res._id, res.brand_image);
+                        }}
                       />
                     </TableCell>
                   </TableRow>

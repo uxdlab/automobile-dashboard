@@ -111,7 +111,7 @@ export default function AddProduct() {
                     show: true,
                     vertical: "top",
                     horizontal: "right",
-                    msg: "Model Already Exist",
+                    msg: "Product Already Exist",
                     type: "error",
                 });
             } else {
