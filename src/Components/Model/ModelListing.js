@@ -856,7 +856,7 @@ export const ModelListing = () => {
                   <b>Model Icon</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>Modal</b>
+                  <b>Model</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Segment</b>
