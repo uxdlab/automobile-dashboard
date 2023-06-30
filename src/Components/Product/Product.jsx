@@ -56,9 +56,11 @@ export default function Product({
     setFiles(imgs);
 
     let arr = [];
+  console.log(arr);
     imgs.map((item) => {
       let url = URL.createObjectURL(item);
       arr.push(url);
+      console.log(arr)
     });
     setimgURLs([...imgURLs, ...arr]);
      console.log(imgURLs);

@@ -694,7 +694,7 @@ export const SegmentListing = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="w-25">
-                  <b>Segment Icon</b>
+                  <b>&nbsp;</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Name</b>

@@ -853,7 +853,7 @@ export const ModelListing = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="w-25">
-                  <b>Model Icon</b>
+                  <b>&nbsp;</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Model</b>

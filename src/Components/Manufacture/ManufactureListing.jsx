@@ -742,7 +742,7 @@ export const ManufactureListing = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="w-25">
-                  <b>Manufacture Icon</b>
+                  <b>&nbsp;</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Manufacturer Name</b>
