@@ -742,10 +742,10 @@ export const ManufactureListing = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="w-25">
-                  <b>&nbsp;</b>
+                  <b>Manufacture Icon</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>manufacturer Name</b>
+                  <b>Manufacturer Name</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Action</b>

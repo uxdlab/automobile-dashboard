@@ -694,10 +694,10 @@ export const SegmentListing = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="w-25">
-                  <b>&nbsp;</b>
+                  <b>Segment Icon</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>name</b>
+                  <b>Name</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Action</b>

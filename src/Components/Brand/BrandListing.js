@@ -890,7 +890,7 @@ export const BrandListing = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="w-25">
-                  <b>&nbsp;</b>
+                  <b>Brand Icon</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Name</b>

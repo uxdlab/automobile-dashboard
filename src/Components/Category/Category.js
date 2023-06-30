@@ -741,7 +741,7 @@ export const Category = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="w-25">
-                  <b>&nbsp;</b>
+                  <b>Category Icon</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Category name</b>
