@@ -59,6 +59,8 @@ export default function AddProduct() {
       
         if (files.length !== 0) {
             files.map((item) => {
+                console.log(item)
+                // return
                 const storageRef = ref(storage, `image${Math.random()}${item.name}`);
                 const uploadTask = uploadBytesResumable(storageRef, item);
                 promises.push(uploadTask)

@@ -47,6 +47,7 @@ export default function UpdateProduct() {
   const [modelValidation, setModelValidation] = useState("");
   const [brandError,setBrandError] = useState("")
   const [modelError, setModelError]= useState("");
+   const [aa, setAa] = useState([]);
 
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);

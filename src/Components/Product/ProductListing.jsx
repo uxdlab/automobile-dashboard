@@ -282,12 +282,14 @@ export default function ProductListing() {
                       {/* <TableCell>{res.sparePart_description}</TableCell> */}
                       <TableCell>
                         <Delete
+                          className="pointer"
                           onClick={() => {
                             setDeletedComp({ id: res._id, images: res.image });
                             setDeleteModel(true);
                           }}
                         />
                         <Edit
+                          className="pointer"
                           onClick={() => navigate(`/updateProduct/${res._id}`)}
                         />
                       </TableCell>

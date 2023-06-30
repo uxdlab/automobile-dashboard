@@ -1,4 +1,14 @@
-import { Backdrop, Box, Button, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { apis } from "../../auth/api";
 import { CallMultipleApi } from "../../services/CallMultipleApi";
@@ -22,9 +32,9 @@ export default function Product({
   const [selectModel, setSelectModel] = useState([]);
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
-
+  const [aa, setAa] = useState([]);
   const [imgURLs, setimgURLs] = useState([]);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   function filterd(fil) {
     let singleSegment = segment.filter((item) => item._id === fil);
@@ -53,19 +63,23 @@ export default function Product({
   }
 
   const imgPrev = (imgs) => {
-    setFiles(imgs);
+    setAa([...aa, ...imgs]);
 
+    console.log(aa);
     let arr = [];
-  console.log(arr);
+    console.log(arr);
     imgs.map((item) => {
       let url = URL.createObjectURL(item);
       arr.push(url);
-      console.log(arr)
+      console.log(arr);
     });
     setimgURLs([...imgURLs, ...arr]);
-     console.log(imgURLs);
+    console.log(imgURLs);
   };
-
+  useEffect(() => {
+    setFiles(aa);
+    console.log(aa);
+  }, [aa]);
   useEffect(() => {
     CallMultipleApi.CallMultipleApi([
       `${apis.getAllData}`,
