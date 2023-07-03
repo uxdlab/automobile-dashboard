@@ -47,7 +47,7 @@ export default function UpdateProduct() {
   const [modelValidation, setModelValidation] = useState("");
   const [brandError,setBrandError] = useState("")
   const [modelError, setModelError]= useState("");
-   const [uploadimg,setUploadImg] = useState([]);
+   const [aa, setAa] = useState([]);
 
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
@@ -251,14 +251,8 @@ export default function UpdateProduct() {
 
     setSelectModel(model.filter((e) => e.model_brand_array.includes(fil)));
   }
- useEffect(()=>{
-  setFiles(uploadimg)
-  console.log(uploadimg)
- },[uploadimg])
 
   const imgPrev = (imgs) => {
-    setUploadImg([...uploadimg,...imgs])
-    console.log(uploadimg);
     setFiles(imgs);
     let arr = [];
     imgs.map((item) => {
