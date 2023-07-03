@@ -45,14 +45,14 @@ export default function UpdateProduct() {
   const [selectModel, setSelectModel] = useState([]);
   const [useValidation, setUseValidation] = useState();
   const [modelValidation, setModelValidation] = useState("");
-  const [brandError,setBrandError] = useState("")
-  const [modelError, setModelError]= useState("");
-   const [aa, setAa] = useState([]);
+  const [brandError, setBrandError] = useState("");
+  const [modelError, setModelError] = useState("");
+  const [uploadimg, setUploadImg] = useState([]);
 
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
   const AllProducts = useRef([]);
- console.log(productData)
+  console.log(productData);
 
   const [snackbar, ShowSnackbar] = useState({
     show: false,
@@ -62,17 +62,17 @@ export default function UpdateProduct() {
     type: "error",
   });
   function validationForm() {
-    let errors = {}
+    let errors = {};
     if (useValidation.length === 0) {
       // alert("please select brand");
       errors.useValidation = "Please select brand";
-      setBrandError({useValidation :"Please select brand"})
+      setBrandError({ useValidation: "Please select brand" });
       return false;
     } else {
       if (modelValidation.length === 0) {
         // alert("please select modal");
         setBrandError({ modelValidation: "Please select model" });
-        
+
         return false;
       }
       return true;
@@ -84,10 +84,10 @@ export default function UpdateProduct() {
       .then((res) => {
         AllProducts.current[0] = res.data.data[0];
         setProductData(res.data.data);
-          if (res.data.data) {
-            setUseValidation(res.data.data[0].product_brand_aaray[0]);
-            setModelValidation(res.data.data[0].product_model_aaray[0]);
-          }
+        if (res.data.data) {
+          setUseValidation(res.data.data[0].product_brand_aaray[0]);
+          setModelValidation(res.data.data[0].product_model_aaray[0]);
+        }
         setCheckURL(res.data.data[0].image);
 
         setSelectBrand(
@@ -251,8 +251,14 @@ export default function UpdateProduct() {
 
     setSelectModel(model.filter((e) => e.model_brand_array.includes(fil)));
   }
+  useEffect(() => {
+    setFiles(uploadimg);
+    console.log(uploadimg);
+  }, [uploadimg]);
 
   const imgPrev = (imgs) => {
+    setUploadImg([...uploadimg, ...imgs]);
+    console.log(uploadimg);
     setFiles(imgs);
     let arr = [];
     imgs.map((item) => {
@@ -564,7 +570,9 @@ export default function UpdateProduct() {
                               ))}
                             </Select>
                             {brandError.useValidation ? (
-                              <p style={{color:"red"}}>{brandError.useValidation}</p>
+                              <p style={{ color: "red" }}>
+                                {brandError.useValidation}
+                              </p>
                             ) : (
                               ""
                             )}
@@ -599,9 +607,13 @@ export default function UpdateProduct() {
                                 </MenuItem>
                               ))}
                             </Select>
-                            {
-                              brandError.modelValidation ?(<p style={{color:"red"}}>{brandError.modelValidation}</p>):("")
-                            }
+                            {brandError.modelValidation ? (
+                              <p style={{ color: "red" }}>
+                                {brandError.modelValidation}
+                              </p>
+                            ) : (
+                              ""
+                            )}
                           </FormControl>
                         </Grid>
                         <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">

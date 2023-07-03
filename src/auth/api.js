@@ -64,6 +64,12 @@ export const apis = {
            getTermsCondition: "termConditon/getAll",
            updateTerms: "termConditon/updateData/",
          },
+         promo: {
+           add: "promo/addpromo",
+           getAllPromo: "promo/allpromo",
+           getPromoId: "promo/",
+           updatePromo:"promo/",
+         },
        };
 
 

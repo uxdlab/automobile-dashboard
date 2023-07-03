@@ -19,35 +19,41 @@ import Abouts from "./Components/Container/Abouts";
 import PrivacyPolicy from "./Components/Container/PrivacyPolicy";
 import TermAndCondition from "./Components/Container/TermAndCondition";
 import Onboarding from "./Components/Container/Onboarding";
+import PromoListing from "./Components/Promo/PromoListing";
 
 export const Router = () => {
     return (
-        <>
-            <Routes>
-                <Route element={<LoginKeeper />}>
-                    <Route path="/login" element={<LoginPage />} />
-                </Route>
+      <>
+        <Routes>
+          <Route element={<LoginKeeper />}>
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
 
-                <Route element={<CheckAuth />} >
-                    <Route exact path='/segment' element={<SegmentListing />} />
-                    <Route exact path='/category' element={<Category />} />
-                    <Route exact path='/brand' element={<BrandListing />} />
-                    <Route exact path='/models' element={<ModelListing />} />
-                    <Route exact path='/' element={<UsersListing />} />
-                    <Route exact path='/orders' element={<PaymentListing />} />
-                    <Route exact path='/manufacture' element={<ManufactureListing />} />
-                    {/* product Routes */}
-                    <Route exact path='/product' element={<ProductListing />} />
-                    <Route exact path='/addProduct' element={<AddProduct />} />
-                    <Route exact path='/updateProduct/:id' element={<UpdateProduct />} />
-                    <Route exact path="/about-us" element={<Abouts/>} />
-                    <Route exact path="privacy-policy" element={<PrivacyPolicy/>}/>
-                    <Route exact path="term-condition" element={<TermAndCondition/>} />
-                    <Route exact path="on-boarding" element={<Onboarding/>}/>
-                    
-                    <Route path='*' element={<WrongPath />} />
-                </Route>
-            </Routes>
-        </>
-    )
+          <Route element={<CheckAuth />}>
+            <Route exact path="/segment" element={<SegmentListing />} />
+            <Route exact path="/category" element={<Category />} />
+            <Route exact path="/brand" element={<BrandListing />} />
+            <Route exact path="/models" element={<ModelListing />} />
+            <Route exact path="/" element={<UsersListing />} />
+            <Route exact path="/orders" element={<PaymentListing />} />
+            <Route exact path="/manufacture" element={<ManufactureListing />} />
+            {/* product Routes */}
+            <Route exact path="/product" element={<ProductListing />} />
+            <Route exact path="/addProduct" element={<AddProduct />} />
+            <Route
+              exact
+              path="/updateProduct/:id"
+              element={<UpdateProduct />}
+            />
+            <Route exact path="/about-us" element={<Abouts />} />
+            <Route exact path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route exact path="term-condition" element={<TermAndCondition />} />
+            <Route exact path="on-boarding" element={<Onboarding />} />
+            <Route exact path="promo-listing" element={<PromoListing />} />
+
+            <Route path="*" element={<WrongPath />} />
+          </Route>
+        </Routes>
+      </>
+    );
 }

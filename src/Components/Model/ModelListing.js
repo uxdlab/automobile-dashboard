@@ -173,7 +173,7 @@ export const ModelListing = () => {
     modelData.current.model_segment_array = selectSegment;
     modelData.current.model_brand_array = seleBrand;
     setOpen(false);
-    const storageRef = ref(storage, img.name);
+    const storageRef = ref(storage, `${Math.random()}${img.name}`);
     const uploadTask = uploadBytesResumable(storageRef, img);
     uploadTask.on(
       "state_changed",
