@@ -4,12 +4,13 @@ import { useState } from "react";
 import Editor from "react-simple-wysiwyg";
 import { addabout, getAbout, updataAbout } from "../../services/Contain";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { Triangle } from "react-loader-spinner";
 
 export default function Abouts() {
   const [aboutUS, setAboutUs] = useState("");
   const [aboutUsData, setAboutUsData] = useState([]);
   const [loader, setLoader] = useState(false);
-  const [flag,setFlag] = useState(false)
+  const [flag, setFlag] = useState(false);
   // const [updateAbout, setUpdateAbout] = useState("")
   console.log(aboutUS.about_us);
 
@@ -21,11 +22,11 @@ export default function Abouts() {
         about_us: aboutUS.split("&nbsp;").join(""),
       },
       data
-      )
+    )
       .then((res) => {
         console.log(res);
         setLoader(false);
-        setFlag(true)
+        setFlag(true);
       })
       .catch((err) => console.log(err));
   };
@@ -66,7 +67,16 @@ export default function Abouts() {
         open={loader}
         // onClick={handleClose}
       >
-        <CircularProgress color="inherit" />
+        {/* <CircularProgress color="inherit" /> */}
+        <Triangle
+          height="80"
+          width="80"
+          color="black"
+          ariaLabel="triangle-loading"
+          wrapperStyle={{}}
+          wrapperClassName=""
+          visible={loader}
+        />
       </Backdrop>
       {!loader ? (
         <div>

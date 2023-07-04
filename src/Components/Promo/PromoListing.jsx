@@ -33,8 +33,8 @@ export default function PromoListing() {
     msg: "data added",
     type: "error",
   });
-  const [editName,setEditName] = useState("");
-  const[editDate,setEditDate] =useState("");
+  const [editName, setEditName] = useState("");
+  const [editDate, setEditDate] = useState("");
   const [editOrder, setEditOrder] = useState("");
   const [editDiscount, setEditDisount] = useState("");
   const [loader, setLoader] = useState(true);
@@ -46,12 +46,11 @@ export default function PromoListing() {
   const [minimumOrder, setMinimumOreder] = useState("");
   const [allPromos, setAllPromos] = useState([]);
   const [id, setId] = useState("");
-  const [propId,setPropId] = useState({})
+  const [propId, setPropId] = useState({});
   const [countPerPage, setCountPerPage] = useState(10);
   // const [collection, setCollection] = React.useState(
   //   allPromos.splice(0, countPerPage)
   // );
-
 
   const PromoData = useRef({
     promo_name: "",
@@ -81,6 +80,7 @@ export default function PromoListing() {
     )
       .then((res) => {
         console.log(res);
+        getAllPromos();
         setLoader(false);
       })
       .catch((err) => {
@@ -91,9 +91,7 @@ export default function PromoListing() {
   const getAllPromos = () => {
     setLoader(true);
     getAllPromo().then((res) => {
-
       setAllPromos(res.data);
-
     });
   };
 
@@ -101,41 +99,42 @@ export default function PromoListing() {
     getAllPromos();
   }, []);
 
-  const getPromosById = (id) =>{
-     setLoader(true);
-      setId(id);
-      getPromoId(id)
-      .then((res)=>{
-        setPropId(res.data.data)
+  const getPromosById = (id) => {
+    setLoader(true);
+    setId(id);
+    getPromoId(id)
+      .then((res) => {
+        setPropId(res.data.data);
         setLoader(false);
-        setOpen1(true);})
-        .catch((err)=>{console.log(err)})
+        setOpen1(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  }
-
-  const updatePromos = () =>{
+  const updatePromos = () => {
     // e.preventDefault()
     console.log(propId._id);
-    
+
     // setLoader(true);
     // setOpen1(false);
-    updatePromo(propId._id,{
- promo_name: editName,
-   expire_at: editDate,
-    discount_percentage: editDiscount,
-    minimum_order:editOrder,
+    updatePromo(propId._id, {
+      promo_name: editName,
+      expire_at: editDate,
+      discount_percentage: editDiscount,
+      minimum_order: editOrder,
     })
-    .then((res)=>{
-      console.log(res)
-    //  getPromosById();
-    //  setLoader(false);
-    }
-   
-  )
-  .catch((err)=>{
-    console.log(err)
-  })
-  }
+      .then((res) => {
+        console.log(res);
+        getAllPromos();
+        getPromosById();
+        setLoader(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -221,6 +220,7 @@ export default function PromoListing() {
                       </small>
                     </div>
                     <input
+                      required
                       id="exampleDate"
                       name="date"
                       placeholder="date placeholder"
@@ -269,7 +269,9 @@ export default function PromoListing() {
                       placeholder="Enter Promo Name"
                       className="form-control w-100 mb-2"
                       defaultValue={propId.promo_name}
-                      onChange={(e)=>{setEditName(e.target.value)}}
+                      onChange={(e) => {
+                        setEditName(e.target.value);
+                      }}
                     />
                   </div>
                   <div className="col-md-12">
@@ -285,7 +287,9 @@ export default function PromoListing() {
                       placeholder="Enter Discount Percentage"
                       className="form-control w-100 mb-2"
                       defaultValue={propId.discount_percentage}
-                      onChange={(e)=>{setEditDisount(e.target.value)}}
+                      onChange={(e) => {
+                        setEditDisount(e.target.value);
+                      }}
                     />
                   </div>
                   <div className="col-md-12">
@@ -300,7 +304,9 @@ export default function PromoListing() {
                       placeholder="Minimum Order Amount"
                       className="form-control w-100 mb-2"
                       defaultValue={propId.minimum_order}
-                      onChange={(e)=>{setEditOrder(e.target.value)}}
+                      onChange={(e) => {
+                        setEditOrder(e.target.value);
+                      }}
                     />
                   </div>
                   <div className="col-md-12">
@@ -310,12 +316,15 @@ export default function PromoListing() {
                       </small>
                     </div>
                     <input
+                      required
                       id="exampleDate"
                       type="date"
                       name="date"
                       placeholder="date placeholder"
                       defaultValue={propId.expire_at}
-                      onChange={(e)=>{setEditDate(e.target.value)}}
+                      onChange={(e) => {
+                        setEditDate(e.target.value);
+                      }}
                     />
                   </div>
                   <Box align="right" className="mt-3">

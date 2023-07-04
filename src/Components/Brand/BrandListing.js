@@ -78,19 +78,17 @@ export const BrandListing = () => {
   const [collection, setCollection] = React.useState(
     allCompanies.slice(0, countPerPage)
   );
-  const [searchValue, setSearchValue] = useState("")
+  const [searchValue, setSearchValue] = useState("");
 
-  function handleSearchClick (search){
-
-    if(search.length ===0){
+  function handleSearchClick(search) {
+    if (search.length === 0) {
       setCollection(allCompanies.slice(0, countPerPage));
     }
-     const filterBySearch = allCompanies.filter((item) => {
-       return item.brand_name.includes(search.trim().toLocaleLowerCase());
-     });
-     setCollection(filterBySearch)
+    const filterBySearch = allCompanies.filter((item) => {
+      return item.brand_name.includes(search.trim().toLocaleLowerCase());
+    });
+    setCollection(filterBySearch);
 
-   
     // if(searchValue ===""){
     //     setCollection(allCompanies);
     // }else{
@@ -208,7 +206,7 @@ export const BrandListing = () => {
     setLoader(true);
     brandData.current.segment_array = selectSegment;
     setOpen(false);
-    const storageRef = ref(storage, img.name);
+    const storageRef = ref(storage, `${Math.random()}${img.name}`);
     const uploadTask = uploadBytesResumable(storageRef, img);
     uploadTask.on(
       "state_changed",
@@ -260,7 +258,7 @@ export const BrandListing = () => {
         deleteObject(desertRef)
           .then(() => {
             console.log("image deleted");
-            const storageRef = ref(storage, img.name);
+            const storageRef = ref(storage, `${Math.random()}${img.name}`);
             const uploadTask = uploadBytesResumable(storageRef, img);
             uploadTask.on(
               "state_changed",
@@ -302,7 +300,7 @@ export const BrandListing = () => {
           })
           .catch((error) => {});
       } else {
-        const storageRef = ref(storage, img.name);
+        const storageRef = ref(storage, `${Math.random()}${img.name}`);
         const uploadTask = uploadBytesResumable(storageRef, img);
         uploadTask.on(
           "state_changed",
@@ -705,7 +703,8 @@ export const BrandListing = () => {
                     </InputLabel>
 
                     <Select
-                      className="select-style"
+                      className="select-style1"
+                      required
                       fullWidth
                       labelId="demo-multiple-name-label"
                       id="demo-multiple-name"

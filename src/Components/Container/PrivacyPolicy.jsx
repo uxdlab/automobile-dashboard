@@ -5,6 +5,7 @@ import { addPrivacy, getPrivacy, updatePrivacy } from "../../services/Contain";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Backdrop, CircularProgress } from "@mui/material";
+import { Triangle } from "react-loader-spinner";
 
 export default function PrivacyPolicy() {
   const [addPolicy,setAddPolicy] = useState("")
@@ -54,7 +55,16 @@ export default function PrivacyPolicy() {
         open={loader}
         // onClick={handleClose}
       >
-        <CircularProgress color="inherit" />
+        {/* <CircularProgress color="inherit" /> */}
+        <Triangle
+          height="80"
+          width="80"
+          color="black"
+          ariaLabel="triangle-loading"
+          wrapperStyle={{}}
+          wrapperClassName=""
+          visible={loader}
+        />
       </Backdrop>
       {!loader ? (
         <div>
