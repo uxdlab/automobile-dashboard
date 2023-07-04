@@ -853,7 +853,7 @@ export const BrandListing = () => {
         </Box>
       </Dialog>
 
-      <h1 className="mt-2 fs-2 mx-3">Brands</h1>
+      <h1 className="mt-2 fs-2 mx-3">Brand</h1>
       {/* <Box className="pb-3 d-flex justify-content-between"> */}
       <div className=" d-flex justify-content-between">
         <div style={{ marginLeft: "18px", width: "600px" }} md={6}>

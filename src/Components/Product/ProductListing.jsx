@@ -251,16 +251,16 @@ export default function ProductListing() {
                 <TableRow>
                   {/* <TableCell><b>Sno.</b></TableCell> */}
                   <TableCell>
-                    <b>Product Name</b>
+                    <b> Name</b>
                   </TableCell>
                   <TableCell>
-                    <b>Product OE Reference Number</b>
+                    <b> OE Reference Number</b>
                   </TableCell>
                   <TableCell>
-                    <b>Product KE Part Number</b>
+                    <b> KE Part Number</b>
                   </TableCell>
                   <TableCell>
-                    <b>Product MRP</b>
+                    <b> MRP</b>
                   </TableCell>
                   {/* <TableCell><b>Product Description</b></TableCell> */}
                   <TableCell>

@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import './Style.css'
-import { Box, Switch, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Backdrop, Box, Button, Dialog, Switch, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import Pagination from 'rc-pagination';
 import { getAllUsers, activeUser, deleteUsers } from "../../services/Users";
 import { SnackBar } from "../Assets/SnackBar";
 import { Delete, Edit } from '@mui/icons-material';
+import { Triangle } from "react-loader-spinner";
 
 
 export default function UsersListing() {
     const [allUsers, setAllUsers] = useState([])
     const [currentPage, setCurrentPage] = React.useState(1);
-    const [countPerPage, setCountPerPage] = useState(5);
+    const [countPerPage, setCountPerPage] = useState(10);
     const [value, setValue] = React.useState("");
     const [collection, setCollection] = React.useState(
         (allUsers.slice(0, countPerPage))
@@ -22,7 +23,8 @@ export default function UsersListing() {
        msg: "data added",
        type: "error",
      });
-
+      const [deleteModel, setDeleteModel] = useState(false);
+      const [loader, setLoader] = useState(false);
     React.useEffect(() => {
         if (!value) {
             updatePage(1);
@@ -40,14 +42,19 @@ export default function UsersListing() {
         getUsers()
     }, [])
     const deleteusers = (id)=>{
+      setLoader(true);
+
+
         deleteUsers(id)
         .then(res =>{console.log(res)
+      setLoader(false);
+
          getUsers();
          ShowSnackbar({
            show: true,
            vertical: "top",
            horizontal: "right",
-           msg: "Product Deleted successfully",
+           msg: "Customer  Deleted successfully",
            type: "success",
          });})
         .catch(err =>{console.log(err)})
@@ -62,6 +69,44 @@ export default function UsersListing() {
     return (
       <>
         <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loader}
+        >
+          <Dialog open={deleteModel} maxWidth={"sm"} fullWidth={true}>
+            <Box p={3}>
+              <Box>Are you sure you want to delete?</Box>
+              <Box align="right">
+                <Button
+                  className="cancel_btn me-3"
+                  onClick={() => setDeleteModel(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  className="custom-btn"
+                  onClick={deleteusers}
+                >
+                  Delete
+                </Button>
+              </Box>
+            </Box>
+          </Dialog>
+          <div
+            // style={{ display: "flex", justifyContent: "center", marginTop: "" }}
+          >
+            <Triangle
+              height="80"
+              width="80"
+              color="black"
+              ariaLabel="triangle-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={loader}
+            />
+          </div>
+        </Backdrop>
         <div class="container-fluid">
           <div class="col mt-2 d-flex justify-content-between">
             <h1 class="d-inline-block">Customers</h1>
@@ -122,7 +167,7 @@ export default function UsersListing() {
               className="me-2"
               onChange={(e) => setCountPerPage(e.target.value * 1)}
             >
-              <option>5</option>
+              {/* <option>5</option> */}
               <option>10</option>
               <option>15</option>
             </select>

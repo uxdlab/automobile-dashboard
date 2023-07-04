@@ -30,10 +30,12 @@ export default function Product({
   const [model, setModel] = useState([]);
   const [selectBrand, setSelectBrand] = useState([]);
   const [selectModel, setSelectModel] = useState([]);
+ 
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
   const [aa, setAa] = useState([]);
   const [imgURLs, setimgURLs] = useState([]);
+ 
   const navigate = useNavigate();
 
   function filterd(fil) {
@@ -44,6 +46,7 @@ export default function Product({
     setSelectBrand(brand.filter((e) => e.segment_array.includes(fil)));
     setSelectModel([]);
   }
+  
 
   function addModelData(e) {
     AllProducts.current[index].product_model_aaray = [e.target.value];
@@ -243,7 +246,8 @@ export default function Product({
                           ? productData[0].product_segment_aaray[0]
                           : ""
                       }
-                      onChange={(e) => filterd(e.target.value)}
+                      onChange={(e) => {filterd(e.target.value)
+                      }}
                       label="Outlined"
                       variant="outlined"
                     >
@@ -436,7 +440,7 @@ export default function Product({
                   </div>
                 </Grid>
                 <Grid item xl={5} md={6} sm={12} sx={12}>
-                  <Box align="right" mt={6}>
+                  <Box align="right" mt={6} sx={{display:"flrx",justifyContent:"end"}}>
                     <Button
                       className="cancel_btn me-3"
                       onClick={() => navigate("/product")}
@@ -448,7 +452,7 @@ export default function Product({
                       className="custom-btn"
                       variant="contained"
                     >
-                      Save
+                      Add
                     </Button>
                   </Box>
                 </Grid>

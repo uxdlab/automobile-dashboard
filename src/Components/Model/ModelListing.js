@@ -41,8 +41,7 @@ export const ModelListing = () => {
   const [selectSegment, setSelectSegment] = useState([]);
   const [selectBrand, setSelectBrand] = useState([]);
   const [seleBrand, setSeleBrand] = useState([]);
-  console.log(selectSegment);
-  console.log(seleBrand);
+ 
   const [allData, setData] = useState([]);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
@@ -53,6 +52,9 @@ export const ModelListing = () => {
   const [allBrand, setAllBrand] = useState([]);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
+  const [brandError, setBrandError] = useState("");
+  const [modelValidation, setModelValidation] = useState("");
+  const [useValidation, setUseValidation] = useState();
   const [snackbar, ShowSnackbar] = useState({
     show: false,
     vertical: "top",
@@ -61,9 +63,9 @@ export const ModelListing = () => {
     type: "error",
   });
   const [localImg, setLocalImg] = useState();
-  console.log(localImg);
+
   const [img, setImg] = useState({});
-  console.log(img);
+
   const [imgURL, setImgURL] = useState("");
   const [id, setId] = useState("");
   let modelData = useRef({
@@ -77,6 +79,24 @@ export const ModelListing = () => {
   const [collection, setCollection] = React.useState(
     allData.slice(0, countPerPage)
   );
+  function validationForm() {
+    let errors = {};
+    console.log(seleBrand);
+    if (seleBrand.length === 0) {
+      // alert("please select brand");
+      errors.useValidation = "Please select brand";
+      setBrandError({ useValidation: "Please select brand" });
+      return false;
+    } else {
+      // if (modelValidation.length === 0) {
+      //   // alert("please select modal");
+      //   setBrandError({ modelValidation: "Please select model" });
+
+      //   return false;
+      // }
+      return true;
+    }
+  }
   function handleSearchClick(search) {
     if (search.length === 0) {
       setCollection(allData.slice(0, countPerPage));
@@ -103,7 +123,7 @@ export const ModelListing = () => {
     setLoader(true);
     ModelClass.getAllModel()
       .then((res) => {
-        console.log(res.data.data);
+      
         setData(res.data.data);
         setLoader(false);
       })
@@ -123,7 +143,7 @@ export const ModelListing = () => {
   };
 
   function deleteModelf() {
-    console.log(deleteMod);
+   
     setDeleteModel(false);
     setLoader(true);
     if (deleteMod.icon !== "") {
@@ -131,10 +151,10 @@ export const ModelListing = () => {
       const desertRef = ref(storage, deleteMod.icon);
       deleteObject(desertRef)
         .then(() => {
-          console.log("image deleted");
+       
           ModelClass.deleteModel(deleteMod.id)
             .then((res) => {
-              console.log(res);
+        
               getAllModels();
               ShowSnackbar({
                 show: true,
@@ -150,7 +170,7 @@ export const ModelListing = () => {
     } else {
       ModelClass.deleteModel(deleteMod.id)
         .then((res) => {
-          console.log(res);
+     
           getAllModels();
           ShowSnackbar({
             show: true,
@@ -168,7 +188,7 @@ export const ModelListing = () => {
 
   async function addModel(e) {
     e.preventDefault();
-    console.log(modelData.current);
+   
     setLoader(true);
     modelData.current.model_segment_array = selectSegment;
     modelData.current.model_brand_array = seleBrand;
@@ -181,13 +201,13 @@ export const ModelListing = () => {
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          console.log(url);
+         
           modelData.current.model_icon = url;
-          console.log(modelData.current);
+      
 
           ModelClass.addModel(modelData.current)
             .then((res) => {
-              console.log(res);
+            
               setLoader(false);
               getAllModels();
               ShowSnackbar({
@@ -217,7 +237,7 @@ export const ModelListing = () => {
     e.preventDefault();
     setLoader(true);
     setOpen1(false);
-    console.log(id);
+
     modelData.current.model_segment_array = selectSegment;
     modelData.current.model_brand_array = seleBrand;
     if (img.name !== undefined) {
@@ -226,7 +246,7 @@ export const ModelListing = () => {
         const desertRef = ref(storage, imgURL);
         deleteObject(desertRef)
           .then(() => {
-            console.log("image deleted");
+            
             const storageRef = ref(storage, img.name);
             const uploadTask = uploadBytesResumable(storageRef, img);
             uploadTask.on(
@@ -235,12 +255,12 @@ export const ModelListing = () => {
               (err) => console.log(err),
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                  console.log(url);
+                
                   modelData.current.model_icon = url;
-                  // console.log(brandData.current.brand_image)
+                 
                   ModelClass.editModel(id, modelData.current)
                     .then((res) => {
-                      console.log(res);
+                     
                       setLoader(false);
                       getAllModels();
                       ShowSnackbar({
@@ -270,11 +290,11 @@ export const ModelListing = () => {
           (err) => console.log(err),
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-              console.log(url);
+              
               modelData.current.model_icon = url;
               ModelClass.editModel(id, modelData.current)
                 .then((res) => {
-                  console.log(res);
+             
                   getAllModels();
                   setLoader(false);
                   ShowSnackbar({
@@ -295,10 +315,10 @@ export const ModelListing = () => {
         );
       }
     } else {
-      console.log(modelData.current);
+
       ModelClass.editModel(id, modelData.current)
         .then((res) => {
-          console.log(res);
+       
           setLoader(false);
           getAllModels();
           ShowSnackbar({
@@ -327,14 +347,13 @@ export const ModelListing = () => {
     setId(idd);
     ModelClass.getModel(idd)
       .then((res) => {
-        console.log(res);
+        
         modelData.current = res.data.data[0];
         if (modelData.current.model_icon) {
-          console.log("ififififif");
-          console.log(modelData.current.model_icon);
+       
           setLocalImg(modelData.current.model_icon);
         }
-        console.log(modelData.current.model_segment_array);
+
         setSelectSegment(modelData.current.model_segment_array);
         setSeleBrand(modelData.current.model_brand_array);
         let arr = modelData.current.model_segment_array[0];
@@ -351,7 +370,7 @@ export const ModelListing = () => {
   async function getSegmentBrand() {
     VehicleClass.getSegmentBrandModel()
       .then((res) => {
-        console.log(res.data.data.brandData);
+
         setSegment(res.data.data.segmentData);
         setAllBrand(res.data.data.brandData);
       })
@@ -361,8 +380,7 @@ export const ModelListing = () => {
   }
 
   const imgPrev = (imgs) => {
-    console.log("okkkkkkkkkkkkkkkkkkkkkkk");
-    console.log(imgs);
+
     if (imgs.name !== undefined) {
       let url = URL.createObjectURL(imgs);
       setLocalImg(url);
@@ -379,56 +397,62 @@ export const ModelListing = () => {
 
   const ExistNameCheck = (e) => {
     e.preventDefault();
-    if (img.name !== undefined) {
-      let arr = allData.filter(
-        (item) => item.model_name === modelData.current.model_name
-      );
-      if (arr.length !== 0) {
+    let valid = validationForm();
+    if (valid) {
+      if (img.name !== undefined) {
+        let arr = allData.filter(
+          (item) => item.model_name === modelData.current.model_name
+        );
+        if (arr.length !== 0) {
+          ShowSnackbar({
+            show: true,
+            vertical: "top",
+            horizontal: "right",
+            msg: "Model Already Exist",
+            type: "error",
+          });
+        } else {
+          addModel(e);
+        }
+      } else {
         ShowSnackbar({
           show: true,
           vertical: "top",
           horizontal: "right",
-          msg: "Model Already Exist",
+          msg: "Please Upload Icon",
           type: "error",
         });
-      } else {
-        addModel(e);
       }
-    } else {
-      ShowSnackbar({
-        show: true,
-        vertical: "top",
-        horizontal: "right",
-        msg: "Please Upload Icon",
-        type: "error",
-      });
     }
   };
 
   const checkNameForUpdate = (e) => {
     e.preventDefault();
+     let valid = validationForm();
     let arr = allData.filter(
       (item) =>
         item.model_name === modelData.current.model_name &&
         item._id !== modelData.current._id
     );
-    if (arr.length !== 0) {
-      ShowSnackbar({
-        show: true,
-        vertical: "top",
-        horizontal: "right",
-        msg: "Model Already Exist",
-        type: "error",
-      });
-    } else {
-      updateModel(e);
-    }
+    if (valid){
+                if (arr.length !== 0) {
+                  ShowSnackbar({
+                    show: true,
+                    vertical: "top",
+                    horizontal: "right",
+                    msg: "Model Already Exist",
+                    type: "error",
+                  });
+                } else {
+                  updateModel(e);
+                }
+              }
   };
 
   return (
     <>
       <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
-      <h1 className="mt-2 fs-2 mx-3">Models</h1>
+      <h1 className="mt-2 fs-2 mx-3">Model</h1>
       <Box className="pb-3 d-flex justify-content-between">
         <Grid container>
           <Grid item md={6} xs={12} style={{ marginLeft: "18px" }}>
@@ -532,7 +556,10 @@ export const ModelListing = () => {
                       id="demo-multiple-name"
                       fullWidth
                       required
-                      onChange={(e) => filterd(e.target.value)}
+                      onChange={(e) => {
+                        filterd(e.target.value);
+                        setSeleBrand([]);
+                      }}
                       input={<OutlinedInput label="Name" />}
                     >
                       {allSegment.map((item, index) => (
@@ -554,10 +581,17 @@ export const ModelListing = () => {
                   <FormControl fullWidth>
                     <InputLabel id="demo-multiple-name-label">Brand</InputLabel>
                     <Select
-                      className="select-style1"
                       fullWidth
-                      required
-                      onChange={(e) => setSeleBrand([e.target.value])}
+                      className="select-style1"
+                      // value={seleBrand}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                        setBrandError({});
+                        setSeleBrand([e.target.value]);
+                        // e.target.value = "";
+                        setModelValidation("");
+                        // setUseValidation(e.target.value);
+                      }}
                       input={<OutlinedInput label="Name" />}
                     >
                       {selectBrand.map((item, index) => (
@@ -566,6 +600,11 @@ export const ModelListing = () => {
                         </MenuItem>
                       ))}
                     </Select>
+                    {brandError.useValidation ? (
+                      <p style={{ color: "red" }}>{brandError.useValidation}</p>
+                    ) : (
+                      ""
+                    )}
                   </FormControl>
                 </div>
                 <div className="col-md-12">
@@ -695,11 +734,12 @@ export const ModelListing = () => {
                     </small>
                   </div>
                   <Select
+                    required
                     className="select-style"
                     fullWidth
-                    required
                     defaultValue={selectSegment[0]}
-                    onChange={(e) => filterd(e.target.value)}
+                    onChange={(e) => {filterd(e.target.value)
+                     setSeleBrand([]);}}
                   >
                     {allSegment.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -717,11 +757,17 @@ export const ModelListing = () => {
                     </small>
                   </div>
                   <Select
+                    // required
                     className="select-style"
                     fullWidth
-                    required
                     defaultValue={seleBrand[0]}
-                    onChange={(e) => setSeleBrand([e.target.value])}
+                    onChange={(e) => {
+                      setSeleBrand([e.target.value]);
+                      setBrandError({});
+                      setSeleBrand([e.target.value]);
+                      // e.target.value = "";
+                      setModelValidation("");
+                    }}
                   >
                     {selectBrand.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -729,6 +775,11 @@ export const ModelListing = () => {
                       </MenuItem>
                     ))}
                   </Select>
+                  {brandError.useValidation ? (
+                    <p style={{ color: "red" }}>{brandError.useValidation}</p>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="col-md-12">
                   <div className="py-2">
@@ -740,6 +791,7 @@ export const ModelListing = () => {
                   </div>
                   <input
                     type="text"
+                    required
                     onChange={(e) => {
                       if (e.target.value == " ") {
                         e.target.value = "";
@@ -784,7 +836,7 @@ export const ModelListing = () => {
                   <div className="py-2">
                     <small>
                       <b>
-                        <span className="text-danger">*</span>Update Brand Icon:
+                        <span className="text-danger">*</span>Update Model Icon:
                       </b>
                     </small>
                   </div>
@@ -856,13 +908,14 @@ export const ModelListing = () => {
                   <b>&nbsp;</b>
                 </TableCell>
                 <TableCell className="text-center">
+                  {/* <b>Model</b> */} <b>Segment</b>
+                </TableCell>
+                <TableCell className="text-center">
+                  {/* <b>Segment</b> */} <b>Brand</b>
+                </TableCell>
+                <TableCell className="text-center">
+                  {/* <b>Brand</b> */}
                   <b>Model</b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b>Segment</b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b>Brand</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Action</b>
@@ -882,13 +935,15 @@ export const ModelListing = () => {
                       />
                     </TableCell>
                     <TableCell className="text_cap text-center">
-                      {res.model_name}
+                      {/* {res.model_name} */} {res?.segment[0]?.vehicle_name}
                     </TableCell>
                     <TableCell className="text_cap text-center">
-                      {res?.segment[0]?.vehicle_name}
-                    </TableCell>
-                    <TableCell className="text_cap text-center">
+                      {/* {res?.segment[0]?.vehicle_name} */}{" "}
                       {res?.brand[0]?.brand_name}
+                    </TableCell>
+                    <TableCell className="text_cap text-center">
+                      {/* {res?.brand[0]?.brand_name} */}
+                      {res.model_name}
                     </TableCell>
                     <TableCell className="text-center">
                       <Delete

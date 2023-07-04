@@ -710,7 +710,7 @@ export const ManufactureListing = () => {
         </Box>
       </Dialog>
 
-      <h1 className="mt-2 fs-2 mx-3">Manufacture</h1>
+      <h1 className="mt-2 fs-2 mx-3">Manufacturer</h1>
       <div className=" d-flex justify-content-between">
         <div style={{ marginLeft: "18px", width: "600px" }}>
           <input

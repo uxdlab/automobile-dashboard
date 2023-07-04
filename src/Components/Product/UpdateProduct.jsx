@@ -775,7 +775,11 @@ export default function UpdateProduct() {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" variant="contained">
+                  <Button
+                    type="submit"
+                    className="custom-btn"
+                    variant="contained"
+                  >
                     Update
                   </Button>
                 </Box>

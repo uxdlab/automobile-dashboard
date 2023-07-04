@@ -22,6 +22,9 @@ export default function AddProduct() {
         msg: "data added",
         type: "error",
     });
+     const [useValidation, setUseValidation] = useState();
+     const [brandError, setBrandError] = useState("");
+      const [modelValidation, setModelValidation] = useState("");
     const AllProducts = useRef([
         {
             product_name: '',
@@ -40,7 +43,23 @@ export default function AddProduct() {
             model_name:'' ,
         }
     ])
+ function validationForm() {
+   let errors = {};
+   if (useValidation.length === 0) {
+     // alert("please select brand");
+     errors.useValidation = "Please select brand";
+     setBrandError({ useValidation: "Please select brand" });
+     return false;
+   } else {
+     if (modelValidation.length === 0) {
+       // alert("please select modal");
+       setBrandError({ modelValidation: "Please select model" });
 
+       return false;
+     }
+     return true;
+   }
+ }
     useEffect(()=>{
         getAllItem()
         .then((res)=>{
@@ -105,29 +124,35 @@ export default function AddProduct() {
 
     const ExistNameCheck = (e) => {
         e.preventDefault()
-       
-        if (files.length !== 0) {
-            let arr = data.filter((item) => item.product_name === AllProducts.current[0].product_name)
-            if (arr.length !== 0) {
-                ShowSnackbar({
-                    show: true,
-                    vertical: "top",
-                    horizontal: "right",
-                    msg: "Product Already Exist",
-                    type: "error",
-                });
-            } else {
-                submitForm(e)
-            }
-        } else {
-            ShowSnackbar({
-                show: true,
-                vertical: "top",
-                horizontal: "right",
-                msg: "Please Upload Images",
-                type: "error",
-            });
-        }
+         let valid = validationForm();
+         if(valid){
+                    if (files.length !== 0) {
+                      let arr = data.filter(
+                        (item) =>
+                          item.product_name ===
+                          AllProducts.current[0].product_name
+                      );
+                      if (arr.length !== 0) {
+                        ShowSnackbar({
+                          show: true,
+                          vertical: "top",
+                          horizontal: "right",
+                          msg: "Product Already Exist",
+                          type: "error",
+                        });
+                      } else {
+                        submitForm(e);
+                      }
+                    } else {
+                      ShowSnackbar({
+                        show: true,
+                        vertical: "top",
+                        horizontal: "right",
+                        msg: "Please Upload Images",
+                        type: "error",
+                      });
+                    }
+                  }
     }
 
     return (

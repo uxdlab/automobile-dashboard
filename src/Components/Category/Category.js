@@ -744,7 +744,7 @@ export const Category = () => {
                   <b>&nbsp;</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>name</b>
+                  <b>Name</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Action</b>
