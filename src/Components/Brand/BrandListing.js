@@ -232,9 +232,9 @@ export const BrandListing = () => {
               });
             })
             .catch((err) => {
-              console.log(err);
-              setLoader(false);
-              getAllCompany();
+            console.log(err);
+            setLoader(false);
+            getAllCompany();
             });
         });
       }
@@ -421,11 +421,12 @@ export const BrandListing = () => {
     if (img.name !== undefined) {
       let arr = allCompanies.filter(
         (item) =>
-          item.brand_name ===
-          allCompanies.filter(
-            (item) => item.brand_name === brandData.current.brand_name
-          )
+          item.brand_name === brandData.current.brand_name
+          // allCompanies.filter(
+          //   (item) => item.brand_name === brandData.current.brand_name
+          // )
       );
+      {console.log(arr)}
       if (arr.length !== 0) {
         ShowSnackbar({
           show: true,

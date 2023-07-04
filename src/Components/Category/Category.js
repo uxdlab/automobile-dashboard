@@ -481,7 +481,7 @@ export const Category = () => {
                   <div className="py-2">
                     <small>
                       <b>
-                        <span className="text-danger"></span>Category Name:
+                        <span className="text-danger">*</span>Category Name:
                       </b>
                     </small>
                   </div>
@@ -525,7 +525,7 @@ export const Category = () => {
                   <div className="py-2">
                     <small>
                       <b>
-                        <span className="text-danger">*</span>Add Category Icon:
+                        <span className="text-danger"></span>Add Category Icon:
                       </b>
                     </small>
                   </div>
@@ -646,7 +646,7 @@ export const Category = () => {
                   <div className="py-2">
                     <small>
                       <b>
-                        <span className="text-danger">*</span>Update Category
+                        <span className="text-danger"></span>Update Category
                         Icon:
                       </b>
                     </small>
@@ -744,7 +744,7 @@ export const Category = () => {
                   <b>&nbsp;</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>Category name</b>
+                  <b>name</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Action</b>

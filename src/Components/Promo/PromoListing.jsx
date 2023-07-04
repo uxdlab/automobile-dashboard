@@ -22,6 +22,7 @@ import {
   getPromoId,
   updatePromo,
 } from "../../services/Promo";
+import Pagination from "rc-pagination";
 import { Delete, Edit } from "@mui/icons-material";
 import { useEffect } from "react";
 
@@ -47,11 +48,25 @@ export default function PromoListing() {
   const [allPromos, setAllPromos] = useState([]);
   const [id, setId] = useState("");
   const [propId, setPropId] = useState({});
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [value, setValue] = React.useState("");
   const [countPerPage, setCountPerPage] = useState(10);
-  // const [collection, setCollection] = React.useState(
-  //   allPromos.splice(0, countPerPage)
-  // );
+  const [collection, setCollection] = React.useState(
+    allPromos.splice(0, countPerPage)
+  );
 
+  React.useEffect(() => {
+    if (!value) {
+      updatePage(1);
+    }
+  }, [value, countPerPage, allPromos]);
+
+  const updatePage = (p) => {
+    setCurrentPage(p);
+    const to = countPerPage * p;
+    const from = to - countPerPage;
+    setCollection(allPromos.slice(from, to));
+  };
   const PromoData = useRef({
     promo_name: "",
     expire_at: "",
@@ -80,8 +95,8 @@ export default function PromoListing() {
     )
       .then((res) => {
         console.log(res);
-        getAllPromos();
         setLoader(false);
+        getAllPromos()
       })
       .catch((err) => {
         console.log(err);
@@ -127,9 +142,8 @@ export default function PromoListing() {
     })
       .then((res) => {
         console.log(res);
-        getAllPromos();
-        getPromosById();
-        setLoader(false);
+        //  getPromosById();
+        //  setLoader(false);
       })
       .catch((err) => {
         console.log(err);
@@ -220,13 +234,19 @@ export default function PromoListing() {
                       </small>
                     </div>
                     <input
-                      required
+                    required
                       id="exampleDate"
                       name="date"
                       placeholder="date placeholder"
                       type="date"
                       onChange={(e) => {
                         setAddExpireDate(e.target.value);
+                      }}
+                      style={{
+                        width: "400px",
+                        height: "40px",
+                        borderRadius: "8px",
+                        border: "2px solid grey",
                       }}
                     />
                   </div>
@@ -316,8 +336,8 @@ export default function PromoListing() {
                       </small>
                     </div>
                     <input
-                      required
-                      id="exampleDate"
+                    required
+                      // id="exampleDate"
                       type="date"
                       name="date"
                       placeholder="date placeholder"
@@ -325,6 +345,7 @@ export default function PromoListing() {
                       onChange={(e) => {
                         setEditDate(e.target.value);
                       }}
+                      style={{ width: "1000px" }}
                     />
                   </div>
                   <Box align="right" className="mt-3">
@@ -423,6 +444,22 @@ export default function PromoListing() {
               })}
             </TableBody>
           </Table>
+          <Box sx={{ m: 1 }} className="d-flex justify-content-end">
+            <select
+              className="me-2"
+              onChange={(e) => setCountPerPage(e.target.value * 1)}
+            >
+               <option>10</option>
+              <option>15</option>
+            </select>
+            <Pagination
+              pageSize={countPerPage}
+              onChange={updatePage}
+              current={currentPage}
+              total={allPromos.length}
+              style={{ color: "green" }}
+            />
+          </Box>
         </TableContainer>
       </Box>
     </>

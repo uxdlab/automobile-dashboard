@@ -173,7 +173,7 @@ export const SegmentListing = () => {
     e.preventDefault();
     setLoader(true);
     setOpen(false);
-    const storageRef = ref(storage, img.name);
+    const storageRef = ref(storage, `${Math.random()}${img.name}`);
     const uploadTask = uploadBytesResumable(storageRef, img);
     uploadTask.on(
       "state_changed",
@@ -224,7 +224,7 @@ export const SegmentListing = () => {
       deleteObject(desertRef)
         .then(() => {
           console.log("image deleted");
-          const storageRef = ref(storage, img.name);
+          const storageRef = ref(storage, `${Math.random()}${img.name}`);
           const uploadTask = uploadBytesResumable(storageRef, img);
           uploadTask.on(
             "state_changed",
@@ -614,6 +614,13 @@ export const SegmentListing = () => {
                     <div className="d-flex">
                       {localImg ? (
                         <div className="box_style border me-1 relative">
+                          <CloseIcon
+                            onClick={() => {
+                              setLocalImg("");
+                              setImg({});
+                            }}
+                            className="close-btn-position"
+                          />
                           <img className="img-style" src={localImg} />
                         </div>
                       ) : (
@@ -672,8 +679,10 @@ export const SegmentListing = () => {
                 className="w-75 form-control"
                 type="search"
                 placeholder="Search"
-                onChange={(e)=>{setSearchValue(e.target.value)
-                handleSearchClick(e.target.value);}}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                  handleSearchClick(e.target.value);
+                }}
               />
             </Grid>
             <Grid item md={6} xs={12} className="d-flex justify-content-end">

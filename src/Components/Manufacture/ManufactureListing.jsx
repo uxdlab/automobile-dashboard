@@ -520,7 +520,7 @@ export const ManufactureListing = () => {
                   <div className="py-2">
                     <small>
                       <b>
-                        <span className="text-danger">*</span>Add Manufacturer
+                        <span className="text-danger"></span>Add Manufacturer
                         Icon:
                       </b>
                     </small>
@@ -645,7 +645,7 @@ export const ManufactureListing = () => {
                   <div className="py-2">
                     <small>
                       <b>
-                        <span className="text-danger">*</span>Update
+                        <span className="text-danger"></span>Update
                         Manufacturer Icon:
                       </b>
                     </small>
@@ -710,7 +710,7 @@ export const ManufactureListing = () => {
         </Box>
       </Dialog>
 
-      <h1 className="mt-2 fs-2 mx-3">Manufactures</h1>
+      <h1 className="mt-2 fs-2 mx-3">Manufacture</h1>
       <div className=" d-flex justify-content-between">
         <div style={{ marginLeft: "18px", width: "600px" }}>
           <input
@@ -736,7 +736,7 @@ export const ManufactureListing = () => {
       </div>
 
       {/* <Box align="right" className="px-3 pb-3"></Box> */}
-      <div className="px-3">
+      <div className="p-3">
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -745,7 +745,7 @@ export const ManufactureListing = () => {
                   <b>&nbsp;</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>Manufacturer Name</b>
+                  <b>Name</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Action</b>
