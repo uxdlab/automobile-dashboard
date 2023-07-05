@@ -839,6 +839,7 @@ export const BrandListing = () => {
                     onClick={() => {
                       setOpen1(false);
                       setLocalImg("");
+                      setSelectSegment([])
                     }}
                   >
                     Cancel

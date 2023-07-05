@@ -703,6 +703,7 @@ export const ModelListing = () => {
                     onClick={() => {
                       setOpen(false);
                       setLocalImg("");
+                       setBrandError({});
                     }}
                   >
                     Cancel
@@ -885,6 +886,7 @@ export const ModelListing = () => {
                     onClick={() => {
                       setOpen1(false);
                       setLocalImg("");
+                       setBrandError({});
                     }}
                   >
                     Cancel

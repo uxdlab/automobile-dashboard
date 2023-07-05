@@ -34,11 +34,12 @@ export default function PromoListing() {
     msg: "data added",
     type: "error",
   });
+
   const [editName, setEditName] = useState("");
   const [editDate, setEditDate] = useState("");
   const [editOrder, setEditOrder] = useState("");
   const [editDiscount, setEditDisount] = useState("");
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [promoName, setPromoName] = useState("");
@@ -50,11 +51,11 @@ export default function PromoListing() {
   const [propId, setPropId] = useState({});
   const [currentPage, setCurrentPage] = React.useState(1);
   const [value, setValue] = React.useState("");
-  const [countPerPage, setCountPerPage] = useState(10);
+  const [countPerPage, setCountPerPage] = useState(5);
   const [collection, setCollection] = React.useState(
     allPromos.splice(0, countPerPage)
   );
-
+  console.log(allPromos.length);
   React.useEffect(() => {
     if (!value) {
       updatePage(1);
@@ -96,15 +97,29 @@ export default function PromoListing() {
       .then((res) => {
         console.log(res);
         setLoader(false);
-        getAllPromos()
+        getAllPromos();
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Promo Added successfully",
+          type: "success",
+        });
       })
       .catch((err) => {
         console.log(err);
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Promo Already Exist",
+          type: "error",
+        });
       });
   };
 
   const getAllPromos = () => {
-    setLoader(true);
+    setLoader(false);
     getAllPromo().then((res) => {
       setAllPromos(res.data);
     });
@@ -128,12 +143,12 @@ export default function PromoListing() {
       });
   };
 
-  const updatePromos = () => {
-    // e.preventDefault()
+  const updatePromos = (e) => {
+    e.preventDefault()
     console.log(propId._id);
 
-    // setLoader(true);
-    // setOpen1(false);
+    setLoader(true);
+    setOpen1(false);
     updatePromo(propId._id, {
       promo_name: editName,
       expire_at: editDate,
@@ -143,7 +158,7 @@ export default function PromoListing() {
       .then((res) => {
         console.log(res);
         //  getPromosById();
-        //  setLoader(false);
+        setLoader(false);
       })
       .catch((err) => {
         console.log(err);
@@ -155,7 +170,7 @@ export default function PromoListing() {
       <Box sx={{ width: "100%" }} px={2}>
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          //   open={loader}
+          open={loader}
         >
           <Box>
             <Triangle
@@ -234,7 +249,7 @@ export default function PromoListing() {
                       </small>
                     </div>
                     <input
-                    required
+                      required
                       id="exampleDate"
                       name="date"
                       placeholder="date placeholder"
@@ -336,7 +351,7 @@ export default function PromoListing() {
                       </small>
                     </div>
                     <input
-                    required
+                      required
                       // id="exampleDate"
                       type="date"
                       name="date"
@@ -413,7 +428,7 @@ export default function PromoListing() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allPromos.map((res, index) => {
+              {collection.map((res, index) => {
                 return (
                   <TableRow key={index}>
                     <TableCell className="text_cap text-center">
@@ -449,7 +464,8 @@ export default function PromoListing() {
               className="me-2"
               onChange={(e) => setCountPerPage(e.target.value * 1)}
             >
-               <option>10</option>
+              <option>5</option>
+              <option>10</option>
               <option>15</option>
             </select>
             <Pagination
