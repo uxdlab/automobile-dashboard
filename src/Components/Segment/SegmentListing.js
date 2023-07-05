@@ -34,7 +34,7 @@ import { SnackBar } from "../Assets/SnackBar";
 import Pagination from "rc-pagination";
 
 export const SegmentListing = () => {
-    const [serchValue,setSearchValue] = useState("")
+  const [serchValue, setSearchValue] = useState("");
   const [allVehicles, setAllVehicles] = useState([]);
   const [loader, setLoader] = useState(true);
   const [deleteVeh, setDeletedVeh] = useState({ id: "", index: "", icon: "" });
@@ -64,9 +64,8 @@ export const SegmentListing = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
-  const [collection, setCollection] = React.useState(
-    allVehicles.slice(0, countPerPage)
-  );
+  const [allProductC, setAllProductc] = useState([]);
+  const [collection, setCollection] = React.useState([]);
 
   React.useEffect(() => {
     if (!value) {
@@ -85,37 +84,44 @@ export const SegmentListing = () => {
     getAllVehicles();
   }, []);
 
-
-//   function test(e){
-//     data.filter((item)=>item.name.includes(e.target.value.toLocalLowerCase()))
-//   }
+  //   function test(e){
+  //     data.filter((item)=>item.name.includes(e.target.value.toLocalLowerCase()))
+  //   }
 
   function handleSearchClick(search) {
-    console.log(search)
-    if(search.length ===0){
+    console.log(search);
+    if (search.length === 0) {
       setCollection(allVehicles.slice(0, countPerPage));
     }
-     const filterBySearch = allVehicles.filter((item) => {
-       return item.vehicle_name.includes(search.trim().toLocaleLowerCase());
-     });
-     setCollection(filterBySearch);
-    // if (serchValue === "") {
-    //   setCollection(allVehicles);
-    // } else {
-    //   console.log(collection);
+      if (search.trim().length !== 0){
+        const filterBySearch = allVehicles.filter((item) => {
+           let result;
+           if( item.vehicle_name.includes(search.trim().toLocaleLowerCase())){
+ result = true;
+           }
+           else{
+ result = false;
+           }
+          return result;
+        
 
-    //   const filterBySearch = collection.filter((item) => {
-    //     return item.vehicle_name.includes(name.trim().toLocaleLowerCase());
-    //   });
-    //   console.log(filterBySearch);
-    //   setCollection(filterBySearch);
-    // }
+        });
+          setCollection(filterBySearch);
+          setAllVehicles(filterBySearch);
+      }else{
+setAllVehicles(allProductC);
+      }
+    ;
+    // setCollection(filterBySearch);
+    // setAllVehicles(filterBySearch);
+    // allVehicles(allProductC);
   }
   async function getAllVehicles() {
     setLoader(true);
     VehicleClass.getAllVehicles()
       .then((res) => {
         setAllVehicles(res.data.data);
+        setAllProductc(res.data.data);
         setLoader(false);
         console.log(res.data.data);
       })
@@ -256,37 +262,37 @@ export const SegmentListing = () => {
         })
         .catch((error) => {});
     } else {
-    //   const storageRef = ref(storage, img.name);
-    //   const uploadTask = uploadBytesResumable(storageRef, img);
-    //   uploadTask.on(
-        // "state_changed",
-        // (snapshot) => {},
-        // (err) => console.log(err),
-        // () => {
-        //   getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            // console.log(url);
-            // segmentData.current.vehicle_icon = url;
-            VehicleClass.editVehicle(id, segmentData.current)
-              .then((res) => {
-                console.log(res);
-                setLoader(false);
-                getAllVehicles();
-                setLoader(false);
-                ShowSnackbar({
-                  show: true,
-                  vertical: "top",
-                  horizontal: "right",
-                  msg: "Segment Updated successfully",
-                  type: "success",
-                });
-              })
-              .catch((err) => {
-                console.log(err);
-                setLoader(false);
-              });
-        //   });
-        // }
-    //   );
+      //   const storageRef = ref(storage, img.name);
+      //   const uploadTask = uploadBytesResumable(storageRef, img);
+      //   uploadTask.on(
+      // "state_changed",
+      // (snapshot) => {},
+      // (err) => console.log(err),
+      // () => {
+      //   getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+      // console.log(url);
+      // segmentData.current.vehicle_icon = url;
+      VehicleClass.editVehicle(id, segmentData.current)
+        .then((res) => {
+          console.log(res);
+          setLoader(false);
+          getAllVehicles();
+          setLoader(false);
+          ShowSnackbar({
+            show: true,
+            vertical: "top",
+            horizontal: "right",
+            msg: "Segment Updated successfully",
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoader(false);
+        });
+      //   });
+      // }
+      //   );
     }
     setLocalImg("");
     setImg({});

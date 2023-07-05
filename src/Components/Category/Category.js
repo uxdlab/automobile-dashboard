@@ -58,26 +58,33 @@ export const Category = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
-  const [collection, setCollection] = React.useState(
-    allProducts.slice(0, countPerPage)
-  );
+   const [allProductC, setAllProductc] = useState([]);
+  const [collection, setCollection] = React.useState([]);
   function handleSearchClick(name) {
+
+    
     if (name.length === 0) {
       setCollection(allProducts.slice(0, countPerPage));
     }
-    const filterBySearch = allProducts.filter((item) => {
-      return item.category_name.includes(name.trim().toLocaleLowerCase());
-    });
-    setCollection(filterBySearch);
-    // if(searchValue === ""){
-    //     setCollection(allProducts)
-    // }else{
-    //     const filterBySearch = collection.filter((item)=>{
-    //         return item.category_name.includes(name.trim().toLocaleLowerCase());
+     if (name.trim().length !== 0) {
+       const filterBySearch = allProducts.filter((item) => {
 
-    //     })
-    //     setCollection(filterBySearch)
-    // }
+         let result;
+         if (item.category_name.includes(name.trim().toLocaleLowerCase())) {
+           result = true;
+         } else {
+           result = false;
+         }
+         return result;
+       });
+       setCollection(filterBySearch);
+       setAllProducts(filterBySearch);
+     }else{
+      setAllProducts(allProductC);
+     }
+   
+    // setCollection(filterBySearch);
+   
   }
 
   React.useEffect(() => {
@@ -101,6 +108,7 @@ export const Category = () => {
     ProductClass.getAllProducts()
       .then((res) => {
         setAllProducts(res.data.data);
+        setAllProductc(res.data.data);
         setLoader(false);
         console.log(res.data.data);
       })

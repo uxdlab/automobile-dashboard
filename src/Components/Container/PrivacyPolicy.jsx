@@ -72,7 +72,7 @@ export default function PrivacyPolicy() {
                      show: true,
                      vertical: "top",
                      horizontal: "right",
-                     msg: "Private And Policy add successfully",
+                     msg: "Privacy Policy add successfully",
                      type: "success",
                    });
                  })
@@ -102,7 +102,7 @@ export default function PrivacyPolicy() {
                      show: true,
                      vertical: "top",
                      horizontal: "right",
-                     msg: "Private And Policy update successfully",
+                     msg: "Privacy Policy update successfully",
                      type: "success",
                    });
                  })

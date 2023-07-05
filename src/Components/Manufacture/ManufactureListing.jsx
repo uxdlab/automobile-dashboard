@@ -67,20 +67,32 @@ export const ManufactureListing = () => {
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
   // const [search, setSearch] = React.useState("");
-  const [collection, setCollection] = React.useState(
-    allManufecture.slice(0, countPerPage)
-  );
+  const [allProductC, setAllProductc] = useState([]);
+  const [collection, setCollection] = React.useState([]);
 
   function handleSearchClick(search) {
     console.log(search);
     if (search.length === 0) {
       setCollection(allManufecture.slice(0, countPerPage));
     }
-    const filterBySearch = allManufecture.filter((item) => {
-      return item.manufacturer_name.includes(search.trim().toLocaleLowerCase());
-    });
-    console.log(filterBySearch);
-    setCollection(filterBySearch);
+    if (search.trim().length !== 0){
+const filterBySearch = allManufecture.filter((item) => {
+   let result;
+   if (item.manufacturer_name.includes(search.trim().toLocaleLowerCase())){
+     result = true;
+   }else{
+     result = false;
+   }
+     return result;
+});
+ setCollection(filterBySearch);
+ setManufacture(filterBySearch);
+    }else{
+      setManufacture(allProductC);
+    }
+    
+    // console.log(filterBySearch);
+    // setCollection(filterBySearch);
   }
   React.useEffect(() => {
     if (!value) {
@@ -103,6 +115,7 @@ export const ManufactureListing = () => {
       .then((res) => {
         setLoader(false);
         setManufacture(res.data.data);
+        setAllProductc(res.data.data);
         console.log(res.data.data);
       })
       .catch((err) => {

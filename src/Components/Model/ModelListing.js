@@ -55,6 +55,7 @@ export const ModelListing = () => {
   const [brandError, setBrandError] = useState("");
   const [modelValidation, setModelValidation] = useState("");
   const [useValidation, setUseValidation] = useState();
+   const [allProductC, setAllProductc] = useState([]);
   const [snackbar, ShowSnackbar] = useState({
     show: false,
     vertical: "top",
@@ -76,9 +77,7 @@ export const ModelListing = () => {
     model_icon: "",
   });
 
-  const [collection, setCollection] = React.useState(
-    allData.slice(0, countPerPage)
-  );
+  const [collection, setCollection] = React.useState([]);
   function validationForm() {
     let errors = {};
     console.log(seleBrand);
@@ -94,6 +93,7 @@ export const ModelListing = () => {
 
       //   return false;
       // }
+    
       return true;
     }
   }
@@ -101,20 +101,33 @@ export const ModelListing = () => {
     if (search.length === 0) {
       setCollection(allData.slice(0, countPerPage));
     }
-    const filterBySearch = allData.filter((item) => {
-      return item.model_name.includes(search.trim().toLocaleLowerCase());
-    });
-    setCollection(filterBySearch);
-    // if(searchValue === ""){
-    //     setCollection(allData);
-    // }else{
-    //     // console(collection)
-    //     const filterBySearch = collection.filter((item)=>{
-    //         return item.model_name.includes(name.trim().toLocaleLowerCase())
-    //     })
-    //     setCollection(filterBySearch);
-    // }
+    if (search.trim().length !== 0){
+      let filterBySearch = allData.filter((item) => {
+          //  console.log(item.brand[0].brand_name.includes(search.trim().toLocaleLowerCase());
+          let result;
+          if (
+            item.model_name.includes(search.trim().toLocaleLowerCase()) ||
+            item.brand[0].brand_name.includes(
+              search.trim().toLocaleLowerCase()
+            ) ||
+            item.segment[0].vehicle_name.includes(search.trim().toLocaleLowerCase())
+          ) {
+            result = true;
+          } else {
+            result = false;
+          }
+          return result
+        // return item.model_name.includes(search.trim().toLocaleLowerCase());
+       });
+       setCollection(filterBySearch);
+       setData(filterBySearch);
+    }else{
+      setData(allProductC);
+    }
+    
+   
   }
+  
   useEffect(() => {
     getAllModels();
     getSegmentBrand();
@@ -125,6 +138,7 @@ export const ModelListing = () => {
       .then((res) => {
       
         setData(res.data.data);
+        setAllProductc(res.data.data);
         setLoader(false);
       })
       .catch((err) => console.log(err));

@@ -16,6 +16,7 @@ import { Triangle } from "react-loader-spinner";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useNavigate } from "react-router";
+import "./Style.css";
 
 export default function Product({
   AllProducts,
@@ -23,30 +24,40 @@ export default function Product({
   productData,
   files,
   setFiles,
+  setModelValidation,
+  setUseValidation,
+  brandError,
+  useValidation,
+  setBrandError,
 }) {
+      
   const [loader, setLoader] = useState(true);
   const [segment, setSegment] = useState([]);
   const [brand, setBrand] = useState([]);
   const [model, setModel] = useState([]);
   const [selectBrand, setSelectBrand] = useState([]);
   const [selectModel, setSelectModel] = useState([]);
- 
+
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
   const [aa, setAa] = useState([]);
   const [imgURLs, setimgURLs] = useState([]);
- 
+  const [segId, setSegId] = useState("");
+
   const navigate = useNavigate();
+  console.log(segment);
+  console.log(selectBrand);
+  console.log(selectModel);
 
   function filterd(fil) {
+    setSelectBrand([]);
+    setSegId(fil);
     let singleSegment = segment.filter((item) => item._id === fil);
-
     AllProducts.current[index].product_segment_aaray = [fil];
     AllProducts.current[index].segment_name = singleSegment[0].vehicle_name;
     setSelectBrand(brand.filter((e) => e.segment_array.includes(fil)));
     setSelectModel([]);
   }
-  
 
   function addModelData(e) {
     AllProducts.current[index].product_model_aaray = [e.target.value];
@@ -62,7 +73,13 @@ export default function Product({
 
     AllProducts.current[index].brand_name = brandName[0].brand_name;
 
-    setSelectModel(model.filter((e) => e.model_brand_array.includes(fil)));
+    setSelectModel(
+      model.filter(
+        (e) =>
+          e.model_brand_array.includes(fil) &&
+          e.model_segment_array.includes(segId)
+      )
+    );
   }
 
   const imgPrev = (imgs) => {
@@ -101,7 +118,10 @@ export default function Product({
   return (
     <>
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
         open={loader}
       >
         <Box>
@@ -215,6 +235,7 @@ export default function Product({
                   <label>Product MRP(₹) :</label>
                   <br />
                   <input
+                    id="number2"
                     required
                     type="number"
                     placeholder="Enter In Rupees"
@@ -226,7 +247,7 @@ export default function Product({
                       }
                     }}
                     defaultValue={productData ? productData[0].MRP : ""}
-                    className="form-control w-100"
+                    className="form-control w-100 "
                     style={{ height: "50px" }}
                   />
                 </Grid>
@@ -246,7 +267,9 @@ export default function Product({
                           ? productData[0].product_segment_aaray[0]
                           : ""
                       }
-                      onChange={(e) => {filterd(e.target.value)
+                      onChange={(e) => {
+                        filterd(e.target.value);
+                         setUseValidation("");
                       }}
                       label="Outlined"
                       variant="outlined"
@@ -267,11 +290,16 @@ export default function Product({
                     <Select
                       className="select-style1"
                       fullWidth
-                      required
+                      //  required
                       defaultValue={
                         productData ? productData[0].product_brand_aaray[0] : ""
                       }
-                      onChange={(e) => filteredModel(e.target.value)}
+                      onChange={(e) => {
+                        filteredModel(e.target.value);
+                        setModelValidation("");
+                        setUseValidation(e.target.value);
+                        setBrandError({});
+                      }}
                       input={<OutlinedInput label="Name" />}
                     >
                       {selectBrand.map((item, index) => (
@@ -280,6 +308,11 @@ export default function Product({
                         </MenuItem>
                       ))}
                     </Select>
+                    {brandError.useValidation ? (
+                      <p style={{ color: "red" }}>{brandError.useValidation}</p>
+                    ) : (
+                      ""
+                    )}
                   </FormControl>
                 </Grid>
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
@@ -290,11 +323,15 @@ export default function Product({
                     <Select
                       className="select-style1"
                       fullWidth
-                      required
+                      //  required
                       defaultValue={
                         productData ? productData[0].product_model_aaray[0] : ""
                       }
-                      onChange={addModelData}
+                      onChange={(e) => {
+                        addModelData(e);
+                        setModelValidation(e.target.value);
+                        setBrandError({});
+                      }}
                       input={<OutlinedInput label="Name" />}
                     >
                       {selectModel.map((item, index) => (
@@ -303,6 +340,14 @@ export default function Product({
                         </MenuItem>
                       ))}
                     </Select>
+                   
+                    {brandError.modelValidation ? (
+                      <p style={{ color: "red" }}>
+                        {brandError.modelValidation}
+                      </p>
+                    ) : (
+                      ""
+                    )}
                   </FormControl>
                 </Grid>
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
@@ -439,25 +484,40 @@ export default function Product({
                     </div>
                   </div>
                 </Grid>
-                <Grid item xl={5} md={6} sm={12} sx={12}>
-                  <Box align="right" mt={6} sx={{display:"flrx",justifyContent:"end"}}>
-                    <Button
-                      className="cancel_btn me-3"
-                      onClick={() => navigate("/product")}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="submit"
-                      className="custom-btn"
-                      variant="contained"
-                    >
-                      Add
-                    </Button>
-                  </Box>
-                </Grid>
               </Grid>
             </Box>
+            <Grid container>
+              <Grid
+                item
+                // xl={7}
+                // md={6}
+                // sm={12}
+                // sx={}
+                sx={{ width: "100%" }}
+              >
+                <Box
+                  align="right"
+                  mt={6}
+                  // sx={{ display: "flrx", justifyContent: "end" }}
+                >
+                  <Button
+                    className="cancel_btn me-3"
+                    onClick={() => navigate("/product")}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="custom-btn"
+                    variant="contained"
+                    sx={{ marginRight: "10px" }}
+                    onClick={()=> console.log(brandError)}
+                  >
+                    Add
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       ) : (

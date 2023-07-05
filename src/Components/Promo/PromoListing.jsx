@@ -51,7 +51,7 @@ export default function PromoListing() {
   const [propId, setPropId] = useState({});
   const [currentPage, setCurrentPage] = React.useState(1);
   const [value, setValue] = React.useState("");
-  const [countPerPage, setCountPerPage] = useState(5);
+  const [countPerPage, setCountPerPage] = useState(10);
   const [collection, setCollection] = React.useState(
     allPromos.splice(0, countPerPage)
   );
@@ -144,7 +144,7 @@ export default function PromoListing() {
   };
 
   const updatePromos = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     console.log(propId._id);
 
     setLoader(true);
@@ -464,7 +464,7 @@ export default function PromoListing() {
               className="me-2"
               onChange={(e) => setCountPerPage(e.target.value * 1)}
             >
-              <option>5</option>
+              {/* <option>5</option> */}
               <option>10</option>
               <option>15</option>
             </select>

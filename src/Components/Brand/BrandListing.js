@@ -75,19 +75,32 @@ export const BrandListing = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
-  const [collection, setCollection] = React.useState(
-    allCompanies.slice(0, countPerPage)
-  );
+  const [allProductC, setAllProductc] = useState([]);
+  const [collection, setCollection] = React.useState([]);
   const [searchValue, setSearchValue] = useState("");
+
 
   function handleSearchClick(search) {
     if (search.length === 0) {
       setCollection(allCompanies.slice(0, countPerPage));
     }
-    const filterBySearch = allCompanies.filter((item) => {
-      return item.brand_name.includes(search.trim().toLocaleLowerCase());
-    });
-    setCollection(filterBySearch);
+     if (search.trim().length !== 0){
+       const filterBySearch = allCompanies.filter((item) => {
+        let result;
+        if (item.brand_name.includes(search.trim().toLocaleLowerCase())){
+          result = true;
+        }else{
+          result = false;
+        } 
+       return result;
+       });
+       setCollection(filterBySearch);
+       setCompanies(filterBySearch);
+     }else{
+      setCompanies(allProductC);
+     }
+   
+    // setCollection(filterBySearch);
 
     // if(searchValue ===""){
     //     setCollection(allCompanies);
@@ -151,6 +164,7 @@ export const BrandListing = () => {
     CompanyClass.getAllCompany().then((res) => {
       setLoader(false);
       setCompanies(res.data.data);
+      setAllProductc(res.data.data);
     });
   }
   function deleteCompany() {

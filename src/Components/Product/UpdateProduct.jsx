@@ -561,6 +561,7 @@ export default function UpdateProduct() {
                                 setProductData([pro]);
                                 setModelValidation("");
                                 setUseValidation(e.target.value);
+                                setBrandError({});
                               }}
                             >
                               {selectBrand.map((item, index) => (
@@ -597,6 +598,7 @@ export default function UpdateProduct() {
                               onChange={(e) => {
                                 editModelData(e);
                                 setModelValidation(e.target.value);
+                                setBrandError({});
                               }}
                               label="Outlined"
                               variant="outlined"
