@@ -386,7 +386,7 @@ console.log(collection);
                             hidden
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             type="file"
-                            onChange={(e) => setFileData(e)}
+                            onChange={(e) => setFileData(e.target.value.name)}
                           />
                         </Button>
                       </div>

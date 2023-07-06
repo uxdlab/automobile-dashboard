@@ -26,6 +26,7 @@ import moment from "moment/moment";
 import Pagination from "rc-pagination";
 import { Delete, Edit } from "@mui/icons-material";
 import { useEffect } from "react";
+import "./Style.css";
 
 export default function PromoListing() {
   const [snackbar, ShowSnackbar] = useState({
@@ -250,7 +251,12 @@ export default function PromoListing() {
                       placeholder="Enter Promo Name"
                       className="form-control w-100 mb-2"
                       onChange={(e) => {
-                        setPromoName(e.target.value);
+                        // setPromoName(e.target.value.trim());
+                         if (e.target.value == " ") {
+                           e.target.value = "";
+                         } else {
+                            setPromoName(e.target.value.trim());
+                         }
                       }}
                     />
                   </div>
