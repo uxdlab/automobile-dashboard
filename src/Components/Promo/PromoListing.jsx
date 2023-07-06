@@ -22,6 +22,7 @@ import {
   getPromoId,
   updatePromo,
 } from "../../services/Promo";
+import moment from "moment/moment";
 import Pagination from "rc-pagination";
 import { Delete, Edit } from "@mui/icons-material";
 import { useEffect } from "react";
@@ -400,8 +401,9 @@ export default function PromoListing() {
                       type="date"
                       name="date"
                       placeholder="date placeholder"
-                      defaultValue={propId.expire_at}
+                      defaultValue={moment(propId.expire_at).format("YYYY-MM-DD")}
                       onChange={(e) => {
+                     
                         setEditDate(e.target.value);
                       }}
                       style={{
@@ -495,7 +497,7 @@ export default function PromoListing() {
                       {res.minimum_order}
                     </TableCell>
                     <TableCell className="text_cap text-center">
-                      {res.expire_at}
+                      {moment(res.expire_at).format("DD-MM-YYYY")}
                     </TableCell>
                     <TableCell className="text_cap text-center">
                       {res.promo_code}
