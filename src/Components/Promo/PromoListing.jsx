@@ -470,10 +470,10 @@ export default function PromoListing() {
                   <b>Discount</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>Minimum Orde</b>
+                  <b>Minimum Order</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>Expiry</b>
+                  <b>Expiry Date</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Promo Code</b>
