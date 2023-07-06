@@ -34,11 +34,8 @@ export default function PromoListing() {
     msg: "data added",
     type: "error",
   });
+  const [searchValue, setSearchValue] = useState("");
 
-  const [editName, setEditName] = useState("");
-  const [editDate, setEditDate] = useState("");
-  const [editOrder, setEditOrder] = useState("");
-  const [editDiscount, setEditDisount] = useState("");
   const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
@@ -49,12 +46,15 @@ export default function PromoListing() {
   const [allPromos, setAllPromos] = useState([]);
   const [id, setId] = useState("");
   const [propId, setPropId] = useState({});
+  const [editDiscount, setEditDisount] = useState(propId.discount_percentage);
+  const [editName, setEditName] = useState(propId.promo_name);
+  const [editDate, setEditDate] = useState(propId.expire_at);
+  const [editOrder, setEditOrder] = useState(propId.minimum_order);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [value, setValue] = React.useState("");
   const [countPerPage, setCountPerPage] = useState(10);
-  const [collection, setCollection] = React.useState(
-    allPromos.splice(0, countPerPage)
-  );
+  const [allProductC, setAllProductc] = useState([]);
+  const [collection, setCollection] = React.useState([]);
   console.log(allPromos.length);
   React.useEffect(() => {
     if (!value) {
@@ -74,6 +74,31 @@ export default function PromoListing() {
     discount_percentage: "",
     minimum_order: "",
   });
+  function handleSearchClick(search) {
+    console.log(allPromos);
+    if (search.length === 0) {
+      setCollection(allPromos.slice(0, countPerPage));
+    }
+    if (search.trim().length !== 0) {
+      const filterBySearch = allPromos.filter((item) => {
+        let result;
+        if (
+          item.promo_name
+            .toLocaleLowerCase()
+            .includes(search.trim().toLocaleLowerCase())
+        ) {
+          result = true;
+        } else {
+          result = false;
+        }
+        return result;
+      });
+      setCollection(filterBySearch);
+      setAllPromos(filterBySearch);
+    } else {
+      setAllPromos(allProductC);
+    }
+  }
 
   const addPromos = (e, data) => {
     e.preventDefault();
@@ -120,9 +145,14 @@ export default function PromoListing() {
 
   const getAllPromos = () => {
     setLoader(false);
-    getAllPromo().then((res) => {
-      setAllPromos(res.data);
-    });
+    getAllPromo()
+      .then((res) => {
+        setAllPromos(res.data);
+        setAllProductc(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -145,8 +175,13 @@ export default function PromoListing() {
 
   const updatePromos = (e) => {
     e.preventDefault();
-    console.log(propId._id);
-
+    console.log({
+      promo_name: editName,
+      expire_at: editDate,
+      discount_percentage: editDiscount,
+      minimum_order: editOrder,
+    });
+ 
     setLoader(true);
     setOpen1(false);
     updatePromo(propId._id, {
@@ -159,6 +194,14 @@ export default function PromoListing() {
         console.log(res);
         //  getPromosById();
         setLoader(false);
+        getAllPromos();
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Promo Update successfully",
+          type: "success",
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -167,6 +210,7 @@ export default function PromoListing() {
 
   return (
     <>
+      <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
       <Box sx={{ width: "100%" }} px={2}>
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -180,7 +224,7 @@ export default function PromoListing() {
               ariaLabel="triangle-loading"
               wrapperStyle={{}}
               wrapperClassName=""
-              //   visible={loader}
+              visible={loader}
             />
           </Box>
         </Backdrop>
@@ -360,7 +404,12 @@ export default function PromoListing() {
                       onChange={(e) => {
                         setEditDate(e.target.value);
                       }}
-                      style={{ width: "1000px" }}
+                      style={{
+                        width: "400px",
+                        height: "40px",
+                        borderRadius: "8px",
+                        border: "2px solid grey",
+                      }}
                     />
                   </div>
                   <Box align="right" className="mt-3">
@@ -389,6 +438,11 @@ export default function PromoListing() {
                 className="w-75 form-control"
                 type="search"
                 placeholder="Search"
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                  handleSearchClick(e.target.value);
+                  // setSearch(e.target.value);
+                }}
               />
             </Grid>
             <Grid item md={6} xs={12} className="d-flex justify-content-end">
