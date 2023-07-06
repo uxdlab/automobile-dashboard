@@ -67,8 +67,7 @@ export const Category = () => {
       setCollection(allProducts.slice(0, countPerPage));
     }
      if (name.trim().length !== 0) {
-       const filterBySearch = allProducts.filter((item) => {
-
+       const filterBySearch = allProductC.filter((item) => {
          let result;
          if (item.category_name.includes(name.trim().toLocaleLowerCase())) {
            result = true;

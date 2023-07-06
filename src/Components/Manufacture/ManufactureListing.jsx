@@ -76,14 +76,14 @@ export const ManufactureListing = () => {
       setCollection(allManufecture.slice(0, countPerPage));
     }
     if (search.trim().length !== 0){
-const filterBySearch = allManufecture.filter((item) => {
-   let result;
-   if (item.manufacturer_name.includes(search.trim().toLocaleLowerCase())){
-     result = true;
-   }else{
-     result = false;
-   }
-     return result;
+const filterBySearch = allProductC.filter((item) => {
+  let result;
+  if (item.manufacturer_name.includes(search.trim().toLocaleLowerCase())) {
+    result = true;
+  } else {
+    result = false;
+  }
+  return result;
 });
  setCollection(filterBySearch);
  setManufacture(filterBySearch);

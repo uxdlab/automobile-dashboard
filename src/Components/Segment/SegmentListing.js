@@ -94,17 +94,14 @@ export const SegmentListing = () => {
       setCollection(allVehicles.slice(0, countPerPage));
     }
       if (search.trim().length !== 0){
-        const filterBySearch = allVehicles.filter((item) => {
-           let result;
-           if( item.vehicle_name.includes(search.trim().toLocaleLowerCase())){
- result = true;
-           }
-           else{
- result = false;
-           }
+        const filterBySearch = allProductC.filter((item) => {
+          let result;
+          if (item.vehicle_name.includes(search.trim().toLocaleLowerCase())) {
+            result = true;
+          } else {
+            result = false;
+          }
           return result;
-        
-
         });
           setCollection(filterBySearch);
           setAllVehicles(filterBySearch);

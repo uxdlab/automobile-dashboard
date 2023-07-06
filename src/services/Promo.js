@@ -15,3 +15,7 @@ export const getPromoId = async(id) =>{
 export const updatePromo = async(id,data) =>{
     return await axios.put(`${apis.baseUrl}${apis.promo.updatePromo}${id}`,data)
 }
+
+export const deletePromo = async(id) =>{
+    return await axios.delete(`${apis.baseUrl}${apis.promo.deletePromo}${id}`)
+}

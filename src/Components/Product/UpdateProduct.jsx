@@ -133,28 +133,33 @@ export default function UpdateProduct() {
             const uploadTask = uploadBytesResumable(storageRef, item2);
             promises.push(uploadTask);
           });
-          Promise.all(promises)
-            .then((res) => {
-              let urls = [];
-              res.map((res2, index) => {
-                getDownloadURL(res2.ref).then((url) => {
-                  urls.push(url);
-                  if (index == res.length - 1) {
-                    AllProducts.current[0].image = [...urls, ...checkURL];
+           if (files.length === promises.length) {
+             Promise.all(promises)
+               .then((res) => {
+                 let urls = [];
+                 res.map((res2, index) => {
+                   getDownloadURL(res2.ref).then((url) => {
+                     urls.push(url);
+                     if (index == res.length - 1) {
+                       setTimeout(() => {
+                         AllProducts.current[0].image = [...urls, ...checkURL];
 
-                    editItem(id, AllProducts.current[0])
-                      .then((res) => {
-                        sessionStorage.setItem("updated", "true");
-                        navigate("/product");
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                  }
-                });
-              });
-            })
-            .catch((err) => console.log(err));
+                         editItem(id, AllProducts.current[0])
+                           .then((res) => {
+                             sessionStorage.setItem("updated", "true");
+                             navigate("/product");
+                           })
+                           .catch((err) => {
+                             console.log(err);
+                           });
+                       }, 1000);
+                     }
+                   });
+                 });
+               })
+               .catch((err) => console.log(err));
+           }
+         
         } else {
           AllProducts.current[0].image = checkURL;
           editItem(id, AllProducts.current[0])

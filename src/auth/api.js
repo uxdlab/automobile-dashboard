@@ -68,7 +68,8 @@ export const apis = {
            add: "promo/addpromo",
            getAllPromo: "promo/allpromo",
            getPromoId: "promo/",
-           updatePromo:"promo/",
+           updatePromo: "promo/",
+           deletePromo: "promo/",
          },
        };
 

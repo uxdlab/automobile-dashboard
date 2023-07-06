@@ -30,7 +30,6 @@ export default function Product({
   useValidation,
   setBrandError,
 }) {
-      
   const [loader, setLoader] = useState(true);
   const [segment, setSegment] = useState([]);
   const [brand, setBrand] = useState([]);
@@ -52,6 +51,8 @@ export default function Product({
   function filterd(fil) {
     setSelectBrand([]);
     setSegId(fil);
+    AllProducts.current[0].product_brand_aaray = [];
+    AllProducts.current[0].brand_name = "";
     let singleSegment = segment.filter((item) => item._id === fil);
     AllProducts.current[index].product_segment_aaray = [fil];
     AllProducts.current[index].segment_name = singleSegment[0].vehicle_name;
@@ -83,7 +84,7 @@ export default function Product({
   }
 
   const imgPrev = (imgs) => {
-    setAa([...aa, ...imgs]);
+    setAa((aa) => [...aa, ...imgs]);
 
     console.log(aa);
     let arr = [];
@@ -269,7 +270,8 @@ export default function Product({
                       }
                       onChange={(e) => {
                         filterd(e.target.value);
-                         setUseValidation("");
+                        setUseValidation("");
+                        
                       }}
                       label="Outlined"
                       variant="outlined"
@@ -291,10 +293,11 @@ export default function Product({
                       className="select-style1"
                       fullWidth
                       //  required
-                      defaultValue={
-                        productData ? productData[0].product_brand_aaray[0] : ""
-                      }
+                      // defaultValue={
+                      //   productData ? productData[0].product_brand_aaray[0] : ""
+                      // }
                       onChange={(e) => {
+                      
                         filteredModel(e.target.value);
                         setModelValidation("");
                         setUseValidation(e.target.value);
@@ -340,7 +343,7 @@ export default function Product({
                         </MenuItem>
                       ))}
                     </Select>
-                   
+
                     {brandError.modelValidation ? (
                       <p style={{ color: "red" }}>
                         {brandError.modelValidation}
@@ -511,7 +514,7 @@ export default function Product({
                     className="custom-btn"
                     variant="contained"
                     sx={{ marginRight: "10px" }}
-                    onClick={()=> console.log(brandError)}
+                    onClick={() => console.log(brandError)}
                   >
                     Add
                   </Button>

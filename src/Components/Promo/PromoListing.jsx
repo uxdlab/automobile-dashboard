@@ -21,6 +21,7 @@ import {
   getAllPromo,
   getPromoId,
   updatePromo,
+  deletePromo,
 } from "../../services/Promo";
 import moment from "moment/moment";
 import Pagination from "rc-pagination";
@@ -82,7 +83,7 @@ export default function PromoListing() {
       setCollection(allPromos.slice(0, countPerPage));
     }
     if (search.trim().length !== 0) {
-      const filterBySearch = allPromos.filter((item) => {
+      const filterBySearch = allProductC.filter((item) => {
         let result;
         if (
           item.promo_name
@@ -209,6 +210,23 @@ export default function PromoListing() {
         console.log(err);
       });
   };
+
+ const deletePromoCode = (id) =>{
+   setLoader(true);
+   deletePromo(id)
+   .then((res)=>{console.log(res)
+  setLoader(false);
+   getAllPromos();
+    ShowSnackbar({
+           show: true,
+           vertical: "top",
+           horizontal: "right",
+           msg: "Promo Code  Deleted successfully",
+           type: "success",
+         });
+})
+.catch((err)=>{console.log(err)})
+  }
 
   return (
     <>
@@ -387,7 +405,7 @@ export default function PromoListing() {
                     <input
                       type="number"
                       required
-                      placeholder="Minimum Order Amount"
+                      placeholder="Enter Minimum Order Amount"
                       className="form-control w-100 mb-2"
                       defaultValue={propId.minimum_order}
                       onChange={(e) => {
@@ -509,6 +527,8 @@ export default function PromoListing() {
                       {res.promo_code}
                     </TableCell>
                     <TableCell className="text-center">
+                       <Delete
+                        className="pointer" onClick={(e)=>{deletePromoCode(res._id)}}/>
                       <Edit
                         onClick={() => {
                           console.log(res);

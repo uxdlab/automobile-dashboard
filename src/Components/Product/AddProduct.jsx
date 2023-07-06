@@ -24,9 +24,7 @@ export default function AddProduct() {
   const [useValidation, setUseValidation] = useState("");
   const [brandError, setBrandError] = useState("");
   const [modelValidation, setModelValidation] = useState("");
-   
 
-   
   const AllProducts = useRef([
     {
       product_name: "",
@@ -48,7 +46,7 @@ export default function AddProduct() {
   function validationForm() {
     let errors = {};
     if (useValidation !== undefined) {
-        console.log(useValidation.length);
+      console.log(useValidation.length);
       if (useValidation.length === 0) {
         // alert("please select brand");
         errors.useValidation = "Please select brand";
@@ -60,13 +58,12 @@ export default function AddProduct() {
           setBrandError({ modelValidation: "Please select model" });
 
           return false;
-        }else{
-            return true;
+        } else {
+          return true;
         }
       }
-    }else{
-          return false;
-
+    } else {
+      return false;
     }
   }
   useEffect(() => {
@@ -88,33 +85,42 @@ export default function AddProduct() {
       files.map((item) => {
         console.log(item);
         // return
-        const storageRef = ref(storage, `image${Math.random()}${item.name}`);
+        const storageRef = ref(storage, `image${Math.random()}${item.name}`); 
         const uploadTask = uploadBytesResumable(storageRef, item);
+        console.log(uploadTask)
         promises.push(uploadTask);
-      });
-      Promise.all(promises)
-        .then((res) => {
-          let urls = [];
-          res.map((res2, index) => {
-            getDownloadURL(res2.ref).then((url) => {
-              urls.push(url);
-              if (index == res.length - 1) {
-                AllProducts.current[0].image = [...urls];
 
-                addItem(AllProducts.current[0])
-                  .then((res) => {
-                    setLoader(false);
-                    navigate("/product");
-                    sessionStorage.setItem("added", "true");
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              }
+      });
+
+      if (files.length === promises.length) {
+        Promise.all(promises)
+          .then((res) => {
+            let urls = [];
+            res.map((res2, index) => {
+              getDownloadURL(res2.ref).then((url) => {
+                urls.push(url);
+                console.log(urls);
+                if (index == files.length - 1) {
+                  console.log(urls);
+                  setTimeout(()=>{ AllProducts.current[0].image = [...urls];
+
+                                   addItem(AllProducts.current[0])
+                                     .then((res) => {
+                                       setLoader(false);
+                                       navigate("/product");
+                                       sessionStorage.setItem("added", "true");
+                                     })
+                                     .catch((err) => {
+                                       console.log(err);
+                                     });},1000)
+                 
+                }
+              });
             });
-          });
-        })
-        .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
+          
+      }
     } else {
       setLoader(false);
       ShowSnackbar({

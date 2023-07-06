@@ -85,14 +85,14 @@ export const BrandListing = () => {
       setCollection(allCompanies.slice(0, countPerPage));
     }
      if (search.trim().length !== 0){
-       const filterBySearch = allCompanies.filter((item) => {
-        let result;
-        if (item.brand_name.includes(search.trim().toLocaleLowerCase())){
-          result = true;
-        }else{
-          result = false;
-        } 
-       return result;
+       const filterBySearch = allProductC.filter((item) => {
+         let result;
+         if (item.brand_name.includes(search.trim().toLocaleLowerCase())) {
+           result = true;
+         } else {
+           result = false;
+         }
+         return result;
        });
        setCollection(filterBySearch);
        setCompanies(filterBySearch);

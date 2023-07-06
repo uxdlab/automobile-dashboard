@@ -48,13 +48,36 @@ export default function ProductListing() {
   const [rows, setRows] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [collection, setCollection] = React.useState([]);
-console.log(collection);
+// console.log(collection);
+const [useValidation, setUseValidation] = useState("");
+const [brandError, setBrandError] = useState("");
+const [modelValidation, setModelValidation] = useState("");
+   
+function validationForm() {
+let errors = {};
+if (useValidation !== undefined) {
+  console.log(useValidation.length);
+  if (fileData.name === undefined) {
+    console.log(fileData);
+    // alert("please select brand");
+    errors.useValidation = "Please Select Upload File";
+    setBrandError({ useValidation: "Please Select Upload File" });
+    return false;
+  } else {
+   
+      return true;
+    
+  }
+} else {
+  return false;
+}
+}
   function handleSearchClick(search) {
     if (search.length === 0) {
       setCollection(allProduct.slice(0, countPerPage));
     }
     if (search.trim().length !== 0) {
-    const filterBySearch = allProduct.filter((item) => {
+    const filterBySearch = allProductC.filter((item) => {
       let result;
 
       if (
@@ -65,7 +88,7 @@ console.log(collection);
       ) {
         result = true;
       } else {
-        result = false; 
+        result = false;
       }
 
       console.log(
@@ -82,55 +105,60 @@ console.log(collection);
 
   }
   const readUploadFile = (e) => {
-    if (e.target !== undefined) {
-      e.preventDefault();
+     let valid = validationForm();
+     console.log(valid);
+     if(valid){
+                if (e.target !== undefined) {
+                  e.preventDefault();
 
-      if (e.target.files) {
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-          const data = e.target.result;
-          const workbook = xlsx.read(data, { type: "array" });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
-          const json = xlsx.utils.sheet_to_json(worksheet);
-          if (json.length !== 0) {
-            let ss = json.filter(
-              (e) =>
-                allProduct.findIndex(
-                  (s) => s.product_name === e.product_name.toLowerCase()
-                ) === -1
-            );
-            setLoader(true);
-            setOpen1(false);
-            const body = { dataSet: ss };
+                  if (e.target.files) {
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                      const data = e.target.result;
+                      const workbook = xlsx.read(data, { type: "array" });
+                      const sheetName = workbook.SheetNames[0];
+                      const worksheet = workbook.Sheets[sheetName];
+                      const json = xlsx.utils.sheet_to_json(worksheet);
+                      if (json.length !== 0) {
+                        let ss = json.filter(
+                          (e) =>
+                            allProduct.findIndex(
+                              (s) =>
+                                s.product_name === e.product_name.toLowerCase()
+                            ) === -1
+                        );
+                        setLoader(true);
+                        setOpen1(false);
+                        const body = { dataSet: ss };
 
-            await bulkProduct(body).then((es) => {
-              setOpen1(true);
-              let data = es.data.data;
+                        await bulkProduct(body).then((es) => {
+                          setOpen1(true);
+                          let data = es.data.data;
 
-              let result = [];
-              if (data.length !== 0) {
-                if (data[0].error) {
-                  data.map((e) => {
-                    result.push({
-                      error: Object.keys(e.error),
-                      row: e.index + 2,
-                    });
-                  });
-                } else {
-                  setOpen1(false);
+                          let result = [];
+                          if (data.length !== 0) {
+                            if (data[0].error) {
+                              data.map((e) => {
+                                result.push({
+                                  error: Object.keys(e.error),
+                                  row: e.index + 2,
+                                });
+                              });
+                            } else {
+                              setOpen1(false);
+                            }
+                          }
+                          setLoader(false);
+                          setRows(result);
+                        });
+                      } else {
+                        alert("You upload empty file.Plase check!");
+                      }
+                    };
+                    reader.readAsArrayBuffer(e.target.files[0]);
+                  }
                 }
               }
-              setLoader(false);
-              setRows(result);
-            });
-          } else {
-            alert("You upload empty file.Plase check!");
-          }
-        };
-        reader.readAsArrayBuffer(e.target.files[0]);
-      }
-    }
   };
 
   React.useEffect(() => {
@@ -353,7 +381,7 @@ console.log(collection);
               pageSize={countPerPage}
               onChange={updatePage}
               current={currentPage}
-              total={ allProduct.length}
+              total={allProduct.length}
               style={{ color: "green" }}
             />
           </Box>
@@ -386,9 +414,21 @@ console.log(collection);
                             hidden
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             type="file"
-                            onChange={(e) => setFileData(e.target.value.name)}
+                            onChange={(e) => {
+                              setFileData(e.target.files[0]);
+                              setUseValidation(e.target.value);
+                              setBrandError({});
+                            }}
                           />
                         </Button>
+                        {brandError.useValidation ? (
+                          <p style={{ color: "red" }}>
+                            {brandError.useValidation}
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                        <p>{fileData.name}</p>
                       </div>
                       {/* </div> */}
                       <br />

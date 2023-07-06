@@ -102,23 +102,25 @@ export const ModelListing = () => {
       setCollection(allData.slice(0, countPerPage));
     }
     if (search.trim().length !== 0){
-      let filterBySearch = allData.filter((item) => {
-          //  console.log(item.brand[0].brand_name.includes(search.trim().toLocaleLowerCase());
-          let result;
-          if (
-            item.model_name.includes(search.trim().toLocaleLowerCase()) ||
-            item.brand[0].brand_name.includes(
-              search.trim().toLocaleLowerCase()
-            ) ||
-            item.segment[0].vehicle_name.includes(search.trim().toLocaleLowerCase())
-          ) {
-            result = true;
-          } else {
-            result = false;
-          }
-          return result
+      let filterBySearch = allProductC.filter((item) => {
+        //  console.log(item.brand[0].brand_name.includes(search.trim().toLocaleLowerCase());
+        let result;
+        if (
+          item.model_name.includes(search.trim().toLocaleLowerCase()) ||
+          item.brand[0].brand_name.includes(
+            search.trim().toLocaleLowerCase()
+          ) ||
+          item.segment[0].vehicle_name.includes(
+            search.trim().toLocaleLowerCase()
+          )
+        ) {
+          result = true;
+        } else {
+          result = false;
+        }
+        return result;
         // return item.model_name.includes(search.trim().toLocaleLowerCase());
-       });
+      });
        setCollection(filterBySearch);
        setData(filterBySearch);
     }else{
