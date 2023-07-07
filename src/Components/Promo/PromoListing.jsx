@@ -147,11 +147,15 @@ export default function PromoListing() {
   };
 
   const getAllPromos = () => {
-    setLoader(false);
+     setLoader(true);
     getAllPromo()
       .then((res) => {
-        setAllPromos(res.data);
-        setAllProductc(res.data);
+        if(res){
+
+          setAllPromos([...res.data].reverse());
+          setAllProductc([...res.data].reverse());
+        }
+          setLoader(false);
       })
       .catch((err) => {
         console.log(err);

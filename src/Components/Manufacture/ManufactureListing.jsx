@@ -111,11 +111,14 @@ const filterBySearch = allProductC.filter((item) => {
   }, []);
 
   function getAllManufacture() {
+    setLoader(true);
+    
     getAllManufacturers()
       .then((res) => {
         setLoader(false);
         setManufacture(res.data.data);
         setAllProductc(res.data.data);
+        setLoader(false);
         console.log(res.data.data);
       })
       .catch((err) => {
