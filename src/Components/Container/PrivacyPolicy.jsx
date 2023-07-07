@@ -22,15 +22,18 @@ export default function PrivacyPolicy() {
    });
    const [brandError, setBrandError] = useState("");
    const [useValidation, setUseValidation] = useState();
+   function isHtml(input) {
+     return /<[a-z]+\d?(\s+[\w-]+=("[^"]*"|'[^']*'))*\s*\/?>|&#?\w+;/i.test(
+       input
+     );
+   }
      function validationForm() {
        let errors = {};
        console.log(addPolicy);
        if (addPolicy !== undefined) {
-         let aboutUs1 = addPolicy.includes("</div>")
+         let aboutUs1 = isHtml(addPolicy)
            ? addPolicy
-               .split(">")[1]
-               .split("<")[0]
-               .trim()
+               .replace( /(<([^>]+)>)/ig, '')
            : addPolicy;
          if (aboutUs1.length === 0) {
            errors.useValidation = "Please Enter Privacy Policy";

@@ -25,15 +25,19 @@ export default function TermAndCondition() {
    });
  const [brandError, setBrandError] = useState("");
  const [useValidation, setUseValidation] = useState();
+ 
+ function isHtml(input) {
+   return /<[a-z]+\d?(\s+[\w-]+=("[^"]*"|'[^']*'))*\s*\/?>|&#?\w+;/i.test(
+     input
+   );
+ }
+ 
     function validationForm() {
       let errors = {};
       console.log(addCondition);
       if (addCondition !== undefined) {
-        let aboutUs1 = addCondition.includes("</div>")
-          ? addCondition
-              .split(">")[1]
-              .split("<")[0]
-              .trim()
+        let aboutUs1 = isHtml(addCondition)
+          ? addCondition.replace(/(<([^>]+)>)/gi, "")
           : addCondition;
         if (aboutUs1.length === 0) {
           errors.useValidation = "Please Enter Terms & Condition";

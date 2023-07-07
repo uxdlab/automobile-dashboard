@@ -23,17 +23,20 @@ export default function Abouts() {
     const [useValidation, setUseValidation] = useState();
   // const [updateAbout, setUpdateAbout] = useState("")
   console.log(aboutUS.about_us);
-
+function isHtml(input) {
+  return /<[a-z]+\d?(\s+[\w-]+=("[^"]*"|'[^']*'))*\s*\/?>|&#?\w+;/i.test(input);
+}
   function validationForm() {
     let errors = {};
-    console.log(aboutUS)
+
+    console.log(aboutUS.replace( /(<([^>]+)>)/ig, '').length)
     if (aboutUS!==undefined){
-       let aboutUs1 = aboutUS.includes("</div>")
+       let aboutUs1 = isHtml(aboutUS)
          ? (aboutUS
-             .split(">")[1]
-             .split("<")[0]
-             .trim())
+             .replace( /(<([^>]+)>)/ig, ''))
          : aboutUS ; 
+        console.log(aboutUs1.length);
+
                   if (aboutUs1.length === 0) {
                     errors.useValidation = "Please Enter About Us";
                     setBrandError({ useValidation: "Please Enter About Us" });
@@ -83,6 +86,7 @@ export default function Abouts() {
   };
 
   const getAboutById = () => {
+    setLoader(true);
     getAbout()
       .then((res) => {
         let a = res.data.data;
@@ -90,6 +94,7 @@ export default function Abouts() {
         // console.log(a[0].about_us);
         setAboutUs(res.data.data[0].about_us);
         setAboutUsData(res.data.data[0]);
+        setLoader(false);
         //  ShowSnackbar({
         //    show: true,
         //    vertical: "top",
