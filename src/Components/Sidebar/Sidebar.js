@@ -54,7 +54,7 @@ export const Sidebar = ({ children }) => {
                            </Box>
                         <Box onClick={() => navigate('/orders')} className="fs-5" sx={{ cursor: 'pointer' }}>Orders  <hr className="mb-3 mt-1" /></Box>
                         <Box onClick={() => navigate('/promo-listing')} className="fs-5" sx={{cursor:"pointer"}}>Promo <hr className="mb-3 mt-1"/></Box>
-                        <Box onClick={() => setContainerToggel(!containerToggel)} className="fs-5" sx={{cursor:"pointer"}}><span className="d-flex justify-content-between align-items-center"><span>Containt</span> <KeyboardArrowDownIcon sx={{transition:'0.3s',transform:containerToggel?'rotate(180deg)':'rotate(360deg)'}}/></span><hr className="mb-3 mt-1"/></Box>
+                        <Box onClick={() => setContainerToggel(!containerToggel)} className="fs-5" sx={{cursor:"pointer"}}><span className="d-flex justify-content-between align-items-center"><span>Content</span> <KeyboardArrowDownIcon sx={{transition:'0.3s',transform:containerToggel?'rotate(180deg)':'rotate(360deg)'}}/></span><hr className="mb-3 mt-1"/></Box>
                             <Box sx={{padding:"0 0 0 20px",transition:"0.3s",overflow:"hidden",height:containerToggel ? '310px' :'0px'}}>
                                 {containerData.map((item,index) => {
                                     return (
