@@ -58,7 +58,7 @@ export default function PromoListing() {
   const [countPerPage, setCountPerPage] = useState(10);
   const [allProductC, setAllProductc] = useState([]);
   const [collection, setCollection] = React.useState([]);
-  console.log(allPromos.length);
+  // console.log(allPromos.length);
   React.useEffect(() => {
     if (!value) {
       updatePage(1);
@@ -130,7 +130,7 @@ export default function PromoListing() {
           show: true,
           vertical: "top",
           horizontal: "right",
-          msg: "Promo Added successfully",
+          msg: "Promo Added Successfully",
           type: "success",
         });
       })
@@ -206,7 +206,7 @@ export default function PromoListing() {
           show: true,
           vertical: "top",
           horizontal: "right",
-          msg: "Promo Update successfully",
+          msg: "Promo Updated Successfully",
           type: "success",
         });
       })

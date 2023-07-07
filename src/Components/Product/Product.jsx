@@ -53,6 +53,7 @@ export default function Product({
     setSegId(fil);
     AllProducts.current[0].product_brand_aaray = [];
     AllProducts.current[0].brand_name = "";
+    console.log(AllProducts.current[0]);
     let singleSegment = segment.filter((item) => item._id === fil);
     AllProducts.current[index].product_segment_aaray = [fil];
     AllProducts.current[index].segment_name = singleSegment[0].vehicle_name;

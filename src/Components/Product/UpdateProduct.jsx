@@ -778,29 +778,38 @@ export default function UpdateProduct() {
                         </Grid>
                       </Grid>
                     </Box>
+                    <Grid>
+                      <Grid
+                        item
+                        xl={12}
+                        // md={9}
+                        // sm={12}
+                        // sx={12}
+                        // sx={{ border: "2px solid red", width: "100%" }}
+                      >
+                        <Box align="right" mt={6}>
+                          <Button
+                            className="cancel_btn me-3"
+                            onClick={() => navigate("/product")}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            type="submit"
+                            className="custom-btn"
+                            variant="contained"
+                            sx={{ marginRight: "10px" }}
+                          >
+                            Update
+                          </Button>
+                        </Box>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               );
             })}
-            <Grid container>
-              <Grid item xl={7} md={9} sm={12} sx={12}>
-                <Box align="right" mt={6}>
-                  <Button
-                    className="cancel_btn me-3"
-                    onClick={() => navigate("/product")}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    className="custom-btn"
-                    variant="contained"
-                  >
-                    Update
-                  </Button>
-                </Box>
-              </Grid>
-            </Grid>
+           
           </form>
         </Box>
       ) : null}
