@@ -118,7 +118,7 @@ export const Sidebar = ({ children }) => {
               className="fs-5"
               sx={{ cursor: "pointer" }}
             >
-              Orders <hr className="mb-3 mt-1" />
+              Payment Details <hr className="mb-3 mt-1" />
             </Box>
             <Box
               onClick={() => navigate("/promo-listing")}
