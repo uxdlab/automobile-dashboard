@@ -554,7 +554,7 @@ export default function UpdateProduct() {
                                 setProductData([pro]);
                                 setUseValidation("");
                                 setModelValidation("");
-                                setSelectedBrand("");
+                                // setSelectedBrand("");
                               }}
                             >
                               {segment.map((item, index) => (
@@ -578,14 +578,14 @@ export default function UpdateProduct() {
                               required
                               label="Outlined"
                               variant="outlined"
-                              value={selectedBrand}
+                              // value={selectedBrand}
                               defaultValue={
                                 productData
                                   ? productData[0].product_brand_aaray[0]
                                   : ""
                               }
                               onChange={(e) => {
-                                setSelectedBrand(e.target.value);
+                                // setSelectedBrand(e.target.value);
                                 filteredModel(e.target.value);
                                 let pro = productData[0];
                                 pro.product_model_aaray = "";

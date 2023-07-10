@@ -299,7 +299,7 @@ export default function Product({
                           : ""
                       }
                       onChange={(e) => {
-                        setSelectedBrand("");
+                        // setSelectedBrand("");
                         filterd(e.target.value);
                         setUseValidation("");
                       }}
@@ -322,13 +322,13 @@ export default function Product({
                     <Select
                       className="select-style1"
                       fullWidth
-                      value={selectedBrand}
+                      // value={selectedBrand}
                       //  required
-                      // defaultValue={
-                      //   productData ? productData[0].product_brand_aaray[0] : ""
-                      // }
+                      defaultValue={
+                        productData ? productData[0].product_brand_aaray[0] : ""
+                      }
                       onChange={(e) => {
-                        setSelectedBrand(e.target.value);
+                        // setSelectedBrand(e.target.value);
                         filteredModel(e.target.value);
                         setModelValidation("");
                         setUseValidation(e.target.value);
