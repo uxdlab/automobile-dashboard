@@ -388,16 +388,24 @@ const filterBySearch = allProductC.filter((item) => {
   }
 
   const imgPrev = (imgs) => {
-    console.log("okkkkkkkkkkkkkkkkkkkkkkk");
-    console.log(imgs);
-    if (imgs.name !== undefined) {
-      let url = URL.createObjectURL(imgs);
-      setLocalImg(url);
-      console.log(url);
-    } else {
-      setLocalImg(undefined);
-    }
-  };
+     if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+       if (imgs.name !== undefined) {
+         let url = URL.createObjectURL(imgs);
+         setLocalImg(url);
+         console.log(url);
+       } else {
+         setLocalImg(undefined);
+       }
+      }else{
+         ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Please select jpg, jpeg, png, svg image",
+        type: "error",
+      });
+       }
+     }
 
   const ExistNameCheck = (e) => {
     e.preventDefault();

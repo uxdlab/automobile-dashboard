@@ -5,13 +5,13 @@
 }
 
 .left {
-  width:50%;
-  background-color: #ebeafe;
+  width: 50%;
+  background-color: #ebeafe !important;
   /* height: 100%; */
 }
 
 .right {
-  width:60%;
+  width: 60%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,10 +22,9 @@
   width: 60%;
 }
 
-.main-img{
-   size: cover;
+.main-img {
+  size: cover;
 }
-
 
 @media only screen and (max-width: 700px) {
   .main_sec {
@@ -36,12 +35,11 @@
     /* height: 40vh; */
     display: none;
   }
-  .right{
+  .right {
     width: 100%;
   }
 
-  .inner{
+  .inner {
     width: 80%;
   }
-
 }

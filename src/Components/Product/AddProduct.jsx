@@ -202,6 +202,7 @@ export default function AddProduct() {
                 key={index}
                 AllProducts={AllProducts}
                 index={index}
+                ShowSnackbar={ShowSnackbar}
               />
             );
           })}

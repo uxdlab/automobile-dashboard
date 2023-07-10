@@ -79,27 +79,26 @@ export const BrandListing = () => {
   const [collection, setCollection] = React.useState([]);
   const [searchValue, setSearchValue] = useState("");
 
-
   function handleSearchClick(search) {
     if (search.length === 0) {
       setCollection(allCompanies.slice(0, countPerPage));
     }
-     if (search.trim().length !== 0){
-       const filterBySearch = allProductC.filter((item) => {
-         let result;
-         if (item.brand_name.includes(search.trim().toLocaleLowerCase())) {
-           result = true;
-         } else {
-           result = false;
-         }
-         return result;
-       });
-       setCollection(filterBySearch);
-       setCompanies(filterBySearch);
-     }else{
+    if (search.trim().length !== 0) {
+      const filterBySearch = allProductC.filter((item) => {
+        let result;
+        if (item.brand_name.includes(search.trim().toLocaleLowerCase())) {
+          result = true;
+        } else {
+          result = false;
+        }
+        return result;
+      });
+      setCollection(filterBySearch);
+      setCompanies(filterBySearch);
+    } else {
       setCompanies(allProductC);
-     }
-   
+    }
+
     // setCollection(filterBySearch);
 
     // if(searchValue ===""){
@@ -246,9 +245,9 @@ export const BrandListing = () => {
               });
             })
             .catch((err) => {
-            console.log(err);
-            setLoader(false);
-            getAllCompany();
+              console.log(err);
+              setLoader(false);
+              getAllCompany();
             });
         });
       }
@@ -419,14 +418,25 @@ export const BrandListing = () => {
   }
 
   const imgPrev = (imgs) => {
-    console.log("okkkkkkkkkkkkkkkkkkkkkkk");
+    // console.log("okkkkkkkkkkkkkkkkkkkkkkk");
     console.log(imgs);
-    if (imgs.name !== undefined) {
-      let url = URL.createObjectURL(imgs);
-      setLocalImg(url);
-      console.log(url);
-    } else {
-      setLocalImg(undefined);
+    console.log(imgs.name);
+    if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+      if (imgs.name !== undefined) {
+        let url = URL.createObjectURL(imgs);
+        setLocalImg(url);
+        console.log(url);
+      } else {
+        setLocalImg(undefined);
+      }
+    }else{
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Please select jpg, jpeg, png, svg image",
+        type: "error",
+      });
     }
   };
 
@@ -434,13 +444,14 @@ export const BrandListing = () => {
     e.preventDefault();
     if (img.name !== undefined) {
       let arr = allCompanies.filter(
-        (item) =>
-          item.brand_name === brandData.current.brand_name
-          // allCompanies.filter(
-          //   (item) => item.brand_name === brandData.current.brand_name
-          // )
+        (item) => item.brand_name === brandData.current.brand_name
+        // allCompanies.filter(
+        //   (item) => item.brand_name === brandData.current.brand_name
+        // )
       );
-      {console.log(arr)}
+      {
+        console.log(arr);
+      }
       if (arr.length !== 0) {
         ShowSnackbar({
           show: true,
@@ -853,7 +864,7 @@ export const BrandListing = () => {
                     onClick={() => {
                       setOpen1(false);
                       setLocalImg("");
-                      setSelectSegment([])
+                      setSelectSegment([]);
                     }}
                   >
                     Cancel

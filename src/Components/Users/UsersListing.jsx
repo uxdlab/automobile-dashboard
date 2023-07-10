@@ -11,6 +11,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Grid,
 } from "@mui/material";
 import Pagination from "rc-pagination";
 import { getAllUsers, activeUser, deleteUsers } from "../../services/Users";
@@ -35,6 +36,7 @@ export default function UsersListing() {
   });
   const [deleteModel, setDeleteModel] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [allProductC, setAllProductc] = useState([]);
   React.useEffect(() => {
     if (!value) {
       updatePage(1);
@@ -46,11 +48,36 @@ export default function UsersListing() {
     getAllUsers()
       .then((res) => {
         setAllUsers(res.data.data);
+        setAllProductc(res.data.data);
         console.log(res.data.data);
         setLoader(false);
       })
       .catch((err) => console.log(err));
   };
+  function handleSearchClick(search) {
+    if (search.length === 0) {
+      setCollection(allUsers.slice(0, countPerPage));
+    }
+    if (search.trim().length !== 0) {
+      const filterBySearch = allProductC.filter((item) => {
+        let result;
+        if (
+          item.fullName.includes(search.trim().toLocaleLowerCase()) ||
+          item.email.includes(search.trim().toLocaleLowerCase()) ||
+          item.mobile_number.includes(search.trim().toLocaleLowerCase())
+        ) {
+          result = true;
+        } else {
+          result = false;
+        }
+        return result;
+      });
+      setCollection(filterBySearch);
+      setAllUsers(filterBySearch);
+    } else {
+      setAllUsers(allProductC);
+    }
+  }
   const active = (userId) =>
     activeUser(userId).then((res) => {
       console.log("okok");
@@ -133,6 +160,20 @@ export default function UsersListing() {
           <h1 class="d-inline-block">Customers</h1>
         </div>
       </div>
+      <Box className="pb-3 d-flex justify-content-between mx-3">
+        <Grid container>
+          <Grid item md={6} xs={12}>
+            <input
+              className="w-75 form-control"
+              type="search"
+              placeholder="Search"
+              onChange={(e) => {
+                handleSearchClick(e.target.value);
+              }}
+            />
+          </Grid>
+        </Grid>
+      </Box>
       <Box sx={{ mx: 2 }} className="border">
         <Table>
           <TableHead>

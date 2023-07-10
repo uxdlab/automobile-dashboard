@@ -58,32 +58,29 @@ export const Category = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
-   const [allProductC, setAllProductc] = useState([]);
+  const [allProductC, setAllProductc] = useState([]);
   const [collection, setCollection] = React.useState([]);
   function handleSearchClick(name) {
-
-    
     if (name.length === 0) {
       setCollection(allProducts.slice(0, countPerPage));
     }
-     if (name.trim().length !== 0) {
-       const filterBySearch = allProductC.filter((item) => {
-         let result;
-         if (item.category_name.includes(name.trim().toLocaleLowerCase())) {
-           result = true;
-         } else {
-           result = false;
-         }
-         return result;
-       });
-       setCollection(filterBySearch);
-       setAllProducts(filterBySearch);
-     }else{
+    if (name.trim().length !== 0) {
+      const filterBySearch = allProductC.filter((item) => {
+        let result;
+        if (item.category_name.includes(name.trim().toLocaleLowerCase())) {
+          result = true;
+        } else {
+          result = false;
+        }
+        return result;
+      });
+      setCollection(filterBySearch);
+      setAllProducts(filterBySearch);
+    } else {
       setAllProducts(allProductC);
-     }
-   
+    }
+
     // setCollection(filterBySearch);
-   
   }
 
   React.useEffect(() => {
@@ -387,14 +384,23 @@ export const Category = () => {
   }
 
   const imgPrev = (imgs) => {
-    console.log("okkkkkkkkkkkkkkkkkkkkkkk");
     console.log(imgs);
-    if (imgs.name !== undefined) {
-      let url = URL.createObjectURL(imgs);
-      setLocalImg(url);
-      console.log(url);
+    if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+      if (imgs.name !== undefined) {
+        let url = URL.createObjectURL(imgs);
+        setLocalImg(url);
+        console.log(url);
+      } else {
+        setLocalImg(undefined);
+      }
     } else {
-      setLocalImg(undefined);
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Please select jpg, jpeg, png, svg image",
+        type: "error",
+      });
     }
   };
 

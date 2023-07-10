@@ -83,10 +83,13 @@ export default function PrivacyPolicy() {
              }
   }
   const getAllPrivacy = ()=>{
+      setLoader(true);
       getPrivacy()
       .then((res)=>{console.log(res);
        setAddPolicy(res.data.data[0].privacy_policy);
-       setPolicyData(res.data.data[0]);})
+       setPolicyData(res.data.data[0]);
+        setLoader(false);})
+       
       .catch((err)=>console.log(err))
   }
   const updatePrivacyAndPolicy = (id)=>{

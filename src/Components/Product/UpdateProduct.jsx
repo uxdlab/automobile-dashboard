@@ -27,11 +27,13 @@ import {
 } from "firebase/storage";
 import { storage } from "../../auth/Firebase";
 import { SnackBar } from "../Assets/SnackBar";
+import { ContactSupportOutlined } from "@mui/icons-material";
 
 export default function UpdateProduct() {
   const { id } = useParams();
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
+  const [selectedBrand, setSelectedBrand] = useState("");
   const [productData, setProductData] = useState({});
   const [allProductData, setAllProductData] = useState([]);
   const [imgURLs, setimgURLs] = useState([]);
@@ -133,33 +135,32 @@ export default function UpdateProduct() {
             const uploadTask = uploadBytesResumable(storageRef, item2);
             promises.push(uploadTask);
           });
-           if (files.length === promises.length) {
-             Promise.all(promises)
-               .then((res) => {
-                 let urls = [];
-                 res.map((res2, index) => {
-                   getDownloadURL(res2.ref).then((url) => {
-                     urls.push(url);
-                     if (index == files.length - 1) {
-                       setTimeout(() => {
-                         AllProducts.current[0].image = [...urls, ...checkURL];
+          if (files.length === promises.length) {
+            Promise.all(promises)
+              .then((res) => {
+                let urls = [];
+                res.map((res2, index) => {
+                  getDownloadURL(res2.ref).then((url) => {
+                    urls.push(url);
+                    if (index == files.length - 1) {
+                      setTimeout(() => {
+                        AllProducts.current[0].image = [...urls, ...checkURL];
 
-                         editItem(id, AllProducts.current[0])
-                           .then((res) => {
-                             sessionStorage.setItem("updated", "true");
-                             navigate("/product");
-                           })
-                           .catch((err) => {
-                             console.log(err);
-                           });
-                       }, 1000);
-                     }
-                   });
-                 });
-               })
-               .catch((err) => console.log(err));
-           }
-         
+                        editItem(id, AllProducts.current[0])
+                          .then((res) => {
+                            sessionStorage.setItem("updated", "true");
+                            navigate("/product");
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          });
+                      }, 1000);
+                    }
+                  });
+                });
+              })
+              .catch((err) => console.log(err));
+          }
         } else {
           AllProducts.current[0].image = checkURL;
           editItem(id, AllProducts.current[0])
@@ -181,37 +182,32 @@ export default function UpdateProduct() {
             const uploadTask = uploadBytesResumable(storageRef, item2);
             promises.push(uploadTask);
           });
-          if (files.length === promises.length){
-              Promise.all(promises)
-                .then((res) => {
-                  let urls = [];
-                  res.map((res2, index) => {
-                    getDownloadURL(res2.ref).then((url) => {
-                      urls.push(url);
-                      if (index == files.length - 1) {
-                        setTimeout(()=>{
-                           AllProducts.current[0].image = [
-                             ...urls,
-                             ...checkURL,
-                           ];
+          if (files.length === promises.length) {
+            Promise.all(promises)
+              .then((res) => {
+                let urls = [];
+                res.map((res2, index) => {
+                  getDownloadURL(res2.ref).then((url) => {
+                    urls.push(url);
+                    if (index == files.length - 1) {
+                      setTimeout(() => {
+                        AllProducts.current[0].image = [...urls, ...checkURL];
 
-                           editItem(id, AllProducts.current[0])
-                             .then((res) => {
-                               sessionStorage.setItem("updated", "true");
-                               navigate("/product");
-                             })
-                             .catch((err) => {
-                               console.log(err);
-                             });
-                        },1000)
-                       
-                      }
-                    });
+                        editItem(id, AllProducts.current[0])
+                          .then((res) => {
+                            sessionStorage.setItem("updated", "true");
+                            navigate("/product");
+                          })
+                          .catch((err) => {
+                            console.log(err);
+                          });
+                      }, 1000);
+                    }
                   });
-                })
-                .catch((err) => console.log(err));
+                });
+              })
+              .catch((err) => console.log(err));
           }
-          
         } else {
           AllProducts.current[0].image = checkURL;
           editItem(id, AllProducts.current[0])
@@ -271,17 +267,35 @@ export default function UpdateProduct() {
   }, [uploadimg]);
 
   const imgPrev = (imgs) => {
-    setUploadImg((uploadimg) => [...uploadimg, ...imgs]);
-    console.log(uploadimg);
-    setFiles(imgs);
-    let arr = [];
-    imgs.map((item) => {
-      let url = URL.createObjectURL(item);
-      arr.push(url);
-      console.log(url);
+    console.log(imgs[0].name);
+    let num = 0;
+    imgs.forEach((res) => {
+      if (!res.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+        num++;
+      }
     });
-    setimgURLs([...imgURLs, ...arr]);
-    console.log(imgURLs);
+    if (num === 0) {
+      setUploadImg((uploadimg) => [...uploadimg, ...imgs]);
+      console.log(uploadimg);
+      setFiles(imgs);
+      let arr = [];
+      imgs.map((item) => {
+        let url = URL.createObjectURL(item);
+        arr.push(url);
+        console.log(url);
+      });
+      setimgURLs([...imgURLs, ...arr]);
+      console.log(imgURLs);
+    }
+    else {
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Please select jpg, jpeg, png, svg images",
+        type: "error",
+      });
+    }
   };
 
   const ExistNameCheck = (e) => {
@@ -540,6 +554,7 @@ export default function UpdateProduct() {
                                 setProductData([pro]);
                                 setUseValidation("");
                                 setModelValidation("");
+                                setSelectedBrand("");
                               }}
                             >
                               {segment.map((item, index) => (
@@ -563,12 +578,14 @@ export default function UpdateProduct() {
                               required
                               label="Outlined"
                               variant="outlined"
+                              value={selectedBrand}
                               defaultValue={
                                 productData
                                   ? productData[0].product_brand_aaray[0]
                                   : ""
                               }
                               onChange={(e) => {
+                                setSelectedBrand(e.target.value);
                                 filteredModel(e.target.value);
                                 let pro = productData[0];
                                 pro.product_model_aaray = "";
@@ -809,7 +826,6 @@ export default function UpdateProduct() {
                 </Grid>
               );
             })}
-           
           </form>
         </Box>
       ) : null}

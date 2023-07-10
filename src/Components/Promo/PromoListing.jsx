@@ -88,6 +88,12 @@ export default function PromoListing() {
         if (
           item.promo_name
             .toLocaleLowerCase()
+            .includes(search.trim().toLocaleLowerCase()) ||
+          item.discount_percentage
+            .toString()
+            .includes(search.trim().toLocaleLowerCase()) ||
+          item.minimum_order
+            .toString()
             .includes(search.trim().toLocaleLowerCase())
         ) {
           result = true;
@@ -147,15 +153,14 @@ export default function PromoListing() {
   };
 
   const getAllPromos = () => {
-     setLoader(true);
+    setLoader(true);
     getAllPromo()
       .then((res) => {
-        if(res){
-
+        if (res) {
           setAllPromos([...res.data].reverse());
           setAllProductc([...res.data].reverse());
         }
-          setLoader(false);
+        setLoader(false);
       })
       .catch((err) => {
         console.log(err);
@@ -188,7 +193,7 @@ export default function PromoListing() {
       discount_percentage: editDiscount,
       minimum_order: editOrder,
     });
- 
+
     setLoader(true);
     setOpen1(false);
     updatePromo(propId._id, {
@@ -215,22 +220,25 @@ export default function PromoListing() {
       });
   };
 
- const deletePromoCode = (id) =>{
-   setLoader(true);
-   deletePromo(id)
-   .then((res)=>{console.log(res)
-  setLoader(false);
-   getAllPromos();
-    ShowSnackbar({
-           show: true,
-           vertical: "top",
-           horizontal: "right",
-           msg: "Promo Code  Deleted successfully",
-           type: "success",
-         });
-})
-.catch((err)=>{console.log(err)})
-  }
+  const deletePromoCode = (id) => {
+    setLoader(true);
+    deletePromo(id)
+      .then((res) => {
+        console.log(res);
+        setLoader(false);
+        getAllPromos();
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Promo Code  Deleted successfully",
+          type: "success",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -274,11 +282,11 @@ export default function PromoListing() {
                       className="form-control w-100 mb-2"
                       onChange={(e) => {
                         // setPromoName(e.target.value.trim());
-                         if (e.target.value == " ") {
-                           e.target.value = "";
-                         } else {
-                            setPromoName(e.target.value.trim());
-                         }
+                        if (e.target.value == " ") {
+                          e.target.value = "";
+                        } else {
+                          setPromoName(e.target.value.trim());
+                        }
                       }}
                     />
                   </div>
@@ -429,9 +437,10 @@ export default function PromoListing() {
                       type="date"
                       name="date"
                       placeholder="date placeholder"
-                      defaultValue={moment(propId.expire_at).format("YYYY-MM-DD")}
+                      defaultValue={moment(propId.expire_at).format(
+                        "YYYY-MM-DD"
+                      )}
                       onChange={(e) => {
-                     
                         setEditDate(e.target.value);
                       }}
                       style={{
@@ -531,8 +540,12 @@ export default function PromoListing() {
                       {res.promo_code}
                     </TableCell>
                     <TableCell className="text-center">
-                       <Delete
-                        className="pointer" onClick={(e)=>{deletePromoCode(res._id)}}/>
+                      <Delete
+                        className="pointer"
+                        onClick={(e) => {
+                          deletePromoCode(res._id);
+                        }}
+                      />
                       <Edit
                         onClick={() => {
                           console.log(res);

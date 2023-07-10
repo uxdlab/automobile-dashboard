@@ -29,6 +29,7 @@ export default function Product({
   brandError,
   useValidation,
   setBrandError,
+  ShowSnackbar,
 }) {
   const [loader, setLoader] = useState(true);
   const [segment, setSegment] = useState([]);
@@ -37,11 +38,20 @@ export default function Product({
   const [selectBrand, setSelectBrand] = useState([]);
   const [selectModel, setSelectModel] = useState([]);
 
+  const [selectedBrand, setSelectedBrand] = useState("");
+
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
   const [aa, setAa] = useState([]);
   const [imgURLs, setimgURLs] = useState([]);
   const [segId, setSegId] = useState("");
+  //  const [snackbar, ShowSnackbar] = useState({
+  //    show: false,
+  //    vertical: "top",
+  //    horizontal: "right",
+  //    msg: "data added",
+  //    type: "error",
+  //  });
 
   const navigate = useNavigate();
   console.log(segment);
@@ -70,6 +80,7 @@ export default function Product({
   }
 
   function filteredModel(fil) {
+    setSelectModel([]);
     AllProducts.current[index].product_brand_aaray = [fil];
     let brandName = selectBrand.filter((item) => item._id === fil);
 
@@ -85,22 +96,40 @@ export default function Product({
   }
 
   const imgPrev = (imgs) => {
-    setAa((aa) => [...aa, ...imgs]);
+    console.log(imgs);
+    let num = 0;
 
-    console.log(aa);
-    let arr = [];
-    console.log(arr);
-    imgs.map((item) => {
-      let url = URL.createObjectURL(item);
-      arr.push(url);
-      console.log(arr);
+    imgs.forEach((res) => {
+      console.log(res.name);
+      if (!res.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+        num++;
+      }
     });
-    setimgURLs([...imgURLs, ...arr]);
-    console.log(imgURLs);
+    if (num == 0) {
+      setAa((aa) => [...aa, ...imgs]);
+
+      let arr = [];
+
+      imgs.map((item) => {
+        let url = URL.createObjectURL(item);
+        console.log(url.name);
+        arr.push(url);
+      });
+      setimgURLs([...imgURLs, ...arr]);
+    } else {
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Please select jpg, jpeg, png, svg images",
+        type: "error",
+      });
+    }
   };
+
   useEffect(() => {
     setFiles(aa);
-    console.log(aa);
+    console.log(aa.name);
   }, [aa]);
   useEffect(() => {
     CallMultipleApi.CallMultipleApi([
@@ -270,9 +299,9 @@ export default function Product({
                           : ""
                       }
                       onChange={(e) => {
+                        setSelectedBrand("");
                         filterd(e.target.value);
                         setUseValidation("");
-                        
                       }}
                       label="Outlined"
                       variant="outlined"
@@ -293,12 +322,13 @@ export default function Product({
                     <Select
                       className="select-style1"
                       fullWidth
+                      value={selectedBrand}
                       //  required
                       // defaultValue={
                       //   productData ? productData[0].product_brand_aaray[0] : ""
                       // }
                       onChange={(e) => {
-                      
+                        setSelectedBrand(e.target.value);
                         filteredModel(e.target.value);
                         setModelValidation("");
                         setUseValidation(e.target.value);
@@ -306,6 +336,7 @@ export default function Product({
                       }}
                       input={<OutlinedInput label="Name" />}
                     >
+                      {/* <MenuItem value="">Select Brand</MenuItem> */}
                       {selectBrand.map((item, index) => (
                         <MenuItem key={index} value={item._id}>
                           {item.brand_name}

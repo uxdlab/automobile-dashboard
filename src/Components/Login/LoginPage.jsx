@@ -18,37 +18,38 @@ import axios from "axios";
 import { apis } from "../../auth/api";
 import { Triangle } from "react-loader-spinner";
 
-
 export const LoginPage = () => {
   const navigate = useNavigate();
   const matches = useMediaQuery("(min-width:700px)");
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
-  const [match, setMatch] = useState(false)
+  const [match, setMatch] = useState(false);
   const [showPass, setShowPass] = useState(false);
-  const [loader,setLoader]  = useState(false)
+  const [loader, setLoader] = useState(false);
   //   const [showAlert, setShowAlert] = useState(false);
 
   function handleSubmit(e) {
-    setLoader(true)
-    e.preventDefault()
+    setLoader(true);
+    e.preventDefault();
     let info = {
-      email:user,
-      password: pass
-}
+      email: user,
+      password: pass,
+    };
 
-  axios.post(`${apis.baseUrl}admin/login`,info)
-  .then((res)=>{
-    console.log(res)
-    localStorage.setItem("isLoggedIn", "true");
-    setLoader(false)
-    navigate('/')
-    setMatch(false)
-  }).catch((err)=>{
-    console.log(err)
-    setMatch(true)
-    setLoader(false)
-  })
+    axios
+      .post(`${apis.baseUrl}admin/login`, info)
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("isLoggedIn", "true");
+        setLoader(false);
+        navigate("/");
+        setMatch(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setMatch(true);
+        setLoader(false);
+      });
     // if (user === 'admin@gmail.com' && pass === 'admin@123') {
     //   localStorage.setItem("isLoggedIn", "true");
     //   console.log('user LogedInnnnn')
@@ -58,62 +59,75 @@ export const LoginPage = () => {
   }
 
   return (
-
     <>
-     <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={loader}
-            >
-                <Box>
-                    <Triangle
-                        height="80"
-                        width="80"
-                        color="black"
-                        ariaLabel="triangle-loading"
-                        wrapperStyle={{}}
-                        wrapperClassName=""
-                        visible={loader}
-                    />
-                </Box>
-            </Backdrop>
-    <section className={style.main_sec}>
-      <div className={style.left}>
-        <img src="/images/logo.png" alt="eee" className="h-100 w-100" />
-      </div>
-      <div className={style.right}>
-        <div className={style.inner}>
-          {!matches?<img className="w-100 py-2" src="/images/navbar_logo.png" alt="Logo" />:''}
-          <h1>Welcome</h1>
-          <h4>Sign in to your Account</h4>
-          {!match?<br />:<h5 style={{color:'red'}}>Please Enter valid Id or Password</h5>}
-          <form onSubmit={handleSubmit}>
-            <TextField
-              placeholder="Enter Your Username"
-              type="email"
-              fullWidth
-              //   value={user}
-              onChange={(e) => setUser(e.target.value)}
-            />
-            <Typography
-              sx={{ fontSize: "14px", mb: 2, color: "gray" }}
-            >test@gmail.com</Typography>
-            <FormControl sx={{ mb: 2 }} fullWidth>
-              <OutlinedInput
-                placeholder="Enter Your Password"
-                type={showPass ? "text" : "password"}
-                // value={pass}
-                onChange={(e) => setPass(e.target.value)}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton onClick={() => setShowPass(!showPass)}>
-                      {showPass ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loader}
+      >
+        <Box>
+          <Triangle
+            height="80"
+            width="80"
+            color="black"
+            ariaLabel="triangle-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={loader}
+          />
+        </Box>
+      </Backdrop>
+      <section className={style.main_sec}>
+        <div className={style.left}>
+          <img src="/images/loginlogo1.jpeg" alt="eee" className="h-100 w-100" />
+        </div>
+        <div className={style.right}>
+          <div className={style.inner}>
+            {!matches ? (
+              <img
+                className="w-100 py-2"
+                src="/images/navbar_logo.png"
+                alt="Logo"
               />
-              <small style={{ color: "gray" }}>test@1234</small>
-            </FormControl>
-            {/* <Typography align="right" sx={{ color: "blue" }} my={2}>
+            ) : (
+              ""
+            )}
+            <h1>Welcome</h1>
+            <h4>Sign in to your Account</h4>
+            {!match ? (
+              <br />
+            ) : (
+              <h5 style={{ color: "red" }}>
+                Please Enter valid Id or Password
+              </h5>
+            )}
+            <form onSubmit={handleSubmit}>
+              <TextField
+                placeholder="Enter Your Username"
+                type="email"
+                fullWidth
+                //   value={user}
+                onChange={(e) => setUser(e.target.value)}
+              />
+              <Typography sx={{ fontSize: "14px", mb: 2, color: "gray" }}>
+                test@gmail.com
+              </Typography>
+              <FormControl sx={{ mb: 2 }} fullWidth>
+                <OutlinedInput
+                  placeholder="Enter Your Password"
+                  type={showPass ? "text" : "password"}
+                  // value={pass}
+                  onChange={(e) => setPass(e.target.value)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setShowPass(!showPass)}>
+                        {showPass ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                <small style={{ color: "gray" }}>test@1234</small>
+              </FormControl>
+              {/* <Typography align="right" sx={{ color: "blue" }} my={2}>
               <span
                 style={{ cursor: "pointer" }}
                 onClick={() => navigate("/forgotpassword")}
@@ -121,17 +135,18 @@ export const LoginPage = () => {
                 Forgot password ?
               </span>
             </Typography> */}
-            <Button
-              variant="contained"
-              sx={{ background: "#534ba8", color: "white" }}
-              type="submit"
-              fullWidth
-            >
-              LOGIN
-            </Button>
-          </form>
+              <Button
+                variant="contained"
+                sx={{ background: "#534ba8", color: "white" }}
+                type="submit"
+                fullWidth
+              >
+                LOGIN
+              </Button>
+            </form>
+          </div>
         </div>
-      </div>
-    </section></>
+      </section>
+    </>
   );
 };
