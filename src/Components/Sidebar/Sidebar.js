@@ -27,7 +27,7 @@ export const Sidebar = ({ children }) => {
     { text: "About Us", path: "/about-us" },
     { text: "Privacy Policy", path: "/privacy-policy" },
     { text: "Terms & Condition", path: "/term-condition" },
-    { text: "Onboarding", path: "/on-boarding" },
+    // { text: "Onboarding", path: "/on-boarding" },
   ];
 
   let navigate = useNavigate();
@@ -36,7 +36,7 @@ export const Sidebar = ({ children }) => {
     <>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loader}
+        open={loader}
       >
         <Box>
           <Triangle
@@ -63,7 +63,13 @@ export const Sidebar = ({ children }) => {
               : "0px",
           }}
         >
-          <div className="align-center px-4 py-2" onClick={() =>{ navigate("/");}}>
+          <div
+            className="align-center px-4 py-2"
+            onClick={() => {
+              navigate("/");
+            }}
+            style={{ cursor: "pointer" }}
+          >
             <img src="images/navbar_logo.png" className="w-100" alt="" />
             {/* Kapoor Enterprises */}
           </div>

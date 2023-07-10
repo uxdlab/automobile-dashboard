@@ -474,7 +474,7 @@ export default function Product({
                 >
                   <label>Add Product Images :</label>
                   <br />
-
+                  {/* <button htmlFor="2actual-btn" type="button"> */}
                   <div className="w-100 d-flex flex-wrap">
                     {imgURLs.map((item, index) => (
                       <div
@@ -510,6 +510,7 @@ export default function Product({
                         <label
                           className="text-center text-gray"
                           htmlFor="2actual-btn"
+                          type="button"
                         >
                           <CloudUploadIcon />
                           <br />
@@ -518,6 +519,7 @@ export default function Product({
                       </div>
                     </div>
                   </div>
+                  {/* </button> */}
                 </Grid>
               </Grid>
             </Box>

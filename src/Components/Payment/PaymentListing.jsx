@@ -173,14 +173,15 @@ export default function PaymentListing() {
               <TableCell className="text-center">
                 <b>Name</b>
               </TableCell>
-              <TableCell className="text-center">
-                <b>Amount</b>
-              </TableCell>
+
               <TableCell className="text-center">
                 <b>Email</b>
               </TableCell>
               <TableCell className="text-center">
                 <b>Phone Number</b>
+              </TableCell>
+              <TableCell className="text-center">
+                <b>Amount</b>
               </TableCell>
               <TableCell className="text-center">
                 <b>Date And Time</b>
@@ -191,7 +192,7 @@ export default function PaymentListing() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {collection.map((res, index) => {
+            {collection?.reverse().map((res, index) => {
               return (
                 <TableRow key={index}>
                   <TableCell className="text_cap text-center">
@@ -200,14 +201,15 @@ export default function PaymentListing() {
                   <TableCell className="text_cap text-center">
                     {res.buyerName}
                   </TableCell>
-                  <TableCell className="text_cap text-center">
-                    {res.amount}
-                  </TableCell>
+
                   <TableCell className="text_cap text-center">
                     {res.buyerEmail}
                   </TableCell>
                   <TableCell className="text_cap text-center">
                     {res.buyerPhone}
+                  </TableCell>
+                  <TableCell className="text_cap text-center">
+                    {res.amount}
                   </TableCell>
                   <TableCell className="text_cap text-center">
                     {res.createdDateTime}
