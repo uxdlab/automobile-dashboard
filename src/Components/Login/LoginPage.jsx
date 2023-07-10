@@ -78,7 +78,7 @@ export const LoginPage = () => {
       </Backdrop>
       <section className={style.main_sec}>
         <div className={style.left}>
-          <img src="/images/loginlogo1.jpeg" alt="eee" className="h-100 w-100" />
+          <img src="/loginlogo1.jpeg" alt="eee" className="h-100 w-100" />
         </div>
         <div className={style.right}>
           <div className={style.inner}>
