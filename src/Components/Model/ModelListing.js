@@ -41,7 +41,7 @@ export const ModelListing = () => {
   const [selectSegment, setSelectSegment] = useState([]);
   const [selectBrand, setSelectBrand] = useState([]);
   const [seleBrand, setSeleBrand] = useState([]);
-
+const[addBrand,setAddBrand] = useState("")
   const [allData, setData] = useState([]);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
@@ -570,6 +570,7 @@ export const ModelListing = () => {
                       onChange={(e) => {
                         filterd(e.target.value);
                         setSeleBrand([]);
+                        setAddBrand("");
                       }}
                       input={<OutlinedInput label="Name" />}
                     >
@@ -595,12 +596,14 @@ export const ModelListing = () => {
                       fullWidth
                       className="select-style1"
                       // value={seleBrand}
+                      value={addBrand}
                       onChange={(e) => {
                         console.log(e.target.value);
                         setBrandError({});
                         setSeleBrand([e.target.value]);
                         // e.target.value = "";
                         setModelValidation("");
+                        setAddBrand(e.target.value)
                         // setUseValidation(e.target.value);
                       }}
                       input={<OutlinedInput label="Name" />}
@@ -754,7 +757,7 @@ export const ModelListing = () => {
                       filterd(e.target.value);
                       setSeleBrand([]);
                       setModelValidation("");
-                      setBrandData("")
+                      setBrandData("");
                     }}
                   >
                     {allSegment.map((item, index) => (
@@ -783,7 +786,7 @@ export const ModelListing = () => {
                       setSeleBrand([e.target.value]);
                       setBrandError({});
                       // setSeleBrand([e.target.value]);
-                      console.log()
+                      console.log();
                       setBrandData(e.target.value);
                       // e.target.value = "";
                       setModelValidation("");

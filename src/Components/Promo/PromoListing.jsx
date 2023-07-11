@@ -149,6 +149,7 @@ export default function PromoListing() {
           msg: "Promo Already Exist",
           type: "error",
         });
+         setLoader(false);
       });
   };
 
@@ -217,6 +218,14 @@ export default function PromoListing() {
       })
       .catch((err) => {
         console.log(err);
+         ShowSnackbar({
+           show: true,
+           vertical: "top",
+           horizontal: "right",
+           msg: "Promo Already Exist",
+           type: "error",
+         });
+         setLoader(false);
       });
   };
 
