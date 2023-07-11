@@ -41,7 +41,7 @@ export const ModelListing = () => {
   const [selectSegment, setSelectSegment] = useState([]);
   const [selectBrand, setSelectBrand] = useState([]);
   const [seleBrand, setSeleBrand] = useState([]);
- 
+
   const [allData, setData] = useState([]);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
@@ -55,7 +55,7 @@ export const ModelListing = () => {
   const [brandError, setBrandError] = useState("");
   const [modelValidation, setModelValidation] = useState("");
   const [useValidation, setUseValidation] = useState();
-   const [allProductC, setAllProductc] = useState([]);
+  const [allProductC, setAllProductc] = useState([]);
   const [snackbar, ShowSnackbar] = useState({
     show: false,
     vertical: "top",
@@ -93,7 +93,7 @@ export const ModelListing = () => {
 
       //   return false;
       // }
-    
+
       return true;
     }
   }
@@ -101,35 +101,36 @@ export const ModelListing = () => {
     if (search.length === 0) {
       setCollection(allData.slice(0, countPerPage));
     }
-    if (search.trim().length !== 0){
+    if (search.trim().length !== 0) {
       let filterBySearch = allProductC.filter((item) => {
         //  console.log(item.brand[0].brand_name.includes(search.trim().toLocaleLowerCase());
         let result;
-        if (
-          item.model_name.includes(search.trim().toLocaleLowerCase()) ||
-          item.brand[0].brand_name.includes(
-            search.trim().toLocaleLowerCase()
-          ) ||
-          item.segment[0].vehicle_name.includes(
-            search.trim().toLocaleLowerCase()
-          )
-        ) {
-          result = true;
-        } else {
-          result = false;
+        console.log(item);
+        if (item.brand.length !== 0 && item.segment.length !== 0) {
+          if (
+            item.model_name.includes(search.trim().toLocaleLowerCase()) ||
+            item.brand[0].brand_name.includes(
+              search.trim().toLocaleLowerCase()
+            ) ||
+            item.segment[0].vehicle_name.includes(
+              search.trim().toLocaleLowerCase()
+            )
+          ) {
+            result = true;
+          } else {
+            result = false;
+          }
+          return result;
         }
-        return result;
         // return item.model_name.includes(search.trim().toLocaleLowerCase());
       });
-       setCollection(filterBySearch);
-       setData(filterBySearch);
-    }else{
+      setCollection(filterBySearch);
+      setData(filterBySearch);
+    } else {
       setData(allProductC);
     }
-    
-   
   }
-  
+
   useEffect(() => {
     getAllModels();
     getSegmentBrand();
@@ -138,7 +139,6 @@ export const ModelListing = () => {
     setLoader(true);
     ModelClass.getAllModel()
       .then((res) => {
-      
         setData(res.data.data);
         setAllProductc(res.data.data);
         setLoader(false);
@@ -159,7 +159,6 @@ export const ModelListing = () => {
   };
 
   function deleteModelf() {
-   
     setDeleteModel(false);
     setLoader(true);
     if (deleteMod.icon !== "") {
@@ -167,10 +166,8 @@ export const ModelListing = () => {
       const desertRef = ref(storage, deleteMod.icon);
       deleteObject(desertRef)
         .then(() => {
-       
           ModelClass.deleteModel(deleteMod.id)
             .then((res) => {
-        
               getAllModels();
               ShowSnackbar({
                 show: true,
@@ -186,7 +183,6 @@ export const ModelListing = () => {
     } else {
       ModelClass.deleteModel(deleteMod.id)
         .then((res) => {
-     
           getAllModels();
           ShowSnackbar({
             show: true,
@@ -204,7 +200,7 @@ export const ModelListing = () => {
 
   async function addModel(e) {
     e.preventDefault();
-   
+
     setLoader(true);
     modelData.current.model_segment_array = selectSegment;
     modelData.current.model_brand_array = seleBrand;
@@ -217,13 +213,10 @@ export const ModelListing = () => {
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-         
           modelData.current.model_icon = url;
-      
 
           ModelClass.addModel(modelData.current)
             .then((res) => {
-            
               setLoader(false);
               getAllModels();
               ShowSnackbar({
@@ -262,7 +255,6 @@ export const ModelListing = () => {
         const desertRef = ref(storage, imgURL);
         deleteObject(desertRef)
           .then(() => {
-            
             const storageRef = ref(storage, img.name);
             const uploadTask = uploadBytesResumable(storageRef, img);
             uploadTask.on(
@@ -271,12 +263,10 @@ export const ModelListing = () => {
               (err) => console.log(err),
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                
                   modelData.current.model_icon = url;
-                 
+
                   ModelClass.editModel(id, modelData.current)
                     .then((res) => {
-                     
                       setLoader(false);
                       getAllModels();
                       ShowSnackbar({
@@ -306,11 +296,9 @@ export const ModelListing = () => {
           (err) => console.log(err),
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-              
               modelData.current.model_icon = url;
               ModelClass.editModel(id, modelData.current)
                 .then((res) => {
-             
                   getAllModels();
                   setLoader(false);
                   ShowSnackbar({
@@ -331,10 +319,8 @@ export const ModelListing = () => {
         );
       }
     } else {
-
       ModelClass.editModel(id, modelData.current)
         .then((res) => {
-       
           setLoader(false);
           getAllModels();
           ShowSnackbar({
@@ -363,10 +349,8 @@ export const ModelListing = () => {
     setId(idd);
     ModelClass.getModel(idd)
       .then((res) => {
-        
         modelData.current = res.data.data[0];
         if (modelData.current.model_icon) {
-       
           setLocalImg(modelData.current.model_icon);
         }
 
@@ -386,7 +370,6 @@ export const ModelListing = () => {
   async function getSegmentBrand() {
     VehicleClass.getSegmentBrandModel()
       .then((res) => {
-
         setSegment(res.data.data.segmentData);
         setAllBrand(res.data.data.brandData);
       })
@@ -396,7 +379,7 @@ export const ModelListing = () => {
   }
 
   const imgPrev = (imgs) => {
-  if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+    if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
       if (imgs.name !== undefined) {
         let url = URL.createObjectURL(imgs);
         setLocalImg(url);
@@ -404,16 +387,15 @@ export const ModelListing = () => {
       } else {
         setLocalImg(undefined);
       }
-  }else{
-     ShowSnackbar({
-       show: true,
-       vertical: "top",
-       horizontal: "right",
-       msg: "Please select jpg, jpeg, png, svg image",
-       type: "error",
-     });
-  }
-  
+    } else {
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Please select jpg, jpeg, png, svg image",
+        type: "error",
+      });
+    }
   };
 
   function filterd(fil) {
@@ -454,25 +436,25 @@ export const ModelListing = () => {
 
   const checkNameForUpdate = (e) => {
     e.preventDefault();
-     let valid = validationForm();
+    let valid = validationForm();
     let arr = allData.filter(
       (item) =>
         item.model_name === modelData.current.model_name &&
         item._id !== modelData.current._id
     );
-    if (valid){
-                if (arr.length !== 0) {
-                  ShowSnackbar({
-                    show: true,
-                    vertical: "top",
-                    horizontal: "right",
-                    msg: "Model Already Exist",
-                    type: "error",
-                  });
-                } else {
-                  updateModel(e);
-                }
-              }
+    if (valid) {
+      if (arr.length !== 0) {
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Model Already Exist",
+          type: "error",
+        });
+      } else {
+        updateModel(e);
+      }
+    }
   };
 
   return (
@@ -729,7 +711,7 @@ export const ModelListing = () => {
                     onClick={() => {
                       setOpen(false);
                       setLocalImg("");
-                       setBrandError({});
+                      setBrandError({});
                     }}
                   >
                     Cancel
@@ -765,8 +747,10 @@ export const ModelListing = () => {
                     className="select-style"
                     fullWidth
                     defaultValue={selectSegment[0]}
-                    onChange={(e) => {filterd(e.target.value)
-                     setSeleBrand([]);}}
+                    onChange={(e) => {
+                      filterd(e.target.value);
+                      setSeleBrand([]);
+                    }}
                   >
                     {allSegment.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -912,7 +896,7 @@ export const ModelListing = () => {
                     onClick={() => {
                       setOpen1(false);
                       setLocalImg("");
-                       setBrandError({});
+                      setBrandError({});
                     }}
                   >
                     Cancel

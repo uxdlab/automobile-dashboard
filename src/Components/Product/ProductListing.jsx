@@ -106,12 +106,13 @@ if (useValidation !== undefined) {
   }
   const readUploadFile = (e) => {
      let valid = validationForm();
-     console.log(valid);
-     if(valid){
-                if (e.target !== undefined) {
-                  e.preventDefault();
 
-                  if (e.target.files) {
+      if(valid){
+       if (e.target !== undefined) {
+         e.preventDefault();
+         
+         console.log(e.target);
+         if (e.target.files) {
                     const reader = new FileReader();
                     reader.onload = async (e) => {
                       const data = e.target.result;
@@ -415,7 +416,7 @@ if (useValidation !== undefined) {
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             type="file"
                             onChange={(e) => {
-                              setFileData(e.target.files[0]);
+                              setFileData(e);
                               setUseValidation(e.target.value);
                               setBrandError({});
                             }}
