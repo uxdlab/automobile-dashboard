@@ -53,6 +53,7 @@ export const ModelListing = () => {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [brandError, setBrandError] = useState("");
+  const [brandData,setBrandData] = useState("")
   const [modelValidation, setModelValidation] = useState("");
   const [useValidation, setUseValidation] = useState();
   const [allProductC, setAllProductc] = useState([]);
@@ -352,8 +353,10 @@ export const ModelListing = () => {
         modelData.current = res.data.data[0];
         if (modelData.current.model_icon) {
           setLocalImg(modelData.current.model_icon);
-        }
 
+        }
+        console.log(modelData.current.model_brand_array);
+  setBrandData(modelData.current.model_brand_array[0]);
         setSelectSegment(modelData.current.model_segment_array);
         setSeleBrand(modelData.current.model_brand_array);
         let arr = modelData.current.model_segment_array[0];
@@ -750,6 +753,8 @@ export const ModelListing = () => {
                     onChange={(e) => {
                       filterd(e.target.value);
                       setSeleBrand([]);
+                      setModelValidation("");
+                      setBrandData("")
                     }}
                   >
                     {allSegment.map((item, index) => (
@@ -770,12 +775,16 @@ export const ModelListing = () => {
                   <Select
                     // required
                     className="select-style"
+                    value={brandData}
                     fullWidth
-                    defaultValue={seleBrand[0]}
+                    // defaultValue={seleBrand[0]}
+                    defaultValue={allData.brand_name}
                     onChange={(e) => {
                       setSeleBrand([e.target.value]);
                       setBrandError({});
-                      setSeleBrand([e.target.value]);
+                      // setSeleBrand([e.target.value]);
+                      console.log()
+                      setBrandData(e.target.value);
                       // e.target.value = "";
                       setModelValidation("");
                     }}
