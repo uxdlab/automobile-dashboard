@@ -48,118 +48,114 @@ export default function ProductListing() {
   const [rows, setRows] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [collection, setCollection] = React.useState([]);
-// console.log(collection);
-const [useValidation, setUseValidation] = useState("");
-const [brandError, setBrandError] = useState("");
-const [modelValidation, setModelValidation] = useState("");
-   
-function validationForm() {
-let errors = {};
-if (useValidation !== undefined) {
-  console.log(useValidation.length);
-  if (fileData.name === undefined) {
-    console.log(fileData);
-    // alert("please select brand");
-    errors.useValidation = "Please Select Upload File";
-    setBrandError({ useValidation: "Please Select Upload File" });
-    return false;
-  } else {
-   
-      return true;
-    
+  // console.log(collection);
+  const [useValidation, setUseValidation] = useState("");
+  const [brandError, setBrandError] = useState("");
+  const [modelValidation, setModelValidation] = useState("");
+
+  function validationForm() {
+    let errors = {};
+    if (useValidation !== undefined) {
+      console.log(useValidation.length);
+      if (fileData.target === undefined) {
+        console.log(fileData);
+        // alert("please select brand");
+        errors.useValidation = "Please Select Upload File";
+        setBrandError({ useValidation: "Please Select Upload File" });
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
-} else {
-  return false;
-}
-}
   function handleSearchClick(search) {
     if (search.length === 0) {
       setCollection(allProduct.slice(0, countPerPage));
     }
     if (search.trim().length !== 0) {
-    const filterBySearch = allProductC.filter((item) => {
-      let result;
+      const filterBySearch = allProductC.filter((item) => {
+        let result;
 
-      if (
-        item.product_name.includes(search.trim().toLocaleLowerCase()) ||
-        item.oe_reference_number.includes(search.trim().toUpperCase()) ||
-        item.ke_partNumber.includes(search.trim().toUpperCase()) ||
-        item.MRP.toString().includes(search.trim().toUpperCase())
-      ) {
-        result = true;
-      } else {
-        result = false;
-      }
+        if (
+          item.product_name.includes(search.trim().toLocaleLowerCase()) ||
+          item.oe_reference_number.includes(search.trim().toUpperCase()) ||
+          item.ke_partNumber.includes(search.trim().toUpperCase()) ||
+          item.MRP.toString().includes(search.trim().toUpperCase())
+        ) {
+          result = true;
+        } else {
+          result = false;
+        }
 
-      console.log(
-        item.oe_reference_number.includes(search.trim().toUpperCase())
-      );
-      return result;
-    });
-    console.log(filterBySearch);
-    setCollection(filterBySearch);
-    setAllProduct(filterBySearch);
-    }else{
-    setAllProduct(allProductC);
+        console.log(
+          item.oe_reference_number.includes(search.trim().toUpperCase())
+        );
+        return result;
+      });
+      console.log(filterBySearch);
+      setCollection(filterBySearch);
+      setAllProduct(filterBySearch);
+    } else {
+      setAllProduct(allProductC);
     }
-
   }
   const readUploadFile = (e) => {
-     let valid = validationForm();
+    let valid = validationForm();
 
-      if(valid){
-       if (e.target !== undefined) {
-         e.preventDefault();
-         
-         console.log(e.target);
-         if (e.target.files) {
-                    const reader = new FileReader();
-                    reader.onload = async (e) => {
-                      const data = e.target.result;
-                      const workbook = xlsx.read(data, { type: "array" });
-                      const sheetName = workbook.SheetNames[0];
-                      const worksheet = workbook.Sheets[sheetName];
-                      const json = xlsx.utils.sheet_to_json(worksheet);
-                      if (json.length !== 0) {
-                        let ss = json.filter(
-                          (e) =>
-                            allProduct.findIndex(
-                              (s) =>
-                                s.product_name === e.product_name.toLowerCase()
-                            ) === -1
-                        );
-                        setLoader(true);
-                        setOpen1(false);
-                        const body = { dataSet: ss };
+    if (valid) {
+      if (e.target !== undefined) {
+        e.preventDefault();
 
-                        await bulkProduct(body).then((es) => {
-                          setOpen1(true);
-                          let data = es.data.data;
+        console.log(e.target);
+        if (e.target.files) {
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            const data = e.target.result;
+            const workbook = xlsx.read(data, { type: "array" });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const json = xlsx.utils.sheet_to_json(worksheet);
+            if (json.length !== 0) {
+              let ss = json.filter(
+                (e) =>
+                  allProduct.findIndex(
+                    (s) => s.product_name === e.product_name.toLowerCase()
+                  ) === -1
+              );
+              setLoader(true);
+              setOpen1(false);
+              const body = { dataSet: ss };
 
-                          let result = [];
-                          if (data.length !== 0) {
-                            if (data[0].error) {
-                              data.map((e) => {
-                                result.push({
-                                  error: Object.keys(e.error),
-                                  row: e.index + 2,
-                                });
-                              });
-                            } else {
-                              setOpen1(false);
-                            }
-                          }
-                          setLoader(false);
-                          setRows(result);
-                        });
-                      } else {
-                        alert("You upload empty file.Plase check!");
-                      }
-                    };
-                    reader.readAsArrayBuffer(e.target.files[0]);
+              await bulkProduct(body).then((es) => {
+                setOpen1(true);
+                let data = es.data.data;
+
+                let result = [];
+                if (data.length !== 0) {
+                  if (data[0].error) {
+                    data.map((e) => {
+                      result.push({
+                        error: Object.keys(e.error),
+                        row: e.index + 2,
+                      });
+                    });
+                  } else {
+                    setOpen1(false);
                   }
                 }
-              }
+                setLoader(false);
+                setRows(result);
+              });
+            } else {
+              alert("You upload empty file.Plase check!");
+            }
+          };
+          reader.readAsArrayBuffer(e.target.files[0]);
+        }
+      }
+    }
   };
 
   React.useEffect(() => {
@@ -205,7 +201,6 @@ if (useValidation !== undefined) {
         setLoader(false);
         setAllProduct(res.data.data);
         setAllProductc(res.data.data);
-
       })
       .catch((err) => {
         console.log(err);
@@ -429,7 +424,12 @@ if (useValidation !== undefined) {
                         ) : (
                           ""
                         )}
-                        <p>{fileData.name}</p>
+                        {fileData.target ? (
+                          <p>{fileData.target.files[0].name}</p>
+                        ) : (
+                          ""
+                        )}
+                      
                       </div>
                       {/* </div> */}
                       <br />
