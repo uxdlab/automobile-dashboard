@@ -87,13 +87,13 @@ export default function TermAndCondition() {
   };
 
   const getAllTermsAndCondition = () => {
-     setLoader(true);
+    //  setLoader(true);
     getTermsCondition()
       .then((res) => {
         console.log(res.data.data[0]);
         setAddCondition(res.data.data[0].term_condition);
         setGetCondition(res.data.data[0]);
-         setLoader(false);
+        //  setLoader(false);
       })
       .catch((err) => {
         console.log(err);

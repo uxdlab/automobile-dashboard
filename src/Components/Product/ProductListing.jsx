@@ -281,12 +281,12 @@ export default function ProductListing() {
 
       <h1 className="mt-2 fs-2 mx-3">Products</h1>
       <div className="d-flex justify-content-between">
-        <div style={{ marginLeft: "18px" }}>
+        <div style={{ marginLeft: "18px" }} md={6}>
           <input
             className="w-250 form-control ml-4"
             type="search"
             placeholder="Search"
-            style={{ width: "300px" }}
+            style={{ width: "400px" }}
             onChange={(e) => {
               handleSearchClick(e.target.value);
             }}
@@ -429,7 +429,6 @@ export default function ProductListing() {
                         ) : (
                           ""
                         )}
-                      
                       </div>
                       {/* </div> */}
                       <br />
@@ -477,6 +476,7 @@ export default function ProductListing() {
                           setOpen1(false);
                           setRows([]);
                           setFileData({});
+                          setBrandError({});
                         }}
                       >
                         Cancel

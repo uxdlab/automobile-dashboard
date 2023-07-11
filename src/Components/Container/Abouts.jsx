@@ -86,7 +86,7 @@ function isHtml(input) {
   };
 
   const getAboutById = () => {
-    setLoader(true);
+    // setLoader(true);
     getAbout()
       .then((res) => {
         let a = res.data.data;
@@ -94,7 +94,7 @@ function isHtml(input) {
         // console.log(a[0].about_us);
         setAboutUs(res.data.data[0].about_us);
         setAboutUsData(res.data.data[0]);
-        setLoader(false);
+        // setLoader(false);
         //  ShowSnackbar({
         //    show: true,
         //    vertical: "top",
