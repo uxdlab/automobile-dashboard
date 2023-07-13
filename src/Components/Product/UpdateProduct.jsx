@@ -34,6 +34,7 @@ export default function UpdateProduct() {
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
   const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedModal, setSelectedModal]= useState("");
   const [productData, setProductData] = useState({});
   const [allProductData, setAllProductData] = useState([]);
   const [imgURLs, setimgURLs] = useState([]);
@@ -90,6 +91,7 @@ export default function UpdateProduct() {
         if (res.data.data) {
           setUseValidation(res.data.data[0].product_brand_aaray[0]);
           setSelectedBrand(AllProducts.current[0].product_brand_aaray[0]);
+          setSelectedModal(AllProducts.current[0].product_model_aaray[0]);
           setModelValidation(res.data.data[0].product_model_aaray[0]);
         }
         setCheckURL(res.data.data[0].image);
@@ -255,13 +257,25 @@ export default function UpdateProduct() {
     if (selectBrand.length === 0) {
       alert("please select brand");
     }
-    AllProducts.current[0].product_brand_aaray = [fil];
 
+    AllProducts.current[0].product_brand_aaray = [fil];
     let brandName = selectBrand.filter((item) => item._id === fil);
 
     AllProducts.current[0].brand_name = brandName[0].brand_name;
 
-    setSelectModel(model.filter((e) => e.model_brand_array.includes(fil)));
+    setSelectModel(
+      model.filter((e) => {
+        if (
+          e.model_segment_array[0] ===
+            AllProducts.current[0].product_segment_aaray[0] &&
+          e.model_brand_array.includes(fil)
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
   }
   useEffect(() => {
     setFiles(uploadimg);
@@ -288,8 +302,7 @@ export default function UpdateProduct() {
       });
       setimgURLs([...imgURLs, ...arr]);
       console.log(imgURLs);
-    }
-    else {
+    } else {
       ShowSnackbar({
         show: true,
         vertical: "top",
@@ -591,6 +604,7 @@ export default function UpdateProduct() {
                                 setModelValidation("");
                                 setUseValidation(e.target.value);
                                 setBrandError({});
+                                setSelectedModal("")
                               }}
                             >
                               {selectBrand.map((item, index) => (
@@ -619,15 +633,17 @@ export default function UpdateProduct() {
                               className="select-style1"
                               fullWidth
                               required
-                              defaultValue={
-                                productData
-                                  ? productData[0].product_model_aaray[0]
-                                  : ""
-                              }
+                              value={selectedModal}
+                              // defaultValue={
+                              //   productData
+                              //     ? productData[0].product_model_aaray[0]
+                              //     : ""
+                              // }
                               onChange={(e) => {
                                 editModelData(e);
                                 setModelValidation(e.target.value);
                                 setBrandError({});
+                                setSelectedModal(e.target.value)
                               }}
                               label="Outlined"
                               variant="outlined"
