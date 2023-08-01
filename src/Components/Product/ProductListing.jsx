@@ -42,8 +42,9 @@ export default function ProductListing() {
     type: "error",
   });
   const [currentPage, setCurrentPage] = React.useState(1);
+  console.log(currentPage)
   const [countPerPage, setCountPerPage] = useState(10);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(sessionStorage.getItem("productPage"));
   const [fileData, setFileData] = useState({});
   const [rows, setRows] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -157,15 +158,26 @@ export default function ProductListing() {
       }
     }
   };
+  useEffect(()=>{
+    if (Number(sessionStorage.getItem("productPage")) === currentPage && currentPage !== 1) {
+      sessionStorage.removeItem("productPage")
+    }
+  },[currentPage])
 
   React.useEffect(() => {
+    // console.log(value)
     if (!value) {
-      updatePage(1);
+        updatePage(1)
+    }else{
+      updatePage(Number(value))
+
     }
+
   }, [value, countPerPage, allProduct]);
 
   const updatePage = (p) => {
     setCurrentPage(p);
+ 
     const to = countPerPage * p;
     const from = to - countPerPage;
     setCollection(allProduct.slice(from, to));
@@ -182,6 +194,7 @@ export default function ProductListing() {
         type: "success",
       });
       sessionStorage.removeItem("updated");
+
     }
     if (sessionStorage.getItem("added") == "true") {
       ShowSnackbar({
@@ -192,6 +205,8 @@ export default function ProductListing() {
         type: "success",
       });
       sessionStorage.removeItem("added");
+
+
     }
   }, []);
   function getAllProduct() {
@@ -201,6 +216,8 @@ export default function ProductListing() {
         setLoader(false);
         setAllProduct(res.data.data);
         setAllProductc(res.data.data);
+
+
       })
       .catch((err) => {
         console.log(err);
@@ -232,7 +249,7 @@ export default function ProductListing() {
               .then(() => {
                 console.log("image deleted");
               })
-              .catch((err) => {});
+              .catch((err) => { });
           });
         }
       })
@@ -356,7 +373,7 @@ export default function ProductListing() {
                       />
                       <Edit
                         className="pointer"
-                        onClick={() => navigate(`/updateProduct/${res._id}`)}
+                        onClick={() => { navigate(`/updateProduct/${res._id}`); sessionStorage.setItem("productPage", currentPage) }}
                       />
                     </TableCell>
                   </TableRow>
@@ -375,7 +392,7 @@ export default function ProductListing() {
             </select>
             <Pagination
               pageSize={countPerPage}
-              onChange={updatePage}
+              onChange={(e) => updatePage(e)}
               current={currentPage}
               total={allProduct.length}
               style={{ color: "green" }}

@@ -410,12 +410,12 @@ export default function UpdateProduct() {
                           xs={12}
                           className="px-3 mt-2"
                         >
-                          <label>Product Name :</label>
+                          <label>Part Name :</label>
                           <br />
                           <input
                             required
                             type="text"
-                            placeholder="Enter Product Name"
+                            placeholder="Enter Part Name"
                             onChange={(e) => {
                               if (e.target.value == " ") {
                                 e.target.value = "";
@@ -440,7 +440,7 @@ export default function UpdateProduct() {
                           md={12}
                           className="px-3 mt-2"
                         >
-                          <label>Product Description :</label>
+                          <label>Description :</label>
                           <br />
                           <textarea
                             placeholder="Enter Product Description"

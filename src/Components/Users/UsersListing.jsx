@@ -114,6 +114,16 @@ export default function UsersListing() {
     const from = to - countPerPage;
     setCollection(allUsers.slice(from, to));
   };
+
+  const addressData = (data) => {
+    let address = data.length !== 0 ? data[0] : {};
+    if (address.house_number === undefined) {
+      return "--No Address--"
+    } else {
+      let str = address.house_number + " " + address.city + ", " + address.state + "-" + address.pincode + ", " + address.country
+      return str
+    }
+  }
   return (
     <>
       <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
@@ -189,6 +199,9 @@ export default function UsersListing() {
                 <b>Phone No.</b>
               </TableCell>
               <TableCell>
+                <b>Address</b>
+              </TableCell>
+              <TableCell>
                 <b>Active</b>
               </TableCell>
               <TableCell>
@@ -204,6 +217,8 @@ export default function UsersListing() {
                   <TableCell className="text_cap">{res.fullName}</TableCell>
                   <TableCell>{res.email}</TableCell>
                   <TableCell>{res.mobile_number}</TableCell>
+                  <TableCell>{addressData(res.address)}</TableCell>
+
                   <TableCell>
                     <Switch
                       defaultChecked={res.user_login}
