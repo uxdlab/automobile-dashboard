@@ -263,7 +263,7 @@ export default function Product({
                   />
                 </Grid>
                 <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                  <label>Product MRP(₹) :</label>
+                  <label>Part MRP(₹) :</label>
                   <br />
                   <input
                     id="number2"
@@ -472,7 +472,7 @@ export default function Product({
                   sx={12}
                   className="px-3 mt-2"
                 >
-                  <label>Add Product Images :</label>
+                  <label>Add Part Images :</label>
                   <br />
                   {/* <button htmlFor="2actual-btn" type="button"> */}
                   <div className="w-100 d-flex flex-wrap">

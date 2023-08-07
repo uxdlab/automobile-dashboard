@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { editItem, getAllItem, getItem } from "../../services/Item";
+import { editItem, getAllItem, getItem,stockStatus } from "../../services/Item";
 import {
   Backdrop,
   Box,
@@ -82,6 +82,7 @@ export default function UpdateProduct() {
     }
   }
 
+  
   const getProductById = (reqData) => {
     getItem(id)
       .then((res) => {
@@ -521,7 +522,7 @@ export default function UpdateProduct() {
                           />
                         </Grid>
                         <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
-                          <label>Product MRP(₹) :</label>
+                          <label>Part MRP(₹) :</label>
                           <br />
                           <input
                             required
@@ -738,7 +739,7 @@ export default function UpdateProduct() {
                           sx={12}
                           className="px-3 mt-2"
                         >
-                          <label>Add Product Images :</label>
+                          <label>Add Part Images :</label>
                           <br />
 
                           <div className="w-100 d-flex flex-wrap">

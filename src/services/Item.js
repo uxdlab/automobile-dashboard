@@ -28,3 +28,7 @@ export const bulkProduct = async(data) =>{
 
     return await axios.post(`${apis.baseUrl}${apis.bulkUpload}`,data)
 }
+
+export const stockStatus = async(id) =>{
+    return await axios.put(`${apis.baseUrl}${apis.items.stockStatus}${id}`)
+}

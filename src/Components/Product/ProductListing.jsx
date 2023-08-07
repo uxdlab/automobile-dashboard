@@ -12,12 +12,13 @@ import {
   TableHead,
   TableRow,
   CircularProgress,
+  Switch
 } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { getAllItem, bulkProduct } from "../../services/Item";
-import { deleteItem } from "../../services/Item";
+import { deleteItem,stockStatus } from "../../services/Item";
 import { SnackBar } from "../Assets/SnackBar";
 import { deleteObject, getStorage, ref } from "firebase/storage";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -53,6 +54,10 @@ export default function ProductListing() {
   const [useValidation, setUseValidation] = useState("");
   const [brandError, setBrandError] = useState("");
   const [modelValidation, setModelValidation] = useState("");
+
+  const stockUpdate=async(id)=>{
+    await stockStatus(id)
+      }
 
   function validationForm() {
     let errors = {};
@@ -347,6 +352,9 @@ export default function ProductListing() {
                 </TableCell>
                 {/* <TableCell><b>Product Description</b></TableCell> */}
                 <TableCell>
+                  <b>Stock</b>
+                </TableCell>
+                <TableCell>
                   <b>Action</b>
                 </TableCell>
               </TableRow>
@@ -362,6 +370,10 @@ export default function ProductListing() {
                     <TableCell>{res.oe_reference_number}</TableCell>
                     <TableCell>{res.ke_partNumber}</TableCell>
                     <TableCell>{res.MRP}</TableCell>
+                    <TableCell><Switch defaultChecked={res.is_active} onChange={(e)=>{
+                      stockUpdate(res._id)
+                    }}/></TableCell>
+
                     {/* <TableCell>{res.sparePart_description}</TableCell> */}
                     <TableCell>
                       <Delete

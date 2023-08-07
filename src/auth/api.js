@@ -39,6 +39,7 @@ export const apis = {
     get: "product/",
     delete: "product/delete/",
     edit: "product/updateProduct/",
+    stockStatus:"product/stockUpdate/"
   },
   manufacture: {
     add: "manufacturer/addManufacturer/",
@@ -52,6 +53,7 @@ export const apis = {
   bulkUpload: "product/bulkAddProduct",
   activeUser: "user/userActiveInactive/",
   deleteUsers: "user/deleteUser/",
+ 
 
   contain: {
     addabout: "aboutus/create",
