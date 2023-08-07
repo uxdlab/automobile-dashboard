@@ -192,7 +192,7 @@ export const BrandListing = () => {
             })
             .catch((err) => console.log(err));
         })
-        .catch((error) => {});
+        .catch((error) => { });
     } else {
       CompanyClass.deleteCompany(deletedComp.id)
         .then((res) => {
@@ -223,7 +223,7 @@ export const BrandListing = () => {
     const uploadTask = uploadBytesResumable(storageRef, img);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      (snapshot) => { },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -275,7 +275,7 @@ export const BrandListing = () => {
             const uploadTask = uploadBytesResumable(storageRef, img);
             uploadTask.on(
               "state_changed",
-              (snapshot) => {},
+              (snapshot) => { },
               (err) => console.log(err),
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -311,13 +311,13 @@ export const BrandListing = () => {
               }
             );
           })
-          .catch((error) => {});
+          .catch((error) => { });
       } else {
         const storageRef = ref(storage, `${Math.random()}${img.name}`);
         const uploadTask = uploadBytesResumable(storageRef, img);
         uploadTask.on(
           "state_changed",
-          (snapshot) => {},
+          (snapshot) => { },
           (err) => console.log(err),
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -429,7 +429,7 @@ export const BrandListing = () => {
       } else {
         setLocalImg(undefined);
       }
-    }else{
+    } else {
       ShowSnackbar({
         show: true,
         vertical: "top",
@@ -443,16 +443,25 @@ export const BrandListing = () => {
   const ExistNameCheck = (e) => {
     e.preventDefault();
     if (img.name !== undefined) {
+      console.log(allCompanies, "allCompanies")
+      console.log(selectSegment, "brandData.current  ")
+      let Segment = []
       let arr = allCompanies.filter(
-        (item) => item.brand_name === brandData.current.brand_name
-        // allCompanies.filter(
-        //   (item) => item.brand_name === brandData.current.brand_name
-        // )
+        (item) => {
+          if (item.brand_name === brandData.current.brand_name) {
+            Segment=[...Segment,...item.segment_array]
+            return item
+          }
+        }
+
       );
-      {
-        console.log(arr);
-      }
-      if (arr.length !== 0) {
+      let segmentArr=selectSegment.filter(function(item) {
+        return Segment.includes(item);
+      })
+      
+      console.log(segmentArr, "arr")
+
+      if (segmentArr.length !== 0) {
         ShowSnackbar({
           show: true,
           vertical: "top",
@@ -895,8 +904,8 @@ export const BrandListing = () => {
         </div>
         <div
           style={{ display: "flex", marginRight: "18px" }}
-          // className="d-flex justify-content-end"
-          // md={6}
+        // className="d-flex justify-content-end"
+        // md={6}
         >
           <Button
             className="btn_primary"

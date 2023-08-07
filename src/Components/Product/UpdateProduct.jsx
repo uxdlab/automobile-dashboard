@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { editItem, getAllItem, getItem,stockStatus } from "../../services/Item";
+import { editItem, getAllItem, getItem, stockStatus } from "../../services/Item";
 import {
   Backdrop,
   Box,
@@ -34,7 +34,7 @@ export default function UpdateProduct() {
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
   const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedModal, setSelectedModal]= useState("");
+  const [selectedModal, setSelectedModal] = useState("");
   const [productData, setProductData] = useState({});
   const [allProductData, setAllProductData] = useState([]);
   const [imgURLs, setimgURLs] = useState([]);
@@ -82,7 +82,7 @@ export default function UpdateProduct() {
     }
   }
 
-  
+
   const getProductById = (reqData) => {
     getItem(id)
       .then((res) => {
@@ -129,7 +129,7 @@ export default function UpdateProduct() {
             .then(() => {
               console.log("image deleted");
             })
-            .catch((err) => {});
+            .catch((err) => { });
         });
         if (files.length !== 0) {
           files.map((item2) => {
@@ -268,7 +268,7 @@ export default function UpdateProduct() {
       model.filter((e) => {
         if (
           e.model_segment_array[0] ===
-            AllProducts.current[0].product_segment_aaray[0] &&
+          AllProducts.current[0].product_segment_aaray[0] &&
           e.model_brand_array.includes(fil)
         ) {
           return true;
@@ -683,9 +683,9 @@ export default function UpdateProduct() {
                                   : ""
                               }
                               onChange={(e) =>
-                                (AllProducts.current[0].product_category_aaray = [
-                                  e.target.value,
-                                ])
+                              (AllProducts.current[0].product_category_aaray = [
+                                e.target.value,
+                              ])
                               }
                             >
                               {category.map((item, index) => (
@@ -715,9 +715,9 @@ export default function UpdateProduct() {
                                   : ""
                               }
                               onChange={(e) =>
-                                (AllProducts.current[0].product_manufacture_aaray = [
-                                  e.target.value,
-                                ])
+                              (AllProducts.current[0].product_manufacture_aaray = [
+                                e.target.value,
+                              ])
                               }
                             >
                               {manufacturer.map((res, index) => {
@@ -730,7 +730,41 @@ export default function UpdateProduct() {
                             </Select>
                           </FormControl>
                         </Grid>
+                        <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
+                          <label> Cash on delivery :</label>
+                          <br />
+                          <FormControl fullWidth>
+                            <InputLabel id="demo-multiple-name-label">
+                              Cash on delivery
+                            </InputLabel>
+                            <Select
+                              className="select-style1"
+                              fullWidth
+                              required
+                              defaultValue={
+                                productData
+                                  ? productData[0].cash_on_delivery
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                console.log(e.target.value, "valuesssss")
+                                AllProducts.current[
+                                  index
+                                ].cash_on_delivery = e.target.value
+                              }}
+                              label="Outlined"
+                              variant="outlined"
+                            >
 
+                              <MenuItem value={"yes"}>
+                                Yes
+                              </MenuItem>
+                              <MenuItem value={"no"}>
+                                No
+                              </MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
                         <Grid
                           item
                           md={12}
@@ -814,10 +848,10 @@ export default function UpdateProduct() {
                       <Grid
                         item
                         xl={12}
-                        // md={9}
-                        // sm={12}
-                        // sx={12}
-                        // sx={{ border: "2px solid red", width: "100%" }}
+                      // md={9}
+                      // sm={12}
+                      // sx={12}
+                      // sx={{ border: "2px solid red", width: "100%" }}
                       >
                         <Box align="right" mt={6}>
                           <Button

@@ -41,6 +41,7 @@ export default function AddProduct() {
       brand_name: "",
       segment_name: "",
       model_name: "",
+      cash_on_delivery:""
     },
   ]);
   function validationForm() {

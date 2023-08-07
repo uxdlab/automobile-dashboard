@@ -451,6 +451,41 @@ export default function Product({
                     </Select>
                   </FormControl>
                 </Grid>
+                <Grid item md={6} sm={6} xs={12} className="px-3 mt-2">
+                  <label> Cash on delivery :</label>
+                  <br />
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-multiple-name-label">
+                      Cash on delivery
+                    </InputLabel>
+                    <Select
+                      className="select-style1"
+                      fullWidth
+                      required
+                      defaultValue={
+                        productData
+                          ? productData[0].cash_on_delivery
+                          : ""
+                      }
+                      onChange={(e) =>{
+                        console.log(e.target.value,"valuesssss")
+                        AllProducts.current[
+                          index
+                        ].cash_on_delivery = e.target.value
+                      }}
+                      label="Outlined"
+                      variant="outlined"
+                    >
+                     
+                          <MenuItem value={"yes"}>
+                            Yes
+                          </MenuItem>
+                          <MenuItem value={"no"}>
+                            No
+                          </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
                 {/* <Grid
                   item
                   md={12}
