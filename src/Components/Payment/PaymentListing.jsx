@@ -41,7 +41,11 @@ export default function PaymentListing() {
       .then((res) => {
         console.log(res);
         if (res.data.data) {
-          let data = res.data.data.map((e) => e.paymentDetails);
+          let data = res.data.data.map((e) => {
+            let detail = e.paymentDetails;
+            detail.paymentMode = e.paymentMode;
+            return detail
+          });
           console.log(data);
           setAllPayment(data);
           setCollection(data);
@@ -82,6 +86,9 @@ export default function PaymentListing() {
                 <b>Date And Time</b>
               </TableCell>
               <TableCell className="text-center">
+                <b>Payment Mode</b>
+              </TableCell>
+              <TableCell className="text-center">
                 <b>Payment Status</b>
               </TableCell>
             </TableRow>
@@ -99,6 +106,10 @@ export default function PaymentListing() {
                   </TableCell>
                   <TableCell className="text_cap text-center">
                     {res.createdDateTime}
+                  </TableCell>
+                  <TableCell className="text_cap text-center">
+                    {console.log(res)}
+                    {res.paymentMode==="cash"?"Cash on Delivery":"Online"}
                   </TableCell>
                   <TableCell className="text_cap text-center">
                     {res.paymentStatus}
