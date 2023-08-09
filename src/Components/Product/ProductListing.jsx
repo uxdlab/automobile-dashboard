@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { CSVLink } from "react-csv";
 import {
   Backdrop,
   Box,
@@ -18,7 +19,7 @@ import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { getAllItem, bulkProduct } from "../../services/Item";
-import { deleteItem,stockStatus } from "../../services/Item";
+import { deleteItem,stockStatus,getExportData } from "../../services/Item";
 import { SnackBar } from "../Assets/SnackBar";
 import { deleteObject, getStorage, ref } from "firebase/storage";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -34,6 +35,7 @@ export default function ProductListing() {
   const [deleteModel, setDeleteModel] = useState(false);
   const [deletedComp, setDeletedComp] = useState({ id: "", images: [] });
   const [open1, setOpen1] = useState(false);
+  const [exportData, setExportData] = useState([]);
 
   const [snackbar, ShowSnackbar] = useState({
     show: false,
@@ -214,20 +216,29 @@ export default function ProductListing() {
 
     }
   }, []);
-  function getAllProduct() {
+  async function getAllProduct() {
+    await getExportData().then((res) => {
+      if(res.data.data){
+ 
+       setExportData(res.data.data)
+      }
+     setLoader(false);
+   })
+   .catch((error) => console.log(error));
     getAllItem()
       .then((res) => {
         console.log(res);
-        setLoader(false);
         setAllProduct(res.data.data);
         setAllProductc(res.data.data);
-
-
+        
+      setLoader(false);
+        
       })
       .catch((err) => {
         console.log(err);
         setLoader(false);
       });
+      
   }
   function deleteProduct() {
     setDeleteModel(false);
@@ -323,7 +334,17 @@ export default function ProductListing() {
           >
             Import Products
           </Button>
+          <CSVLink data={exportData} filename={"Kapoor_sparesHub_Products.csv"}>
 
+          <Button
+            className="btn_primary"
+            style={{ marginRight: "10px" }}
+            variant="contained"
+          >
+            Export Products
+          </Button>
+
+          </CSVLink>
           <Link style={{ textDecoration: "none" }} to="/addProduct">
             <Button className="btn_primary" variant="contained">
               Add Product

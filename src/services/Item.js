@@ -32,3 +32,7 @@ export const bulkProduct = async(data) =>{
 export const stockStatus = async(id) =>{
     return await axios.put(`${apis.baseUrl}${apis.items.stockStatus}${id}`)
 }
+
+export const getExportData = async () =>{
+    return await axios.get(`${apis.baseUrl}${apis.items.exportData}`)
+  }

@@ -189,7 +189,7 @@ export default function UsersListing() {
           <TableHead>
             <TableRow>
               {/* <TableCell className="w-12"><b>S.No</b></TableCell> */}
-              <TableCell className="w-25">
+              <TableCell className="w-20">
                 <b>Name</b>
               </TableCell>
               <TableCell>
@@ -197,6 +197,9 @@ export default function UsersListing() {
               </TableCell>
               <TableCell>
                 <b>Phone No.</b>
+              </TableCell>
+              <TableCell>
+                <b>GST Number</b>
               </TableCell>
               <TableCell>
                 <b>Address</b>
@@ -217,6 +220,8 @@ export default function UsersListing() {
                   <TableCell className="text_cap">{res.fullName}</TableCell>
                   <TableCell>{res.email}</TableCell>
                   <TableCell>{res.mobile_number}</TableCell>
+                  <TableCell>{res.gstNumber && res.gstNumber !== ""  ? res.gstNumber : "--No GST--"}</TableCell>
+
                   <TableCell>{addressData(res.address)}</TableCell>
 
                   <TableCell>

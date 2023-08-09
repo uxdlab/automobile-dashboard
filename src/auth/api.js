@@ -39,7 +39,8 @@ export const apis = {
     get: "product/",
     delete: "product/delete/",
     edit: "product/updateProduct/",
-    stockStatus:"product/stockUpdate/"
+    stockStatus:"product/stockUpdate/",
+    exportData:'product/data/exportData'
   },
   manufacture: {
     add: "manufacturer/addManufacturer/",
