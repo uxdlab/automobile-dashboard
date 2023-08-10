@@ -44,6 +44,8 @@ export default function PromoListing() {
   const [open1, setOpen1] = useState(false);
   const [promoName, setPromoName] = useState("");
   const [addexpireDate, setAddExpireDate] = useState("");
+  const [addstartDate, setAddStartDate] = useState("");
+
   const [discount, setDiscount] = useState("");
   const [minimumOrder, setMinimumOreder] = useState("");
   const [allPromos, setAllPromos] = useState([]);
@@ -52,6 +54,8 @@ export default function PromoListing() {
   const [editDiscount, setEditDisount] = useState(propId.discount_percentage);
   const [editName, setEditName] = useState(propId.promo_name);
   const [editDate, setEditDate] = useState(propId.expire_at);
+  const [startDate, setStartDate] = useState(propId.start_at);
+
   const [editOrder, setEditOrder] = useState(propId.minimum_order);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [value, setValue] = React.useState("");
@@ -118,6 +122,7 @@ export default function PromoListing() {
       expire_at: addexpireDate,
       discount_percentage: discount,
       minimum_order: minimumOrder,
+      start_at: addstartDate
     });
     add(
       {
@@ -125,6 +130,7 @@ export default function PromoListing() {
         expire_at: addexpireDate,
         discount_percentage: discount,
         minimum_order: minimumOrder,
+        start_at: addstartDate
       },
       data
     )
@@ -149,7 +155,7 @@ export default function PromoListing() {
           msg: "Promo Already Exist",
           type: "error",
         });
-         setLoader(false);
+        setLoader(false);
       });
   };
 
@@ -193,6 +199,7 @@ export default function PromoListing() {
       expire_at: editDate,
       discount_percentage: editDiscount,
       minimum_order: editOrder,
+      start_at: startDate,
     });
 
     setLoader(true);
@@ -202,6 +209,7 @@ export default function PromoListing() {
       expire_at: editDate,
       discount_percentage: editDiscount,
       minimum_order: editOrder,
+      start_at: startDate,
     })
       .then((res) => {
         console.log(res);
@@ -218,14 +226,14 @@ export default function PromoListing() {
       })
       .catch((err) => {
         console.log(err);
-         ShowSnackbar({
-           show: true,
-           vertical: "top",
-           horizontal: "right",
-           msg: "Promo Already Exist",
-           type: "error",
-         });
-         setLoader(false);
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Promo Already Exist",
+          type: "error",
+        });
+        setLoader(false);
       });
   };
 
@@ -335,6 +343,29 @@ export default function PromoListing() {
                   <div className="col-md-12">
                     <div className="py-2">
                       <small>
+                        <b>Start Date:</b>
+                      </small>
+                    </div>
+                    <input
+                      required
+                      id="exampleDate"
+                      name="date"
+                      placeholder="date placeholder"
+                      type="date"
+                      onChange={(e) => {
+                        setAddStartDate(e.target.value);
+                      }}
+                      style={{
+                        width: "400px",
+                        height: "40px",
+                        borderRadius: "8px",
+                        border: "2px solid grey",
+                      }}
+                    />
+                  </div>
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
                         <b>Expiry Date:</b>
                       </small>
                     </div>
@@ -437,6 +468,32 @@ export default function PromoListing() {
                   <div className="col-md-12">
                     <div className="py-2">
                       <small>
+                        <b>Start Date:</b>
+                      </small>
+                    </div>
+                    <input
+                      required
+                      // id="exampleDate"
+                      type="date"
+                      name="date"
+                      placeholder="date placeholder"
+                      defaultValue={moment(propId.start_at).format(
+                        "YYYY-MM-DD"
+                      )}
+                      onChange={(e) => {
+                        setStartDate(e.target.value);
+                      }}
+                      style={{
+                        width: "400px",
+                        height: "40px",
+                        borderRadius: "8px",
+                        border: "2px solid grey",
+                      }}
+                    />
+                  </div>
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
                         <b>Expiry Date:</b>
                       </small>
                     </div>
@@ -519,6 +576,9 @@ export default function PromoListing() {
                   <b>Minimum Order</b>
                 </TableCell>
                 <TableCell className="text-center">
+                  <b>Start Date</b>
+                </TableCell>
+                <TableCell className="text-center">
                   <b>Expiry Date</b>
                 </TableCell>
                 <TableCell className="text-center">
@@ -541,6 +601,10 @@ export default function PromoListing() {
                     </TableCell>
                     <TableCell className="text_cap text-center">
                       {res.minimum_order}
+                    </TableCell>
+                    {console.log(res.start_at)}
+                    <TableCell className="text_cap text-center">
+                      {moment(res.start_at).format("DD-MM-YYYY")}
                     </TableCell>
                     <TableCell className="text_cap text-center">
                       {moment(res.expire_at).format("DD-MM-YYYY")}
