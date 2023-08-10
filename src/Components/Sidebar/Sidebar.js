@@ -70,7 +70,7 @@ export const Sidebar = ({ children }) => {
             }}
             style={{ cursor: "pointer" }}
           >
-            <img src="images/navbar_logo.png" className="w-100" alt="" />
+            <img src="images/navbar_logo1.png" className="w-100" alt="" />
             {/* Kapoor Enterprises */}
           </div>
           <div className="sidebar_item_con px-3">
