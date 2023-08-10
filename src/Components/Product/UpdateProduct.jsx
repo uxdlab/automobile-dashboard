@@ -330,7 +330,7 @@ export default function UpdateProduct() {
             show: true,
             vertical: "top",
             horizontal: "right",
-            msg: "Product Already Exist",
+            msg: "Spare part Already Exist",
             type: "error",
           });
         } else {
@@ -386,7 +386,7 @@ export default function UpdateProduct() {
         </Box>
       </Backdrop>
       <Typography variant="h4" className="text-center" mx={2} mt={2}>
-        Edit Product
+        Edit Spare part
       </Typography>
       {!loader ? (
         <Box>
@@ -444,7 +444,7 @@ export default function UpdateProduct() {
                           <label>Description :</label>
                           <br />
                           <textarea
-                            placeholder="Enter Product Description"
+                            placeholder="Enter Spare part Description"
                             onChange={(e) => {
                               if (e.target.value == " ") {
                                 e.target.value = "";

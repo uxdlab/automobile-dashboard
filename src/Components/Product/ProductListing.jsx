@@ -197,7 +197,7 @@ export default function ProductListing() {
         show: true,
         vertical: "top",
         horizontal: "right",
-        msg: "Product Updated successfully",
+        msg: "Spare part Updated successfully",
         type: "success",
       });
       sessionStorage.removeItem("updated");
@@ -208,7 +208,7 @@ export default function ProductListing() {
         show: true,
         vertical: "top",
         horizontal: "right",
-        msg: "Product Added successfully",
+        msg: "Spare part Added successfully",
         type: "success",
       });
       sessionStorage.removeItem("added");
@@ -253,7 +253,7 @@ export default function ProductListing() {
           show: true,
           vertical: "top",
           horizontal: "right",
-          msg: "Product Deleted successfully",
+          msg: "Spare part Deleted successfully",
           type: "success",
         });
         console.log(deletedComp.images);
@@ -347,7 +347,7 @@ export default function ProductListing() {
           </CSVLink>
           <Link style={{ textDecoration: "none" }} to="/addProduct">
             <Button className="btn_primary" variant="contained">
-              Add Product
+              Add Spare part
             </Button>
           </Link>
         </Box>
@@ -360,7 +360,7 @@ export default function ProductListing() {
               <TableRow>
                 {/* <TableCell><b>Sno.</b></TableCell> */}
                 <TableCell>
-                  <b> Name</b>
+                  <b>Part Name</b>
                 </TableCell>
                 <TableCell>
                   <b> OE Reference Number</b>
