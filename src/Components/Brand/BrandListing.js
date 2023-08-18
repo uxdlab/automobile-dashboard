@@ -449,16 +449,16 @@ export const BrandListing = () => {
       let arr = allCompanies.filter(
         (item) => {
           if (item.brand_name === brandData.current.brand_name) {
-            Segment=[...Segment,...item.segment_array]
+            Segment = [...Segment, ...item.segment_array]
             return item
           }
         }
 
       );
-      let segmentArr=selectSegment.filter(function(item) {
+      let segmentArr = selectSegment.filter(function (item) {
         return Segment.includes(item);
       })
-      
+
       console.log(segmentArr, "arr")
 
       if (segmentArr.length !== 0) {
@@ -486,10 +486,25 @@ export const BrandListing = () => {
   const checkNameForUpdate = (e) => {
     e.preventDefault();
     let arr = allCompanies.filter(
-      (item) =>
-        item.brand_name === brandData.current.brand_name &&
-        item._id !== brandData.current._id
+      (item) => {
+        if (item.segment_array.length === selectSegment.length) {
+
+          let as = item.segment_array.filter(s => selectSegment.includes(s));
+          if (as.length === item.segment_array.length && item.brand_name === brandData.current.brand_name) {
+            console.log(as);
+
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+
+        }
+      }
     );
+    console.log(selectSegment);
+
     if (arr.length !== 0) {
       ShowSnackbar({
         show: true,
