@@ -141,6 +141,7 @@ export default function PrivacyPolicy() {
             wrapperStyle={{}}
             wrapperClassName=""
             visible={loader}
+            style={{boder:"1px solid red "}}
           />
         </Backdrop>
         {!loader ? (
@@ -152,7 +153,8 @@ export default function PrivacyPolicy() {
                 <Editor
                   name="private-Policy"
                   value={addPolicy}
-                  style={{ height: "200px" }}
+                  style={{ minHeight: 200 }}
+                  
                   onChange={(e) => {
                     console.log(e.target.value);
                     setAddPolicy(e.target.value);
@@ -160,7 +162,7 @@ export default function PrivacyPolicy() {
                   }}
                 />
                 {brandError.useValidation ? (
-                  <p style={{ color: "red" }}>{brandError.useValidation}</p>
+                  <p style={{ color: "red"}}>{brandError.useValidation}</p>
                 ) : (
                   ""
                 )}
