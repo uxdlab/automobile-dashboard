@@ -20,6 +20,8 @@ import PrivacyPolicy from "./Components/Container/PrivacyPolicy";
 import TermAndCondition from "./Components/Container/TermAndCondition";
 import Onboarding from "./Components/Container/Onboarding";
 import PromoListing from "./Components/Promo/PromoListing";
+import MechanicListing from "./Components/Mechanic/MechanicListing";
+import { Qrcode } from "./Components/Qrcode/Qrcode";
 
 export const Router = () => {
     return (
@@ -32,7 +34,7 @@ export const Router = () => {
           <Route element={<CheckAuth />}>
             <Route exact path="/segment" element={<SegmentListing />} />
             <Route exact path="/category" element={<Category />} />
-            <Route exact path="/brand" element={<BrandListing />} />
+              <Route exact path="/brand" element={<BrandListing />} />
             <Route exact path="/models" element={<ModelListing />} />
             <Route exact path="/" element={<UsersListing />} />
             <Route exact path="/orders" element={<PaymentListing />} />
@@ -50,6 +52,8 @@ export const Router = () => {
             <Route exact path="term-condition" element={<TermAndCondition />} />
             <Route exact path="on-boarding" element={<Onboarding />} />
             <Route exact path="promo-listing" element={<PromoListing />} />
+            <Route exact path="mechanic-listing" element={<MechanicListing />} />
+            <Route exact path="qrcode" element={<Qrcode />} />
 
             <Route path="*" element={<WrongPath />} />
           </Route>

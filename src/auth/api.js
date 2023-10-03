@@ -1,8 +1,8 @@
 import { deleteUser } from "../services/Users";
 
 export const apis = {
-  baseUrl: "https://automobile.herokuapp.com/",
-  // baseUrl: "http://localhost:3001/",
+  // baseUrl: "https://automobile.herokuapp.com/",
+  baseUrl: "http://localhost:3001/",
 
   vehicle: {
     add: "vehicle/addVehicle",
@@ -73,6 +73,14 @@ export const apis = {
     getPromoId: "promo/",
     updatePromo: "promo/",
     deletePromo: "promo/",
+  },
+  mechanic: {
+    addMechanic: "mechanic/addMechanic",
+    getAllMechanic: "mechanic/getAllMechanicData",
+    getMechanicId: "mechanic/getMechanic",
+    updateMechanic: "mechanic/updateMechanic",
+    deleteMechanic: "mechanic/deleteMechanical",
+    isActive :"mechanic/isActive"
   },
   payment: {
     gerAllPayment: "payment/getallpayment",

@@ -151,6 +151,20 @@ export const Sidebar = ({ children }) => {
               </span>
               <hr className="mb-3 mt-1" />
             </Box>
+              <Box
+              onClick={() => navigate("/mechanic-listing")}
+              className="fs-5"
+              sx={{ cursor: "pointer" }}
+            >
+              Mechanic <hr className="mb-3 mt-1" />
+            </Box>
+            <Box
+              onClick={() => navigate("/qrcode")}
+              className="fs-5"
+              sx={{ cursor: "pointer" }}
+            >
+              QR Code <hr className="mb-3 mt-1" />
+            </Box>
             <Box
               sx={{
                 padding: "0 0 0 20px",

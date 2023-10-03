@@ -1,0 +1,40 @@
+.main-container{
+    display: flex;
+    justify-content: end;
+}
+button{
+    padding: 6px 16px !important;
+}
+
+
+.create{
+    width: 100%;
+
+}
+.text-field{
+    border: solid 0.5px;
+    margin-left: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 5px;
+    size: 100%;  
+}
+
+.text-field-2{
+    border: solid 1px;  
+    margin-left: 24px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+input:hover{
+    border: solid #4539ca 0.5px;
+    
+}
+.t-header{
+    font-family: "Roboto","Helvetica","Arial",sans-serif !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem;
+    line-height: 1.5rem
+}
+
