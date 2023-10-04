@@ -11,7 +11,7 @@ import {
   Paper,
   Dialog,
   TableBody,
-  Switch
+  Switch,
 } from "@mui/material";
 import { Triangle } from "react-loader-spinner";
 import React, { useRef } from "react";
@@ -23,7 +23,7 @@ import {
   getAllMechanic,
   getMechanicId,
   deleteMechanic,
-  isActive
+  isActive,
 } from "../../services/MechanicApi";
 import moment from "moment/moment";
 import Pagination from "rc-pagination";
@@ -54,10 +54,9 @@ export default function MechanicListing() {
   const [open1, setOpen1] = useState(false);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [countPerPage, setCountPerPage] = useState(10);
-  const [collection,setCollection] = useState([])
+  const [collection, setCollection] = useState([]);
   const [allPromos, setAllPromos] = useState([]);
   const [MechanicId, setMechanicId] = useState("");
-
 
   const updatePage = (p) => {
     setCurrentPage(p);
@@ -65,35 +64,37 @@ export default function MechanicListing() {
     const from = to - countPerPage;
     setCollection(allPromos.slice(from, to));
   };
-  const updateMechanicByid = async() => {
- await updateMechanic(MechanicId,Mechanic.current).then(res=>getAllData())
+  const updateMechanicByid = async () => {
+    await updateMechanic(MechanicId, Mechanic.current).then((res) =>
+      getAllData()
+    );
   };
-  const addMachincData =async()=>{
-    console.log(Mechanic.current)
-    await addMechanic(Mechanic.current).then((res)=>getAllData());
-  }
-  const getMechanic =(id)=>{
-    Mechanic.current={
+  const addMachincData = async () => {
+    console.log(Mechanic.current);
+    await addMechanic(Mechanic.current).then((res) => getAllData());
+  };
+  const getMechanic = (id) => {
+    Mechanic.current = {
       mechanic_name: "",
       mechanic_number: "",
       mechanic_email: "",
       mechanic_address: "",
       password: "",
-    }
-    setMechanicId(id)
-    getMechanicId(id).then((res)=>{
-      Mechanic.current= res.data.data;
-      setOpen1(true)
-    })
-  }
-    const getAllData=async()=>{
-    await getAllMechanic().then((res)=>{
-      setCollection(res.data.data)
-    })
+    };
+    setMechanicId(id);
+    getMechanicId(id).then((res) => {
+      Mechanic.current = res.data.data;
+      setOpen1(true);
+    });
   };
-  useEffect(()=>{
-getAllData()
-  },[])
+  const getAllData = async () => {
+    await getAllMechanic().then((res) => {
+      setCollection(res.data.data);
+    });
+  };
+  useEffect(() => {
+    getAllData();
+  }, []);
   return (
     <>
       <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
@@ -118,9 +119,7 @@ getAllData()
           <Box py={2} px={1} className="over-flow-hide-x">
             <h5 className="px-3">Add Mechanic</h5>
             <hr />
-            <form
-            onSubmit={()=>addMachincData()}
-            >
+            <form onSubmit={() => addMachincData()}>
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
@@ -137,7 +136,7 @@ getAllData()
                       placeholder="Enter Mechanic Name"
                       className="form-control w-100 mb-2"
                       onChange={(e) => {
-                        Mechanic.current.mechanic_name= e.target.value
+                        Mechanic.current.mechanic_name = e.target.value;
                       }}
                     />
                   </div>
@@ -154,7 +153,7 @@ getAllData()
                       placeholder="Enter Mechanic Email"
                       className="form-control w-100 mb-2"
                       onChange={(e) => {
-                        Mechanic.current.mechanic_email =  e.target.value;
+                        Mechanic.current.mechanic_email = e.target.value;
                       }}
                     />
                   </div>
@@ -170,8 +169,7 @@ getAllData()
                       placeholder="Enter Mechanic Phone Number"
                       className="form-control w-100 mb-2"
                       onChange={(e) => {
-
-                        Mechanic.current.mechanic_number= e.target.value
+                        Mechanic.current.mechanic_number = e.target.value;
                       }}
                     />
                   </div>
@@ -188,7 +186,7 @@ getAllData()
                       className="form-control w-100 mb-2"
                       autoComplete="new-address"
                       onChange={(e) => {
-                        Mechanic.current.mechanic_address =   e.target.value
+                        Mechanic.current.mechanic_address = e.target.value;
                       }}
                     />
                   </div>
@@ -204,7 +202,9 @@ getAllData()
                       autoComplete="new-password"
                       placeholder="Enter Mechanic Password"
                       className="form-control w-100 mb-2"
-                      onChange={(e) => {Mechanic.current.password= e.target.value}}
+                      onChange={(e) => {
+                        Mechanic.current.password = e.target.value;
+                      }}
                     />
                   </div>
                   <Box align="right" className="mt-3">
@@ -216,9 +216,7 @@ getAllData()
                     >
                       Cancel
                     </span>
-                    <button className="btn custom-btn py-1 px-3" type="submit"
-                    
-                     >
+                    <button className="btn custom-btn py-1 px-3" type="submit">
                       Add Mechanic
                     </button>
                   </Box>
@@ -231,9 +229,7 @@ getAllData()
           <Box py={2} px={1} className="over-flow-hide-x">
             <h5 className="px-3">Edit Mechanic</h5>
             <hr />
-            <form
-            onSubmit={()=>updateMechanicByid()}
-            >
+            <form onSubmit={() => updateMechanicByid()}>
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
@@ -251,11 +247,10 @@ getAllData()
                       className="form-control w-100 mb-2"
                       defaultValue={Mechanic.current.mechanic_name}
                       onChange={(e) => {
-                      
-                        if (e.target.value.trim()=="") {
+                        if (e.target.value.trim() == "") {
                           e.target.value = "";
                         } else {
-                          Mechanic.current.mechanic_name = e.target.value 
+                          Mechanic.current.mechanic_name = e.target.value;
                         }
                       }}
                     />
@@ -274,7 +269,7 @@ getAllData()
                       placeholder="Enter Mechanic Email"
                       className="form-control w-100 mb-2"
                       onChange={(e) => {
-                        Mechanic.current.mechanic_email = e.target.value
+                        Mechanic.current.mechanic_email = e.target.value;
                       }}
                     />
                   </div>
@@ -291,7 +286,7 @@ getAllData()
                       className="form-control w-100 mb-2"
                       defaultValue={Mechanic.current.mechanic_number}
                       onChange={(e) => {
-                        Mechanic.current.mechanic_number = e.target.value
+                        Mechanic.current.mechanic_number = e.target.value;
                       }}
                     />
                   </div>
@@ -309,7 +304,7 @@ getAllData()
                       autoComplete="new-address"
                       defaultValue={Mechanic.current.mechanic_address}
                       onChange={(e) => {
-                        Mechanic.current.mechanic_address = e.target.value
+                        Mechanic.current.mechanic_address = e.target.value;
                       }}
                     />
                   </div>
@@ -419,16 +414,18 @@ getAllData()
                       {res.points}
                     </TableCell>
                     <TableCell>
-                    <Switch
-                      defaultChecked={res.is_loggedIn}
-                      onChange={async() => await isActive(res._id)}
-                    />
-                  </TableCell>
+                      <Switch
+                        defaultChecked={res.is_loggedIn}
+                        onChange={async () => await isActive(res._id)}
+                      />
+                    </TableCell>
                     <TableCell className="text-center">
                       <Delete
                         className="pointer"
-                        onClick={async(e) => {
-                          await deleteMechanic(res._id).then(res=>getAllData());
+                        onClick={async (e) => {
+                          await deleteMechanic(res._id).then((res) =>
+                            getAllData()
+                          );
                         }}
                       />
                       <Edit

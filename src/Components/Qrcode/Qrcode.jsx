@@ -1,23 +1,35 @@
-import * as React from 'react';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import './Qrcode.css';
-import { Dialog, Modal } from '@mui/material';
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
+import * as React from "react";
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import "./Qrcode.css";
+import { Dialog, Modal } from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import QRGenerator from "./QRGenerator";
+import QRCodeDocument from "./QRCodeDocument";
+import { createPoint, allPoint } from "../../services/MechanicApi";
+import { useEffect } from "react";
+import moment from "moment/moment";
 export const Qrcode = () => {
   const [open, setOpen] = React.useState(false);
   const [showTable, setShowTable] = React.useState(false);
-  const [denomination, setDenomination] = React.useState(''); // State variable for Denomination
-  const [copies, setCopies] = React.useState(''); // State variable for Generate Copies
+  const [pointData, setPointData] = React.useState([]);
+
+  const [denomination, setDenomination] = React.useState(""); // State variable for Denomination
+  const [copies, setCopies] = React.useState(""); // State variable for Generate Copies
+  const qrCodeData = [
+    { id: 1234, value: "TEST1" },
+    { id: 1235, value: "TEST2" },
+  ];
+  const qrCodeIds = qrCodeData.map((data) => data.id);
 
   const handleOpen = () => {
     setOpen(true);
@@ -25,32 +37,56 @@ export const Qrcode = () => {
 
   const handleClose = () => {
     setOpen(false);
-    
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     // Handle the create button click here, and then show the table
-    setShowTable(true);
+    //   <PDFDownloadLink
+    //   document={<QRCodeDocument ids={qrCodeIds} />}
+
+    //   fileName="qrcode11.pdf"
+    // >
+
+    // </PDFDownloadLink>
+    let QrData = [];
+    let pointCode = [];
+    for (let i = 0; i < Number(copies); i++) {
+      let id = uuidv4();
+      QrData.push({
+        point_id: id,
+        denomination: denomination,
+
+      });
+      pointCode.push(id);
+    }
+    await createPoint({
+      denomination: denomination,
+      point_ids: pointCode,
+      copies: Number(copies),
+    }).then(e=>allData());
+
     setOpen(false);
-    
-    // setDenomination('');
-    // setCopies('');
+
+
   };
-  
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 400,
-    background: 'white',
-    borderRadius:'8px',
+    background: "white",
+    borderRadius: "8px",
     boxShadow: 24,
-    p:4,
+    p: 4,
   };
-  
-
+  const allData = async () => {
+    await allPoint().then((res) => setPointData(res.data.data));
+  };
+  useEffect(() => {
+    allData();
+  }, []);
   return (
     <>
       <div className="container">
@@ -59,7 +95,8 @@ export const Qrcode = () => {
             <Button
               className="btn_primary mt-2 mb-3"
               variant="contained"
-              onClick={handleOpen}>
+              onClick={handleOpen}
+            >
               ADD QR
             </Button>
           </div>
@@ -93,10 +130,18 @@ export const Qrcode = () => {
                 />
 
                 <div className="create mt-4 h justify-content-end">
-                  <Button className="btn_primary mt-3" variant="contained" onClick={handleCreate} >
-                    Print
+                  <Button
+                    className="btn_primary mt-3"
+                    variant="contained"
+                    onClick={handleCreate}
+                  >
+                    print
                   </Button>
-                  <Button className="btn cancel_btn ms-4 mt-3" variant="" onClick={handleClose}>
+                  <Button
+                    className="btn cancel_btn ms-4 mt-3"
+                    variant=""
+                    onClick={handleClose}
+                  >
                     Cancel
                   </Button>
                 </div>
@@ -105,22 +150,24 @@ export const Qrcode = () => {
           </Box>
         </Modal>
 
-
         <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow className='text-center'>
-                  <TableCell><b>Denomination</b></TableCell>
-                  <TableCell><b>Generated Copies</b></TableCell>
-                  <TableCell><b>Created Date</b></TableCell>
-                </TableRow>
-              </TableHead>
+          <Table>
+            <TableHead>
+              <TableRow className="text-center">
+                <TableCell>
+                  <b>Denomination</b>
+                </TableCell>
+                <TableCell>
+                  <b>Generated Copies</b>
+                </TableCell>
+                <TableCell>
+                  <b>Created Date</b>
+                </TableCell>
+              </TableRow>
+            </TableHead>
           </Table>
-          </TableContainer>
-        
-          
+        </TableContainer>
 
-        {showTable && (
           <TableContainer component={Paper}>
             <Table>
               {/* <TableHead>
@@ -131,15 +178,20 @@ export const Qrcode = () => {
                 </TableRow>
               </TableHead> */}
               <TableBody>
-                <TableRow className='text-center'>
-                  <TableCell>{denomination}</TableCell>
-                  <TableCell className='text-center'>{copies}</TableCell>
-                  <TableCell className='text-center'>01/8/2023</TableCell>
+                  {pointData.map((res) => (
+                <TableRow className="text-center">
+                    <>
+                      <TableCell>{res.denomination}</TableCell>
+                      <TableCell className="text-center">
+                        {res.copies}
+                      </TableCell>
+                      <TableCell className="text-center">{moment(res.created_at).format("DD/MM/YYYY")}</TableCell>
+                    </>
                 </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
-        )}
       </div>
     </>
   );

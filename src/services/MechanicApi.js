@@ -26,3 +26,12 @@ export const deleteMechanic = async (id) => {
     `${apis.baseUrl}${apis.mechanic.deleteMechanic}/${id}`
   );
 };
+export const createPoint = async (data) => {
+  return await axios.post(
+    `${apis.baseUrl}${apis.point.add}`,data
+  );
+};export const allPoint = async () => {
+  return await axios.get(
+    `${apis.baseUrl}${apis.point.getAll}`
+  );
+};
