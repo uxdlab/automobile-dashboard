@@ -1,8 +1,8 @@
 import { deleteUser } from "../services/Users";
 
 export const apis = {
-  // baseUrl: "https://automobile.herokuapp.com/",
-  baseUrl: "http://localhost:3001/",
+  baseUrl: "https://automobile.herokuapp.com/",
+  // baseUrl: "http://localhost:3001/",
 
   vehicle: {
     add: "vehicle/addVehicle",
