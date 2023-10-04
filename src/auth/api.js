@@ -1,4 +1,4 @@
-import { deleteUser } from "../services/Users";
+
 
 export const apis = {
   baseUrl: "https://automobile.herokuapp.com/",
