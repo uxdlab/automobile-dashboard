@@ -30,8 +30,12 @@ export const createPoint = async (data) => {
   return await axios.post(
     `${apis.baseUrl}${apis.point.add}`,data
   );
-};export const allPoint = async () => {
+};
+export const allPoint = async () => {
   return await axios.get(
     `${apis.baseUrl}${apis.point.getAll}`
   );
+};
+export const resetPoint = async (id) => {
+  return await axios.get(`${apis.baseUrl}${apis.mechanic.resetPoint}/${id}`);
 };

@@ -80,7 +80,9 @@ export const apis = {
     getMechanicId: "mechanic/getMechanic",
     updateMechanic: "mechanic/updateMechanic",
     deleteMechanic: "mechanic/deleteMechanical",
-    isActive :"mechanic/isActive"
+    isActive :"mechanic/isActive",
+    resetPoint :"mechanic/resetPoint"
+
   },
   point:{
     add:"point/createPoint",

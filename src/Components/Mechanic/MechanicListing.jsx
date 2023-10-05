@@ -17,6 +17,7 @@ import { Triangle } from "react-loader-spinner";
 import React, { useRef } from "react";
 import { useState } from "react";
 import { SnackBar } from "../Assets/SnackBar";
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import {
   addMechanic,
   updateMechanic,
@@ -24,6 +25,7 @@ import {
   getMechanicId,
   deleteMechanic,
   isActive,
+  resetPoint
 } from "../../services/MechanicApi";
 import moment from "moment/moment";
 import Pagination from "rc-pagination";
@@ -94,6 +96,11 @@ export default function MechanicListing() {
   const getAllData = async () => {
     await getAllMechanic().then((res) => {
       setCollection(res.data.data);
+    });
+  };
+  const pointReset = async (id) => {
+    await resetPoint(id).then((res) => {
+      getAllData()
     });
   };
   useEffect(() => {
@@ -391,6 +398,9 @@ export default function MechanicListing() {
                   <b>Point</b>
                 </TableCell>
                 <TableCell className="text-center">
+                  <b>Redeem Required</b>
+                </TableCell>
+                <TableCell className="text-center">
                   <b>Active</b>
                 </TableCell>
                 <TableCell className="text-center">
@@ -417,6 +427,9 @@ export default function MechanicListing() {
                     <TableCell className="text_cap text-center">
                       {res.points}
                     </TableCell>
+                    <TableCell className="text_cap text-center">
+                      {res.redeem !== "no" ? res.redeem : "--No Request--"}
+                    </TableCell>
                     <TableCell>
                       <Switch
                         defaultChecked={res.is_loggedIn}
@@ -438,6 +451,13 @@ export default function MechanicListing() {
                           console.log(res);
                           getMechanic(res._id);
                         }}
+                      />
+                      <RestartAltIcon
+                      className="pointer"
+                      onClick={() => {
+                        
+                        pointReset(res._id);
+                      }}
                       />
                     </TableCell>
                   </TableRow>
