@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { Backdrop } from "@mui/material";
 import "./Qrcode.css";
 import { Dialog, Modal } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
@@ -12,16 +13,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+
 import QRGenerator from "./QRGenerator";
-import QRCodeDocument from "./QRCodeDocument";
+import { Triangle } from "react-loader-spinner";
 import { createPoint, allPoint } from "../../services/MechanicApi";
 import { useEffect } from "react";
 import moment from "moment/moment";
+import QRCode from "qrcode";
 export const Qrcode = () => {
   const [open, setOpen] = React.useState(false);
   const [showTable, setShowTable] = React.useState(false);
   const [pointData, setPointData] = React.useState([]);
+  const [loader, setLoader] = useState(true);
 
   const [denomination, setDenomination] = React.useState(""); // State variable for Denomination
   const [copies, setCopies] = React.useState(""); // State variable for Generate Copies
@@ -40,14 +43,8 @@ export const Qrcode = () => {
   };
 
   const handleCreate = async () => {
-    // Handle the create button click here, and then show the table
-    //   <PDFDownloadLink
-    //   document={<QRCodeDocument ids={qrCodeIds} />}
-
-    //   fileName="qrcode11.pdf"
-    // >
-
-    // </PDFDownloadLink>
+    setLoader(true)
+    
     let QrData = [];
     let pointCode = [];
     for (let i = 0; i < Number(copies); i++) {
@@ -55,19 +52,19 @@ export const Qrcode = () => {
       QrData.push({
         point_id: id,
         denomination: denomination,
-
       });
       pointCode.push(id);
     }
+    setOpen(false);
     await createPoint({
       denomination: denomination,
       point_ids: pointCode,
       copies: Number(copies),
-    }).then(e=>allData());
-
-    setOpen(false);
-
-
+    }).then((e) => allData());
+    await QRGenerator(QrData);
+    setDenomination("");
+    setCopies("")
+    setLoader(false)
   };
 
   const style = {
@@ -82,7 +79,10 @@ export const Qrcode = () => {
     p: 4,
   };
   const allData = async () => {
-    await allPoint().then((res) => setPointData(res.data.data));
+    await allPoint().then((res) => {
+      setPointData(res.data.data)
+      setLoader(false)
+    });
   };
   useEffect(() => {
     allData();
@@ -101,7 +101,22 @@ export const Qrcode = () => {
             </Button>
           </div>
         </div>
-
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loader}
+        >
+          <Box>
+            <Triangle
+              height="80"
+              width="80"
+              color="black"
+              ariaLabel="triangle-loading"
+              wrapperStyle={{}}
+              wrapperClassName=""
+              visible={loader}
+            />
+          </Box>
+        </Backdrop>
         <Modal
           open={open}
           onClose={handleClose}
@@ -168,30 +183,30 @@ export const Qrcode = () => {
           </Table>
         </TableContainer>
 
-          <TableContainer component={Paper}>
-            <Table>
-              {/* <TableHead>
+        <TableContainer component={Paper}>
+          <Table>
+            {/* <TableHead>
                 <TableRow className='text-center'>
                   <TableCell><b>Denomination</b></TableCell>
                   <TableCell><b>Generated Copies</b></TableCell>
                   <TableCell><b>Created Date</b></TableCell>
                 </TableRow>
               </TableHead> */}
-              <TableBody>
-                  {pointData.map((res) => (
+            <TableBody>
+              {pointData.map((res) => (
                 <TableRow className="text-center">
-                    <>
-                      <TableCell>{res.denomination}</TableCell>
-                      <TableCell className="text-center">
-                        {res.copies}
-                      </TableCell>
-                      <TableCell className="text-center">{moment(res.created_at).format("DD/MM/YYYY")}</TableCell>
-                    </>
+                  <>
+                    <TableCell>{res.denomination}</TableCell>
+                    <TableCell className="text-center">{res.copies}</TableCell>
+                    <TableCell className="text-center">
+                      {moment(res.created_at).format("DD/MM/YYYY")}
+                    </TableCell>
+                  </>
                 </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </>
   );

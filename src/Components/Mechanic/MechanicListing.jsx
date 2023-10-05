@@ -64,13 +64,17 @@ export default function MechanicListing() {
     const from = to - countPerPage;
     setCollection(allPromos.slice(from, to));
   };
-  const updateMechanicByid = async () => {
-    await updateMechanic(MechanicId, Mechanic.current).then((res) =>
-      getAllData()
-    );
+  const updateMechanicByid = async (e) => {
+    e.preventDefault();
+
+    await updateMechanic(MechanicId, Mechanic.current).then((res) => {
+      getAllData();
+      setOpen1(false);
+    });
   };
-  const addMachincData = async () => {
+  const addMachincData = async (e) => {
     console.log(Mechanic.current);
+    e.preventDefault();
     await addMechanic(Mechanic.current).then((res) => getAllData());
   };
   const getMechanic = (id) => {
@@ -119,7 +123,7 @@ export default function MechanicListing() {
           <Box py={2} px={1} className="over-flow-hide-x">
             <h5 className="px-3">Add Mechanic</h5>
             <hr />
-            <form onSubmit={() => addMachincData()}>
+            <form onSubmit={(e) => addMachincData(e)}>
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
@@ -229,7 +233,7 @@ export default function MechanicListing() {
           <Box py={2} px={1} className="over-flow-hide-x">
             <h5 className="px-3">Edit Mechanic</h5>
             <hr />
-            <form onSubmit={() => updateMechanicByid()}>
+            <form onSubmit={(e) => updateMechanicByid(e)}>
               <div className="container-fluid">
                 <div className="row">
                   <div className="col-md-12">
