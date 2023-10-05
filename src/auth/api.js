@@ -82,6 +82,10 @@ export const apis = {
     deleteMechanic: "mechanic/deleteMechanical",
     isActive :"mechanic/isActive"
   },
+  point:{
+    add:"point/createPoint",
+    getAll:"point/getAllPoint"
+  },
   payment: {
     gerAllPayment: "payment/getallpayment",
   },
