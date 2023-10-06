@@ -61,7 +61,7 @@ export const Qrcode = () => {
       point_ids: pointCode,
       copies: Number(copies),
     }).then((e) => allData());
-    await QRGenerator(QrData);
+     QRGenerator(QrData);
     setDenomination("");
     setCopies("")
     setLoader(false)

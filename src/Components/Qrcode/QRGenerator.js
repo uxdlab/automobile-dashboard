@@ -1,9 +1,9 @@
 import {jsPDF} from 'jspdf';
 // Default export is a4 paper, portrait, using millimeters for units
-const doc = new jsPDF();
 
+let doc;
 const getImageSrc = (value , tagId) => {
-    
+  
     const SIZE = "300x300";
     const content = value+","+ tagId;
     const URL = `https://chart.googleapis.com/chart?chs=${SIZE}&cht=qr&chl=${content}&choe=UTF-8`;
@@ -11,6 +11,7 @@ const getImageSrc = (value , tagId) => {
   };
 
   const QRGenerator = (QrData) => {
+    doc=new jsPDF();
     renderImagesPDF(QrData);
     doc.save("QrCodes.pdf");
   };
@@ -25,6 +26,7 @@ const getImageSrc = (value , tagId) => {
     const A4pageWidth = 180; // 210mm
     const A4pageHeight = 297; // 297mm
     const vPadding = 7;
+    console.log(QrData)
 
     QrData.forEach((res)=>{
       if (items >= 20) {

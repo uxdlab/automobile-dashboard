@@ -17,7 +17,7 @@ import { Triangle } from "react-loader-spinner";
 import React, { useRef } from "react";
 import { useState } from "react";
 import { SnackBar } from "../Assets/SnackBar";
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import {
   addMechanic,
   updateMechanic,
@@ -25,7 +25,7 @@ import {
   getMechanicId,
   deleteMechanic,
   isActive,
-  resetPoint
+  resetPoint,
 } from "../../services/MechanicApi";
 import moment from "moment/moment";
 import Pagination from "rc-pagination";
@@ -49,7 +49,7 @@ export default function MechanicListing() {
     msg: "data added",
     type: "error",
   });
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState([]);
 
   const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
@@ -77,7 +77,10 @@ export default function MechanicListing() {
   const addMachincData = async (e) => {
     console.log(Mechanic.current);
     e.preventDefault();
-    await addMechanic(Mechanic.current).then((res) => getAllData());
+    await addMechanic(Mechanic.current).then((res) => {
+      setOpen(false);
+      getAllData();
+    });
   };
   const getMechanic = (id) => {
     Mechanic.current = {
@@ -96,12 +99,33 @@ export default function MechanicListing() {
   const getAllData = async () => {
     await getAllMechanic().then((res) => {
       setCollection(res.data.data);
+      setSearchValue(res.data.data);
     });
   };
   const pointReset = async (id) => {
     await resetPoint(id).then((res) => {
-      getAllData()
+      getAllData();
     });
+  };
+
+  const searching = (value) => {
+    const data = collection.filter((e) => {
+      if (
+        e.mechanic_name.includes(value) ||
+        e.mechanic_number.includes(value) ||
+        e.mechanic_email.includes(value) ||
+        e.mechanic_address.includes(value)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if (value.length !== 0) {
+      setSearchValue(data);
+    } else {
+      setSearchValue(collection);
+    }
   };
   useEffect(() => {
     getAllData();
@@ -363,7 +387,9 @@ export default function MechanicListing() {
                 className="w-75 form-control"
                 type="search"
                 placeholder="Search"
-                onChange={(e) => {}}
+                onChange={(e) => {
+                  searching(e.target.value)
+                }}
               />
             </Grid>
             <Grid item md={6} xs={12} className="d-flex justify-content-end">
@@ -395,6 +421,9 @@ export default function MechanicListing() {
                   <b>Address</b>
                 </TableCell>
                 <TableCell className="text-center">
+                  <b>Retailer</b>
+                </TableCell>
+                <TableCell className="text-center">
                   <b>Point</b>
                 </TableCell>
                 <TableCell className="text-center">
@@ -409,13 +438,13 @@ export default function MechanicListing() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {collection.map((res, index) => {
+              {searchValue.map((res, index) => {
                 return (
                   <TableRow key={index}>
                     <TableCell className="text_cap text-center">
                       {res.mechanic_name}
                     </TableCell>
-                    <TableCell className="text_cap text-center">
+                    <TableCell className="text-center">
                       {res.mechanic_email}
                     </TableCell>
                     <TableCell className="text_cap text-center">
@@ -423,6 +452,9 @@ export default function MechanicListing() {
                     </TableCell>
                     <TableCell className="text_cap text-center">
                       {res.mechanic_address}
+                    </TableCell>
+                    <TableCell className="text_cap text-center">
+                      {res.retailer ? res.retailer : "--No Retailer--"}
                     </TableCell>
                     <TableCell className="text_cap text-center">
                       {res.points}
@@ -453,11 +485,10 @@ export default function MechanicListing() {
                         }}
                       />
                       <RestartAltIcon
-                      className="pointer"
-                      onClick={() => {
-                        
-                        pointReset(res._id);
-                      }}
+                        className="pointer"
+                        onClick={() => {
+                          pointReset(res._id);
+                        }}
                       />
                     </TableCell>
                   </TableRow>
