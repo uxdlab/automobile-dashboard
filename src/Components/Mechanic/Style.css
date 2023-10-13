@@ -2,3 +2,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.passwordShow{
+  position:absolute;
+  left:85%;
+}

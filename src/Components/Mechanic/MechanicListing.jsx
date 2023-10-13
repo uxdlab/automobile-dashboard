@@ -12,7 +12,11 @@ import {
   Dialog,
   TableBody,
   Switch,
+  IconButton,
+  OutlinedInput,
+  InputAdornment,
 } from "@mui/material";
+
 import { Triangle } from "react-loader-spinner";
 import React, { useRef } from "react";
 import { useState } from "react";
@@ -33,6 +37,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import { useEffect } from "react";
 import "./Style.css";
 import matchers from "@testing-library/jest-dom/matchers";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function MechanicListing() {
   const Mechanic = useRef({
@@ -59,6 +64,7 @@ export default function MechanicListing() {
   const [collection, setCollection] = useState([]);
   const [allPromos, setAllPromos] = useState([]);
   const [MechanicId, setMechanicId] = useState("");
+  const [showPass, setShowPass] = useState(false);
 
   const updatePage = (p) => {
     setCurrentPage(p);
@@ -184,7 +190,6 @@ export default function MechanicListing() {
 
                     <input
                       type="email"
-                      required
                       placeholder="Enter Mechanic Email"
                       className="form-control w-100 mb-2"
                       onChange={(e) => {
@@ -231,17 +236,29 @@ export default function MechanicListing() {
                         <b> Mechanic Password:</b>
                       </small>
                     </div>
+                   <div style={{display:"flex"}} >
+
                     <input
-                      type="password"
+                       type={showPass ? "text" : "password"}
                       required
                       autoComplete="new-password"
                       placeholder="Enter Mechanic Password"
                       className="form-control w-100 mb-2"
+                      
                       onChange={(e) => {
                         Mechanic.current.password = e.target.value;
                       }}
+
                     />
+                    <div className="passwordShow">
+
+                          <IconButton onClick={() => setShowPass(!showPass)}>
+                            {showPass ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                    </div>
+                        
                   </div>
+                   </div>
                   <Box align="right" className="mt-3">
                     <span
                       className="btn cancel_btn me-3 py-1 px-3"
@@ -299,7 +316,6 @@ export default function MechanicListing() {
 
                     <input
                       type="email"
-                      required
                       defaultValue={Mechanic.current.mechanic_email}
                       placeholder="Enter Mechanic Email"
                       className="form-control w-100 mb-2"
@@ -388,7 +404,7 @@ export default function MechanicListing() {
                 type="search"
                 placeholder="Search"
                 onChange={(e) => {
-                  searching(e.target.value)
+                  searching(e.target.value);
                 }}
               />
             </Grid>
