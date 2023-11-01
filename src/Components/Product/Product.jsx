@@ -241,12 +241,12 @@ export default function Product({
                   />
                 </Grid>
                 <Grid item md={12} sm={12} xs={12} className="px-3 mt-2">
-                  <label>KE Part Number :</label>
+                  <label>Part Number :</label>
                   <br />
                   <input
                     required
                     type="text"
-                    placeholder="Enter KE Part Number"
+                    placeholder="Enter Part Number"
                     onChange={(e) => {
                       if (e.target.value == " ") {
                         e.target.value = "";

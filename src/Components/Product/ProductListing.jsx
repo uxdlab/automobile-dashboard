@@ -126,12 +126,13 @@ export default function ProductListing() {
             const worksheet = workbook.Sheets[sheetName];
             const json = xlsx.utils.sheet_to_json(worksheet);
             if (json.length !== 0) {
-              let ss = json.filter(
-                (e) =>
-                  allProduct.findIndex(
-                    (s) => s.product_name === e.product_name.toLowerCase()
-                  ) === -1
-              );
+              // let ss = json.filter(
+              //   (e) =>
+              //     allProduct.findIndex(
+              //       (s) => s.product_name === e.product_name.toLowerCase()
+              //     ) === -1
+              // );
+              let ss = json
               setLoader(true);
               setOpen1(false);
               const body = { dataSet: ss };
@@ -139,7 +140,7 @@ export default function ProductListing() {
               await bulkProduct(body).then((es) => {
                 setOpen1(true);
                 let data = es.data.data;
-
+                
                 let result = [];
                 if (data.length !== 0) {
                   if (data[0].error) {
@@ -149,11 +150,12 @@ export default function ProductListing() {
                         row: e.index + 2,
                       });
                     });
+                    setLoader(false);
                   } else {
                     setOpen1(false);
+                    getAllProduct()
                   }
                 }
-                setLoader(false);
                 setRows(result);
               });
             } else {
@@ -188,6 +190,8 @@ export default function ProductListing() {
     const to = countPerPage * p;
     const from = to - countPerPage;
     setCollection(allProduct.slice(from, to));
+    setLoader(false);
+
   };
 
   useEffect(() => {
@@ -217,27 +221,28 @@ export default function ProductListing() {
     }
   }, []);
   async function getAllProduct() {
-    await getExportData().then((res) => {
-      if(res.data.data){
- 
-       setExportData(res.data.data)
-      }
-     setLoader(false);
-   })
-   .catch((error) => console.log(error));
+    setLoader(true);
+
     getAllItem()
       .then((res) => {
         console.log(res);
         setAllProduct(res.data.data);
         setAllProductc(res.data.data);
         
-      setLoader(false);
+      // setLoader(false);
         
       })
       .catch((err) => {
         console.log(err);
         setLoader(false);
       });
+    await getExportData().then((res) => {
+      if(res.data.data){
+ 
+       setExportData(res.data.data)
+      }
+   })
+   .catch((error) => console.log(error));
       
   }
   function deleteProduct() {
@@ -366,7 +371,7 @@ export default function ProductListing() {
                   <b> OE Reference Number</b>
                 </TableCell>
                 <TableCell>
-                  <b> KE Part Number</b>
+                  <b> Part Number</b>
                 </TableCell>
                 <TableCell>
                   <b> MRP</b>

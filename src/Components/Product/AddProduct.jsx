@@ -139,20 +139,20 @@ export default function AddProduct() {
     let valid = validationForm();
     if (valid) {
       if (files.length !== 0) {
-        let arr = data.filter(
-          (item) => item.product_name === AllProducts.current[0].product_name
-        );
-        if (arr.length !== 0) {
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Product Already Exist",
-            type: "error",
-          });
-        } else {
+        // let arr = data.filter(
+        //   (item) => item.product_name === AllProducts.current[0].product_name
+        // );
+        // if (arr.length !== 0) {
+        //   ShowSnackbar({
+        //     show: true,
+        //     vertical: "top",
+        //     horizontal: "right",
+        //     msg: "Product Already Exist",
+        //     type: "error",
+        //   });
+        // } else {
           submitForm(e);
-        }
+        // }
       } else {
         ShowSnackbar({
           show: true,

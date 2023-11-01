@@ -320,22 +320,22 @@ export default function UpdateProduct() {
 
     if (valid) {
       if (checkURL.length !== 0 || imgURLs.length !== 0) {
-        let arr = allProductData.filter(
-          (item) =>
-            item.product_name === AllProducts.current[0].product_name &&
-            item._id !== AllProducts.current[0]._id
-        );
-        if (arr.length !== 0) {
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Spare part Already Exist",
-            type: "error",
-          });
-        } else {
+        // let arr = allProductData.filter(
+        //   (item) =>
+        //     item.product_name === AllProducts.current[0].product_name &&
+        //     item._id !== AllProducts.current[0]._id
+        // );
+        // if (arr.length !== 0) {
+        //   ShowSnackbar({
+        //     show: true,
+        //     vertical: "top",
+        //     horizontal: "right",
+        //     msg: "Spare part Already Exist",
+        //     type: "error",
+        //   });
+        // } else {
           formSubmit(e);
-        }
+        // }
       } else {
         ShowSnackbar({
           show: true,
