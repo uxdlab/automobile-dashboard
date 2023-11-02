@@ -2,7 +2,12 @@ import axios from "axios";
 import { apis } from "../auth/api";
 
 export const addMechanic = async (data) => {
-  return await axios.post(`${apis.baseUrl}${apis.mechanic.addMechanic}`, data);
+  try{
+    
+    return await axios.post(`${apis.baseUrl}${apis.mechanic.addMechanic}`, data);
+  }catch(error){
+    return error
+  }
 };
 
 export const getAllMechanic = async () => {

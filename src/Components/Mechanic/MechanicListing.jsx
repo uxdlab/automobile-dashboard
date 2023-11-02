@@ -81,11 +81,22 @@ export default function MechanicListing() {
     });
   };
   const addMachincData = async (e) => {
-    console.log(Mechanic.current);
     e.preventDefault();
     await addMechanic(Mechanic.current).then((res) => {
-      setOpen(false);
-      getAllData();
+      console.log(res.response)
+      if(res?.response){
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "The phone number or email address is already in active use.",
+          type: "error",
+        })
+      }else{
+
+        setOpen(false);
+        getAllData();
+      }
     });
   };
   const getMechanic = (id) => {
