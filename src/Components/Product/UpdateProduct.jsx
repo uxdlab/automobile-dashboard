@@ -286,8 +286,8 @@ export default function UpdateProduct() {
     console.log(uploadimg);
   }, [uploadimg]);
 
-  const imgPrev = (imgs) => {
-    console.log(imgs[0].name);
+  const imgPrev = (imgs,e) => {
+
     let num = 0;
     imgs.forEach((res) => {
       if (!res.name.match(/\.(jpg|jpeg|png|svg)$/)) {
@@ -316,7 +316,7 @@ export default function UpdateProduct() {
       });
     }
   };
-
+  console.log(imgPrev)
   const ExistNameCheck = (e) => {
     e.preventDefault();
     let valid = validationForm();
@@ -832,8 +832,11 @@ export default function UpdateProduct() {
                                   multiple
                                   id="2actual-btn"
                                   hidden
-                                  onChange={(e) =>
-                                    imgPrev(Object.values(e.target.files))
+                                  onChange={(e) =>{
+                                
+                                    imgPrev(Object.values(e.target.files),e)
+                                    e.target.value=""
+                                  }
                                   }
                                 />
                                 <label
