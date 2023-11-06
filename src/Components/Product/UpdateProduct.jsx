@@ -123,14 +123,17 @@ export default function UpdateProduct() {
     if (newImgURL.length !== 0 || files.length !== 0) {
       if (newImgURL.length !== 0) {
         newImgURL.map((item) => {
-          const storage = getStorage();
-          const desertRef = ref(storage, item);
-          deleteObject(desertRef)
-            .then(() => {
-              console.log("image deleted");
-            })
-            .catch((err) => { });
-        });
+          console.log(item.includes("firebasestorage.googleapis.com"));
+            if(item.includes("firebasestorage.googleapis.com")){
+            const storage = getStorage();
+            const desertRef = ref(storage, item);
+            deleteObject(desertRef)
+              .then(() => {
+                console.log("image deleted");
+              })
+              .catch((err) => { });
+          }});
+        
         if (files.length !== 0) {
           files.map((item2) => {
             const storageRef = ref(
@@ -777,6 +780,7 @@ export default function UpdateProduct() {
                           <br />
 
                           <div className="w-100 d-flex flex-wrap">
+                            {console.log(checkURL,"1")}
                             {checkURL.map((item, index) => (
                               <div
                                 key={index}
@@ -799,6 +803,8 @@ export default function UpdateProduct() {
                                 <img className="img-style" src={item} />
                               </div>
                             ))}
+                            {console.log(imgURLs,"2")}
+
                             {imgURLs.map((item, index) => (
                               <div
                                 key={index}
