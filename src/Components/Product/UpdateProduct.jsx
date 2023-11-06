@@ -55,7 +55,7 @@ export default function UpdateProduct() {
   const [category, setCategory] = useState([]);
   const [manufacturer, setManufacturer] = useState([]);
   const AllProducts = useRef([]);
-  console.log(productData);
+
 
   const [snackbar, ShowSnackbar] = useState({
     show: false,
@@ -122,8 +122,9 @@ export default function UpdateProduct() {
     setLoader(true);
     if (newImgURL.length !== 0 || files.length !== 0) {
       if (newImgURL.length !== 0) {
+
         newImgURL.map((item) => {
-          console.log(item.includes("firebasestorage.googleapis.com"));
+
             if(item.includes("firebasestorage.googleapis.com")){
             const storage = getStorage();
             const desertRef = ref(storage, item);
@@ -133,7 +134,7 @@ export default function UpdateProduct() {
               })
               .catch((err) => { });
           }});
-        
+
         if (files.length !== 0) {
           files.map((item2) => {
             const storageRef = ref(
@@ -283,7 +284,7 @@ export default function UpdateProduct() {
   }
   useEffect(() => {
     setFiles(uploadimg);
-    console.log(uploadimg);
+
   }, [uploadimg]);
 
   const imgPrev = (imgs,e) => {
@@ -296,16 +297,15 @@ export default function UpdateProduct() {
     });
     if (num === 0) {
       setUploadImg((uploadimg) => [...uploadimg, ...imgs]);
-      console.log(uploadimg);
-      setFiles(imgs);
+      // setFiles(imgs);
       let arr = [];
       imgs.map((item) => {
         let url = URL.createObjectURL(item);
         arr.push(url);
-        console.log(url);
+
       });
       setimgURLs([...imgURLs, ...arr]);
-      console.log(imgURLs);
+
     } else {
       ShowSnackbar({
         show: true,
@@ -316,7 +316,7 @@ export default function UpdateProduct() {
       });
     }
   };
-  console.log(imgPrev)
+
   const ExistNameCheck = (e) => {
     e.preventDefault();
     let valid = validationForm();
@@ -569,7 +569,7 @@ export default function UpdateProduct() {
                                 pro.product_brand_aaray = [];
                                 pro.brand_name = "";
                                 pro.product_model_aaray = [];
-                                console.log(pro, "pro");
+
                                 setProductData([pro]);
                                 setUseValidation("");
                                 setModelValidation("");
@@ -750,7 +750,7 @@ export default function UpdateProduct() {
                                   : ""
                               }
                               onChange={(e) => {
-                                console.log(e.target.value, "valuesssss")
+
                                 AllProducts.current[
                                   index
                                 ].cash_on_delivery = e.target.value
@@ -780,7 +780,7 @@ export default function UpdateProduct() {
                           <br />
 
                           <div className="w-100 d-flex flex-wrap">
-                            {console.log(checkURL,"1")}
+                  
                             {checkURL.map((item, index) => (
                               <div
                                 key={index}
@@ -803,7 +803,7 @@ export default function UpdateProduct() {
                                 <img className="img-style" src={item} />
                               </div>
                             ))}
-                            {console.log(imgURLs,"2")}
+                        
 
                             {imgURLs.map((item, index) => (
                               <div
@@ -819,6 +819,7 @@ export default function UpdateProduct() {
                                     let arr = [...imgURLs];
                                     arr.splice(index, 1);
                                     setimgURLs(arr);
+                                    setUploadImg(arr)
                                   }}
                                   className="close-btn-position"
                                 />
