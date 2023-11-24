@@ -44,7 +44,7 @@ export default function PaymentListing() {
           let data = res.data.data.map((e) => {
             let detail = e.paymentDetails;
             detail.paymentMode = e.paymentMode;
-            return detail
+            return detail;
           });
           console.log(data);
           setAllPayment(data);
@@ -102,14 +102,14 @@ export default function PaymentListing() {
                   </TableCell>
 
                   <TableCell className="text_cap text-center">
-                    {res.amount}
+                    ₹ {res.amount}
                   </TableCell>
                   <TableCell className="text_cap text-center">
                     {res.createdDateTime}
                   </TableCell>
                   <TableCell className="text_cap text-center">
                     {console.log(res)}
-                    {res.paymentMode==="cash"?"Cash on Delivery":"Online"}
+                    {res.paymentMode === "cash" ? "Cash on Delivery" : "Online"}
                   </TableCell>
                   <TableCell className="text_cap text-center">
                     {res.paymentStatus}

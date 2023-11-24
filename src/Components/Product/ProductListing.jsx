@@ -13,13 +13,14 @@ import {
   TableHead,
   TableRow,
   CircularProgress,
-  Switch
+  Switch,
 } from "@mui/material";
+
 import { Triangle } from "react-loader-spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
 import { getAllItem, bulkProduct } from "../../services/Item";
-import { deleteItem,stockStatus,getExportData } from "../../services/Item";
+import { deleteItem, stockStatus, getExportData } from "../../services/Item";
 import { SnackBar } from "../Assets/SnackBar";
 import { deleteObject, getStorage, ref } from "firebase/storage";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -45,9 +46,11 @@ export default function ProductListing() {
     type: "error",
   });
   const [currentPage, setCurrentPage] = React.useState(1);
-  console.log(currentPage)
+  console.log(currentPage);
   const [countPerPage, setCountPerPage] = useState(10);
-  const [value, setValue] = React.useState(sessionStorage.getItem("productPage"));
+  const [value, setValue] = React.useState(
+    sessionStorage.getItem("productPage")
+  );
   const [fileData, setFileData] = useState({});
   const [rows, setRows] = useState([]);
   const [isLoading, setLoading] = useState(false);
@@ -57,9 +60,9 @@ export default function ProductListing() {
   const [brandError, setBrandError] = useState("");
   const [modelValidation, setModelValidation] = useState("");
 
-  const stockUpdate=async(id)=>{
-    await stockStatus(id)
-      }
+  const stockUpdate = async (id) => {
+    await stockStatus(id);
+  };
 
   function validationForm() {
     let errors = {};
@@ -132,7 +135,7 @@ export default function ProductListing() {
               //       (s) => s.product_name === e.product_name.toLowerCase()
               //     ) === -1
               // );
-              let ss = json
+              let ss = json;
               setLoader(true);
               setOpen1(false);
               const body = { dataSet: ss };
@@ -140,7 +143,7 @@ export default function ProductListing() {
               await bulkProduct(body).then((es) => {
                 setOpen1(true);
                 let data = es.data.data;
-                
+
                 let result = [];
                 if (data.length !== 0) {
                   if (data[0].error) {
@@ -153,7 +156,7 @@ export default function ProductListing() {
                     setLoader(false);
                   } else {
                     setOpen1(false);
-                    getAllProduct()
+                    getAllProduct();
                   }
                 }
                 setRows(result);
@@ -167,36 +170,36 @@ export default function ProductListing() {
       }
     }
   };
-  useEffect(()=>{
-    if (Number(sessionStorage.getItem("productPage")) === currentPage && currentPage !== 1) {
-      sessionStorage.removeItem("productPage")
+
+  useEffect(() => {
+    if (
+      Number(sessionStorage.getItem("productPage")) === currentPage &&
+      currentPage !== 1
+    ) {
+      sessionStorage.removeItem("productPage");
     }
-  },[currentPage])
+  }, [currentPage]);
 
   React.useEffect(() => {
-    // console.log(value)
     if (!value) {
-        updatePage(1)
-    }else{
-      updatePage(Number(value))
-
+      updatePage(1);
+    } else {
+      updatePage(Number(value));
     }
-
   }, [value, countPerPage, allProduct]);
 
   const updatePage = (p) => {
     setCurrentPage(p);
- 
+
     const to = countPerPage * p;
     const from = to - countPerPage;
     setCollection(allProduct.slice(from, to));
     setLoader(false);
-
   };
 
   useEffect(() => {
     getAllProduct();
-    if (sessionStorage.getItem("updated") == "true") {
+    if (sessionStorage.getItem("updated") === "true") {
       ShowSnackbar({
         show: true,
         vertical: "top",
@@ -205,9 +208,8 @@ export default function ProductListing() {
         type: "success",
       });
       sessionStorage.removeItem("updated");
-
     }
-    if (sessionStorage.getItem("added") == "true") {
+    if (sessionStorage.getItem("added") === "true") {
       ShowSnackbar({
         show: true,
         vertical: "top",
@@ -216,44 +218,49 @@ export default function ProductListing() {
         type: "success",
       });
       sessionStorage.removeItem("added");
-
-
     }
   }, []);
+
   async function getAllProduct() {
     setLoader(true);
 
-    getAllItem()
-      .then((res) => {
-        console.log(res);
-        setAllProduct(res.data.data);
-        setAllProductc(res.data.data);
-        
-      // setLoader(false);
-        
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoader(false);
-      });
-    await getExportData().then((res) => {
-      if(res.data.data){
- 
-       setExportData(res.data.data)
+    try {
+      const res = await getAllItem();
+      console.log(res);
+      setAllProduct(res.data.data);
+      setAllProductc(res.data.data);
+      setLoader(false);
+    } catch (err) {
+      console.log(err);
+      setLoader(false);
+    }
+
+    try {
+      const res = await getExportData();
+      if (res.data.data) {
+        setExportData(res.data.data);
       }
-   })
-   .catch((error) => console.log(error));
-      
+    } catch (error) {
+      console.log(error);
+    }
   }
-  function deleteProduct() {
+
+  function deleteProduct(e) {
+    e.preventDefault();
     setDeleteModel(false);
     setLoader(true);
-    console.log(deletedComp.id);
+    console.log(deletedComp.id, "checkId");
     deleteItem(deletedComp.id)
       .then((res) => {
         console.log(res);
         setLoader(false);
+        const deletedItemIndex = allProduct.findIndex(
+          (item) => item._id === deletedComp.id
+        );
+        const newCurrentPage = Math.ceil((deletedItemIndex + 1) / countPerPage);
+        setCurrentPage(newCurrentPage);
         getAllProduct();
+
         ShowSnackbar({
           show: true,
           vertical: "top",
@@ -270,7 +277,7 @@ export default function ProductListing() {
               .then(() => {
                 console.log("image deleted");
               })
-              .catch((err) => { });
+              .catch((err) => {});
           });
         }
       })
@@ -340,15 +347,13 @@ export default function ProductListing() {
             Import Products
           </Button>
           <CSVLink data={exportData} filename={"Kapoor_sparesHub_Products.csv"}>
-
-          <Button
-            className="btn_primary"
-            style={{ marginRight: "10px" }}
-            variant="contained"
-          >
-            Export Products
-          </Button>
-
+            <Button
+              className="btn_primary"
+              style={{ marginRight: "10px" }}
+              variant="contained"
+            >
+              Export Products
+            </Button>
           </CSVLink>
           <Link style={{ textDecoration: "none" }} to="/addProduct">
             <Button className="btn_primary" variant="contained">
@@ -395,23 +400,32 @@ export default function ProductListing() {
                     </TableCell>
                     <TableCell>{res.oe_reference_number}</TableCell>
                     <TableCell>{res.ke_partNumber}</TableCell>
-                    <TableCell>{res.MRP}</TableCell>
-                    <TableCell><Switch defaultChecked={res.is_active} onChange={(e)=>{
-                      stockUpdate(res._id)
-                    }}/></TableCell>
+                    <TableCell> ₹{res.MRP}</TableCell>
+                    <TableCell>
+                      <Switch
+                        defaultChecked={res.is_active}
+                        onChange={(e) => {
+                          stockUpdate(res._id);
+                        }}
+                      />
+                    </TableCell>
 
                     {/* <TableCell>{res.sparePart_description}</TableCell> */}
                     <TableCell>
                       <Delete
                         className="pointer"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
                           setDeletedComp({ id: res._id, images: res.image });
                           setDeleteModel(true);
                         }}
                       />
                       <Edit
                         className="pointer"
-                        onClick={() => { navigate(`/updateProduct/${res._id}`); sessionStorage.setItem("productPage", currentPage) }}
+                        onClick={() => {
+                          navigate(`/updateProduct/${res._id}`);
+                          sessionStorage.setItem("productPage", currentPage);
+                        }}
                       />
                     </TableCell>
                   </TableRow>
