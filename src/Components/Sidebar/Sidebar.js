@@ -126,6 +126,14 @@ export const Sidebar = ({ children }) => {
             >
               Payment Details <hr className="mb-3 mt-1" />
             </Box>
+
+            <Box
+              onClick={() => navigate("/orderHistory")}
+              className="fs-5"
+              sx={{ cursor: "pointer" }}
+            >
+              Order History <hr className="mb-3 mt-1" />
+            </Box>
             <Box
               onClick={() => navigate("/promo-listing")}
               className="fs-5"
@@ -151,7 +159,7 @@ export const Sidebar = ({ children }) => {
               </span>
               <hr className="mb-3 mt-1" />
             </Box>
-              <Box
+            <Box
               onClick={() => navigate("/mechanic-listing")}
               className="fs-5"
               sx={{ cursor: "pointer" }}

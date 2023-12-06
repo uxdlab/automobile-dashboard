@@ -169,47 +169,36 @@ export const BrandListing = () => {
   function deleteCompany() {
     setDeleteModel(false);
     setLoader(true);
-    console.log(deletedComp);
-    if (deletedComp.icon !== "") {
-      const storage = getStorage();
-      const desertRef = ref(storage, deletedComp.icon);
-      deleteObject(desertRef)
-        .then(() => {
-          console.log("image deleted");
-          CompanyClass.deleteCompany(deletedComp.id)
-            .then((res) => {
-              let arr = [...allCompanies];
-              arr.splice(deletedComp.index, 1);
-              setCompanies(arr);
-              setLoader(false);
-              ShowSnackbar({
-                show: true,
-                vertical: "top",
-                horizontal: "right",
-                msg: "Brand Deleted successfully",
-                type: "success",
-              });
-            })
-            .catch((err) => console.log(err));
-        })
-        .catch((error) => { });
-    } else {
-      CompanyClass.deleteCompany(deletedComp.id)
-        .then((res) => {
-          let arr = [...allCompanies];
-          arr.splice(deletedComp.index, 1);
-          setCompanies(arr);
-          setLoader(false);
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Brand Deleted successfully",
-            type: "success",
-          });
-        })
-        .catch((err) => console.log(err));
-    }
+
+    const storage = getStorage();
+    const desertRef = ref(storage, deletedComp.icon);
+
+    deleteObject(desertRef)
+      .then(() => {
+        console.log("image deleted");
+
+        CompanyClass.deleteCompany(deletedComp.id)
+          .then((res) => {
+            // Update state by removing the deleted company
+            setCompanies((prevCompanies) => {
+              const updatedCompanies = [...prevCompanies];
+              updatedCompanies.splice(deletedComp.index, 1);
+              return updatedCompanies;
+            });
+
+            setLoader(false);
+            ShowSnackbar({
+              show: true,
+              vertical: "top",
+              horizontal: "right",
+              msg: "Brand Deleted successfully",
+              type: "success",
+            });
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((error) => {});
+
     setSelectSegment([]);
   }
 
@@ -223,7 +212,7 @@ export const BrandListing = () => {
     const uploadTask = uploadBytesResumable(storageRef, img);
     uploadTask.on(
       "state_changed",
-      (snapshot) => { },
+      (snapshot) => {},
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -275,7 +264,7 @@ export const BrandListing = () => {
             const uploadTask = uploadBytesResumable(storageRef, img);
             uploadTask.on(
               "state_changed",
-              (snapshot) => { },
+              (snapshot) => {},
               (err) => console.log(err),
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -311,13 +300,13 @@ export const BrandListing = () => {
               }
             );
           })
-          .catch((error) => { });
+          .catch((error) => {});
       } else {
         const storageRef = ref(storage, `${Math.random()}${img.name}`);
         const uploadTask = uploadBytesResumable(storageRef, img);
         uploadTask.on(
           "state_changed",
-          (snapshot) => { },
+          (snapshot) => {},
           (err) => console.log(err),
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -443,23 +432,20 @@ export const BrandListing = () => {
   const ExistNameCheck = (e) => {
     e.preventDefault();
     if (img.name !== undefined) {
-      console.log(allCompanies, "allCompanies")
-      console.log(selectSegment, "brandData.current  ")
-      let Segment = []
-      let arr = allCompanies.filter(
-        (item) => {
-          if (item.brand_name === brandData.current.brand_name) {
-            Segment = [...Segment, ...item.segment_array]
-            return item
-          }
+      console.log(allCompanies, "allCompanies");
+      console.log(selectSegment, "brandData.current  ");
+      let Segment = [];
+      let arr = allCompanies.filter((item) => {
+        if (item.brand_name === brandData.current.brand_name) {
+          Segment = [...Segment, ...item.segment_array];
+          return item;
         }
-
-      );
-      let segmentArr = selectSegment.filter(function (item) {
+      });
+      let segmentArr = selectSegment.filter(function(item) {
         return Segment.includes(item);
-      })
+      });
 
-      console.log(segmentArr, "arr")
+      console.log(segmentArr, "arr");
 
       if (segmentArr.length !== 0) {
         ShowSnackbar({
@@ -483,29 +469,40 @@ export const BrandListing = () => {
     }
   };
 
-  const checkNameForUpdate = (e) => {
+  const checkNameForUpdate = async (e) => {
     e.preventDefault();
-    let arr = allCompanies.filter(
-      (item) => {
-        if (item.segment_array.length === selectSegment.length) {
 
-          let as = item.segment_array.filter(s => selectSegment.includes(s));
-          if (as.length === item.segment_array.length && item.brand_name === brandData.current.brand_name) {
-            console.log(as);
+    // Add image validation
+    if (!img.name) {
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Please Upload Icon",
+        type: "error",
+      });
+      return;
+    }
 
-            return true
-          } else {
-            return false
-          }
-        } else {
-          return false
+    const isBrandMatch = (item) => {
+      console.log("Brand Name:", item.brand_name);
+      console.log("Brand Segment Array:", item.segment_array);
+      console.log("Current Brand Name:", brandData.current.brand_name);
+      console.log("Current Segment Array:", selectSegment);
 
-        }
-      }
-    );
-    console.log(selectSegment);
+      return (
+        item.brand_name === brandData.current.brand_name &&
+        arraysEqual(item.segment_array, selectSegment)
+      );
+    };
 
-    if (arr.length !== 0) {
+    const arr = allCompanies.filter(isBrandMatch);
+
+    console.log("Selected Segment:", selectSegment);
+    console.log("Matching Brands:", arr);
+
+    if (arr.length === 0) {
+      console.log("Brand Already Exist");
       ShowSnackbar({
         show: true,
         vertical: "top",
@@ -514,9 +511,15 @@ export const BrandListing = () => {
         type: "error",
       });
     } else {
+      console.log("Updating Brand");
       updateBrand(e);
     }
   };
+
+  // Helper function to check if two arrays are equal
+  function arraysEqual(arr1, arr2) {
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
+  }
 
   return (
     <>
@@ -919,8 +922,8 @@ export const BrandListing = () => {
         </div>
         <div
           style={{ display: "flex", marginRight: "18px" }}
-        // className="d-flex justify-content-end"
-        // md={6}
+          // className="d-flex justify-content-end"
+          // md={6}
         >
           <Button
             className="btn_primary"
