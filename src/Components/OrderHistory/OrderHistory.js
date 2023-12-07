@@ -128,9 +128,7 @@ const OrderHistory = () => {
               <TableCell className="text-center">
                 <b> Mode of Payment </b>
               </TableCell>
-              <TableCell className="text-center">
-                <b> Payment id </b>
-              </TableCell>
+
               <TableCell className="text-center">
                 <b> Amount </b>
               </TableCell>
@@ -177,7 +175,6 @@ const OrderHistory = () => {
                       {res?.paymentMode}
                     </TableCell>
 
-                    <TableCell className="text-center"> NAN </TableCell>
                     <TableCell className="text-center">
                       {" "}
                       ₹ {res?.paymentDetails?.amount}
@@ -185,8 +182,7 @@ const OrderHistory = () => {
 
                     <TableCell className="text-center">
                       <div style={{ display: "flex", gap: "10px" }}>
-                        <span>{res?.paymentDetails?.paymentStatus}</span>
-                        {res?.paymentDetails?.paymentStatus === "Pending" && (
+                        {res?.paymentDetails?.paymentStatus === "Pending" ? (
                           <select
                             id=""
                             className={style.customSelect}
@@ -195,6 +191,8 @@ const OrderHistory = () => {
                             <option value="Pending">Pending</option>
                             <option value="Success">Success</option>
                           </select>
+                        ) : (
+                          <div>{res?.paymentDetails?.paymentStatus}</div>
                         )}
                       </div>
                     </TableCell>
