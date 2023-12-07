@@ -226,9 +226,11 @@ export default function ProductListing() {
 
     try {
       const res = await getAllItem();
-      console.log(res);
-      setAllProduct(res.data.data);
-      setAllProductc(res.data.data);
+
+      let dd = [...res.data.data];
+      console.log(dd.reverse());
+      setAllProduct(dd.reverse());
+      setAllProductc(dd.reverse());
       setLoader(false);
     } catch (err) {
       console.log(err);

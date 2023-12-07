@@ -15,7 +15,7 @@ import Button from "@mui/material/Button";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
-import { gerAllPayment } from "../../services/Payment";
+import { gerAllPayment, getDetails } from "../../services/Payment";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -42,14 +42,22 @@ const OrderHistory = () => {
   const [allPayment, setAllPayment] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [loader, setLoader] = useState(true);
-  const [status, setStatus] = useState("");
-  const [statusId, setStatusId] = useState();
+  const [viewHistory, setViewHistory] = useState([]);
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpen = (Id) => {
+    getDetails(Id)
+      .then((res) => {
+        console.log(res?.data?.data[0], "checkView");
+        setViewHistory(res?.data?.data);
+        setOpen(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -70,9 +78,10 @@ const OrderHistory = () => {
   const getAllPaymentDetails = () => {
     gerAllPayment()
       .then((res) => {
-        console.log(res.data.data);
-        setAllPayment(res.data.data);
-        updatePage(currentPage); // Update page when data is fetched
+        let dd = [...res.data.data];
+        console.log(dd);
+        setAllPayment(dd.reverse());
+        updatePage(currentPage);
       })
       .catch((err) => {
         console.log(err);
@@ -179,7 +188,7 @@ const OrderHistory = () => {
                       ₹ {res?.paymentDetails?.amount}
                     </TableCell>
 
-                    <TableCell className="text-center">
+                    <TableCell className="text-center text-capitalize">
                       {res?.paymentDetails?.paymentStatus === "Pending" ? (
                         <select
                           id=""
@@ -196,7 +205,7 @@ const OrderHistory = () => {
 
                     <TableCell className="text-center">
                       <RemoveRedEyeIcon
-                        onClick={handleClickOpen}
+                        onClick={() => handleClickOpen(res._id)}
                         variant="contained"
                         size="small"
                         className={style.viewIcon}
@@ -271,7 +280,30 @@ const OrderHistory = () => {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody></TableBody>
+                <TableBody>
+                  {viewHistory?.map((item) => {
+                    console.log(item, "hdhdh");
+                    return (
+                      <>
+                        <TableRow>
+                          <TableCell className="text-center">
+                            {item?.email}
+                          </TableCell>
+                          <TableCell className="text-center">{`${item?.address?.house_number}, ${item?.address?.city} ${item?.address?.state},${item?.address?.pincode}, ${item?.address?.country}`}</TableCell>
+                          <TableCell className="text-center">
+                            {console.log(
+                              item.products[0].productName,
+                              "tttttttt"
+                            )}
+                            {item.products[0].productName.map((item) => {
+                              <TableCell>{item}</TableCell>;
+                            })}
+                          </TableCell>
+                        </TableRow>
+                      </>
+                    );
+                  })}
+                </TableBody>
               </Table>
             </TableContainer>
           </div>

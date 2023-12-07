@@ -75,22 +75,24 @@ export const ManufactureListing = () => {
     if (search.length === 0) {
       setCollection(allManufecture.slice(0, countPerPage));
     }
-    if (search.trim().length !== 0){
-const filterBySearch = allProductC.filter((item) => {
-  let result;
-  if (item.manufacturer_name.includes(search.trim().toLocaleLowerCase())) {
-    result = true;
-  } else {
-    result = false;
-  }
-  return result;
-});
- setCollection(filterBySearch);
- setManufacture(filterBySearch);
-    }else{
+    if (search.trim().length !== 0) {
+      const filterBySearch = allProductC.filter((item) => {
+        let result;
+        if (
+          item.manufacturer_name.includes(search.trim().toLocaleLowerCase())
+        ) {
+          result = true;
+        } else {
+          result = false;
+        }
+        return result;
+      });
+      setCollection(filterBySearch);
+      setManufacture(filterBySearch);
+    } else {
       setManufacture(allProductC);
     }
-    
+
     // console.log(filterBySearch);
     // setCollection(filterBySearch);
   }
@@ -112,12 +114,15 @@ const filterBySearch = allProductC.filter((item) => {
 
   function getAllManufacture() {
     setLoader(true);
-    
+
     getAllManufacturers()
       .then((res) => {
         setLoader(false);
-        setManufacture(res.data.data);
-        setAllProductc(res.data.data);
+        let dd = [...res.data.data];
+        console.log(dd.reverse());
+        setManufacture(dd.reverse());
+
+        setAllProductc(dd.reverse());
         setLoader(false);
         console.log(res.data.data);
       })
@@ -388,24 +393,24 @@ const filterBySearch = allProductC.filter((item) => {
   }
 
   const imgPrev = (imgs) => {
-     if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
-       if (imgs.name !== undefined) {
-         let url = URL.createObjectURL(imgs);
-         setLocalImg(url);
-         console.log(url);
-       } else {
-         setLocalImg(undefined);
-       }
-      }else{
-         ShowSnackbar({
+    if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+      if (imgs.name !== undefined) {
+        let url = URL.createObjectURL(imgs);
+        setLocalImg(url);
+        console.log(url);
+      } else {
+        setLocalImg(undefined);
+      }
+    } else {
+      ShowSnackbar({
         show: true,
         vertical: "top",
         horizontal: "right",
         msg: "Please select jpg, jpeg, png, svg image",
         type: "error",
       });
-       }
-     }
+    }
+  };
 
   const ExistNameCheck = (e) => {
     e.preventDefault();
@@ -669,8 +674,8 @@ const filterBySearch = allProductC.filter((item) => {
                   <div className="py-2">
                     <small>
                       <b>
-                        <span className="text-danger"></span>Update
-                        Manufacturer Icon:
+                        <span className="text-danger"></span>Update Manufacturer
+                        Icon:
                       </b>
                     </small>
                   </div>

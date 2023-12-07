@@ -41,7 +41,7 @@ export const ModelListing = () => {
   const [selectSegment, setSelectSegment] = useState([]);
   const [selectBrand, setSelectBrand] = useState([]);
   const [seleBrand, setSeleBrand] = useState([]);
-const[addBrand,setAddBrand] = useState("")
+  const [addBrand, setAddBrand] = useState("");
   const [allData, setData] = useState([]);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
@@ -53,7 +53,7 @@ const[addBrand,setAddBrand] = useState("")
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [brandError, setBrandError] = useState("");
-  const [brandData,setBrandData] = useState("")
+  const [brandData, setBrandData] = useState("");
   const [modelValidation, setModelValidation] = useState("");
   const [useValidation, setUseValidation] = useState();
   const [allProductC, setAllProductc] = useState([]);
@@ -140,8 +140,11 @@ const[addBrand,setAddBrand] = useState("")
     setLoader(true);
     ModelClass.getAllModel()
       .then((res) => {
-        setData(res.data.data);
-        setAllProductc(res.data.data);
+        let dd = [...res.data.data];
+        console.log(dd.reverse());
+        setData(dd.reverse());
+
+        setAllProductc(dd.reverse());
         setLoader(false);
       })
       .catch((err) => console.log(err));
@@ -353,10 +356,9 @@ const[addBrand,setAddBrand] = useState("")
         modelData.current = res.data.data[0];
         if (modelData.current.model_icon) {
           setLocalImg(modelData.current.model_icon);
-
         }
         console.log(modelData.current.model_brand_array);
-  setBrandData(modelData.current.model_brand_array[0]);
+        setBrandData(modelData.current.model_brand_array[0]);
         setSelectSegment(modelData.current.model_segment_array);
         setSeleBrand(modelData.current.model_brand_array);
         let arr = modelData.current.model_segment_array[0];
@@ -603,7 +605,7 @@ const[addBrand,setAddBrand] = useState("")
                         setSeleBrand([e.target.value]);
                         // e.target.value = "";
                         setModelValidation("");
-                        setAddBrand(e.target.value)
+                        setAddBrand(e.target.value);
                         // setUseValidation(e.target.value);
                       }}
                       input={<OutlinedInput label="Name" />}

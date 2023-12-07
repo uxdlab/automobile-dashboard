@@ -1,5 +1,3 @@
-
-
 export const apis = {
   baseUrl: "https://automobile.herokuapp.com/",
   // baseUrl: "http://localhost:3001/",
@@ -39,8 +37,8 @@ export const apis = {
     get: "product/",
     delete: "product/delete/",
     edit: "product/updateProduct/",
-    stockStatus:"product/stockUpdate/",
-    exportData:'product/data/exportData'
+    stockStatus: "product/stockUpdate/",
+    exportData: "product/data/exportData",
   },
   manufacture: {
     add: "manufacturer/addManufacturer/",
@@ -54,7 +52,6 @@ export const apis = {
   bulkUpload: "product/bulkAddProduct",
   activeUser: "user/userActiveInactive/",
   deleteUsers: "user/deleteUser/",
- 
 
   contain: {
     addabout: "aboutus/create",
@@ -80,15 +77,15 @@ export const apis = {
     getMechanicId: "mechanic/getMechanic",
     updateMechanic: "mechanic/updateMechanic",
     deleteMechanic: "mechanic/deleteMechanical",
-    isActive :"mechanic/isActive",
-    resetPoint :"mechanic/resetPoint"
-
+    isActive: "mechanic/isActive",
+    resetPoint: "mechanic/resetPoint",
   },
-  point:{
-    add:"point/createPoint",
-    getAll:"point/getAllPoint"
+  point: {
+    add: "point/createPoint",
+    getAll: "point/getAllPoint",
   },
   payment: {
     gerAllPayment: "payment/getallpayment",
+    getDetails: "payment/getProduct&BuyerData",
   },
 };

@@ -93,22 +93,21 @@ export const SegmentListing = () => {
     if (search.length === 0) {
       setCollection(allVehicles.slice(0, countPerPage));
     }
-      if (search.trim().length !== 0){
-        const filterBySearch = allProductC.filter((item) => {
-          let result;
-          if (item.vehicle_name.includes(search.trim().toLocaleLowerCase())) {
-            result = true;
-          } else {
-            result = false;
-          }
-          return result;
-        });
-          setCollection(filterBySearch);
-          setAllVehicles(filterBySearch);
-      }else{
-setAllVehicles(allProductC);
-      }
-    ;
+    if (search.trim().length !== 0) {
+      const filterBySearch = allProductC.filter((item) => {
+        let result;
+        if (item.vehicle_name.includes(search.trim().toLocaleLowerCase())) {
+          result = true;
+        } else {
+          result = false;
+        }
+        return result;
+      });
+      setCollection(filterBySearch);
+      setAllVehicles(filterBySearch);
+    } else {
+      setAllVehicles(allProductC);
+    }
     // setCollection(filterBySearch);
     // setAllVehicles(filterBySearch);
     // allVehicles(allProductC);
@@ -117,8 +116,10 @@ setAllVehicles(allProductC);
     setLoader(true);
     VehicleClass.getAllVehicles()
       .then((res) => {
-        setAllVehicles(res.data.data);
-        setAllProductc(res.data.data);
+        let dd = [...res.data.data];
+        console.log(dd.reverse());
+        setAllVehicles(dd.reverse());
+        setAllProductc(dd.reverse());
         setLoader(false);
         console.log(res.data.data);
       })
@@ -331,7 +332,7 @@ setAllVehicles(allProductC);
 
   const imgPrev = (imgs) => {
     // console.log(imgs);
-     if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+    if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
       if (imgs.name !== undefined) {
         let url = URL.createObjectURL(imgs);
         setLocalImg(url);
@@ -339,16 +340,15 @@ setAllVehicles(allProductC);
       } else {
         setLocalImg(undefined);
       }
-     }else{
-       ShowSnackbar({
-         show: true,
-         vertical: "top",
-         horizontal: "right",
-         msg: "Please select jpg, jpeg, png, svg image",
-         type: "error",
-       });
-     }
-    
+    } else {
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Please select jpg, jpeg, png, svg image",
+        type: "error",
+      });
+    }
   };
 
   const ExistNameCheck = (e) => {

@@ -47,8 +47,10 @@ export default function PaymentListing() {
             return detail;
           });
           console.log(data);
-          setAllPayment(data);
-          setCollection(data);
+          let dd = [...data];
+          console.log(dd.reverse());
+          setAllPayment(dd.reverse());
+          setCollection(dd.reverse());
         }
       })
       .catch((err) => {
@@ -95,6 +97,11 @@ export default function PaymentListing() {
           </TableHead>
           <TableBody>
             {collection?.reverse().map((res, index) => {
+              const timestamp = new Date(res.createdDateTime);
+
+              const formattedDate = timestamp.toLocaleDateString();
+              const formattedTime = timestamp.toLocaleTimeString();
+
               return (
                 <TableRow key={index}>
                   <TableCell className="text_cap text-center">
@@ -105,7 +112,7 @@ export default function PaymentListing() {
                     ₹ {res.amount}
                   </TableCell>
                   <TableCell className="text_cap text-center">
-                    {res.createdDateTime}
+                    {formattedDate} - {formattedTime}
                   </TableCell>
                   <TableCell className="text_cap text-center">
                     {console.log(res)}

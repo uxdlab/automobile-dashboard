@@ -103,8 +103,10 @@ export const Category = () => {
     setLoader(true);
     ProductClass.getAllProducts()
       .then((res) => {
-        setAllProducts(res.data.data);
-        setAllProductc(res.data.data);
+        let dd = [...res.data.data];
+        console.log(dd.reverse());
+        setAllProducts(dd.reverse());
+        setAllProductc(dd.reverse());
         setLoader(false);
         console.log(res.data.data);
       })

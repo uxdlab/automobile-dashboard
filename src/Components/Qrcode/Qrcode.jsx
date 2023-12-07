@@ -43,8 +43,8 @@ export const Qrcode = () => {
   };
 
   const handleCreate = async () => {
-    setLoader(true)
-    
+    setLoader(true);
+
     let QrData = [];
     let pointCode = [];
     for (let i = 0; i < Number(copies); i++) {
@@ -61,10 +61,10 @@ export const Qrcode = () => {
       point_ids: pointCode,
       copies: Number(copies),
     }).then((e) => allData());
-     QRGenerator(QrData);
+    QRGenerator(QrData);
     setDenomination("");
-    setCopies("")
-    setLoader(false)
+    setCopies("");
+    setLoader(false);
   };
 
   const style = {
@@ -80,8 +80,10 @@ export const Qrcode = () => {
   };
   const allData = async () => {
     await allPoint().then((res) => {
-      setPointData(res.data.data)
-      setLoader(false)
+      let dd = [...res.data.data];
+      console.log(dd);
+      setPointData(dd.reverse());
+      setLoader(false);
     });
   };
   useEffect(() => {

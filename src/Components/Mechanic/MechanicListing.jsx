@@ -83,17 +83,16 @@ export default function MechanicListing() {
   const addMachincData = async (e) => {
     e.preventDefault();
     await addMechanic(Mechanic.current).then((res) => {
-      console.log(res.response)
-      if(res?.response){
+      console.log(res.response);
+      if (res?.response) {
         ShowSnackbar({
           show: true,
           vertical: "top",
           horizontal: "right",
           msg: "The phone number or email address is already in active use.",
           type: "error",
-        })
-      }else{
-
+        });
+      } else {
         setOpen(false);
         getAllData();
       }
@@ -115,8 +114,10 @@ export default function MechanicListing() {
   };
   const getAllData = async () => {
     await getAllMechanic().then((res) => {
-      setCollection(res.data.data);
-      setSearchValue(res.data.data);
+      let dd = [...res.data.data];
+      console.log(dd.reverse());
+      setCollection(dd.reverse());
+      setSearchValue(dd.reverse());
     });
   };
   const pointReset = async (id) => {
@@ -247,29 +248,24 @@ export default function MechanicListing() {
                         <b> Mechanic Password:</b>
                       </small>
                     </div>
-                   <div style={{display:"flex"}} >
-
-                    <input
-                       type={showPass ? "text" : "password"}
-                      required
-                      autoComplete="new-password"
-                      placeholder="Enter Mechanic Password"
-                      className="form-control w-100 mb-2"
-                      
-                      onChange={(e) => {
-                        Mechanic.current.password = e.target.value;
-                      }}
-
-                    />
-                    <div className="passwordShow">
-
-                          <IconButton onClick={() => setShowPass(!showPass)}>
-                            {showPass ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
+                    <div style={{ display: "flex" }}>
+                      <input
+                        type={showPass ? "text" : "password"}
+                        required
+                        autoComplete="new-password"
+                        placeholder="Enter Mechanic Password"
+                        className="form-control w-100 mb-2"
+                        onChange={(e) => {
+                          Mechanic.current.password = e.target.value;
+                        }}
+                      />
+                      <div className="passwordShow">
+                        <IconButton onClick={() => setShowPass(!showPass)}>
+                          {showPass ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </div>
                     </div>
-                        
                   </div>
-                   </div>
                   <Box align="right" className="mt-3">
                     <span
                       className="btn cancel_btn me-3 py-1 px-3"
