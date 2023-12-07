@@ -162,8 +162,10 @@ export const BrandListing = () => {
   function getAllCompany() {
     CompanyClass.getAllCompany().then((res) => {
       setLoader(false);
-      setCompanies(res.data.data);
-      setAllProductc(res.data.data);
+      let dd = [...res.data.data];
+      console.log(dd.reverse());
+      setCompanies(dd.reverse());
+      setAllProductc(dd.reverse());
     });
   }
   function deleteCompany() {

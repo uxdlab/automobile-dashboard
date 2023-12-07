@@ -11,7 +11,10 @@
   border-color: #007bff;
 }
 
-.viewBtn {
-  text-decoration: none !important;
-  color: white !important;
+.viewIcon {
+  cursor: pointer !important;
+}
+
+.viewIcon:hover {
+  color: #534ba8;
 }

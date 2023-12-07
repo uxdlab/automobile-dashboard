@@ -47,9 +47,12 @@ export default function UsersListing() {
     setLoader(true);
     getAllUsers()
       .then((res) => {
-        setAllUsers(res.data.data);
-        setAllProductc(res.data.data);
-        console.log(res.data.data);
+        // console.log(res.data.data);
+        let dd = [...res.data.data];
+        console.log(dd.reverse());
+        setAllUsers(dd.reverse());
+        setAllProductc(dd.reverse());
+        console.log(dd);
         setLoader(false);
       })
       .catch((err) => console.log(err));
@@ -118,12 +121,21 @@ export default function UsersListing() {
   const addressData = (data) => {
     let address = data.length !== 0 ? data[0] : {};
     if (address.house_number === undefined) {
-      return "--No Address--"
+      return "--No Address--";
     } else {
-      let str = address.house_number + " " + address.city + ", " + address.state + "-" + address.pincode + ", " + address.country
-      return str
+      let str =
+        address.house_number +
+        " " +
+        address.city +
+        ", " +
+        address.state +
+        "-" +
+        address.pincode +
+        ", " +
+        address.country;
+      return str;
     }
-  }
+  };
   return (
     <>
       <SnackBar snackBarData={snackbar} setData={ShowSnackbar} />
@@ -213,14 +225,18 @@ export default function UsersListing() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {collection.map((res, index) => {
+            {collection?.map((res, index) => {
               return (
                 <TableRow key={index}>
                   {/* <TableCell>{index + 1}</TableCell> */}
                   <TableCell className="text_cap">{res.fullName}</TableCell>
                   <TableCell>{res.email}</TableCell>
                   <TableCell>{res.mobile_number}</TableCell>
-                  <TableCell>{res.gstNumber && res.gstNumber !== ""  ? res.gstNumber : "--No GST--"}</TableCell>
+                  <TableCell>
+                    {res.gstNumber && res.gstNumber !== ""
+                      ? res.gstNumber
+                      : "--No GST--"}
+                  </TableCell>
 
                   <TableCell>{addressData(res.address)}</TableCell>
 

@@ -104,7 +104,7 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <div style={{ maxWidth: "100%" }}>
+    <div style={{ maxWidth: "100%", overflowX: "hidden", overflowY: "auto" }}>
       <h1 className="px-2">Order History</h1>
       <TableContainer component={Paper}>
         <Table>
@@ -136,14 +136,13 @@ const OrderHistory = () => {
                 <b> Order Status</b>
               </TableCell>
               <TableCell className="text-center">
-                <b> view </b>
+                <b> View </b>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {collection &&
               collection?.map((res) => {
-                // Convert the ISO date string to a JavaScript Date object
                 const dateObject = new Date(
                   res?.paymentDetails?.createdDateTime
                 );
@@ -151,7 +150,7 @@ const OrderHistory = () => {
                 const formattedDate = `${dateObject.getFullYear()}-${dateObject.getMonth() +
                   1}-${dateObject.getDate()}`;
 
-                const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}:${dateObject.getSeconds()}`;
+                const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
 
                 return (
                   <TableRow key={res?.paymentDetails?.orderId}>
@@ -181,36 +180,29 @@ const OrderHistory = () => {
                     </TableCell>
 
                     <TableCell className="text-center">
-                      <div style={{ display: "flex", gap: "10px" }}>
-                        {res?.paymentDetails?.paymentStatus === "Pending" ? (
-                          <select
-                            id=""
-                            className={style.customSelect}
-                            onChange={(e) => handleStatusChange(e, res._id)}
-                          >
-                            <option value="Pending">Pending</option>
-                            <option value="Success">Success</option>
-                          </select>
-                        ) : (
-                          <div>{res?.paymentDetails?.paymentStatus}</div>
-                        )}
-                      </div>
+                      {res?.paymentDetails?.paymentStatus === "Pending" ? (
+                        <select
+                          id=""
+                          className={style.customSelect}
+                          onChange={(e) => handleStatusChange(e, res._id)}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Success">Success</option>
+                        </select>
+                      ) : (
+                        <div>{res?.paymentDetails?.paymentStatus}</div>
+                      )}
                     </TableCell>
 
-                    <TableCell>
-                      <Button
+                    <TableCell className="text-center">
+                      <RemoveRedEyeIcon
                         onClick={handleClickOpen}
                         variant="contained"
                         size="small"
-                        style={{
-                          backgroundColor: "#534ba8",
-                          color: "white",
-                          display: "flex",
-                          gap: "10px",
-                        }}
+                        className={style.viewIcon}
                       >
                         View
-                      </Button>
+                      </RemoveRedEyeIcon>
                     </TableCell>
                   </TableRow>
                 );
