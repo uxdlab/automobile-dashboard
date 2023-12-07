@@ -24,6 +24,8 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
+import axios from "axios";
+import { apis } from "../../auth/api";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -40,6 +42,8 @@ const OrderHistory = () => {
   const [allPayment, setAllPayment] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [loader, setLoader] = useState(true);
+  const [status, setStatus] = useState("");
+  const [statusId, setStatusId] = useState();
 
   const [open, setOpen] = React.useState(false);
 
@@ -49,10 +53,6 @@ const OrderHistory = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
-  React.useEffect(() => {
-    getAllPaymentDetails();
-  }, []);
 
   React.useEffect(() => {
     if (!allPayment.length) return;
@@ -80,9 +80,28 @@ const OrderHistory = () => {
   };
   console.log(collection, "hduehdu");
 
+  const handleStatusChange = async (e, id) => {
+    try {
+      const response = await axios.put(
+        apis.baseUrl + `payment/updateStatus/${id}`,
+        {
+          status: e.target.value,
+        }
+      );
+
+      console.log("Payment status updated successfully:", response.data);
+    } catch (error) {
+      console.error("Error updating payment status:", error.message);
+    }
+    getAllPaymentDetails();
+  };
+
   // useEffect(() => {
   //   getAllPaymentDetails();
   // }, []);
+  React.useEffect(() => {
+    getAllPaymentDetails();
+  }, []);
 
   return (
     <div style={{ maxWidth: "100%" }}>
@@ -168,7 +187,11 @@ const OrderHistory = () => {
                       <div style={{ display: "flex", gap: "10px" }}>
                         <span>{res?.paymentDetails?.paymentStatus}</span>
                         {res?.paymentDetails?.paymentStatus === "Pending" && (
-                          <select id="" className={style.customSelect}>
+                          <select
+                            id=""
+                            className={style.customSelect}
+                            onChange={(e) => handleStatusChange(e, res._id)}
+                          >
                             <option value="Pending">Pending</option>
                             <option value="Success">Success</option>
                           </select>
