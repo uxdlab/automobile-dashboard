@@ -463,26 +463,18 @@ export default function Product({
                       fullWidth
                       required
                       defaultValue={
-                        productData
-                          ? productData[0].cash_on_delivery
-                          : ""
+                        productData ? productData[0].cash_on_delivery : ""
                       }
-                      onChange={(e) =>{
-                        console.log(e.target.value,"valuesssss")
-                        AllProducts.current[
-                          index
-                        ].cash_on_delivery = e.target.value
+                      onChange={(e) => {
+                        console.log(e.target.value, "valuesssss");
+                        AllProducts.current[index].cash_on_delivery =
+                          e.target.value;
                       }}
                       label="Outlined"
                       variant="outlined"
                     >
-                     
-                          <MenuItem value={"yes"}>
-                            Yes
-                          </MenuItem>
-                          <MenuItem value={"no"}>
-                            No
-                          </MenuItem>
+                      <MenuItem value={"yes"}>Yes</MenuItem>
+                      <MenuItem value={"no"}>No</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

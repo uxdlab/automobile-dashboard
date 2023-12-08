@@ -96,7 +96,7 @@ export default function PaymentListing() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {collection?.reverse().map((res, index) => {
+            {collection?.map((res, index) => {
               const timestamp = new Date(res.createdDateTime);
 
               const formattedDate = timestamp.toLocaleDateString();

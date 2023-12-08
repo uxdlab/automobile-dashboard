@@ -15,6 +15,8 @@ import ProductListing from "./Components/Product/ProductListing";
 
 import OrderHistory from "./Components/OrderHistory/OrderHistory";
 
+import ViewOrderHistory from "./Components/OrderHistory/ViewOrderHistory";
+
 import AddProduct from "./Components/Product/AddProduct";
 import UpdateProduct from "./Components/Product/UpdateProduct";
 import { ManufactureListing } from "./Components/Manufacture/ManufactureListing";
@@ -42,6 +44,11 @@ export const Router = () => {
           <Route exact path="/" element={<UsersListing />} />
           <Route exact path="/orders" element={<PaymentListing />} />
           <Route exact path="/orderHistory" element={<OrderHistory />} />
+          <Route
+            exact
+            path="orderHistory/viewOrderHistory/:Id"
+            element={<ViewOrderHistory />}
+          />
 
           <Route exact path="/manufacture" element={<ManufactureListing />} />
           {/* product Routes */}

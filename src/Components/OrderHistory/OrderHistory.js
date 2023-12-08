@@ -8,10 +8,11 @@ import {
   TableCell,
   TableBody,
   Paper,
+  Backdrop,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+
 import style from "./style.module.css";
-import Button from "@mui/material/Button";
+
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
@@ -23,9 +24,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
+
 import axios from "axios";
 import { apis } from "../../auth/api";
+import { Triangle } from "react-loader-spinner";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -46,21 +49,7 @@ const OrderHistory = () => {
 
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = (Id) => {
-    getDetails(Id)
-      .then((res) => {
-        console.log(res?.data?.data[0], "checkView");
-        setViewHistory(res?.data?.data);
-        setOpen(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     if (!allPayment.length) return;
@@ -76,15 +65,18 @@ const OrderHistory = () => {
   };
 
   const getAllPaymentDetails = () => {
+    setLoader(true);
     gerAllPayment()
       .then((res) => {
         let dd = [...res.data.data];
         console.log(dd);
         setAllPayment(dd.reverse());
         updatePage(currentPage);
+        setLoader(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoader(false);
       });
   };
   console.log(collection, "hduehdu");
@@ -105,212 +97,232 @@ const OrderHistory = () => {
     getAllPaymentDetails();
   };
 
-  // useEffect(() => {
-  //   getAllPaymentDetails();
-  // }, []);
   React.useEffect(() => {
     getAllPaymentDetails();
   }, []);
 
   return (
-    <div style={{ maxWidth: "100%", overflowX: "hidden", overflowY: "auto" }}>
-      <h1 className="px-2">Order History</h1>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell className="text-center">
-                <b> Order Id</b>
-              </TableCell>
-              <TableCell className="text-center">
-                <b>Date</b>
-              </TableCell>
-              <TableCell className="text-center">
-                <b>Time </b>
-              </TableCell>
-              <TableCell className="text-center">
-                <b> Customer Name </b>
-              </TableCell>
-              <TableCell className="text-center">
-                <b> Customer Number </b>
-              </TableCell>
-              <TableCell className="text-center">
-                <b> Mode of Payment </b>
-              </TableCell>
-
-              <TableCell className="text-center">
-                <b> Amount </b>
-              </TableCell>
-              <TableCell className="text-center">
-                <b> Order Status</b>
-              </TableCell>
-              <TableCell className="text-center">
-                <b> View </b>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {collection &&
-              collection?.map((res) => {
-                const dateObject = new Date(
-                  res?.paymentDetails?.createdDateTime
-                );
-
-                const formattedDate = `${dateObject.getFullYear()}-${dateObject.getMonth() +
-                  1}-${dateObject.getDate()}`;
-
-                const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
-
-                return (
-                  <TableRow key={res?.paymentDetails?.orderId}>
-                    <TableCell className="text-center">
-                      {res?.paymentDetails?.orderId}
-                    </TableCell>
-
-                    <TableCell className="text-center">
-                      {formattedDate}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {formattedTime}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {res.shipping_details?.name}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {res.shipping_details?.mobile_number}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {res?.paymentMode}
-                    </TableCell>
-
-                    <TableCell className="text-center">
-                      {" "}
-                      ₹ {res?.paymentDetails?.amount}
-                    </TableCell>
-
-                    <TableCell className="text-center text-capitalize">
-                      {res?.paymentDetails?.paymentStatus === "Pending" ? (
-                        <select
-                          id=""
-                          className={style.customSelect}
-                          onChange={(e) => handleStatusChange(e, res._id)}
-                        >
-                          <option value="Pending">Pending</option>
-                          <option value="Success">Success</option>
-                        </select>
-                      ) : (
-                        <div>{res?.paymentDetails?.paymentStatus}</div>
-                      )}
-                    </TableCell>
-
-                    <TableCell className="text-center">
-                      <RemoveRedEyeIcon
-                        onClick={() => handleClickOpen(res._id)}
-                        variant="contained"
-                        size="small"
-                        className={style.viewIcon}
-                      >
-                        View
-                      </RemoveRedEyeIcon>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-        <Box
-          sx={{ m: 1 }}
-          className="d-flex justify-content-end align-items-center"
-        >
-          <select
-            className="me-2"
-            onChange={(e) => setCountPerPage(e.target.value * 1)}
-          >
-            <option>10</option>
-            <option>15</option>
-          </select>
-          <span>Page:</span>
-          <Pagination
-            pageSize={countPerPage}
-            onChange={updatePage}
-            current={currentPage}
-            total={allPayment.length}
-            style={{ marginLeft: "8px" }}
+    <>
+      <Backdrop
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={loader}
+      >
+        <Box>
+          <Triangle
+            height="80"
+            width="80"
+            color="black"
+            ariaLabel="triangle-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={loader}
           />
         </Box>
-      </TableContainer>
+      </Backdrop>
+      <div style={{ maxWidth: "100%", overflowX: "hidden", overflowY: "auto" }}>
+        <h1 className="px-2">Order History</h1>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className="text-center">
+                  <b> Order Id</b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b>Date</b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b>Time </b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b> Customer Name </b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b> Customer Number </b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b> Mode of Payment </b>
+                </TableCell>
 
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          View Order History
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
+                <TableCell className="text-center">
+                  <b> Amount </b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b> Order Status</b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b> View </b>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {collection &&
+                collection?.map((res) => {
+                  const dateObject = new Date(
+                    res?.paymentDetails?.createdDateTime
+                  );
+
+                  const formattedDate = `${dateObject.getFullYear()}-${dateObject.getMonth() +
+                    1}-${dateObject.getDate()}`;
+
+                  const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
+
+                  return (
+                    <TableRow key={res?.paymentDetails?.orderId}>
+                      <TableCell className="text-center text-capitalize ">
+                        {res?.paymentDetails?.orderId}
+                      </TableCell>
+
+                      <TableCell className="text-center text-capitalize">
+                        {formattedDate}
+                      </TableCell>
+                      <TableCell className="text-center text-capitalize">
+                        {formattedTime}
+                      </TableCell>
+                      <TableCell className="text-center text-capitalize">
+                        {res.shipping_details?.name}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {res.shipping_details?.mobile_number}
+                      </TableCell>
+                      <TableCell className="text-center text-capitalize ">
+                        {res?.paymentMode}
+                      </TableCell>
+
+                      <TableCell className="text-center text-capitalize">
+                        {" "}
+                        ₹ {res?.paymentDetails?.amount}
+                      </TableCell>
+
+                      <TableCell className="text-center text-capitalize">
+                        {res?.paymentDetails?.paymentStatus === "Pending" ? (
+                          <select
+                            id=""
+                            className={style.customSelect}
+                            onChange={(e) => handleStatusChange(e, res._id)}
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Success">Success</option>
+                          </select>
+                        ) : (
+                          <div>{res?.paymentDetails?.paymentStatus}</div>
+                        )}
+                      </TableCell>
+
+                      <TableCell className="text-center">
+                        <RemoveRedEyeIcon
+                          // onClick={() => handleClickOpen(res._id)}
+                          onClick={() =>
+                            navigate(`viewOrderHistory/${res._id}`)
+                          }
+                          variant="contained"
+                          size="small"
+                          className={style.viewIcon}
+                        />
+                        {/* <Link to="viewOrderHistory"> view</Link> */}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+          <Box
+            sx={{ m: 1 }}
+            className="d-flex justify-content-end align-items-center"
+          >
+            <select
+              className="me-2"
+              onChange={(e) => setCountPerPage(e.target.value * 1)}
+            >
+              <option>10</option>
+              <option>15</option>
+            </select>
+            <span>Page:</span>
+            <Pagination
+              pageSize={countPerPage}
+              onChange={updatePage}
+              current={currentPage}
+              total={allPayment.length}
+              style={{ marginLeft: "8px" }}
+            />
+          </Box>
+        </TableContainer>
+        {/* 
+        <BootstrapDialog
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={open}
         >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <div style={{ maxWidth: "100%" }}>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell className="text-center">
-                      <b> Customer email</b>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <b>customer address</b>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <b>Product Name </b>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <b>Quantity </b>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {viewHistory?.map((item) => {
-                    console.log(item, "hdhdh");
-                    return (
-                      <>
-                        <TableRow>
-                          <TableCell className="text-center">
-                            {item?.email}
-                          </TableCell>
-                          <TableCell className="text-center">{`${item?.address?.house_number}, ${item?.address?.city} ${item?.address?.state},${item?.address?.pincode}, ${item?.address?.country}`}</TableCell>
-                          <TableCell className="text-center">
-                            {console.log(
-                              item.products[0].productName,
-                              "tttttttt"
-                            )}
-                            {item.products[0].productName.map((item) => {
-                              <TableCell>{item}</TableCell>;
-                            })}
-                          </TableCell>
-                        </TableRow>
-                      </>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        </DialogContent>
-        <DialogActions></DialogActions>
-      </BootstrapDialog>
-    </div>
+          <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+            View Order History
+          </DialogTitle>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <DialogContent dividers>
+            <div style={{ maxWidth: "100%" }}>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className="text-center">
+                        <b> Customer email</b>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <b>customer address</b>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <b>Product Name </b>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <b>Quantity </b>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {viewHistory?.map((item) => {
+                      console.log(item, "hdhdh");
+                      return (
+                        <>
+                          <TableRow>
+                            <TableCell className="text-center">
+                              {item?.email}
+                            </TableCell>
+                            <TableCell className="text-center">{`${item?.address?.house_number}, ${item?.address?.city} ${item?.address?.state},${item?.address?.pincode}, ${item?.address?.country}`}</TableCell>
+                            <TableCell className="text-center">
+                              {console.log(
+                                item.products[0].productName,
+                                "tttttttt"
+                              )}
+                              {item.products[0].productName.map((item) => {
+                                <TableCell>{item}</TableCell>;
+                              })}
+                            </TableCell>
+                          </TableRow>
+                        </>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </DialogContent>
+          <DialogActions></DialogActions>
+        </BootstrapDialog> */}
+      </div>
+    </>
   );
 };
 
