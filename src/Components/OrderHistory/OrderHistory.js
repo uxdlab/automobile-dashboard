@@ -16,28 +16,12 @@ import style from "./style.module.css";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
-import { gerAllPayment, getDetails } from "../../services/Payment";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import { gerAllPayment } from "../../services/Payment";
 
 import axios from "axios";
 import { apis } from "../../auth/api";
 import { Triangle } from "react-loader-spinner";
-import { Link, useNavigate, useParams } from "react-router-dom";
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
+import { useNavigate } from "react-router-dom";
 
 const OrderHistory = () => {
   const [collection, setCollection] = React.useState([]);
@@ -45,9 +29,6 @@ const OrderHistory = () => {
   const [allPayment, setAllPayment] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [loader, setLoader] = useState(true);
-  const [viewHistory, setViewHistory] = useState([]);
-
-  const [open, setOpen] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -183,10 +164,14 @@ const OrderHistory = () => {
                         {formattedTime}
                       </TableCell>
                       <TableCell className="text-center text-capitalize">
-                        {res.shipping_details?.name}
+                        {res?.paymentDetails?.buyerName
+                          ? res?.paymentDetails?.buyerName
+                          : res.shipping_details?.name}
                       </TableCell>
                       <TableCell className="text-center">
-                        {res.shipping_details?.mobile_number}
+                        {res?.paymentDetails?.buyerPhone
+                          ? res?.paymentDetails?.buyerPhone
+                          : res.shipping_details?.mobile_number}
                       </TableCell>
                       <TableCell className="text-center text-capitalize ">
                         {res?.paymentMode}

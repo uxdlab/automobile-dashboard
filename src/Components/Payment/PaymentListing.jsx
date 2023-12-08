@@ -100,7 +100,16 @@ export default function PaymentListing() {
               const timestamp = new Date(res.createdDateTime);
 
               const formattedDate = timestamp.toLocaleDateString();
-              const formattedTime = timestamp.toLocaleTimeString();
+
+              const options = {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              };
+              const formattedTime = timestamp.toLocaleTimeString(
+                undefined,
+                options
+              );
 
               return (
                 <TableRow key={index}>
@@ -111,13 +120,15 @@ export default function PaymentListing() {
                   <TableCell className="text_cap text-center">
                     ₹ {res.amount}
                   </TableCell>
+
                   <TableCell className="text_cap text-center">
                     {formattedDate} - {formattedTime}
                   </TableCell>
+
                   <TableCell className="text_cap text-center">
-                    {console.log(res)}
                     {res.paymentMode === "cash" ? "Cash on Delivery" : "Online"}
                   </TableCell>
+
                   <TableCell className="text_cap text-center">
                     {res.paymentStatus}
                   </TableCell>
