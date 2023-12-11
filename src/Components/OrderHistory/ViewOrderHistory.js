@@ -75,6 +75,9 @@ const ViewOrderHistory = () => {
                   <b>customer address</b>
                 </TableCell>
                 <TableCell className="text-center">
+                  <b>OE Reference Number </b>
+                </TableCell>
+                <TableCell className="text-center">
                   <b>Product Name </b>
                 </TableCell>
                 <TableCell className="text-center">
@@ -102,11 +105,29 @@ const ViewOrderHistory = () => {
                         <TableCell
                           className={`text-center border-0 ${style.tableText}`}
                         >
-                          {productsRes.productName[0]}
+                          {console.log(productsRes, "productsRes")}
+                          {productsRes?.ke_partNumber[0]}
+                        </TableCell>
+
+                      </TableRow>
+                    ))}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {item?.products.map((productsRes, index) => (
+                      <TableRow
+                        key={index}
+                        className={`text-center ${style.tableRows}`}
+                      >
+
+                        <TableCell
+                          className={`text-center border-0 ${style.tableText}`}
+                        >
+                          {productsRes?.productName[0]}
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableCell>
+
                   <TableCell
                     className={`text-center border-0 ${style.tableText}`}
                   >
