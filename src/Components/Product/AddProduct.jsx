@@ -41,7 +41,7 @@ export default function AddProduct() {
       brand_name: "",
       segment_name: "",
       model_name: "",
-      cash_on_delivery:""
+      cash_on_delivery: "",
     },
   ]);
   function validationForm() {
@@ -86,16 +86,16 @@ export default function AddProduct() {
       files.map((item) => {
         console.log(item);
         // return
-        const storageRef = ref(storage, `image${Math.random()}${item.name}`); 
+        const storageRef = ref(storage, `image${Math.random()}${item.name}`);
         const uploadTask = uploadBytesResumable(storageRef, item);
-        console.log(uploadTask)
-        promises.push(uploadTask);
 
+        promises.push(uploadTask);
       });
 
       if (files.length === promises.length) {
         Promise.all(promises)
           .then((res) => {
+            console.log(res, "hhhhhhh");
             let urls = [];
             res.map((res2, index) => {
               getDownloadURL(res2.ref).then((url) => {
@@ -103,24 +103,24 @@ export default function AddProduct() {
                 console.log(urls);
                 if (index == files.length - 1) {
                   console.log(urls);
-                  setTimeout(()=>{ AllProducts.current[0].image = [...urls];
+                  setTimeout(() => {
+                    AllProducts.current[0].image = [...urls];
 
-                                   addItem(AllProducts.current[0])
-                                     .then((res) => {
-                                       setLoader(false);
-                                       navigate("/product");
-                                       sessionStorage.setItem("added", "true");
-                                     })
-                                     .catch((err) => {
-                                       console.log(err);
-                                     });},1000)
-                 
+                    addItem(AllProducts.current[0])
+                      .then((res) => {
+                        setLoader(false);
+                        navigate("/product");
+                        sessionStorage.setItem("added", "true");
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                  }, 1000);
                 }
               });
             });
           })
           .catch((err) => console.log(err));
-          
       }
     } else {
       setLoader(false);
@@ -151,7 +151,7 @@ export default function AddProduct() {
         //     type: "error",
         //   });
         // } else {
-          submitForm(e);
+        submitForm(e);
         // }
       } else {
         ShowSnackbar({
