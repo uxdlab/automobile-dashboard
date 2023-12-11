@@ -79,6 +79,14 @@ export default function Product({
     AllProducts.current[index].model_name = modelName[0].model_name;
   }
 
+  function fileRemove(index) {
+    let fileArr = [...files];
+    fileArr.splice(index, 1);
+    setFiles(fileArr);
+
+    console.log(fileArr, "ccchhhh");
+  }
+
   function filteredModel(fil) {
     setSelectModel([]);
     AllProducts.current[index].product_brand_aaray = [fil];
@@ -99,6 +107,8 @@ export default function Product({
     console.log(imgs);
     let num = 0;
 
+    setFiles([...files, ...imgs]);
+
     imgs.forEach((res) => {
       console.log(res.name);
       if (!res.name.match(/\.(jpg|jpeg|png|svg)$/)) {
@@ -112,7 +122,7 @@ export default function Product({
 
       imgs.map((item) => {
         let url = URL.createObjectURL(item);
-        console.log(url.name);
+
         arr.push(url);
       });
       setimgURLs([...imgURLs, ...arr]);
@@ -128,7 +138,7 @@ export default function Product({
   };
 
   useEffect(() => {
-    setFiles(aa);
+    // setFiles(aa);
     console.log(aa.name);
   }, [aa]);
   useEffect(() => {
@@ -512,11 +522,9 @@ export default function Product({
                           sx={{ fontSize: "12px", color: "red" }}
                           onClick={() => {
                             let arr = [...imgURLs];
-                            let fileArr = [...files];
-                            fileArr.splice(index, 1);
+                            fileRemove(index);
                             arr.splice(index, 1);
                             setimgURLs(arr);
-                            setFiles(fileArr);
                           }}
                           className="close-btn-position"
                         />

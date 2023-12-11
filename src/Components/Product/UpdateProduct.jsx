@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { editItem, getAllItem, getItem, stockStatus } from "../../services/Item";
+import { getMetadata } from "firebase/storage";
+import {
+  editItem,
+  getAllItem,
+  getItem,
+  stockStatus,
+} from "../../services/Item";
 import {
   Backdrop,
   Box,
@@ -56,7 +62,6 @@ export default function UpdateProduct() {
   const [manufacturer, setManufacturer] = useState([]);
   const AllProducts = useRef([]);
 
-
   const [snackbar, ShowSnackbar] = useState({
     show: false,
     vertical: "top",
@@ -81,7 +86,6 @@ export default function UpdateProduct() {
       return true;
     }
   }
-
 
   const getProductById = (reqData) => {
     getItem(id)
@@ -116,128 +120,51 @@ export default function UpdateProduct() {
       });
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = async (e) => {
     e.preventDefault();
-    const promises = [];
     setLoader(true);
-    if (newImgURL.length !== 0 || files.length !== 0) {
-      if (newImgURL.length !== 0) {
 
-        newImgURL.map((item) => {
+    try {
+      const storage = getStorage();
+      const promises = [];
 
-            if(item.includes("firebasestorage.googleapis.com")){
-            const storage = getStorage();
+      // Delete existing images
+      await Promise.all(
+        newImgURL
+          .filter((item) => item.includes("firebasestorage.googleapis.com"))
+          .map(async (item) => {
             const desertRef = ref(storage, item);
-            deleteObject(desertRef)
-              .then(() => {
-                console.log("image deleted");
-              })
-              .catch((err) => { });
-          }});
+            try {
+              await deleteObject(desertRef);
+              console.log("Image deleted successfully");
+            } catch (error) {
+              console.error("Error deleting image:", error);
+            }
+          })
+      );
 
-        if (files.length !== 0) {
-          files.map((item2) => {
-            const storageRef = ref(
-              storage,
-              `image${Math.random()}${item2.name}`
-            );
-            const uploadTask = uploadBytesResumable(storageRef, item2);
-            promises.push(uploadTask);
-          });
-          if (files.length === promises.length) {
-            Promise.all(promises)
-              .then((res) => {
-                let urls = [];
-                res.map((res2, index) => {
-                  getDownloadURL(res2.ref).then((url) => {
-                    urls.push(url);
-                    if (index == files.length - 1) {
-                      setTimeout(() => {
-                        AllProducts.current[0].image = [...urls, ...checkURL];
+      const uploadTasks = files.map((file) => {
+        const timestamp = new Date().getTime();
+        const storageRef = ref(storage, `image${timestamp}${file.name}`);
+        return uploadBytesResumable(storageRef, file);
+      });
 
-                        editItem(id, AllProducts.current[0])
-                          .then((res) => {
-                            sessionStorage.setItem("updated", "true");
-                            navigate("/product");
-                          })
-                          .catch((err) => {
-                            console.log(err);
-                          });
-                      }, 1000);
-                    }
-                  });
-                });
-              })
-              .catch((err) => console.log(err));
-          }
-        } else {
-          AllProducts.current[0].image = checkURL;
-          editItem(id, AllProducts.current[0])
-            .then((res) => {
-              sessionStorage.setItem("updated", "true");
-              navigate("/product");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      } else {
-        if (files.length !== 0) {
-          files.map((item2) => {
-            const storageRef = ref(
-              storage,
-              `image${Math.random()}${item2.name}`
-            );
-            const uploadTask = uploadBytesResumable(storageRef, item2);
-            promises.push(uploadTask);
-          });
-          if (files.length === promises.length) {
-            Promise.all(promises)
-              .then((res) => {
-                let urls = [];
-                res.map((res2, index) => {
-                  getDownloadURL(res2.ref).then((url) => {
-                    urls.push(url);
-                    if (index == files.length - 1) {
-                      setTimeout(() => {
-                        AllProducts.current[0].image = [...urls, ...checkURL];
+      const uploadResults = await Promise.all(uploadTasks);
 
-                        editItem(id, AllProducts.current[0])
-                          .then((res) => {
-                            sessionStorage.setItem("updated", "true");
-                            navigate("/product");
-                          })
-                          .catch((err) => {
-                            console.log(err);
-                          });
-                      }, 1000);
-                    }
-                  });
-                });
-              })
-              .catch((err) => console.log(err));
-          }
-        } else {
-          AllProducts.current[0].image = checkURL;
-          editItem(id, AllProducts.current[0])
-            .then((res) => {
-              sessionStorage.setItem("updated", "true");
-              navigate("/product");
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
-      }
-    } else {
-      editItem(id, AllProducts.current[0])
-        .then((res) => {
-          sessionStorage.setItem("updated", "true");
-          navigate("/product");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const urls = await Promise.all(
+        uploadResults.map((res) => getDownloadURL(res.ref))
+      );
+
+      const updatedImages = [...checkURL, ...urls];
+
+      await editItem(id, { ...AllProducts.current[0], image: updatedImages });
+
+      setLoader(false);
+      sessionStorage.setItem("updated", "true");
+      navigate("/product");
+    } catch (error) {
+      console.error("Error editing item:", error);
+      setLoader(false);
     }
   };
 
@@ -272,7 +199,7 @@ export default function UpdateProduct() {
       model.filter((e) => {
         if (
           e.model_segment_array[0] ===
-          AllProducts.current[0].product_segment_aaray[0] &&
+            AllProducts.current[0].product_segment_aaray[0] &&
           e.model_brand_array.includes(fil)
         ) {
           return true;
@@ -282,13 +209,14 @@ export default function UpdateProduct() {
       })
     );
   }
-  useEffect(() => {
-    setFiles(uploadimg);
+  // useEffect(() => {
+  //   setFiles(uploadimg);
+  // }, [uploadimg]);
 
-  }, [uploadimg]);
-
-  const imgPrev = (imgs,e) => {
-
+  const imgPrev = (imgs, e) => {
+    console.log(imgs);
+    setFiles([...files, ...imgs]);
+    // return;
     let num = 0;
     imgs.forEach((res) => {
       if (!res.name.match(/\.(jpg|jpeg|png|svg)$/)) {
@@ -297,15 +225,13 @@ export default function UpdateProduct() {
     });
     if (num === 0) {
       setUploadImg((uploadimg) => [...uploadimg, ...imgs]);
-      // setFiles(imgs);
+
       let arr = [];
       imgs.map((item) => {
         let url = URL.createObjectURL(item);
         arr.push(url);
-
       });
       setimgURLs([...imgURLs, ...arr]);
-
     } else {
       ShowSnackbar({
         show: true,
@@ -337,7 +263,7 @@ export default function UpdateProduct() {
         //     type: "error",
         //   });
         // } else {
-          formSubmit(e);
+        formSubmit(e);
         // }
       } else {
         ShowSnackbar({
@@ -350,6 +276,13 @@ export default function UpdateProduct() {
       }
     }
   };
+
+  function fileDeselect(index) {
+    let arr = [...files];
+    arr.splice(index, 1);
+    setFiles(arr);
+    console.log(arr);
+  }
 
   useEffect(() => {
     CallMultipleApi.CallMultipleApi([
@@ -608,7 +541,7 @@ export default function UpdateProduct() {
                                 setModelValidation("");
                                 setUseValidation(e.target.value);
                                 setBrandError({});
-                                setSelectedModal("")
+                                setSelectedModal("");
                               }}
                             >
                               {selectBrand.map((item, index) => (
@@ -647,7 +580,7 @@ export default function UpdateProduct() {
                                 editModelData(e);
                                 setModelValidation(e.target.value);
                                 setBrandError({});
-                                setSelectedModal(e.target.value)
+                                setSelectedModal(e.target.value);
                               }}
                               label="Outlined"
                               variant="outlined"
@@ -686,9 +619,9 @@ export default function UpdateProduct() {
                                   : ""
                               }
                               onChange={(e) =>
-                              (AllProducts.current[0].product_category_aaray = [
-                                e.target.value,
-                              ])
+                                (AllProducts.current[0].product_category_aaray = [
+                                  e.target.value,
+                                ])
                               }
                             >
                               {category.map((item, index) => (
@@ -718,9 +651,9 @@ export default function UpdateProduct() {
                                   : ""
                               }
                               onChange={(e) =>
-                              (AllProducts.current[0].product_manufacture_aaray = [
-                                e.target.value,
-                              ])
+                                (AllProducts.current[0].product_manufacture_aaray = [
+                                  e.target.value,
+                                ])
                               }
                             >
                               {manufacturer.map((res, index) => {
@@ -750,21 +683,14 @@ export default function UpdateProduct() {
                                   : ""
                               }
                               onChange={(e) => {
-
-                                AllProducts.current[
-                                  index
-                                ].cash_on_delivery = e.target.value
+                                AllProducts.current[index].cash_on_delivery =
+                                  e.target.value;
                               }}
                               label="Outlined"
                               variant="outlined"
                             >
-
-                              <MenuItem value={"yes"}>
-                                Yes
-                              </MenuItem>
-                              <MenuItem value={"no"}>
-                                No
-                              </MenuItem>
+                              <MenuItem value={"yes"}>Yes</MenuItem>
+                              <MenuItem value={"no"}>No</MenuItem>
                             </Select>
                           </FormControl>
                         </Grid>
@@ -780,7 +706,6 @@ export default function UpdateProduct() {
                           <br />
 
                           <div className="w-100 d-flex flex-wrap">
-                  
                             {checkURL.map((item, index) => (
                               <div
                                 key={index}
@@ -803,7 +728,6 @@ export default function UpdateProduct() {
                                 <img className="img-style" src={item} />
                               </div>
                             ))}
-                        
 
                             {imgURLs.map((item, index) => (
                               <div
@@ -818,8 +742,9 @@ export default function UpdateProduct() {
                                   onClick={() => {
                                     let arr = [...imgURLs];
                                     arr.splice(index, 1);
+                                    fileDeselect(index);
                                     setimgURLs(arr);
-                                    setUploadImg(arr)
+                                    setUploadImg(arr);
                                   }}
                                   className="close-btn-position"
                                 />
@@ -833,12 +758,10 @@ export default function UpdateProduct() {
                                   multiple
                                   id="2actual-btn"
                                   hidden
-                                  onChange={(e) =>{
-                                
-                                    imgPrev(Object.values(e.target.files),e)
-                                    e.target.value=""
-                                  }
-                                  }
+                                  onChange={(e) => {
+                                    imgPrev(Object.values(e.target.files), e);
+                                    e.target.value = "";
+                                  }}
                                 />
                                 <label
                                   className="text-center text-gray"
@@ -858,10 +781,10 @@ export default function UpdateProduct() {
                       <Grid
                         item
                         xl={12}
-                      // md={9}
-                      // sm={12}
-                      // sx={12}
-                      // sx={{ border: "2px solid red", width: "100%" }}
+                        // md={9}
+                        // sm={12}
+                        // sx={12}
+                        // sx={{ border: "2px solid red", width: "100%" }}
                       >
                         <Box align="right" mt={6}>
                           <Button
