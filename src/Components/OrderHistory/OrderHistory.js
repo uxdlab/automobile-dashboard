@@ -174,7 +174,7 @@ const OrderHistory = () => {
                           : res.shipping_details?.mobile_number}
                       </TableCell>
                       <TableCell className="text-center text-capitalize ">
-                        {res?.paymentMode}
+                        {res?.paymentMode === "cash" ? "COD" : "Online"}
                       </TableCell>
 
                       <TableCell className="text-center text-capitalize">
