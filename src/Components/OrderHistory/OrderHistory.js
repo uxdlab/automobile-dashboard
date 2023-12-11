@@ -61,7 +61,20 @@ const OrderHistory = () => {
       });
   };
   console.log(collection, "hduehdu");
-
+  const totalAmount = (arr) => {
+    console.log(arr);
+    if (arr.productsData.length !== 0) {
+      let total = 0;
+      arr.productsData.forEach(s => {
+        let datas= arr.subscriptionData.filter(e=>e.product_id===s._id)
+        total = total + (s.MRP*datas[0].quantity)
+      
+      });
+      return total
+    } else {
+      return 0;
+    }
+  }
   const handleStatusChange = async (e, id) => {
     try {
       const response = await axios.put(
@@ -127,7 +140,12 @@ const OrderHistory = () => {
                 <TableCell className="text-center">
                   <b> Mode of Payment </b>
                 </TableCell>
-
+                <TableCell className="text-center">
+                  <b> Total Amount </b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b> Discount </b>
+                </TableCell>
                 <TableCell className="text-center">
                   <b> Amount </b>
                 </TableCell>
@@ -176,7 +194,14 @@ const OrderHistory = () => {
                       <TableCell className="text-center text-capitalize ">
                         {res?.paymentMode === "cash" ? "COD" : "Online"}
                       </TableCell>
-
+                      <TableCell className="text-center text-capitalize">
+                        {" "}
+                        ₹ {totalAmount(res) !== 0 ? totalAmount(res) : res?.paymentDetails?.amount}
+                      </TableCell>
+                      <TableCell className="text-center text-capitalize">
+                        {" "}
+                        ₹ {totalAmount(res) !== 0 ? totalAmount(res)-res?.paymentDetails?.amount : 0}
+                      </TableCell>
                       <TableCell className="text-center text-capitalize">
                         {" "}
                         ₹ {res?.paymentDetails?.amount}
