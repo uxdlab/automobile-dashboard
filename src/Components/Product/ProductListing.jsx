@@ -62,6 +62,7 @@ export default function ProductListing() {
 
   const stockUpdate = async (id) => {
     await stockStatus(id);
+    // getAllProduct()
   };
 
   function validationForm() {
@@ -404,9 +405,13 @@ export default function ProductListing() {
                     <TableCell>{res.ke_partNumber}</TableCell>
                     <TableCell> ₹{res.MRP}</TableCell>
                     <TableCell>
+                      
                       <Switch
-                        defaultChecked={res.is_active}
+                        checked={res.is_active}
                         onChange={(e) => {
+                          let arr = [...collection]
+                          arr[index].is_active = e.target.checked
+                          setCollection(arr)
                           stockUpdate(res._id);
                         }}
                       />

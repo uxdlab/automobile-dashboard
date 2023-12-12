@@ -75,7 +75,7 @@ const ViewOrderHistory = () => {
                   <b>customer address</b>
                 </TableCell>
                 <TableCell className="text-center">
-                  <b>OE Reference Number </b>
+                  <b>Part Number</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Product Name </b>
