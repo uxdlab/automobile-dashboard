@@ -61,7 +61,10 @@ export default function ProductListing() {
   const [modelValidation, setModelValidation] = useState("");
 
   const stockUpdate = async (id) => {
+    setLoader(true)
     await stockStatus(id);
+    setLoader(false)
+
     // getAllProduct()
   };
 
