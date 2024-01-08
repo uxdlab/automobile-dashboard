@@ -132,3 +132,7 @@ Button {
   width:100px!important;
   height:100px!important;
 }
+
+.css-11xur9t-MuiPaper-root-MuiTableContainer-root{
+overflow-y: hidden !important;
+}

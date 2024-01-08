@@ -29,6 +29,7 @@ const OrderHistory = () => {
   const [allPayment, setAllPayment] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [loader, setLoader] = useState(true);
+  const [backUpData,setBackUpData] = useState([])
 
   const navigate = useNavigate();
 
@@ -50,8 +51,10 @@ const OrderHistory = () => {
     gerAllPayment()
       .then((res) => {
         let dd = [...res.data.data];
-        console.log(dd);
-        setAllPayment(dd.reverse());
+        let data = dd.filter(res => res.paymentDetails.orderId !== undefined && res.shipping_details.name !==undefined)
+        console.log(data);
+        setAllPayment(data.reverse());
+        setBackUpData(data.reverse());
         updatePage(currentPage);
         setLoader(false);
       })
@@ -60,15 +63,15 @@ const OrderHistory = () => {
         setLoader(false);
       });
   };
-  console.log(collection, "hduehdu");
+  // console.log(collection, "hduehdu");
   const totalAmount = (arr) => {
-    console.log(arr);
+    // console.log(arr);
     if (arr.productsData.length !== 0) {
       let total = 0;
       arr.productsData.forEach(s => {
-        let datas= arr.subscriptionData.filter(e=>e.product_id===s._id)
-        total = total + (s.MRP*datas[0].quantity)
-      
+        let datas = arr.subscriptionData.filter(e => e.product_id === s._id)
+        total = total + (s.MRP * datas[0].quantity)
+
       });
       return total
     } else {
@@ -90,6 +93,13 @@ const OrderHistory = () => {
     }
     getAllPaymentDetails();
   };
+
+  function searchData(e) {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.paymentDetails.orderId.toLowerCase().includes(val) || res.shipping_details.name.toLowerCase().includes(val) || res.shipping_details.mobile_number.toLowerCase().includes(val))
+    setAllPayment(dd)
+  }
 
   React.useEffect(() => {
     getAllPaymentDetails();
@@ -116,14 +126,25 @@ const OrderHistory = () => {
           />
         </Box>
       </Backdrop>
-      <div style={{ maxWidth: "100%", overflowX: "hidden", overflowY: "auto" }}>
-        <h1 className="px-2">Order History</h1>
+      <div className="container-fluid pb-5">
+        <h1 className="">Order History</h1>
+        <div className="row py-3">
+          <div className="col-lg-5 col-md-6 col-sm-6 col-12">
+            <input type="search" placeholder='Search Here By Order ID, Customer Name, Customer Number' onChange={(e) => {
+              if (e.target.value == ' ') {
+                e.target.value = ''
+              } else {
+                searchData(e.target.value)
+              }
+            }} className="form-control"></input>
+          </div>
+        </div>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell className="text-center">
-                  <b> Order Id</b>
+                  <b>Order ID</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Date</b>
@@ -169,9 +190,7 @@ const OrderHistory = () => {
 
                   // const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
                   // const dateObject = new Date();
-const formattedTime = dateObject.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-console.log(formattedTime);
+                  const formattedTime = dateObject.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                   return (
                     <TableRow key={res?.paymentDetails?.orderId}>
@@ -204,7 +223,7 @@ console.log(formattedTime);
                       </TableCell>
                       <TableCell className="text-center text-capitalize">
                         {" "}
-                        ₹ {totalAmount(res) !== 0 ? totalAmount(res)-res?.paymentDetails?.amount : 0}
+                        ₹ {totalAmount(res) !== 0 ? totalAmount(res) - res?.paymentDetails?.amount : 0}
                       </TableCell>
                       <TableCell className="text-center text-capitalize">
                         {" "}
