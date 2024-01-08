@@ -164,8 +164,8 @@ const OrderHistory = () => {
                     res?.paymentDetails?.createdDateTime
                   );
 
-                  const formattedDate = `${dateObject.getDate()}-${dateObject.getMonth() +
-                    1}-${dateObject.getFullYear()}`;
+                  const formattedDate = `${dateObject.getDate()}/${dateObject.getMonth() +
+                    1}/${dateObject.getFullYear()}`;
 
                   // const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
                   // const dateObject = new Date();
