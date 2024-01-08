@@ -58,7 +58,7 @@ export default function ProductListing() {
   // console.log(collection);
   const [useValidation, setUseValidation] = useState("");
   const [brandError, setBrandError] = useState("");
-  const [modelValidation, setModelValidation] = useState("");
+  const [backUpData, setBackUpData] = useState([])
 
   const stockUpdate = async (id) => {
     setLoader(true)
@@ -85,37 +85,18 @@ export default function ProductListing() {
       return false;
     }
   }
-  function handleSearchClick(search) {
-    if (search.length === 0) {
-      setCollection(allProduct.slice(0, countPerPage));
-    }
-    if (search.trim().length !== 0) {
-      const filterBySearch = allProductC.filter((item) => {
-        let result;
 
-        if (
-          item.product_name.includes(search.trim().toLocaleLowerCase()) ||
-          item.oe_reference_number.includes(search.trim().toUpperCase()) ||
-          item.ke_partNumber.includes(search.trim().toUpperCase()) ||
-          item.MRP.toString().includes(search.trim().toUpperCase())
-        ) {
-          result = true;
-        } else {
-          result = false;
-        }
 
-        console.log(
-          item.oe_reference_number.includes(search.trim().toUpperCase())
-        );
-        return result;
-      });
-      console.log(filterBySearch);
-      setCollection(filterBySearch);
-      setAllProduct(filterBySearch);
-    } else {
-      setAllProduct(allProductC);
-    }
+  function handleSearchClick(e) {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.product_name.toLowerCase().includes(val) || res.oe_reference_number.toLowerCase().includes(val) || res.ke_partNumber.toLowerCase().includes(val) || res.MRP.toString().toLowerCase().includes(val))
+    setAllProduct(dd);
+    setAllProductc(dd);
   }
+
+
+
   const readUploadFile = (e) => {
     let valid = validationForm();
 
@@ -235,6 +216,7 @@ export default function ProductListing() {
       console.log(dd.reverse());
       setAllProduct(dd.reverse());
       setAllProductc(dd.reverse());
+      setBackUpData(dd.reverse());
       setLoader(false);
     } catch (err) {
       console.log(err);
@@ -283,7 +265,7 @@ export default function ProductListing() {
               .then(() => {
                 console.log("image deleted");
               })
-              .catch((err) => {});
+              .catch((err) => { });
           });
         }
       })
@@ -336,10 +318,14 @@ export default function ProductListing() {
           <input
             className="w-250 form-control ml-4"
             type="search"
-            placeholder="Search"
+            placeholder="Search Here By Part Name, MRP, OE and Part Number"
             style={{ width: "400px" }}
             onChange={(e) => {
-              handleSearchClick(e.target.value);
+              if (e.target.value == ' ') {
+                e.target.value = ''
+              } else {
+                handleSearchClick(e.target.value);
+              }
             }}
           />
         </div>
@@ -408,7 +394,7 @@ export default function ProductListing() {
                     <TableCell>{res.ke_partNumber}</TableCell>
                     <TableCell> ₹{res.MRP}</TableCell>
                     <TableCell>
-                      
+
                       <Switch
                         checked={res.is_active}
                         onChange={(e) => {

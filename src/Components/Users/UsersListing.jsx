@@ -24,6 +24,7 @@ export default function UsersListing() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
+  const [backUpData,setBackUpData] = useState([])
   const [collection, setCollection] = React.useState(
     allUsers.slice(0, countPerPage)
   );
@@ -49,37 +50,20 @@ export default function UsersListing() {
       .then((res) => {
         // console.log(res.data.data);
         let dd = [...res.data.data];
-        console.log(dd.reverse());
         setAllUsers(dd.reverse());
         setAllProductc(dd.reverse());
-        console.log(dd);
+        setBackUpData(dd.reverse());
         setLoader(false);
       })
       .catch((err) => console.log(err));
   };
-  function handleSearchClick(search) {
-    if (search.length === 0) {
-      setCollection(allUsers.slice(0, countPerPage));
-    }
-    if (search.trim().length !== 0) {
-      const filterBySearch = allProductC.filter((item) => {
-        let result;
-        if (
-          item.fullName.includes(search.trim().toLocaleLowerCase()) ||
-          item.email.includes(search.trim().toLocaleLowerCase()) ||
-          item.mobile_number.includes(search.trim().toLocaleLowerCase())
-        ) {
-          result = true;
-        } else {
-          result = false;
-        }
-        return result;
-      });
-      setCollection(filterBySearch);
-      setAllUsers(filterBySearch);
-    } else {
-      setAllUsers(allProductC);
-    }
+  function handleSearchClick(e) {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.fullName.toLowerCase().includes(val) || res.email.toLowerCase().includes(val) || res.mobile_number.toLowerCase().includes(val))
+    setAllUsers(dd);
+    setAllProductc(dd);
+    // setAllPayment(dd)
   }
   const active = (userId) =>
     activeUser(userId).then((res) => {
@@ -188,9 +172,13 @@ export default function UsersListing() {
             <input
               className="w-75 form-control"
               type="search"
-              placeholder="Search"
+              placeholder="Search Here By Name, Email, Phone No."
               onChange={(e) => {
-                handleSearchClick(e.target.value);
+                if(e.target.value == ' '){
+                  e.target.value = ''
+                }else{
+                  handleSearchClick(e.target.value);
+                }
               }}
             />
           </Grid>

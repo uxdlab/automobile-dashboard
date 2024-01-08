@@ -46,15 +46,23 @@ const OrderHistory = () => {
     setCollection(allPayment.slice(from, to));
   };
 
+  function reverseArr(input) {
+    var ret = new Array;
+    for(var i = input.length-1; i >= 0; i--) {
+        ret.push(input[i]);
+    }
+    return ret;
+}
+
   const getAllPaymentDetails = () => {
     setLoader(true);
     gerAllPayment()
       .then((res) => {
         let dd = [...res.data.data];
         let data = dd.filter(res => res.paymentDetails.orderId !== undefined && res.shipping_details.name !==undefined)
-        console.log(data);
-        setAllPayment(data.reverse());
-        setBackUpData(data.reverse());
+        let newData = reverseArr(data)
+        setAllPayment(newData);
+        setBackUpData(newData);
         updatePage(currentPage);
         setLoader(false);
       })

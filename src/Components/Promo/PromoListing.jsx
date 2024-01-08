@@ -55,7 +55,7 @@ export default function PromoListing() {
   const [editName, setEditName] = useState(propId.promo_name);
   const [editDate, setEditDate] = useState(propId.expire_at);
   const [startDate, setStartDate] = useState(propId.start_at);
-
+  const [backUpData, setBackUpData] = useState([])
   const [editOrder, setEditOrder] = useState(propId.minimum_order);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [value, setValue] = React.useState("");
@@ -75,55 +75,20 @@ export default function PromoListing() {
     const from = to - countPerPage;
     setCollection(allPromos.slice(from, to));
   };
-  const PromoData = useRef({
-    promo_name: "",
-    expire_at: "",
-    discount_percentage: "",
-    minimum_order: "",
-  });
-  function handleSearchClick(search) {
-    console.log(allPromos);
-    if (search.length === 0) {
-      setCollection(allPromos.slice(0, countPerPage));
-    }
-    if (search.trim().length !== 0) {
-      const filterBySearch = allProductC.filter((item) => {
-        let result;
-        if (
-          item.promo_name
-            .toLocaleLowerCase()
-            .includes(search.trim().toLocaleLowerCase()) ||
-          item.discount_percentage
-            .toString()
-            .includes(search.trim().toLocaleLowerCase()) ||
-          item.minimum_order
-            .toString()
-            .includes(search.trim().toLocaleLowerCase())
-        ) {
-          result = true;
-        } else {
-          result = false;
-        }
-        return result;
-      });
-      setCollection(filterBySearch);
-      setAllPromos(filterBySearch);
-    } else {
-      setAllPromos(allProductC);
-    }
+  
+  function handleSearchClick(e) {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.promo_name.toLowerCase().includes(val) || res.discount_percentage.toString().toLowerCase().includes(val) || res.minimum_order.toString().toLowerCase().includes(val))
+    setAllPromos(dd);
+    setAllProductc(dd);
   }
 
   const addPromos = (e, data) => {
     e.preventDefault();
     setLoader(true);
     setOpen(false);
-    console.log({
-      promo_name: promoName,
-      expire_at: addexpireDate,
-      discount_percentage: discount,
-      minimum_order: minimumOrder,
-      start_at: addstartDate
-    });
+   
     add(
       {
         promo_name: promoName,
@@ -166,6 +131,7 @@ export default function PromoListing() {
         if (res) {
           setAllPromos([...res.data].reverse());
           setAllProductc([...res.data].reverse());
+          setBackUpData([...res.data].reverse());
         }
         setLoader(false);
       })
@@ -542,10 +508,14 @@ export default function PromoListing() {
               <input
                 className="w-75 form-control"
                 type="search"
-                placeholder="Search"
+                placeholder="Search Here By Name, Discount, Minimum Order"
                 onChange={(e) => {
-                  setSearchValue(e.target.value);
-                  handleSearchClick(e.target.value);
+                  if (e.target.value == ' ') {
+                    e.target.value = ''
+                  } else {
+                    setSearchValue(e.target.value);
+                    handleSearchClick(e.target.value);
+                  }
                   // setSearch(e.target.value);
                 }}
               />
@@ -602,7 +572,6 @@ export default function PromoListing() {
                     <TableCell className="text_cap text-center">
                       {res.minimum_order}
                     </TableCell>
-                    {console.log(res.start_at)}
                     <TableCell className="text_cap text-center">
                       {moment(res.start_at).format("DD-MM-YYYY")}
                     </TableCell>

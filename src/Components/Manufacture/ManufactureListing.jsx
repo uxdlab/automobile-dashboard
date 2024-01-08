@@ -52,10 +52,9 @@ export const ManufactureListing = () => {
     type: "error",
   });
   const [localImg, setLocalImg] = useState();
-  console.log(localImg);
   const [img, setImg] = useState({});
-  console.log(img);
   const [imgURL, setImgURL] = useState("");
+  const [backUpData,setBackUpData] = useState([])
   const [id, setId] = useState("");
   let manufacturerData = useRef({
     manufacturer_name: "",
@@ -70,31 +69,12 @@ export const ManufactureListing = () => {
   const [allProductC, setAllProductc] = useState([]);
   const [collection, setCollection] = React.useState([]);
 
-  function handleSearchClick(search) {
-    console.log(search);
-    if (search.length === 0) {
-      setCollection(allManufecture.slice(0, countPerPage));
-    }
-    if (search.trim().length !== 0) {
-      const filterBySearch = allProductC.filter((item) => {
-        let result;
-        if (
-          item.manufacturer_name.includes(search.trim().toLocaleLowerCase())
-        ) {
-          result = true;
-        } else {
-          result = false;
-        }
-        return result;
-      });
-      setCollection(filterBySearch);
-      setManufacture(filterBySearch);
-    } else {
-      setManufacture(allProductC);
-    }
-
-    // console.log(filterBySearch);
-    // setCollection(filterBySearch);
+  function handleSearchClick(e) {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.manufacturer_name.toLowerCase().includes(val))
+    setManufacture(dd);
+    setAllProductc(dd);
   }
   React.useEffect(() => {
     if (!value) {
@@ -121,8 +101,8 @@ export const ManufactureListing = () => {
         let dd = [...res.data.data];
         console.log(dd.reverse());
         setManufacture(dd.reverse());
-
         setAllProductc(dd.reverse());
+        setBackUpData(dd.reverse());
         setLoader(false);
         console.log(res.data.data);
       })
@@ -745,11 +725,14 @@ export const ManufactureListing = () => {
           <input
             className="w-75 form-control ml-4"
             type="search"
-            placeholder="Search"
+            placeholder="Search Here By Name"
             onChange={(e) => {
+              if(e.target.value == ' '){
+                e.target.value = ''
+              }else{
               setSearchValue(e.target.value);
               handleSearchClick(e.target.value);
-              // setSearch(e.target.value);
+              }
             }}
           />
         </div>

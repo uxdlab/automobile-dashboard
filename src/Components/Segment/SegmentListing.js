@@ -50,17 +50,15 @@ export const SegmentListing = () => {
     type: "error",
   });
   const [localImg, setLocalImg] = useState();
-  console.log(localImg);
   const [img, setImg] = useState({});
-  console.log(img);
   const [imgURL, setImgURL] = useState("");
   const [id, setId] = useState("");
-  console.log(id);
   const segmentData = useRef({
     vehicle_name: "",
     vehicle_description: "",
     vehicle_icon: "",
   });
+  const [backUpData,setBackUpData] = useState([])
   const [currentPage, setCurrentPage] = React.useState(1);
   const [countPerPage, setCountPerPage] = useState(10);
   const [value, setValue] = React.useState("");
@@ -84,50 +82,31 @@ export const SegmentListing = () => {
     getAllVehicles();
   }, []);
 
-  //   function test(e){
-  //     data.filter((item)=>item.name.includes(e.target.value.toLocalLowerCase()))
-  //   }
+  
 
-  function handleSearchClick(search) {
-    console.log(search);
-    if (search.length === 0) {
-      setCollection(allVehicles.slice(0, countPerPage));
-    }
-    if (search.trim().length !== 0) {
-      const filterBySearch = allProductC.filter((item) => {
-        let result;
-        if (item.vehicle_name.includes(search.trim().toLocaleLowerCase())) {
-          result = true;
-        } else {
-          result = false;
-        }
-        return result;
-      });
-      setCollection(filterBySearch);
-      setAllVehicles(filterBySearch);
-    } else {
-      setAllVehicles(allProductC);
-    }
-    // setCollection(filterBySearch);
-    // setAllVehicles(filterBySearch);
-    // allVehicles(allProductC);
+  function handleSearchClick(e) {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.vehicle_name.toLowerCase().includes(val))
+    setAllVehicles(dd);
+    setAllProductc(dd);   
   }
+
+
   async function getAllVehicles() {
     setLoader(true);
     VehicleClass.getAllVehicles()
       .then((res) => {
         let dd = [...res.data.data];
-        console.log(dd.reverse());
         setAllVehicles(dd.reverse());
         setAllProductc(dd.reverse());
+        setBackUpData(dd.reverse());
         setLoader(false);
-        console.log(res.data.data);
       })
       .catch((err) => console.log(err));
   }
 
   async function deleteVehicle() {
-    console.log(deleteVeh.icon);
     setDeleteModel(false);
     setLoader(true);
     VehicleClass.deleteVehicle(deleteVeh.id)
@@ -693,8 +672,12 @@ export const SegmentListing = () => {
                 type="search"
                 placeholder="Search"
                 onChange={(e) => {
-                  setSearchValue(e.target.value);
-                  handleSearchClick(e.target.value);
+                  if(e.target.value == ' '){
+                    e.target.value = ''
+                  }else{
+                    setSearchValue(e.target.value);
+                    handleSearchClick(e.target.value);
+                  }
                 }}
               />
             </Grid>

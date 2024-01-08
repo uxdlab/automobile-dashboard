@@ -65,6 +65,7 @@ export default function MechanicListing() {
   const [allPromos, setAllPromos] = useState([]);
   const [MechanicId, setMechanicId] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [backUpData, setBackUpData] = useState([])
 
   const updatePage = (p) => {
     setCurrentPage(p);
@@ -118,6 +119,7 @@ export default function MechanicListing() {
       console.log(dd.reverse());
       setCollection(dd.reverse());
       setSearchValue(dd.reverse());
+      setBackUpData(dd.reverse());
     });
   };
   const pointReset = async (id) => {
@@ -126,25 +128,15 @@ export default function MechanicListing() {
     });
   };
 
-  const searching = (value) => {
-    const data = collection.filter((e) => {
-      if (
-        e.mechanic_name.includes(value) ||
-        e.mechanic_number.includes(value) ||
-        e.mechanic_email.includes(value) ||
-        e.mechanic_address.includes(value)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    if (value.length !== 0) {
-      setSearchValue(data);
-    } else {
-      setSearchValue(collection);
-    }
-  };
+  const searching = (e) => {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.mechanic_name.toLowerCase().includes(val) || res.mechanic_number.toLowerCase().includes(val) || res.mechanic_email.toLowerCase().includes(val) || res.mechanic_address.toLowerCase().includes(val))
+    setCollection(dd);
+    setSearchValue(dd);
+  }
+
+
   useEffect(() => {
     getAllData();
   }, []);
@@ -409,9 +401,13 @@ export default function MechanicListing() {
               <input
                 className="w-75 form-control"
                 type="search"
-                placeholder="Search"
+                placeholder="Search Here By Name, Email, Phone, Address"
                 onChange={(e) => {
-                  searching(e.target.value);
+                  if (e.target.value == ' ') {
+                    e.target.value = ''
+                  } else {
+                    searching(e.target.value);
+                  }
                 }}
               />
             </Grid>

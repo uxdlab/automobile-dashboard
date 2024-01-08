@@ -43,6 +43,7 @@ export const BrandListing = () => {
   const [allCompanies, setCompanies] = useState([]);
   const [allSegment, setSegment] = useState([]);
   const [deleteModel, setDeleteModel] = useState(false);
+  const [backUpData, setBackUpData] = useState([])
   const [deletedComp, setDeletedComp] = useState({
     id: "",
     index: "",
@@ -79,36 +80,13 @@ export const BrandListing = () => {
   const [collection, setCollection] = React.useState([]);
   const [searchValue, setSearchValue] = useState("");
 
-  function handleSearchClick(search) {
-    if (search.length === 0) {
-      setCollection(allCompanies.slice(0, countPerPage));
-    }
-    if (search.trim().length !== 0) {
-      const filterBySearch = allProductC.filter((item) => {
-        let result;
-        if (item.brand_name.includes(search.trim().toLocaleLowerCase())) {
-          result = true;
-        } else {
-          result = false;
-        }
-        return result;
-      });
-      setCollection(filterBySearch);
-      setCompanies(filterBySearch);
-    } else {
-      setCompanies(allProductC);
-    }
+  function handleSearchClick(e) {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.brand_name.toLowerCase().includes(val))
+    setCompanies(dd);
+    setAllProductc(dd);
 
-    // setCollection(filterBySearch);
-
-    // if(searchValue ===""){
-    //     setCollection(allCompanies);
-    // }else{
-    //     const filterBySearch = collection.filter((item)=>{
-    //         return item.brand_name.includes(name.trim().toLocaleLowerCase());
-    //     })
-    //     setCollection(filterBySearch)
-    // }
   }
 
   React.useEffect(() => {
@@ -166,6 +144,8 @@ export const BrandListing = () => {
       console.log(dd.reverse());
       setCompanies(dd.reverse());
       setAllProductc(dd.reverse());
+      setBackUpData(dd.reverse());
+
     });
   }
   function deleteCompany() {
@@ -199,7 +179,7 @@ export const BrandListing = () => {
           })
           .catch((err) => console.log(err));
       })
-      .catch((error) => {});
+      .catch((error) => { });
 
     setSelectSegment([]);
   }
@@ -214,7 +194,7 @@ export const BrandListing = () => {
     const uploadTask = uploadBytesResumable(storageRef, img);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      (snapshot) => { },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -266,7 +246,7 @@ export const BrandListing = () => {
             const uploadTask = uploadBytesResumable(storageRef, img);
             uploadTask.on(
               "state_changed",
-              (snapshot) => {},
+              (snapshot) => { },
               (err) => console.log(err),
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -302,13 +282,13 @@ export const BrandListing = () => {
               }
             );
           })
-          .catch((error) => {});
+          .catch((error) => { });
       } else {
         const storageRef = ref(storage, `${Math.random()}${img.name}`);
         const uploadTask = uploadBytesResumable(storageRef, img);
         uploadTask.on(
           "state_changed",
-          (snapshot) => {},
+          (snapshot) => { },
           (err) => console.log(err),
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -443,7 +423,7 @@ export const BrandListing = () => {
           return item;
         }
       });
-      let segmentArr = selectSegment.filter(function(item) {
+      let segmentArr = selectSegment.filter(function (item) {
         return Segment.includes(item);
       });
 
@@ -917,15 +897,19 @@ export const BrandListing = () => {
             type="search"
             placeholder="Search"
             onChange={(e) => {
-              setSearchValue(e.target.value);
-              handleSearchClick(e.target.value);
+              if (e.target.value == ' ') {
+                e.target.value = ''
+              } else {
+                setSearchValue(e.target.value);
+                handleSearchClick(e.target.value);
+              }
             }}
           />
         </div>
         <div
           style={{ display: "flex", marginRight: "18px" }}
-          // className="d-flex justify-content-end"
-          // md={6}
+        // className="d-flex justify-content-end"
+        // md={6}
         >
           <Button
             className="btn_primary"

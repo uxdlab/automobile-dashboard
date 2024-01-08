@@ -36,6 +36,7 @@ export const Category = () => {
   const [deletedVeh, setDeletedVeh] = useState({ id: "", index: "", icon: "" });
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
+  const [backUpData,setBackUpData] = useState([])
   const [snackbar, ShowSnackbar] = useState({
     show: false,
     vertical: "top",
@@ -44,9 +45,7 @@ export const Category = () => {
     type: "error",
   });
   const [localImg, setLocalImg] = useState();
-  console.log(localImg);
   const [img, setImg] = useState({});
-  console.log(img);
   const [imgURL, setImgURL] = useState("");
   const [id, setId] = useState("");
   const allCategory = useRef({
@@ -60,27 +59,15 @@ export const Category = () => {
   const [value, setValue] = React.useState("");
   const [allProductC, setAllProductc] = useState([]);
   const [collection, setCollection] = React.useState([]);
-  function handleSearchClick(name) {
-    if (name.length === 0) {
-      setCollection(allProducts.slice(0, countPerPage));
-    }
-    if (name.trim().length !== 0) {
-      const filterBySearch = allProductC.filter((item) => {
-        let result;
-        if (item.category_name.includes(name.trim().toLocaleLowerCase())) {
-          result = true;
-        } else {
-          result = false;
-        }
-        return result;
-      });
-      setCollection(filterBySearch);
-      setAllProducts(filterBySearch);
-    } else {
-      setAllProducts(allProductC);
-    }
 
-    // setCollection(filterBySearch);
+
+  function handleSearchClick(e) {
+    let data = [...backUpData]
+    let val = e.toLowerCase()
+    let dd = data.filter(res => res.category_name.toLowerCase().includes(val))
+    setAllProducts(dd);
+        setAllProductc(dd); 
+    
   }
 
   React.useEffect(() => {
@@ -107,8 +94,9 @@ export const Category = () => {
         console.log(dd.reverse());
         setAllProducts(dd.reverse());
         setAllProductc(dd.reverse());
+        setBackUpData(dd.reverse());
         setLoader(false);
-        console.log(res.data.data);
+        
       })
       .catch((err) => {
         setLoader(false);
@@ -731,10 +719,14 @@ export const Category = () => {
           <input
             className="w-75 form-control ml-4"
             type="search"
-            placeholder="Search"
+            placeholder="Search Here By Name"
             onChange={(e) => {
+              if(e.target.value == ' '){
+                e.target.value = ''
+              }else{
               setSearchValue(e.target.value);
               handleSearchClick(e.target.value);
+              }
             }}
           />
         </div>

@@ -102,19 +102,18 @@ export const ModelListing = () => {
     if (search.length === 0) {
       setCollection(allData.slice(0, countPerPage));
     }
-    if (search.trim().length !== 0) {
+    if (search.length !== 0) {
       let filterBySearch = allProductC.filter((item) => {
-        //  console.log(item.brand[0].brand_name.includes(search.trim().toLocaleLowerCase());
+        //  console.log(item.brand[0].brand_name.includes(search.toLocaleLowerCase());
         let result;
-        console.log(item);
         if (item.brand.length !== 0 && item.segment.length !== 0) {
           if (
-            item.model_name.includes(search.trim().toLocaleLowerCase()) ||
-            item.brand[0].brand_name.includes(
-              search.trim().toLocaleLowerCase()
+            item.model_name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+            item.brand[0].brand_name.toLocaleLowerCase().includes(
+              search.toLocaleLowerCase()
             ) ||
-            item.segment[0].vehicle_name.includes(
-              search.trim().toLocaleLowerCase()
+            item.segment[0].vehicle_name.toLocaleLowerCase().includes(
+              search.toLocaleLowerCase()
             )
           ) {
             result = true;
@@ -472,10 +471,14 @@ export const ModelListing = () => {
             <input
               className="w-75 form-control"
               type="search"
-              placeholder="Search"
+              placeholder="Search Here By Segment, Brand, Model Name"
               onChange={(e) => {
+                if(e.target.value == ' '){
+                  e.target.value = ''
+                }else{
                 setSearchValue(e.target.value);
                 handleSearchClick(e.target.value);
+                }
               }}
             />
           </Grid>
