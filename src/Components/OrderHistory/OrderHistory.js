@@ -164,10 +164,14 @@ const OrderHistory = () => {
                     res?.paymentDetails?.createdDateTime
                   );
 
-                  const formattedDate = `${dateObject.getFullYear()}-${dateObject.getMonth() +
-                    1}-${dateObject.getDate()}`;
+                  const formattedDate = `${dateObject.getDate()}-${dateObject.getMonth() +
+                    1}-${dateObject.getFullYear()}`;
 
-                  const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
+                  // const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
+                  // const dateObject = new Date();
+const formattedTime = dateObject.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+console.log(formattedTime);
 
                   return (
                     <TableRow key={res?.paymentDetails?.orderId}>
