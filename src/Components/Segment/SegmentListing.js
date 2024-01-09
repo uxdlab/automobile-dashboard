@@ -98,9 +98,10 @@ export const SegmentListing = () => {
     VehicleClass.getAllVehicles()
       .then((res) => {
         let dd = [...res.data.data];
-        setAllVehicles(dd.reverse());
-        setAllProductc(dd.reverse());
-        setBackUpData(dd.reverse());
+        let newData = dd.reverse()
+        setAllVehicles(newData);
+        setAllProductc(newData);
+        setBackUpData(newData);
         setLoader(false);
       })
       .catch((err) => console.log(err));

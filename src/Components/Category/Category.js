@@ -91,11 +91,11 @@ export const Category = () => {
     setLoader(true);
     ProductClass.getAllProducts()
       .then((res) => {
-        let dd = [...res.data.data.reverse()];
-        console.log(dd);
-        setAllProducts(dd);
-        setAllProductc(dd);
-        setBackUpData(dd);
+        let dd = [...res.data.data];
+        let newData = dd.reverse()
+        setAllProducts(newData);
+        setAllProductc(newData);
+        setBackUpData(newData);
         setLoader(false);
 
       })

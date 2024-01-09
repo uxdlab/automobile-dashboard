@@ -141,10 +141,10 @@ export const BrandListing = () => {
     CompanyClass.getAllCompany().then((res) => {
       setLoader(false);
       let dd = [...res.data.data];
-      console.log(dd.reverse());
-      setCompanies(dd.reverse());
-      setAllProductc(dd.reverse());
-      setBackUpData(dd.reverse());
+      let newData = dd.reverse()
+      setCompanies(newData);
+      setAllProductc(newData);
+      setBackUpData(newData);
 
     });
   }

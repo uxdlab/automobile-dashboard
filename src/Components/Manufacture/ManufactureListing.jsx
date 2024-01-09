@@ -99,12 +99,11 @@ export const ManufactureListing = () => {
       .then((res) => {
         setLoader(false);
         let dd = [...res.data.data];
-        console.log(dd.reverse());
-        setManufacture(dd.reverse());
-        setAllProductc(dd.reverse());
-        setBackUpData(dd.reverse());
+        let newData = dd.reverse()
+        setManufacture(newData);
+        setAllProductc(newData);
+        setBackUpData(newData);
         setLoader(false);
-        console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err);

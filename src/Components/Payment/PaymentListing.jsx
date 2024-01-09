@@ -52,9 +52,10 @@ export default function PaymentListing() {
           });
           // console.log(data);
           let dd = [...data];
-          setAllPayment(dd.reverse());
-          setCollection(dd.reverse());
-          setBackUpdata(dd.reverse());
+          let newData = dd.reverse()
+          setAllPayment(newData);
+          setCollection(newData);
+          setBackUpdata(newData);
         }
         setLoader(false)
       })

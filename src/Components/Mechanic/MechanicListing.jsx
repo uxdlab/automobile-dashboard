@@ -116,10 +116,10 @@ export default function MechanicListing() {
   const getAllData = async () => {
     await getAllMechanic().then((res) => {
       let dd = [...res.data.data];
-      console.log(dd.reverse());
-      setCollection(dd.reverse());
-      setSearchValue(dd.reverse());
-      setBackUpData(dd.reverse());
+      let newData = dd.reverse()
+      setCollection(newData);
+      setSearchValue(newData);
+      setBackUpData(newData);
     });
   };
   const pointReset = async (id) => {

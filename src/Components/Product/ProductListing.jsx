@@ -211,12 +211,11 @@ export default function ProductListing() {
 
     try {
       const res = await getAllItem();
-
       let dd = [...res.data.data];
-      console.log(dd.reverse());
-      setAllProduct(dd.reverse());
-      setAllProductc(dd.reverse());
-      setBackUpData(dd.reverse());
+      let newData = dd.reverse()
+      setAllProduct(newData);
+      setAllProductc(newData);
+      setBackUpData(newData);
       setLoader(false);
     } catch (err) {
       console.log(err);

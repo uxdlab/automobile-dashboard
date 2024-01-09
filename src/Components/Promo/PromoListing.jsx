@@ -129,9 +129,11 @@ export default function PromoListing() {
     getAllPromo()
       .then((res) => {
         if (res) {
-          setAllPromos([...res.data].reverse());
-          setAllProductc([...res.data].reverse());
-          setBackUpData([...res.data].reverse());
+          let dd = [...res.data]
+          let newData = dd.reverse()
+          setAllPromos(newData);
+          setAllProductc(newData);
+          setBackUpData(newData);
         }
         setLoader(false);
       })

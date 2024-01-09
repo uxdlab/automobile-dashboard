@@ -48,11 +48,11 @@ export default function UsersListing() {
     setLoader(true);
     getAllUsers()
       .then((res) => {
-        // console.log(res.data.data);
         let dd = [...res.data.data];
-        setAllUsers(dd.reverse());
-        setAllProductc(dd.reverse());
-        setBackUpData(dd.reverse());
+        let newData = dd.reverse()
+        setAllUsers(newData);
+        setAllProductc(newData);
+        setBackUpData(newData);
         setLoader(false);
       })
       .catch((err) => console.log(err));
