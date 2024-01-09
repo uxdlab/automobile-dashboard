@@ -1,5 +1,5 @@
 export const apis = {
-  baseUrl: "https://automobile.herokuapp.com/",
+  baseUrl: "https://automobile-a6cba9797d33.herokuapp.com/",
   // baseUrl: "http://localhost:3001/",
 
   vehicle: {
