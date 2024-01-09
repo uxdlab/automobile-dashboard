@@ -244,7 +244,8 @@ const OrderHistory = () => {
                       </TableCell>
                       <TableCell className="text-center text-capitalize">
                         {" "}
-                         {res?.paymentDetails?.paymentOrderId}
+                         {res?.paymentDetails?.paymentOrderId?res?.paymentDetails?.paymentOrderId:res?.paymentDetails?.paymentId}
+                         {/* {res?.paymentDetails?.paymentId} */}
                       </TableCell>
 
                       <TableCell className="text-center text-capitalize">
