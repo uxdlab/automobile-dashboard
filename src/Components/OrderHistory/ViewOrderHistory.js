@@ -62,8 +62,8 @@ const ViewOrderHistory = () => {
           />
         </Box>
       </Backdrop>
-      <div style={{ maxWidth: "100%" }}>
-        <h1 className="px-4 py-3"> View Order History</h1>
+      <div className="container-fluid pt-2 pb-5">
+        <h1 className="py-3"> View Order History</h1>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
