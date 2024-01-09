@@ -23,6 +23,7 @@ import {
   getDownloadURL,
   getStorage,
   ref,
+  uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
 import { storage } from "../../auth/Firebase";
@@ -36,7 +37,7 @@ export const Category = () => {
   const [deletedVeh, setDeletedVeh] = useState({ id: "", index: "", icon: "" });
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
-  const [backUpData,setBackUpData] = useState([])
+  const [backUpData, setBackUpData] = useState([])
   const [snackbar, ShowSnackbar] = useState({
     show: false,
     vertical: "top",
@@ -66,8 +67,8 @@ export const Category = () => {
     let val = e.toLowerCase()
     let dd = data.filter(res => res.category_name.toLowerCase().includes(val))
     setAllProducts(dd);
-        setAllProductc(dd); 
-    
+    setAllProductc(dd);
+
   }
 
   React.useEffect(() => {
@@ -90,266 +91,154 @@ export const Category = () => {
     setLoader(true);
     ProductClass.getAllProducts()
       .then((res) => {
-        let dd = [...res.data.data];
-        console.log(dd.reverse());
-        setAllProducts(dd.reverse());
-        setAllProductc(dd.reverse());
-        setBackUpData(dd.reverse());
+        let dd = [...res.data.data.reverse()];
+        console.log(dd);
+        setAllProducts(dd);
+        setAllProductc(dd);
+        setBackUpData(dd);
         setLoader(false);
-        
+
       })
       .catch((err) => {
         setLoader(false);
         console.log(err);
       });
   }
-  function deleteProduct() {
+
+  async function deleteImg(img) {
+    const storage = getStorage();
+    const desertRef = ref(storage, img);
+    return await deleteObject(desertRef)
+  }
+
+
+  async function deleteProduct() {
     setLoader(true);
     setDeleteModel(false);
-    if (deletedVeh.icon !== "") {
-      const storage = getStorage();
-      const desertRef = ref(storage, deletedVeh.icon);
-      deleteObject(desertRef)
-        .then(() => {
-          console.log("image deleted");
-          ProductClass.deleteProduct(deletedVeh.id)
-            .then((res) => {
-              console.log(res);
-              let arr = [...allProducts];
-              arr.splice(deletedVeh.index, 1);
-              setAllProducts(arr);
-              setLoader(false);
-              ShowSnackbar({
-                show: true,
-                vertical: "top",
-                horizontal: "right",
-                msg: "Category Deleted successfully",
-                type: "success",
-              });
-            })
-            .catch((err) => console.log(err));
-        })
-        .catch((error) => {});
-    } else {
-      ProductClass.deleteProduct(deletedVeh.id)
-        .then((res) => {
-          console.log(res);
-          let arr = [...allProducts];
-          arr.splice(deletedVeh.index, 1);
-          setAllProducts(arr);
-          setLoader(false);
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Category Deleted successfully",
-            type: "success",
-          });
-        })
-        .catch((err) => console.log(err));
+    if (deletedVeh.icon !== '') {
+      let res = await deleteImg(deletedVeh.icon)
     }
+
+    await ProductClass.deleteProduct(deletedVeh.id)
+      .then((res) => {
+        console.log(res);
+        getAllProducts()
+        setLoader(false);
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Category Deleted successfully",
+          type: "success",
+        });
+      })
+      .catch((err) => {
+        console.log(err)
+        getAllProducts()
+      });
+
   }
+
+  const UploadImage = async (imageFile) => {
+
+    const storageRef = ref(storage, `images/${imageFile.name}${Math.random()}.jpg`);
+
+    const upload = await uploadBytes(storageRef, imageFile);
+    const downloadURL = await getDownloadURL(upload.ref);
+    return downloadURL;
+  };
 
   async function addCategory(e) {
     e.preventDefault();
-    console.log(allCategory.current);
     setLoader(true);
     setOpen(false);
-    if (img.name !== undefined) {
-      const storageRef = ref(storage, img.name);
-      const uploadTask = uploadBytesResumable(storageRef, img);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {},
-        (err) => console.log(err),
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            console.log(url);
-            allCategory.current.category_icon = url;
-            console.log(allCategory.current);
 
-            ProductClass.addProduct(allCategory.current)
-              .then((res) => {
-                console.log(res);
-                getAllProducts();
-                setLoader(false);
-                ShowSnackbar({
-                  show: true,
-                  vertical: "top",
-                  horizontal: "right",
-                  msg: "Category Added successfully",
-                  type: "success",
-                });
-              })
-              .catch((err) => {
-                console.log(err);
-                setLoader(false);
-                ShowSnackbar({
-                  show: true,
-                  vertical: "top",
-                  horizontal: "right",
-                  msg: "Category Already Exist",
-                  type: "error",
-                });
-                getAllProducts();
-              });
-          });
-        }
-      );
+    if (img.name !== undefined) {
+      let url = await UploadImage(img)
+      allCategory.current.category_icon = url
     } else {
-      allCategory.current.category_icon = "";
-      ProductClass.addProduct(allCategory.current)
-        .then((res) => {
-          console.log(res);
-          setLoader(false);
-          getAllProducts();
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Category Added successfully",
-            type: "success",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoader(false);
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Category Already Exist",
-            type: "error",
-          });
-          getAllProducts();
-        });
+      allCategory.current.category_icon = ''
     }
+    await ProductClass.addProduct(allCategory.current)
+      .then((res) => {
+        console.log(res);
+        getAllProducts();
+        setLoader(false);
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Category Added successfully",
+          type: "success",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoader(false);
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Category Already Exist",
+          type: "error",
+        });
+        getAllProducts();
+      });
     setLocalImg("");
     setImg({});
-    allCategory.current.category_icon = "";
+    allCategory.current.category_icon = ""
+
   }
 
   async function updateCategory(e) {
     e.preventDefault();
     setLoader(true);
     setOpen1(false);
-    console.log(id);
+    let url = ''
     if (img.name !== undefined) {
-      if (allCategory.current.category_icon !== "") {
-        const storage = getStorage();
-        const desertRef = ref(storage, imgURL);
-        deleteObject(desertRef)
-          .then(() => {
-            console.log("image deleted");
-            const storageRef = ref(storage, img.name);
-            const uploadTask = uploadBytesResumable(storageRef, img);
-            uploadTask.on(
-              "state_changed",
-              (snapshot) => {},
-              (err) => console.log(err),
-              () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                  console.log(url);
-                  allCategory.current.category_icon = url;
-                  ProductClass.editProduct(id, allCategory.current)
-                    .then((res) => {
-                      console.log(res);
-                      setLoader(false);
-                      getAllProducts();
-                      ShowSnackbar({
-                        show: true,
-                        vertical: "top",
-                        horizontal: "right",
-                        msg: "Category Updated successfully",
-                        type: "success",
-                      });
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                      setLoader(false);
-                      ShowSnackbar({
-                        show: true,
-                        vertical: "top",
-                        horizontal: "right",
-                        msg: "Category Already Exist",
-                        type: "error",
-                      });
-                      setLoader(false);
-                    });
-                });
-              }
-            );
-          })
-          .catch((error) => {});
-      } else {
-        const storageRef = ref(storage, img.name);
-        const uploadTask = uploadBytesResumable(storageRef, img);
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {},
-          (err) => console.log(err),
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-              console.log(url);
-              allCategory.current.category_icon = url;
-              ProductClass.editProduct(id, allCategory.current)
-                .then((res) => {
-                  console.log(res);
-                  setLoader(false);
-                  getAllProducts();
-                  ShowSnackbar({
-                    show: true,
-                    vertical: "top",
-                    horizontal: "right",
-                    msg: "Category Updated successfully",
-                    type: "success",
-                  });
-                })
-                .catch((err) => {
-                  console.log(err);
-                  setLoader(false);
-                  ShowSnackbar({
-                    show: true,
-                    vertical: "top",
-                    horizontal: "right",
-                    msg: "Category Already Exist",
-                    type: "error",
-                  });
-                  setLoader(false);
-                });
-            });
-          }
-        );
+      if (allCategory.current.category_icon !== '') {
+        await deleteImg(allCategory.current.category_icon)
       }
+     url = await UploadImage(img)
+     allCategory.current.category_icon = url
     } else {
-      ProductClass.editProduct(id, allCategory.current)
-        .then((res) => {
-          console.log(res);
-          setLoader(false);
-          getAllProducts();
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Category Updated successfully",
-            type: "success",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoader(false);
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Category Already Exist",
-            type: "error",
-          });
-          setLoader(false);
-        });
+      if (localImg == '') {
+        if (allCategory.current.category_icon !== '') {
+          await deleteImg(allCategory.current.category_icon)
+          allCategory.current.category_icon = ''
+        }else{
+          allCategory.current.category_icon = ''
+        }
+      }
     }
-    setLocalImg("");
-    setImg({});
+
+   await ProductClass.editProduct(id, allCategory.current)
+    .then((res) => {
+      console.log(res);
+      setLoader(false);
+      getAllProducts();
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Category Updated successfully",
+        type: "success",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      setLoader(false);
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Category Already Exist",
+        type: "error",
+      });
+      setLoader(false);
+    });
+    
+    setImg({})
   }
 
   async function getCategoryById(idd, icon) {
@@ -358,11 +247,11 @@ export const Category = () => {
     setId(idd);
     ProductClass.getProduct(idd)
       .then((res) => {
-        console.log(res);
         allCategory.current = res.data.data;
-        if (allCategory.current.category_icon) {
-          console.log(allCategory.current.category_icon);
+        if (allCategory.current.category_icon !== '') {
           setLocalImg(allCategory.current.category_icon);
+        } else {
+          setLocalImg('')
         }
         setLoader(false);
         setOpen1(true);
@@ -374,12 +263,11 @@ export const Category = () => {
   }
 
   const imgPrev = (imgs) => {
-    console.log(imgs);
     if (imgs.name.match(/\.(jpg|jpeg|png|svg)$/)) {
+      setImg(imgs);
       if (imgs.name !== undefined) {
         let url = URL.createObjectURL(imgs);
         setLocalImg(url);
-        console.log(url);
       } else {
         setLocalImg(undefined);
       }
@@ -554,7 +442,6 @@ export const Category = () => {
                           id="2actual-btn"
                           hidden
                           onChange={(e) => {
-                            setImg(e.target.files[0]);
                             imgPrev(e.target.files[0]);
                             e.target.value = "";
                           }}
@@ -721,11 +608,11 @@ export const Category = () => {
             type="search"
             placeholder="Search Here By Name"
             onChange={(e) => {
-              if(e.target.value == ' '){
+              if (e.target.value == ' ') {
                 e.target.value = ''
-              }else{
-              setSearchValue(e.target.value);
-              handleSearchClick(e.target.value);
+              } else {
+                setSearchValue(e.target.value);
+                handleSearchClick(e.target.value);
               }
             }}
           />
@@ -733,7 +620,10 @@ export const Category = () => {
         <div style={{ marginRight: "18px" }}>
           <Button
             className="btn_primary"
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              setOpen(true)
+              setImg({})
+            }}
             variant="contained"
           >
             Add Category
