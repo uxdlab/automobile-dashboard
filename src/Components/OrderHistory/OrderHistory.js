@@ -61,6 +61,7 @@ const OrderHistory = () => {
         let dd = [...res.data.data];
         let data = dd.filter(res => res.paymentDetails.orderId !== undefined && res.shipping_details.name !==undefined)
         let newData = reverseArr(data)
+        console.log(newData)
         setAllPayment(newData);
         setBackUpData(newData);
         updatePage(currentPage);
@@ -179,6 +180,9 @@ const OrderHistory = () => {
                   <b> Amount </b>
                 </TableCell>
                 <TableCell className="text-center">
+                  <b> Payment ID </b>
+                </TableCell>
+                <TableCell className="text-center">
                   <b> Order Status</b>
                 </TableCell>
                 <TableCell className="text-center">
@@ -236,6 +240,10 @@ const OrderHistory = () => {
                       <TableCell className="text-center text-capitalize">
                         {" "}
                         ₹ {res?.paymentDetails?.amount}
+                      </TableCell>
+                      <TableCell className="text-center text-capitalize">
+                        {" "}
+                         {res?.paymentDetails?.paymentOrderId}
                       </TableCell>
 
                       <TableCell className="text-center text-capitalize">
