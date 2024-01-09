@@ -29,6 +29,7 @@ import {
   getDownloadURL,
   getStorage,
   ref,
+  uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
 import { storage } from "../../auth/Firebase";
@@ -135,18 +136,23 @@ export const ModelListing = () => {
     getAllModels();
     getSegmentBrand();
   }, []);
-  function getAllModels() {
+
+
+  async function getAllModels() {
     setLoader(true);
-    ModelClass.getAllModel()
+    await ModelClass.getAllModel()
       .then((res) => {
         let dd = [...res.data.data];
-        console.log(dd.reverse());
-        setData(dd.reverse());
+        let newData = dd.reverse()
+        setData(newData);
 
-        setAllProductc(dd.reverse());
+        setAllProductc(newData);
         setLoader(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err)
+        setLoader(false);
+      });
   }
   React.useEffect(() => {
     if (!value) {
@@ -161,44 +167,40 @@ export const ModelListing = () => {
     setCollection(allData.slice(from, to));
   };
 
-  function deleteModelf() {
+
+  async function deleteImg(img) {
+    const storage = getStorage();
+    const desertRef = ref(storage, img);
+    return await deleteObject(desertRef)
+  }
+
+  const UploadImage = async (imageFile) => {
+    const storageRef = ref(storage, `images/${imageFile.name}${Math.random()}.jpg`);
+    const upload = await uploadBytes(storageRef, imageFile);
+    const downloadURL = await getDownloadURL(upload.ref);
+    return downloadURL;
+  };
+
+  async function deleteModelf() {
     setDeleteModel(false);
     setLoader(true);
-    if (deleteMod.icon !== "") {
-      const storage = getStorage();
-      const desertRef = ref(storage, deleteMod.icon);
-      deleteObject(desertRef)
-        .then(() => {
-          ModelClass.deleteModel(deleteMod.id)
-            .then((res) => {
-              getAllModels();
-              ShowSnackbar({
-                show: true,
-                vertical: "top",
-                horizontal: "right",
-                msg: "Model Deleted successfully",
-                type: "success",
-              });
-            })
-            .catch((err) => console.log(err));
-        })
-        .catch((error) => {});
-    } else {
-      ModelClass.deleteModel(deleteMod.id)
-        .then((res) => {
-          getAllModels();
-          ShowSnackbar({
-            show: true,
-            vertical: "top",
-            horizontal: "right",
-            msg: "Model Deleted successfully",
-            type: "success",
-          });
-        })
-        .catch((err) => console.log(err));
+    console.log(deleteMod)
+    if(deleteMod.icon !== ''){
+     await deleteImg(deleteMod.icon)
     }
-    setSelectSegment([]);
-    setSelectBrand([]);
+
+    await ModelClass.deleteModel(deleteMod.id)
+    setLoader(false)
+    getAllModels()
+    ShowSnackbar({
+      show: true,
+      vertical: "top",
+      horizontal: "right",
+      msg: "Model Deleted successfully",
+      type: "success",
+    });
+    setSelectSegment([])
+    setSelectBrand([])
   }
 
   async function addModel(e) {
@@ -212,7 +214,7 @@ export const ModelListing = () => {
     const uploadTask = uploadBytesResumable(storageRef, img);
     uploadTask.on(
       "state_changed",
-      (snapshot) => {},
+      (snapshot) => { },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -262,7 +264,7 @@ export const ModelListing = () => {
             const uploadTask = uploadBytesResumable(storageRef, img);
             uploadTask.on(
               "state_changed",
-              (snapshot) => {},
+              (snapshot) => { },
               (err) => console.log(err),
               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -289,13 +291,13 @@ export const ModelListing = () => {
               }
             );
           })
-          .catch((error) => {});
+          .catch((error) => { });
       } else {
         const storageRef = ref(storage, img.name);
         const uploadTask = uploadBytesResumable(storageRef, img);
         uploadTask.on(
           "state_changed",
-          (snapshot) => {},
+          (snapshot) => { },
           (err) => console.log(err),
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -473,11 +475,11 @@ export const ModelListing = () => {
               type="search"
               placeholder="Search Here By Segment, Brand, Model Name"
               onChange={(e) => {
-                if(e.target.value == ' '){
+                if (e.target.value == ' ') {
                   e.target.value = ''
-                }else{
-                setSearchValue(e.target.value);
-                handleSearchClick(e.target.value);
+                } else {
+                  setSearchValue(e.target.value);
+                  handleSearchClick(e.target.value);
                 }
               }}
             />
