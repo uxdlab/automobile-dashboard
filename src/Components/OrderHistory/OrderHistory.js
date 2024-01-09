@@ -148,6 +148,7 @@ const OrderHistory = () => {
             }} className="form-control"></input>
           </div>
         </div>
+        <div style={{width:'100%'}}>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -299,6 +300,7 @@ const OrderHistory = () => {
             />
           </Box>
         </TableContainer>
+        </div>
         {/* 
         <BootstrapDialog
           onClose={handleClose}
