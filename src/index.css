@@ -137,8 +137,15 @@ Button {
 overflow-y: hidden !important;
 }
 
+.css-13xy2my {
+  overflow-x: auto;
+  overflow-y: hidden !important;
+}
+
 
 .table_container{
   width: 100%;
+  height: 100%;
+  overflow-y: hidden;
   /* border: 1px solid red; */
 }
