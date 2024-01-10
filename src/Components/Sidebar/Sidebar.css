@@ -2,24 +2,28 @@
     width: 230px;
     transition: all 0.3s ease-out;
     background-color: #534ba8;
-color: #fdfdfd;
+    color: #fdfdfd;
 }
 
 .top_bar {
     height: 8vh;
-    background-color:#534ba8;
+    background-color: #534ba8;
     color: #fdfdfd;
-    width:100%;
+    width: 100%;
 }
 
 .sidebar_item_con {
     margin-top: 15px;
-
+    /* border: 1px solid red; */
 }
 
 .child_con {
     height: 92vh;
-    width:100%;
-    overflow-y: scroll;
+    width: 100%;
+    overflow-y: auto;
 }
 
+.right_container {
+   width: 100%;
+    overflow: hidden !important;
+}
