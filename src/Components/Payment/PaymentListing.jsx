@@ -14,6 +14,7 @@ import { gerAllPayment } from "../../services/Payment";
 import { useEffect } from "react";
 import Pagination from "rc-pagination";
 import { Triangle } from "react-loader-spinner";
+import moment from "moment/moment";
 
 export default function PaymentListing() {
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -133,10 +134,17 @@ export default function PaymentListing() {
               </TableRow>
             </TableHead>
             <TableBody>
+               { console.log(collection)}
               {collection?.map((res, index) => {
                 const timestamp = new Date(res.createdDateTime);
-
-                const formattedDate = timestamp.toLocaleDateString();
+                // console.log(timestamp)
+                const options1 = {
+                  day: 'numeric',
+                  month: 'numeric',
+                 year: 'numeric',
+                };
+                const formattedDate = timestamp.toLocaleDateString( options1);
+                // console.log(formattedDate)
 
                 const options = {
                   hour: "numeric",
@@ -159,7 +167,8 @@ export default function PaymentListing() {
                     </TableCell>
 
                     <TableCell className="text_cap text-center">
-                      {formattedDate} - {formattedTime}
+                      {/* {formattedDate} - {formattedTime} */}
+                      {moment(res.createdDateTime).format("DD/MM/YYYY hh:mm a")}
                     </TableCell>
 
                     <TableCell className="text_cap text-center">
