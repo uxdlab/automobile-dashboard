@@ -64,7 +64,7 @@ Button {
 }
 
 .bg-main{
-  background: #534ba8;
+  background: #534ba8 !important;
 }
 
 .over-flow-hide-x{

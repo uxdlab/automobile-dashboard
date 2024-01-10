@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   TableContainer,
@@ -14,6 +14,7 @@ import {
 import { Triangle } from "react-loader-spinner";
 import { getDetails } from "../../services/Payment";
 import style from "./style.module.css";
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 const ViewOrderHistory = () => {
   const [selectedPayment, setSelectedPayment] = useState([]);
@@ -21,6 +22,7 @@ const ViewOrderHistory = () => {
   const [open, setOpen] = React.useState(false);
   const [loader, setLoader] = useState(true);
   const { Id } = useParams();
+  const navigate = useNavigate()
 
   const getAllPaymentDetails = (Id) => {
     setLoader(true);
@@ -40,7 +42,6 @@ const ViewOrderHistory = () => {
     getAllPaymentDetails(Id);
   }, []);
 
-  console.log(viewHistory, "chck");
   return (
     <>
       <Backdrop
@@ -63,16 +64,23 @@ const ViewOrderHistory = () => {
         </Box>
       </Backdrop>
       <div className="container-fluid pt-2 pb-5">
-        <h1 className="py-3"> View Order History</h1>
+        <button className="btn btn-primary fs-5 d-flex align-items-center bg-main border border-none" onClick={()=>navigate('/orderHistory')}><KeyboardBackspaceIcon className=""/></button>
+        <h1 className="py-3">View Order Details</h1>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell className="text-center">
-                  <b> Customer email</b>
+                  <b>Deliver to</b>
                 </TableCell>
-                <TableCell className="text-center text-capitalize">
-                  <b>customer address</b>
+                <TableCell className="text-center">
+                  <b>Contact Number for delivery</b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b>Customer email</b>
+                </TableCell>
+                <TableCell className="text-center">
+                  <b>Delivery address</b>
                 </TableCell>
                 <TableCell className="text-center">
                   <b>Part Number</b>
@@ -91,6 +99,16 @@ const ViewOrderHistory = () => {
                   <TableCell
                     className={`text-center border-0 ${style.tableText}`}
                   >
+                    {item?.address?.name}
+                  </TableCell>
+                  <TableCell
+                    className={`text-center border-0 ${style.tableText}`}
+                  >
+                    {item?.address?.mobile_number}
+                  </TableCell>
+                  <TableCell
+                    className={`text-center border-0 ${style.tableText}`}
+                  >
                     {item?.email}
                   </TableCell>
                   <TableCell
@@ -105,7 +123,6 @@ const ViewOrderHistory = () => {
                         <TableCell
                           className={`text-center border-0 ${style.tableText}`}
                         >
-                          {console.log(productsRes, "productsRes")}
                           {productsRes?.ke_partNumber[0]}
                         </TableCell>
 
