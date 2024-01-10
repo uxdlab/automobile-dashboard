@@ -244,12 +244,12 @@ const OrderHistory = () => {
                         </TableCell>
                         <TableCell className="text-center text-capitalize">
                           {" "}
-                          {res?.paymentDetails?.paymentOrderId ? res?.paymentDetails?.paymentOrderId : res?.paymentDetails?.paymentId}
+                          {res?.paymentDetails?.paymentOrderId ? res?.paymentDetails?.paymentOrderId : 'N/A'}
                           {/* {res?.paymentDetails?.paymentId} */}
                         </TableCell>
 
                         <TableCell className="text-center text-capitalize">
-                          {res?.paymentDetails?.paymentStatus === "Pending" ? (
+                          {res?.paymentDetails?.paymentStatus === "Pending" ?res.paymentMode == 'cash'? (
                             <select
                               id=""
                               className={style.customSelect}
@@ -258,7 +258,7 @@ const OrderHistory = () => {
                               <option value="Pending">Pending</option>
                               <option value="Success">Success</option>
                             </select>
-                          ) : (
+                          ): res?.paymentDetails?.paymentStatus : (
                             <div>{res?.paymentDetails?.paymentStatus}</div>
                           )}
                         </TableCell>
