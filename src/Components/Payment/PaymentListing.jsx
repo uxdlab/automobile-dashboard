@@ -168,7 +168,7 @@ export default function PaymentListing() {
 
                     <TableCell className="text_cap text-center">
                       {/* {formattedDate} - {formattedTime} */}
-                      {moment(res.createdDateTime).format("DD/MM/YYYY hh:mm a")}
+                      {moment(res.createdDateTime).format("DD/MM/YYYY hh:mm A")}
                     </TableCell>
 
                     <TableCell className="text_cap text-center">
