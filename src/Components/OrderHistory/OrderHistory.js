@@ -22,6 +22,7 @@ import axios from "axios";
 import { apis } from "../../auth/api";
 import { Triangle } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const OrderHistory = () => {
   const [collection, setCollection] = React.useState([]);
@@ -198,8 +199,8 @@ const OrderHistory = () => {
                       res?.paymentDetails?.createdDateTime
                     );
 
-                    const formattedDate = `${dateObject.getDate()}/${dateObject.getMonth() +
-                      1}/${dateObject.getFullYear()}`;
+                    // const formattedDate = `${dateObject.getDate()}/${dateObject.getMonth() +
+                    //   1}/${dateObject.getFullYear()}`;
 
                     // const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
                     // const dateObject = new Date();
@@ -212,7 +213,7 @@ const OrderHistory = () => {
                         </TableCell>
 
                         <TableCell className="text-center text-capitalize">
-                          {formattedDate}
+                          {/* {formattedDate} */} {moment(res?.paymentDetails?.createdDateTime).format("DD/MM/YYYY ")}
                         </TableCell>
                         <TableCell className="text-center text-capitalize">
                           {formattedTime}
