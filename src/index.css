@@ -136,3 +136,9 @@ Button {
 .css-11xur9t-MuiPaper-root-MuiTableContainer-root{
 overflow-y: hidden !important;
 }
+
+
+.table_container{
+  width: 100%;
+  /* border: 1px solid red; */
+}

@@ -50,7 +50,7 @@ export const Sidebar = ({ children }) => {
           />
         </Box>
       </Backdrop>
-      <div className="d-flex" style={{ height: "100%", width: "100%" }}>
+      <div className="d-flex" style={{ height: "100vh", width: "100%", overflow:'hidden' }}>
         <div
           className="sidebar_main_con"
           style={{
@@ -59,8 +59,8 @@ export const Sidebar = ({ children }) => {
                 ? "270px"
                 : "0px"
               : !toggleSidebar
-              ? "270px"
-              : "0px",
+                ? "270px"
+                : "0px",
           }}
         >
           <div
@@ -198,7 +198,7 @@ export const Sidebar = ({ children }) => {
             </Box>
           </div>
         </div>
-        <div className="w-100">
+        <div className="right_container">
           <div className="top_bar d-flex align-items-center justify-content-between">
             <span style={{ cursor: "pointer" }}>
               <Menu

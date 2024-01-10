@@ -29,7 +29,7 @@ const OrderHistory = () => {
   const [allPayment, setAllPayment] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [loader, setLoader] = useState(true);
-  const [backUpData,setBackUpData] = useState([])
+  const [backUpData, setBackUpData] = useState([])
 
   const navigate = useNavigate();
 
@@ -48,18 +48,18 @@ const OrderHistory = () => {
 
   function reverseArr(input) {
     var ret = new Array;
-    for(var i = input.length-1; i >= 0; i--) {
-        ret.push(input[i]);
+    for (var i = input.length - 1; i >= 0; i--) {
+      ret.push(input[i]);
     }
     return ret;
-}
+  }
 
   const getAllPaymentDetails = () => {
     setLoader(true);
     gerAllPayment()
       .then((res) => {
         let dd = [...res.data.data];
-        let data = dd.filter(res => res.paymentDetails.orderId !== undefined && res.shipping_details.name !==undefined)
+        let data = dd.filter(res => res.paymentDetails.orderId !== undefined && res.shipping_details.name !== undefined)
         let newData = reverseArr(data)
         console.log(newData)
         setAllPayment(newData);
@@ -148,159 +148,159 @@ const OrderHistory = () => {
             }} className="form-control"></input>
           </div>
         </div>
-        <div style={{width:'100%'}}>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell className="text-center">
-                  <b>Order ID</b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b>Date</b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b>Time </b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> Customer Name </b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> Customer Number </b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> Mode of Payment </b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> Total Amount </b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> Discount </b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> Amount </b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> Payment ID </b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> Order Status</b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b> View </b>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {collection &&
-                collection?.map((res) => {
-                  const dateObject = new Date(
-                    res?.paymentDetails?.createdDateTime
-                  );
+        <div className="table_container">
+          <TableContainer className="w-100" component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell className="text-center">
+                    <b>Order ID</b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b>Date</b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b>Time </b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> Customer Name </b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> Customer Number </b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> Mode of Payment </b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> Total Amount </b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> Discount </b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> Amount </b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> Payment ID </b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> Order Status</b>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <b> View </b>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {collection &&
+                  collection?.map((res) => {
+                    const dateObject = new Date(
+                      res?.paymentDetails?.createdDateTime
+                    );
 
-                  const formattedDate = `${dateObject.getDate()}/${dateObject.getMonth() +
-                    1}/${dateObject.getFullYear()}`;
+                    const formattedDate = `${dateObject.getDate()}/${dateObject.getMonth() +
+                      1}/${dateObject.getFullYear()}`;
 
-                  // const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
-                  // const dateObject = new Date();
-                  const formattedTime = dateObject.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    // const formattedTime = `${dateObject.getHours()}:${dateObject.getMinutes()}`;
+                    // const dateObject = new Date();
+                    const formattedTime = dateObject.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-                  return (
-                    <TableRow key={res?.paymentDetails?.orderId}>
-                      <TableCell className="text-center text-capitalize ">
-                        {res?.paymentDetails?.orderId}
-                      </TableCell>
+                    return (
+                      <TableRow key={res?.paymentDetails?.orderId}>
+                        <TableCell className="text-center text-capitalize ">
+                          {res?.paymentDetails?.orderId}
+                        </TableCell>
 
-                      <TableCell className="text-center text-capitalize">
-                        {formattedDate}
-                      </TableCell>
-                      <TableCell className="text-center text-capitalize">
-                        {formattedTime}
-                      </TableCell>
-                      <TableCell className="text-center text-capitalize">
-                        {res?.paymentDetails?.buyerName
-                          ? res?.paymentDetails?.buyerName
-                          : res.shipping_details?.name}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {res?.paymentDetails?.buyerPhone
-                          ? res?.paymentDetails?.buyerPhone
-                          : res.shipping_details?.mobile_number}
-                      </TableCell>
-                      <TableCell className="text-center text-capitalize ">
-                        {res?.paymentMode === "cash" ? "COD" : "Online"}
-                      </TableCell>
-                      <TableCell className="text-center text-capitalize">
-                        {" "}
-                        ₹ {totalAmount(res) !== 0 ? totalAmount(res) : res?.paymentDetails?.amount}
-                      </TableCell>
-                      <TableCell className="text-center text-capitalize">
-                        {" "}
-                        ₹ {totalAmount(res) !== 0 ? totalAmount(res) - res?.paymentDetails?.amount : 0}
-                      </TableCell>
-                      <TableCell className="text-center text-capitalize">
-                        {" "}
-                        ₹ {res?.paymentDetails?.amount}
-                      </TableCell>
-                      <TableCell className="text-center text-capitalize">
-                        {" "}
-                         {res?.paymentDetails?.paymentOrderId?res?.paymentDetails?.paymentOrderId:res?.paymentDetails?.paymentId}
-                         {/* {res?.paymentDetails?.paymentId} */}
-                      </TableCell>
+                        <TableCell className="text-center text-capitalize">
+                          {formattedDate}
+                        </TableCell>
+                        <TableCell className="text-center text-capitalize">
+                          {formattedTime}
+                        </TableCell>
+                        <TableCell className="text-center text-capitalize">
+                          {res?.paymentDetails?.buyerName
+                            ? res?.paymentDetails?.buyerName
+                            : res.shipping_details?.name}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {res?.paymentDetails?.buyerPhone
+                            ? res?.paymentDetails?.buyerPhone
+                            : res.shipping_details?.mobile_number}
+                        </TableCell>
+                        <TableCell className="text-center text-capitalize ">
+                          {res?.paymentMode === "cash" ? "COD" : "Online"}
+                        </TableCell>
+                        <TableCell className="text-center text-capitalize">
+                          {" "}
+                          ₹ {totalAmount(res) !== 0 ? totalAmount(res) : res?.paymentDetails?.amount}
+                        </TableCell>
+                        <TableCell className="text-center text-capitalize">
+                          {" "}
+                          ₹ {totalAmount(res) !== 0 ? totalAmount(res) - res?.paymentDetails?.amount : 0}
+                        </TableCell>
+                        <TableCell className="text-center text-capitalize">
+                          {" "}
+                          ₹ {res?.paymentDetails?.amount}
+                        </TableCell>
+                        <TableCell className="text-center text-capitalize">
+                          {" "}
+                          {res?.paymentDetails?.paymentOrderId ? res?.paymentDetails?.paymentOrderId : res?.paymentDetails?.paymentId}
+                          {/* {res?.paymentDetails?.paymentId} */}
+                        </TableCell>
 
-                      <TableCell className="text-center text-capitalize">
-                        {res?.paymentDetails?.paymentStatus === "Pending" ? (
-                          <select
-                            id=""
-                            className={style.customSelect}
-                            onChange={(e) => handleStatusChange(e, res._id)}
-                          >
-                            <option value="Pending">Pending</option>
-                            <option value="Success">Success</option>
-                          </select>
-                        ) : (
-                          <div>{res?.paymentDetails?.paymentStatus}</div>
-                        )}
-                      </TableCell>
+                        <TableCell className="text-center text-capitalize">
+                          {res?.paymentDetails?.paymentStatus === "Pending" ? (
+                            <select
+                              id=""
+                              className={style.customSelect}
+                              onChange={(e) => handleStatusChange(e, res._id)}
+                            >
+                              <option value="Pending">Pending</option>
+                              <option value="Success">Success</option>
+                            </select>
+                          ) : (
+                            <div>{res?.paymentDetails?.paymentStatus}</div>
+                          )}
+                        </TableCell>
 
-                      <TableCell className="text-center">
-                        <RemoveRedEyeIcon
-                          // onClick={() => handleClickOpen(res._id)}
-                          onClick={() =>
-                            navigate(`viewOrderHistory/${res._id}`)
-                          }
-                          variant="contained"
-                          size="small"
-                          className={style.viewIcon}
-                        />
-                        {/* <Link to="viewOrderHistory"> view</Link> */}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-          <Box
-            sx={{ m: 1 }}
-            className="d-flex justify-content-end align-items-center"
-          >
-            <select
-              className="me-2"
-              onChange={(e) => setCountPerPage(e.target.value * 1)}
+                        <TableCell className="text-center">
+                          <RemoveRedEyeIcon
+                            // onClick={() => handleClickOpen(res._id)}
+                            onClick={() =>
+                              navigate(`viewOrderHistory/${res._id}`)
+                            }
+                            variant="contained"
+                            size="small"
+                            className={style.viewIcon}
+                          />
+                          {/* <Link to="viewOrderHistory"> view</Link> */}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+            <Box
+              sx={{ m: 1 }}
+              className="d-flex justify-content-end align-items-center"
             >
-              <option>10</option>
-              <option>15</option>
-            </select>
-            <span>Page:</span>
-            <Pagination
-              pageSize={countPerPage}
-              onChange={updatePage}
-              current={currentPage}
-              total={allPayment.length}
-              style={{ marginLeft: "8px" }}
-            />
-          </Box>
-        </TableContainer>
+              <select
+                className="me-2"
+                onChange={(e) => setCountPerPage(e.target.value * 1)}
+              >
+                <option>10</option>
+                <option>15</option>
+              </select>
+              <span>Page:</span>
+              <Pagination
+                pageSize={countPerPage}
+                onChange={updatePage}
+                current={currentPage}
+                total={allPayment.length}
+                style={{ marginLeft: "8px" }}
+              />
+            </Box>
+          </TableContainer>
         </div>
         {/* 
         <BootstrapDialog
