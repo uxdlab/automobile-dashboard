@@ -22,9 +22,21 @@
 .tableRows {
   display: flex !important;
   flex-direction: column !important;
-  align-items: center !important;
 }
 
 .tableText {
   vertical-align: sub !important;
+}
+
+.topBoxContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+
+
+@media screen and (max-width: 740px) {
+  .topBoxContainer{
+    grid-template-columns: 1fr 1fr;
+  }
 }

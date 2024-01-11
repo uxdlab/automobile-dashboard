@@ -64,102 +64,59 @@ const ViewOrderHistory = () => {
         </Box>
       </Backdrop>
       <div className="container-fluid pt-2 pb-5">
-        <button className="btn btn-primary fs-5 d-flex align-items-center bg-main border border-none" onClick={()=>navigate('/orderHistory')}><KeyboardBackspaceIcon className=""/></button>
-        <h1 className="py-3">View Order Details</h1>
+        <button className="btn btn-primary fs-5 d-flex align-items-center bg-main border border-none" onClick={() => navigate('/orderHistory')}><KeyboardBackspaceIcon className="" /></button>
+        <h1 className="py-3">Order Details</h1>
+        <div className={`w-100 pb-4 ${style.topBoxContainer}`}>
+          <div className="border px-2 py-4">
+            <div><b>Deliver to</b></div>
+            <div>{viewHistory[0]?.address?.name}</div>
+          </div>
+          <div className="border px-2 py-4">
+            <div><b>Contact Number</b></div>
+            <div>{viewHistory[0]?.address?.mobile_number}</div>
+          </div>
+          <div className="border px-2 py-4">
+            <div><b>Customer email</b></div>
+            <div>{viewHistory[0]?.email}</div>
+          </div>
+          <div className="border px-2 py-4">
+            <div><b>Delivery address</b></div>
+            <div>{`${viewHistory[0]?.address?.house_number}, ${viewHistory[0]?.address?.city} ${viewHistory[0]?.address?.state},${viewHistory[0]?.address?.pincode}, ${viewHistory[0]?.address?.country}`}</div>
+          </div>
+        </div>
+
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell className="text-center">
-                  <b>Deliver to</b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b>Contact Number for delivery</b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b>Customer email</b>
-                </TableCell>
-                <TableCell className="text-center">
-                  <b>Delivery address</b>
-                </TableCell>
-                <TableCell className="text-center">
+                <TableCell >
                   <b>Part Number</b>
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell >
                   <b>Product Name </b>
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell >
                   <b>Quantity </b>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {viewHistory.map((item) => (
+              {viewHistory[0]?.products.map((item) => (
                 <TableRow className="text-capitalize" key={item.id}>
                   <TableCell
-                    className={`text-center border-0 ${style.tableText}`}
+                    className={`border-0 ${style.tableText}`}
                   >
-                    {item?.address?.name}
+                    {item?.ke_partNumber[0]}
                   </TableCell>
                   <TableCell
-                    className={`text-center border-0 ${style.tableText}`}
+                    className={` border-0 ${style.tableText}`}
                   >
-                    {item?.address?.mobile_number}
+                    {item?.productName[0]}
                   </TableCell>
                   <TableCell
-                    className={`text-center border-0 ${style.tableText}`}
+                    className={`border-0 ${style.tableText}`}
                   >
-                    {item?.email}
-                  </TableCell>
-                  <TableCell
-                    className={`text-center border-0 ${style.tableText}`}
-                  >{`${item?.address?.house_number}, ${item?.address?.city} ${item?.address?.state},${item?.address?.pincode}, ${item?.address?.country}`}</TableCell>
-                  <TableCell className="text-center">
-                    {item?.products.map((productsRes, index) => (
-                      <TableRow
-                        key={index}
-                        className={`text-center ${style.tableRows}`}
-                      >
-                        <TableCell
-                          className={`text-center border-0 ${style.tableText}`}
-                        >
-                          {productsRes?.ke_partNumber[0]}
-                        </TableCell>
-
-                      </TableRow>
-                    ))}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {item?.products.map((productsRes, index) => (
-                      <TableRow
-                        key={index}
-                        className={`text-center ${style.tableRows}`}
-                      >
-
-                        <TableCell
-                          className={`text-center border-0 ${style.tableText}`}
-                        >
-                          {productsRes?.productName[0]}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableCell>
-
-                  <TableCell
-                    className={`text-center border-0 ${style.tableText}`}
-                  >
-                    {item?.products.map((productsRes, index) => (
-                      <TableRow
-                        key={index}
-                        className={`text-center ${style.tableRows}`}
-                      >
-                        <TableCell
-                          className={`text-center border-0 ${style.tableText}`}
-                        >
-                          {productsRes?.quantity}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {item?.quantity}
                   </TableCell>
                 </TableRow>
               ))}
