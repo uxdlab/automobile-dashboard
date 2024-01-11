@@ -56,7 +56,7 @@ export default function MechanicListing() {
   });
   const [searchValue, setSearchValue] = useState([]);
 
-  const [loader, setLoader] = useState(false);
+  const [loader, setLoader] = useState(true);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -75,16 +75,26 @@ export default function MechanicListing() {
   };
   const updateMechanicByid = async (e) => {
     e.preventDefault();
-
-    await updateMechanic(MechanicId, Mechanic.current).then((res) => {
-      getAllData();
-      setOpen1(false);
-    });
+  setLoader(true)
+  setOpen1(false);
+  await updateMechanic(MechanicId, Mechanic.current).then((res) => {
+    getAllData();
+    setLoader(false)
+      
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Mechanic Updated successfully",
+        type: "success",
+      });
+    }).catch(err=>setLoader(false))
   };
   const addMachincData = async (e) => {
     e.preventDefault();
+    setLoader(true)
+    setOpen(false);
     await addMechanic(Mechanic.current).then((res) => {
-      console.log(res.response);
       if (res?.response) {
         ShowSnackbar({
           show: true,
@@ -93,11 +103,20 @@ export default function MechanicListing() {
           msg: "The phone number or email address is already in active use.",
           type: "error",
         });
+        setLoader(false)
       } else {
-        setOpen(false);
+        
+        setLoader(false)
         getAllData();
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Mechanic Added successfully",
+          type: "success",
+        });
       }
-    });
+    }).catch((err)=>setLoader(false))
   };
   const getMechanic = (id) => {
     Mechanic.current = {
@@ -120,7 +139,8 @@ export default function MechanicListing() {
       setCollection(newData);
       setSearchValue(newData);
       setBackUpData(newData);
-    });
+      setLoader(false)
+    }).catch(err=>setLoader(false))
   };
   const pointReset = async (id) => {
     await resetPoint(id).then((res) => {
@@ -491,9 +511,19 @@ export default function MechanicListing() {
                       <Delete
                         className="pointer"
                         onClick={async (e) => {
-                          await deleteMechanic(res._id).then((res) =>
+                          setLoader(true)
+                          await deleteMechanic(res._id).then((res) =>{
+                            ShowSnackbar({
+                              show: true,
+                              vertical: "top",
+                              horizontal: "right",
+                              msg: "Mechanic Deleted successfully",
+                              type: "success",
+                            });
                             getAllData()
-                          );
+                            setLoader(false)
+                          }
+                          ).catch((err)=>setLoader(false))
                         }}
                       />
                       <Edit

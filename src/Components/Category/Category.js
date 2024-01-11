@@ -239,6 +239,7 @@ export const Category = () => {
     });
     
     setImg({})
+    setLocalImg("");
   }
 
   async function getCategoryById(idd, icon) {
