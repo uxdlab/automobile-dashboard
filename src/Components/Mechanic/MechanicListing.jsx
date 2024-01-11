@@ -66,6 +66,8 @@ export default function MechanicListing() {
   const [MechanicId, setMechanicId] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [backUpData, setBackUpData] = useState([])
+  const [isValidAdd, setIsValidAdd] = useState(false)
+  const [isValidEdit, setIsValidEdit] = useState(false)
 
   const updatePage = (p) => {
     setCurrentPage(p);
@@ -75,48 +77,52 @@ export default function MechanicListing() {
   };
   const updateMechanicByid = async (e) => {
     e.preventDefault();
-  setLoader(true)
-  setOpen1(false);
-  await updateMechanic(MechanicId, Mechanic.current).then((res) => {
-    getAllData();
-    setLoader(false)
-      
-      ShowSnackbar({
-        show: true,
-        vertical: "top",
-        horizontal: "right",
-        msg: "Mechanic Updated successfully",
-        type: "success",
-      });
-    }).catch(err=>setLoader(false))
+    if (!isValidEdit) {
+      setLoader(true)
+      setOpen1(false);
+      await updateMechanic(MechanicId, Mechanic.current).then((res) => {
+        getAllData();
+        setLoader(false)
+
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Mechanic Updated successfully",
+          type: "success",
+        });
+      }).catch(err => setLoader(false))
+    }
   };
   const addMachincData = async (e) => {
     e.preventDefault();
-    setLoader(true)
-    setOpen(false);
-    await addMechanic(Mechanic.current).then((res) => {
-      if (res?.response) {
-        ShowSnackbar({
-          show: true,
-          vertical: "top",
-          horizontal: "right",
-          msg: "The phone number or email address is already in active use.",
-          type: "error",
-        });
-        setLoader(false)
-      } else {
-        
-        setLoader(false)
-        getAllData();
-        ShowSnackbar({
-          show: true,
-          vertical: "top",
-          horizontal: "right",
-          msg: "Mechanic Added successfully",
-          type: "success",
-        });
-      }
-    }).catch((err)=>setLoader(false))
+    if (!isValidAdd) {
+      setLoader(true)
+      setOpen(false);
+      await addMechanic(Mechanic.current).then((res) => {
+        if (res?.response) {
+          ShowSnackbar({
+            show: true,
+            vertical: "top",
+            horizontal: "right",
+            msg: "The phone number or email address is already in active use.",
+            type: "error",
+          });
+          setLoader(false)
+        } else {
+
+          setLoader(false)
+          getAllData();
+          ShowSnackbar({
+            show: true,
+            vertical: "top",
+            horizontal: "right",
+            msg: "Mechanic Added successfully",
+            type: "success",
+          });
+        }
+      }).catch((err) => setLoader(false))
+    }
   };
   const getMechanic = (id) => {
     Mechanic.current = {
@@ -140,7 +146,7 @@ export default function MechanicListing() {
       setSearchValue(newData);
       setBackUpData(newData);
       setLoader(false)
-    }).catch(err=>setLoader(false))
+    }).catch(err => setLoader(false))
   };
   const pointReset = async (id) => {
     await resetPoint(id).then((res) => {
@@ -234,8 +240,17 @@ export default function MechanicListing() {
                       className="form-control w-100 mb-2"
                       onChange={(e) => {
                         Mechanic.current.mechanic_number = e.target.value;
+                        if (Mechanic.current.mechanic_number.length !== 10) {
+                          setIsValidAdd(true)
+                        } else {
+                          setIsValidAdd(false)
+                        }
                       }}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 10))
+                      }
                     />
+                    <div className="text-danger" style={{ fontSize: '14px' }}>{isValidAdd ? 'Please Enter 10 Digits Phone Number' : ''}</div>
                   </div>
                   <div className="col-md-12">
                     <div className="py-2">
@@ -357,8 +372,17 @@ export default function MechanicListing() {
                       defaultValue={Mechanic.current.mechanic_number}
                       onChange={(e) => {
                         Mechanic.current.mechanic_number = e.target.value;
+                        if (Mechanic.current.mechanic_number.length !== 10) {
+                          setIsValidEdit(true)
+                        } else {
+                          setIsValidEdit(false)
+                        }
                       }}
+                      onInput={(e) =>
+                        (e.target.value = e.target.value.slice(0, 10))
+                      }
                     />
+                    <div className="text-danger" style={{ fontSize: '14px' }}>{isValidEdit ? 'Please Enter 10 Digits Phone Number' : ''}</div>
                   </div>
                   <div className="col-md-12">
                     <div className="py-2">
@@ -512,7 +536,7 @@ export default function MechanicListing() {
                         className="pointer"
                         onClick={async (e) => {
                           setLoader(true)
-                          await deleteMechanic(res._id).then((res) =>{
+                          await deleteMechanic(res._id).then((res) => {
                             ShowSnackbar({
                               show: true,
                               vertical: "top",
@@ -523,7 +547,7 @@ export default function MechanicListing() {
                             getAllData()
                             setLoader(false)
                           }
-                          ).catch((err)=>setLoader(false))
+                          ).catch((err) => setLoader(false))
                         }}
                       />
                       <Edit
