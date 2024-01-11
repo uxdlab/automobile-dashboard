@@ -107,6 +107,7 @@ const OrderHistory = () => {
 
   function searchData(e) {
     let data = [...backUpData]
+    setCurrentPage(1)
     let val = e.toLowerCase()
     let aa = data.filter(res=>res.paymentDetails.buyerName !== undefined)
     let dd = aa.filter(res => res.paymentDetails.orderId.toLowerCase().includes(val) || res?.paymentDetails?.buyerName.toLowerCase().includes(val) || res.paymentDetails.buyerPhone.toLowerCase().includes(val))
