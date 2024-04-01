@@ -47,7 +47,7 @@ export const Qrcode = () => {
 
 if(Number(copies) > 50){
 
-alert("ou can generate only 50 QR codes at a time")
+alert("You can generate only 50 QR codes at a time")
   return
   
 }
