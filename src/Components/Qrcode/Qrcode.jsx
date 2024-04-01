@@ -25,6 +25,7 @@ export const Qrcode = () => {
   const [showTable, setShowTable] = React.useState(false);
   const [pointData, setPointData] = React.useState([]);
   const [loader, setLoader] = useState(true);
+  const [showError, setShowError] = useState(false);
 
   const [denomination, setDenomination] = React.useState(""); // State variable for Denomination
   const [copies, setCopies] = React.useState(""); // State variable for Generate Copies
@@ -44,13 +45,6 @@ export const Qrcode = () => {
 
   const handleCreate = async () => {
 
-
-if(Number(copies) > 50){
-
-alert("You can generate only 50 QR codes at a time")
-  return
-  
-}
   setLoader(true);
   
   let QrData = [];
@@ -151,14 +145,23 @@ alert("You can generate only 50 QR codes at a time")
                   type="number"
                   className="form-control"
                   value={copies}
-                  onChange={(e) => setCopies(e.target.value)} // Update Generate Copies state
+                  onChange={(e) => {
+                    setCopies(e.target.value)
+                    if(Number(e.target.value) > 50){
+                      setShowError(true)
+                    }else{
+                      setShowError(false)
+                    }
+                  }} // Update Generate Copies state
                 />
+                {  showError && <small className="text-danger">You can generate only 50 QR codes at a time</small>}
 
                 <div className="create mt-4 h justify-content-end">
                   <Button
                     className="btn_primary mt-3"
                     variant="contained"
                     onClick={handleCreate}
+                    disabled={showError}
                   >
                     print
                   </Button>
@@ -166,6 +169,7 @@ alert("You can generate only 50 QR codes at a time")
                     className="btn cancel_btn ms-4 mt-3"
                     variant=""
                     onClick={handleClose}
+                    
                   >
                     Cancel
                   </Button>
