@@ -43,15 +43,23 @@ export const Qrcode = () => {
   };
 
   const handleCreate = async () => {
-    setLoader(true);
 
-    let QrData = [];
-    let pointCode = [];
-    for (let i = 0; i < Number(copies); i++) {
-      let id = uuidv4();
-      QrData.push({
-        point_id: id,
-        denomination: denomination,
+
+if(Number(copies) > 50){
+
+alert("ou can generate only 50 QR codes at a time")
+  return
+  
+}
+  setLoader(true);
+  
+  let QrData = [];
+  let pointCode = [];
+  for (let i = 0; i < Number(copies); i++) {
+    let id = uuidv4();
+    QrData.push({
+      point_id: id,
+      denomination: denomination,
       });
       pointCode.push(id);
     }

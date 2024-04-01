@@ -5,12 +5,9 @@ let doc;
 const getImageSrc = (value , tagId) => {
   
     const SIZE = "300x300";
-
     const content = value+","+ tagId;
-
     const URL = `https://image-charts.com/chart?chs=${SIZE}&cht=qr&chl=${content}&choe=UTF-8`;
     // const URL = `https://image-charts.com/chart?chs=${SIZE}&cht=qr&chl=${content}&choe=UTF-8`;
-
     return URL;
   };
 
@@ -22,7 +19,6 @@ const getImageSrc = (value , tagId) => {
 
   const renderImagesPDF = (QrData) => {
     let x = 0;
-
     let y = 10;
     let j = 0;
     let k = 0;
