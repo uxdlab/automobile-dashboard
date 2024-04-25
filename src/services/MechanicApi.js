@@ -22,6 +22,12 @@ export const updateMechanic = async (id, data) => {
     data
   );
 };
+export const updatePassword = async (id, data) => {
+  return await axios.put(
+    `${apis.baseUrl}${apis.mechanic.passwordChange}${id}`,
+    data
+  );
+};
 
 export const isActive = async (id) => {
   return await axios.get(`${apis.baseUrl}${apis.mechanic.isActive}/${id}`);
