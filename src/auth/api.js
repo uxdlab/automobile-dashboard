@@ -78,7 +78,7 @@ export const apis = {
     deleteMechanic: "mechanic/deleteMechanical",
     isActive: "mechanic/isActive",
     resetPoint: "mechanic/resetPoint",
-    passwordChange : "passwordChanges/"
+    passwordChange : "mechanic/passwordChanges/"
   },
   point: {
     add: "point/createPoint",

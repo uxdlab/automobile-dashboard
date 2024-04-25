@@ -23,7 +23,7 @@ export const updateMechanic = async (id, data) => {
   );
 };
 export const updatePassword = async (id, data) => {
-  return await axios.put(
+  return await axios.post(
     `${apis.baseUrl}${apis.mechanic.passwordChange}${id}`,
     data
   );

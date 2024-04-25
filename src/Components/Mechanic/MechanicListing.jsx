@@ -22,7 +22,7 @@ import React, { useRef } from "react";
 import { useState } from "react";
 import { SnackBar } from "../Assets/SnackBar";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import LockResetIcon from '@mui/icons-material/LockReset';
+import LockResetIcon from "@mui/icons-material/LockReset";
 import {
   addMechanic,
   updateMechanic,
@@ -31,6 +31,7 @@ import {
   deleteMechanic,
   isActive,
   resetPoint,
+  updatePassword,
 } from "../../services/MechanicApi";
 import moment from "moment/moment";
 import Pagination from "rc-pagination";
@@ -41,7 +42,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function MechanicListing() {
-    const Mechanic = useRef({
+  const Mechanic = useRef({
     mechanic_name: "",
     retailer: "",
     mechanic_number: "",
@@ -61,6 +62,8 @@ export default function MechanicListing() {
   const [loader, setLoader] = useState(true);
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+
   const [currentPage, setCurrentPage] = React.useState(1);
   const [countPerPage, setCountPerPage] = useState(10);
   const [collection, setCollection] = useState([]);
@@ -70,15 +73,51 @@ export default function MechanicListing() {
   const [backUpData, setBackUpData] = useState([]);
   const [isValidAdd, setIsValidAdd] = useState(false);
   const [isValidEdit, setIsValidEdit] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMismatch, setPasswordMismatch] = useState(false);
+  const [storeId, setStoreId] = useState();
 
   const updatePage = (p) => {
     setCurrentPage(p);
     const to = countPerPage * p;
     const from = to - countPerPage;
     setCollection(allPromos.slice(from, to));
+  };
+
+  const changePassword = async (e) => {
+    e.preventDefault();
+    if (newPassword === confirmPassword) {
+      setLoader(true);
+      setOpen2(false);
+      const payload = {
+        password: confirmPassword,
+      };
+      await updatePassword(storeId, payload).then((res) => {
+        console.log(res);
+        setLoader(false);
+        ShowSnackbar({
+          show: true,
+          vertical: "top",
+          horizontal: "right",
+          msg: "Mechanic Password Updated successfully",
+          type: "success",
+        });
+      });
+    } else {
+      ShowSnackbar({
+        show: true,
+        vertical: "top",
+        horizontal: "right",
+        msg: "Mechanic Password does Not Match",
+        type: "error",
+      });
+    }
+  };
+  const getID = (id) => {
+    setOpen2(true);
+    setStoreId(id);
+    console.log(id, "check");
   };
   const updateMechanicByid = async (e) => {
     e.preventDefault();
@@ -181,8 +220,6 @@ export default function MechanicListing() {
     setCollection(dd);
     setSearchValue(dd);
   };
-  
-
 
   useEffect(() => {
     getAllData();
@@ -486,6 +523,73 @@ export default function MechanicListing() {
             </form>
           </Box>
         </Dialog>
+
+        <Dialog open={open2} maxWidth={"xs"} fullWidth={true}>
+          <Box py={2} px={1} className="over-flow-hide-x">
+            <h5 className="px-3">Update Password</h5>
+            <hr />
+            <form onSubmit={(e) => changePassword(e)}>
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="py-2">
+                      <small>
+                        <b>
+                          <span className="text-danger">*</span> New Password:
+                        </b>
+                      </small>
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter New Name"
+                      className="form-control w-100 mb-2"
+                      // defaultValue={Mechanic.current.mechanic_name}
+                      onChange={(e) => {
+                        setNewPassword(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col-md-12 ">
+                    <div className="py-2">
+                      <small>
+                        <b>
+                          <span className="text-danger">*</span> Confirm
+                          Password:
+                        </b>
+                      </small>
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter Confirm Password"
+                      className="form-control w-100 mb-2"
+                      // defaultValue={Mechanic.current.retailer}
+                      onChange={(e) => {
+                        setConfirmPassword(e.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <Box align="right" className="mt-3">
+                    <span
+                      className="btn cancel_btn me-3 py-1 px-3"
+                      onClick={() => {
+                        setOpen2(false);
+                      }}
+                    >
+                      Cancel
+                    </span>
+                    <button className="btn custom-btn py-1 px-3" type="submit">
+                      Update
+                    </button>
+                  </Box>
+                </div>
+              </div>
+            </form>
+          </Box>
+        </Dialog>
+
         <h1>Mechanic</h1>
         <Box className="pb-3 d-flex justify-content-between">
           <Grid container>
@@ -612,7 +716,13 @@ export default function MechanicListing() {
                           pointReset(res._id);
                         }}
                       /> */}
-                      <LockResetIcon/>
+                      <LockResetIcon
+                        className="pointer"
+                        onClick={() => {
+                          console.log(res);
+                          getID(res._id);
+                        }}
+                      />
                     </TableCell>
                   </TableRow>
                 );
