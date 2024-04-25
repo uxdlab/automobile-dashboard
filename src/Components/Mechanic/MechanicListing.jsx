@@ -542,7 +542,7 @@ export default function MechanicListing() {
                     <input
                       type="text"
                       required
-                      placeholder="Enter New Name"
+                      placeholder="Enter New Password"
                       className="form-control w-100 mb-2"
                       // defaultValue={Mechanic.current.mechanic_name}
                       onChange={(e) => {
