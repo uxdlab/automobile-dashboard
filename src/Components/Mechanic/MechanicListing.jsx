@@ -200,6 +200,8 @@ export default function MechanicListing() {
       .catch((err) => setLoader(false));
   };
   const pointReset = async (id) => {
+    setLoader(true);
+
     await resetPoint(id).then((res) => {
       getAllData();
     });
@@ -710,12 +712,12 @@ export default function MechanicListing() {
                           getMechanic(res._id);
                         }}
                       />
-                      {/* <RestartAltIcon
+                      <RestartAltIcon
                         className="pointer"
                         onClick={() => {
                           pointReset(res._id);
                         }}
-                      /> */}
+                      />
                       <LockResetIcon
                         className="pointer"
                         onClick={() => {
