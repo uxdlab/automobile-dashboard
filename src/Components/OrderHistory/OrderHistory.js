@@ -201,7 +201,19 @@ const OrderHistory = () => {
                   collection?.map((res) => {
                     const dateObject = new Date(
                       res?.paymentDetails?.createdDateTime
+
                     );
+
+                  //   const paymentId = collection.map((item, index) => {
+                  //     return item.userData.map(innerItem => {
+                  //         return innerItem.buy_products.map((items)=>{
+                  //           return items.paymentID
+                  //         });
+                  //     });
+                  // });
+                  
+                  //   {console.log(paymentId,"dggdgddg")}
+
 
                     // const formattedDate = `${dateObject.getDate()}/${dateObject.getMonth() +
                     //   1}/${dateObject.getFullYear()}`;
@@ -245,7 +257,8 @@ const OrderHistory = () => {
                         </TableCell>
                         <TableCell className="text-center text-capitalize">
                           {" "}
-                          {res?.paymentDetails?.paymentOrderId ? res?.paymentDetails?.paymentOrderId : 'NA'}
+                          {res?.paymentDetails?.paymentId ? res?.paymentDetails?.paymentId : 'NA'}
+                          {/* {paymentId} */}
                           {/* {res?.paymentDetails?.paymentId} */}
                         </TableCell>
 
