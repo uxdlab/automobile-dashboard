@@ -386,7 +386,7 @@ export default function ProductListing() {
                 return (
                   <TableRow key={index}>
                     {/* <TableCell>{index + 1}</TableCell> */}
-                    <TableCell className="text_cap">
+                    <TableCell className="">
                       {res.product_name}
                     </TableCell>
                     <TableCell>{res.oe_reference_number}</TableCell>
