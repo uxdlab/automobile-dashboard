@@ -89,8 +89,8 @@ export default function ProductListing() {
 
   function handleSearchClick(e) {
     let data = [...backUpData]
-    let val = e.toLowerCase()
-    let dd = data.filter(res => res.product_name.toLowerCase().includes(val) || res.oe_reference_number.toLowerCase().includes(val) || res.ke_partNumber.toLowerCase().includes(val) || res.MRP.toString().toLowerCase().includes(val))
+    let val = e.toLocaleLowerCase()
+    let dd = data.filter(res => res.product_name.toLocaleLowerCase().includes(val) || res.oe_reference_number.toLocaleLowerCase().includes(val) || res.ke_partNumber.toLocaleLowerCase().includes(val) || res.MRP.toString().toLocaleLowerCase().includes(val))
     setAllProduct(dd);
     setAllProductc(dd);
   }
@@ -383,10 +383,11 @@ export default function ProductListing() {
             </TableHead>
             <TableBody>
               {collection.map((res, index) => {
+                console.log(res,"hdhdg")
                 return (
                   <TableRow key={index}>
                     {/* <TableCell>{index + 1}</TableCell> */}
-                    <TableCell className="">
+                    <TableCell className="text_cap">
                       {res.product_name}
                     </TableCell>
                     <TableCell>{res.oe_reference_number}</TableCell>
